@@ -1,0 +1,1 @@
+self.__NEXT_FONT_MANIFEST="{\n  \"app\": {},\n  \"appUsingSizeAdjust\": false,\n  \"pages\": {\n    \"/\": [\n      \"static/media/caa3a2e1cccd8315-s.p.853070df.woff2\",\n      \"static/media/797e433ab948586e-s.p.dbea232f.woff2\"\n    ]\n  },\n  \"pagesUsingSizeAdjust\": true\n}"
