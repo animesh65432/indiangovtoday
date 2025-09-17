@@ -20,7 +20,7 @@ def scrape_press_releases(BASE_URL: str):
         if link:
             results.append({
                 "title": title,
-                "url": link.strip()
+                "source": link.strip()
             })
 
     return results
