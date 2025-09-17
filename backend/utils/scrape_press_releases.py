@@ -22,5 +22,8 @@ def scrape_press_releases(BASE_URL: str):
                 "title": title,
                 "source": link.strip()
             })
+    
+    print(f"Scraped {len(results)} press releases")
+    print(results)
 
     return results

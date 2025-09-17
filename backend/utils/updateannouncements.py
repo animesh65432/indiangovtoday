@@ -4,17 +4,17 @@ from config import config
 
 
 async def update_announcements_everyday():
-    print("Updating announcements...")
     try :
+        print("Updating announcements...")
+        
         announcements = scrape_press_releases(config["INDIAN_GOVERMENT_BASE_URL"])
+
         if not announcements or len(announcements) == 0:
-            print("No announcements found to insert.")
             return {"status": "no announcements"}
         
-        await clear_announcements()
+        clear_announcements()
         
-        await insert_announcements(announcements)
-        print(f"Inserted {len(announcements)} announcements.")
+        insert_announcements(announcements)
         return {"status": f"Inserted {len(announcements)} announcements"}
     except Exception as e:
         print("Error updating announcements:", e)

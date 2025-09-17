@@ -14,7 +14,7 @@ async def get_indian_news():
 
 @router.get("/indian-news/{id}")
 async def get_indian_news_by_id(id: str):
-    print("ID received:", id)  # Debugging line to check the received ID
+    print("ID received:", id) 
     try:
         if not id:
             raise HTTPException(status_code=400, detail="ID parameter is required")
