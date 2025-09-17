@@ -13,7 +13,7 @@ origins = [
 
 app.add_middleware(
     CORSMiddleware,
-    origin_allowlist=origins,
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],          
     allow_headers=["*"], 
@@ -28,6 +28,7 @@ async def start_background_tasks():
             await update_announcements_everyday()
             await asyncio.sleep(24 * 60 * 60) 
     asyncio.create_task(scheduler())
+    
 
 if __name__ == "__main__":
     import uvicorn
