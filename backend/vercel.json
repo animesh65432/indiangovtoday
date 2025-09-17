@@ -10,11 +10,5 @@
         "src": "/(.*)",
         "dest": "main.py"
       }
-    ],
-    "crons": [
-      {
-      "path": "/utils/updateannouncements.py",
-      "schedule": "0 */6 * * *"
-    }
-  ]
+    ]
 }
