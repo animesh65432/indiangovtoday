@@ -1,10 +1,7 @@
-import os
+from config import config
 from pymongo import MongoClient
 
-
-mongo_url = os.getenv("MONGODB_URL")
-
-client = MongoClient(mongo_url)
+client = MongoClient(config["MONGODB_URL"])
 
 db = client["IndianGovtAnnouncements"]
 announcements_collection = db["announcements"]

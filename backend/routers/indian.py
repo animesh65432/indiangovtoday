@@ -1,6 +1,4 @@
 from fastapi import APIRouter,HTTPException
-from utils.scrape_press_releases import scrape_press_releases
-from config import config 
 from services.news import get_all_announcements ,Get_announcement_by_id
 router = APIRouter()
 
