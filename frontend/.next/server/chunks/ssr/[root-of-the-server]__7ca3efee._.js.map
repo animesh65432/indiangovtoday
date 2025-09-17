@@ -1,0 +1,8 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 4, "column": 0}, "map": {"version":3,"sources":["file:///home/animesh/Projects/MediSense/frontend/components/Home/Header.tsx"],"sourcesContent":["import React from 'react'\n\nexport default function Header() {\n    return (\n        <div>Header</div>\n    )\n}\n"],"names":[],"mappings":";;;;;;AAEe,SAAS;IACpB,qBACI,qKAAC;kBAAI;;;;;;AAEb","debugId":null}},
+    {"offset": {"line": 23, "column": 0}, "map": {"version":3,"sources":["file:///home/animesh/Projects/MediSense/frontend/components/Home/index.tsx"],"sourcesContent":["import React from 'react'\nimport Header from './Header'\n\nexport default function Home() {\n    return (\n        <div>\n            <Header />\n        </div>\n    )\n}\n"],"names":[],"mappings":";;;;;AACA;;;AAEe,SAAS;IACpB,qBACI,qKAAC;kBACG,cAAA,qKAAC,iIAAM;;;;;;;;;;AAGnB","debugId":null}},
+    {"offset": {"line": 48, "column": 0}, "map": {"version":3,"sources":["file:///home/animesh/Projects/MediSense/frontend/pages/index.tsx"],"sourcesContent":["import Home from \"@/components/Home\";\n\nexport default function HomeLayout() {\n  return (\n    <Home />\n  );\n}\n"],"names":[],"mappings":";;;;;AAAA;;;AAEe,SAAS;IACtB,qBACE,qKAAC,gIAAI;;;;;AAET","debugId":null}}]
+}

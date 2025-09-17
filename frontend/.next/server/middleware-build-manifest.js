@@ -2,17 +2,15 @@ globalThis.__BUILD_MANIFEST = {
   "pages": {
     "/": [
       "static/chunks/c6b16_next_dist_compiled_next-devtools_index_afaed119.js",
-      "static/chunks/c6b16_next_dist_compiled_12ea4348._.js",
-      "static/chunks/c6b16_next_dist_shared_lib_c4b8e401._.js",
-      "static/chunks/c6b16_next_dist_client_184eccbf._.js",
+      "static/chunks/c6b16_next_dist_compiled_c7dbd689._.js",
+      "static/chunks/c6b16_next_dist_shared_lib_e9976687._.js",
+      "static/chunks/c6b16_next_dist_client_15a6718b._.js",
       "static/chunks/c6b16_next_dist_ab483158._.js",
-      "static/chunks/c6b16_next_image_82e965ff.js",
       "static/chunks/c046a_react-dom_812c9f31._.js",
       "static/chunks/node_modules__pnpm_9c5b1966._.js",
-      "static/chunks/[root-of-the-server]__9d46851d._.js",
-      "static/chunks/[next]_internal_font_google_816b9778._.css",
+      "static/chunks/[root-of-the-server]__0c40d605._.js",
       "static/chunks/pages_index_2da965e7._.js",
-      "static/chunks/turbopack-pages_index_8371785b._.js"
+      "static/chunks/turbopack-pages_index_2eb67517._.js"
     ],
     "/_app": [
       "static/chunks/c6b16_next_dist_compiled_next-devtools_index_afaed119.js",
@@ -26,6 +24,20 @@ globalThis.__BUILD_MANIFEST = {
       "static/chunks/styles_globals_dc36e6c9.css",
       "static/chunks/pages__app_2da965e7._.js",
       "static/chunks/turbopack-pages__app_0321aa43._.js"
+    ],
+    "/_error": [
+      "static/chunks/c6b16_next_dist_compiled_next-devtools_index_afaed119.js",
+      "static/chunks/c6b16_next_dist_compiled_c7dbd689._.js",
+      "static/chunks/c6b16_next_dist_shared_lib_b7d46416._.js",
+      "static/chunks/c6b16_next_dist_client_15a6718b._.js",
+      "static/chunks/c6b16_next_dist_5ca0d194._.js",
+      "static/chunks/c6b16_next_error_bc5d4766.js",
+      "static/chunks/[next]_entry_page-loader_ts_27a4e137._.js",
+      "static/chunks/c046a_react-dom_812c9f31._.js",
+      "static/chunks/node_modules__pnpm_f012a4b7._.js",
+      "static/chunks/[root-of-the-server]__092393de._.js",
+      "static/chunks/pages__error_2da965e7._.js",
+      "static/chunks/turbopack-pages__error_8ee9118e._.js"
     ]
   },
   "devFiles": [],
