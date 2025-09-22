@@ -1,7 +1,7 @@
 from fastapi import FastAPI
-from upstash_redis import Redis
 from routers.indian import router as indian_router
 from fastapi.middleware.cors import CORSMiddleware
+from utils.translateannouncements import translate_announcements
 
 app = FastAPI()
 
@@ -19,6 +19,8 @@ app.add_middleware(
 
 
 app.include_router(indian_router)
+
+
 
 if __name__ == "__main__":
     import uvicorn
