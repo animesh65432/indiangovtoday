@@ -2,6 +2,8 @@ from typing import List, Optional
 from Schema import AnnouncementsModel,Announcements
 from database import announcements_collection
 from bson import ObjectId
+from utils.scrape_press_releases import scrape_press_releases
+from config import config
 
 def insert_announcements(announcements: List[AnnouncementsModel]):
     
@@ -12,17 +14,8 @@ def insert_announcements(announcements: List[AnnouncementsModel]):
     return {"inserted_count": len(result.inserted_ids)}
 
 async def get_all_announcements() -> List[Announcements]:
-    cursor = announcements_collection.find({})
-    docs = cursor.to_list(length=None)
-
-    return [
-        Announcements(
-            id=str(doc["_id"]),
-            title=doc["title"],
-            source=doc["source"]
-        )
-        for doc in docs
-    ]
+    announcements = scrape_press_releases(config["INDIAN_GOVERMENT_BASE_URL"])
+    return announcements
 
 async def Get_announcement_by_id(announcement_id: str) -> Optional[Announcements]:
     doc = announcements_collection.find_one({"_id": ObjectId(announcement_id)})  

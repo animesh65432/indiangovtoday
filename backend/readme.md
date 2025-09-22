@@ -1,7 +1,25 @@
-{
-  "_id": {
-    "$oid": "68ca90eca19a5c63068fe815"
+Prime Minister's Office
+Prime Minister shares soulful rendition by Pandit Jasraj ji on occasion of Navratri
+Prime Minister prays to Goddess Shailputri on first day of Navratri
+Prime Minister greets everyone on occasion of Navratri
+Ministry of Defence
+CHIEF OF THE NAVAL STAFF VISIT TO SRI LANKA
+
+const news  = [ 
+  {
+    title : "Prime Minister's Office",
+    contents : [
+      Prime Minister shares soulful rendition by Pandit Jasraj ji on occasion of Navratri,
+
+      Prime Minister prays to Goddess Shailputri on first day of Navratri,
+
+      Prime Minister greets everyone on occasion of Navratri
+    ]
   },
-  "title": "Iran’s foreign minister to hold call with European powers on nuclear programme",
-  "source": "https://ddnews.gov.in/en/irans-foreign-minister-to-hold-call-with-european-powers-on-nuclear-programme/"
-}
+  {
+    title : "Ministry of Defence",
+    contents : [
+      CHIEF OF THE NAVAL STAFF VISIT TO SRI LANKA
+    ]
+  }
+]
