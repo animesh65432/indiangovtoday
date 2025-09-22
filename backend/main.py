@@ -1,7 +1,7 @@
 from fastapi import FastAPI
+from upstash_redis import Redis
 from routers.indian import router as indian_router
 from fastapi.middleware.cors import CORSMiddleware
-
 
 app = FastAPI()
 
@@ -17,10 +17,9 @@ app.add_middleware(
     allow_headers=["*"], 
 )
 
+
 app.include_router(indian_router)
-
-
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="127.0.0.1")
+    uvicorn.run(app, host="127.0.0.1", port=8000, reload=True)

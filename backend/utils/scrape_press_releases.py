@@ -55,7 +55,8 @@ def scrape_press_releases(BASE_URL: str):
         return  filter_announcements(announcements)
     except requests.RequestException as e:
         print(f"Error fetching the webpage: {e}")
-        return []
+        return None
     except Exception as e:
         print(f"Error parsing the webpage: {e}")
-        return []
+        return None
+        
