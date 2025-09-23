@@ -1,9 +1,10 @@
 import json
 from fastapi import APIRouter,HTTPException
-from services.news import get_all_announcements
+from config import config
 from redis import redis
 from utils.translateannouncements import translate_announcements
 from models.Indianannouncements import IndianannouncementModel
+from utils.scrapeannouncementsreleases import scrape_announcements
 from utils.scrapeannouncement import scrapeannouncement
 from utils.translateannouncement import translateannouncement
 
@@ -17,8 +18,7 @@ async def get_indian_news(target_lan:str="English"):
         if cached_data:
             return json.loads(cached_data)
         
-        
-        indian_announcements = await get_all_announcements()
+        indian_announcements = scrape_announcements(config["INDIAN_GOVERMENT_BASE_URL"])
 
         if not indian_announcements :
             return HTTPException(404,detail="announcements don't find")
