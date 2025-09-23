@@ -19,6 +19,9 @@ async def get_indian_news(target_lan:str="English"):
         
         
         indian_announcements = await get_all_announcements()
+
+        if not indian_announcements :
+            return HTTPException(404,detail="announcement didn't found")
         
         
         if target_lan != "English":
@@ -56,3 +59,4 @@ async def Getannouncement(body:IndianannouncementModel):
         print("Error fetching Indian news:", e)
         raise HTTPException(status_code=500, detail="Internal Server Error")
 
+# https://www.pib.gov.in/PressReleasePage.aspx?PRID=2170011

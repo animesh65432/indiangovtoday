@@ -7,8 +7,11 @@ class Announcement(TypedDict):
     title: str
     link: str
 
-async def translate_announcements(announcements: List[Announcement], target_language) -> str:
+async def translate_announcements(announcements: List[Announcement], target_language: str) -> List[Announcement]:
     try:
+        if not announcements:
+            return []
+
         prompt = GetPrompt(announcements, target_language)
 
         response = GroqClient.chat.completions.create(
@@ -26,14 +29,22 @@ async def translate_announcements(announcements: List[Announcement], target_lang
                                "{ \"translations\": [ {\"title\": \"...\", \"link\": \"...\"} ] }"
                 }
             ],
-            response_format={ "type": "json_object" }
+            response_format={"type": "json_object"}
         )
 
-        content = response.choices[0].message.content  
+        content = getattr(response.choices[0].message, "content", None)
+        if not content:
+            print("Translation API returned empty content")
+            return []
 
-        
-        data = json.loads(content)
+        try:
+            data = json.loads(content)
+        except json.JSONDecodeError as e:
+            print(f"JSON parsing failed: {e}, content: {content}")
+            return []
+
         return data.get("translations", [])
 
     except Exception as e:
-        return f"Translation error: {str(e)}"
+        print(f"Translation error: {e}")
+        return []
