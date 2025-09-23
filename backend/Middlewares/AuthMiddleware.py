@@ -11,10 +11,9 @@ ALGORITHM = "HS256"
 
 class AuthMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request: Request, call_next):
-        if request.url.path.startswith("/auth") or request.url.path.startswith("/signup") or request.url.path.startswith("/signin"):
+        if request.url.path.startswith("/google/auth") or request.url.path.startswith("/signup") or request.url.path.startswith("/signin") or request.url.path.startswith("/indian-announcements") or request.url.path.startswith("/indian-announcement"):
             return await call_next(request)
         
-
         token = request.headers.get("Authorization")
 
         if not token:

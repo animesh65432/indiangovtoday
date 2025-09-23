@@ -1,5 +1,8 @@
-from fastapi import FastAPI, Request, HTTPException
+from fastapi import FastAPI, Request
+from fastapi.responses import JSONResponse
 from routers.indian import router as indian_router
+from routers.saves import router as saves_router
+from routers.users import router as users_router
 from fastapi.middleware.cors import CORSMiddleware
 from Middlewares.AuthMiddleware import AuthMiddleware
 from slowapi import Limiter
@@ -28,9 +31,11 @@ app.add_middleware(AuthMiddleware)
 
 @app.exception_handler(RateLimitExceeded)
 async def rate_limit_handler(request: Request, exc: RateLimitExceeded):
-    return HTTPException(status_code=429, detail="Too many requests")
+    return JSONResponse("to many request",status_code=429)
 
 app.include_router(indian_router)
+app.include_router(users_router)
+app.include_router(saves_router)
 
 
 if __name__ == "__main__":

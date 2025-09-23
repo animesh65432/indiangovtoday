@@ -54,7 +54,7 @@ async def signin(body: SingingRequest):
         raise HTTPException(status_code=500, detail="Internal server error")
 
 
-@router.post("/google")
+@router.post("/google/auth")
 async def google_auth(body: GoogleAuthRequest):
     credential = body.credential
     client_id = body.clientId

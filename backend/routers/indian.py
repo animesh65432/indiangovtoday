@@ -1,5 +1,6 @@
 import json
 from fastapi import APIRouter,HTTPException
+from fastapi.responses import JSONResponse 
 from config import config
 from redis import redis
 from utils.translateannouncements import translate_announcements
@@ -21,7 +22,7 @@ async def get_indian_news(target_lan:str="English"):
         indian_announcements = scrape_announcements(config["INDIAN_GOVERMENT_BASE_URL"])
 
         if not indian_announcements :
-            return HTTPException(404,detail="announcements don't find")
+            return JSONResponse([],status_code=200)
         
         
         if target_lan != "English":
@@ -31,7 +32,7 @@ async def get_indian_news(target_lan:str="English"):
         if indian_announcements:
             redis.set(f"indianannouncements{target_lan}", json.dumps(indian_announcements), ex=1800)
         
-        return indian_announcements if indian_announcements else []
+        return indian_announcements
     
     except Exception as e:
         print("Error fetching Indian news:", e)
