@@ -3,7 +3,7 @@ from fastapi.responses import JSONResponse
 from database import users
 from google.oauth2 import id_token
 from google.auth.transport import requests
-from utils import create_token
+from utils.create_token import create_token
 from models.AuthModel import GoogleAuthRequest, SingingRequest, SingupRequest
 from utils.security import hash_password, verify_password
 
