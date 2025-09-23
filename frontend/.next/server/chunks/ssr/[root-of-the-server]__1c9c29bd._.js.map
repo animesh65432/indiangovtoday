@@ -1,6 +1,0 @@
-{
-  "version": 3,
-  "sources": [],
-  "sections": [
-    {"offset": {"line": 4, "column": 0}, "map": {"version":3,"sources":["file:///home/animesh/Projects/MediSense/frontend/pages/index.tsx"],"sourcesContent":["import Home from \"@/components/Home\";\n\n\nexport default function HomeLayout() {\n\n  return (\n    <>\n    </>\n  );\n}\n"],"names":[],"mappings":";;;;;;AAGe,SAAS;IAEtB,qBACE;AAGJ","debugId":null}}]
-}
