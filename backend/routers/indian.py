@@ -36,6 +36,8 @@ async def get_indian_news(target_lan:str="English"):
     except Exception as e:
         print("Error fetching Indian news:", e)
         raise HTTPException(status_code=500, detail="Internal Server Error")
+    
+    
 
 @router.post("/indian-announcement")
 async def Getannouncement(body:IndianannouncementModel):
@@ -59,4 +61,3 @@ async def Getannouncement(body:IndianannouncementModel):
         print("Error fetching Indian news:", e)
         raise HTTPException(status_code=500, detail="Internal Server Error")
 
-# https://www.pib.gov.in/PressReleasePage.aspx?PRID=2170011

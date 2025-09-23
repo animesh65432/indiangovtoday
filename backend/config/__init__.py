@@ -8,5 +8,6 @@ config = {
     "MONGODB_URL": os.getenv("MONGODB_URL"),
     "UPSTASH_REDIS_REST_URL" : os.getenv("UPSTASH_REDIS_REST_URL"),
     "UPSTASH_REDIS_REST_TOKEN": os.getenv("UPSTASH_REDIS_REST_TOKEN"),
-    "GROQ_API_KEY":os.getenv("GROQ_API_KEY")
+    "GROQ_API_KEY":os.getenv("GROQ_API_KEY"),
+    "JWT_SECRET" :os.getenv("JWT_SECRET")
 }
