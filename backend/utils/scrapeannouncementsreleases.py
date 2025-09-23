@@ -2,25 +2,20 @@ import requests
 from bs4 import BeautifulSoup
 from .filteroutannoucment import filter_announcements
 
-headers = {
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
-                  "AppleWebKit/537.36 (KHTML, like Gecko) "
-                  "Chrome/120.0.0.0 Safari/537.36",
-    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-    "Accept-Language": "en-US,en;q=0.5",
-    "Referer": "https://www.pib.gov.in/",
-    "Connection": "keep-alive"
-}
-
 session = requests.Session()
-session.headers.update(headers)
 
-def scrape_press_releases(BASE_URL: str):
+def scrape_announcements(BASE_URL: str):
     if not BASE_URL or BASE_URL.strip() == "":
         return []
-
+    
     try:
-        resp = requests.get(BASE_URL, headers={"User-Agent": "Mozilla/5.0"})
+        headers = {
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+                          "AppleWebKit/537.36 (KHTML, like Gecko) "
+                          "Chrome/117.0 Safari/537.36"
+        }
+
+        resp = requests.get(BASE_URL,headers=headers)
         resp.raise_for_status()
 
         soup = BeautifulSoup(resp.text, "html.parser")

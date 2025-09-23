@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from routers.indian import router as indian_router
 from fastapi.middleware.cors import CORSMiddleware
-from utils.translateannouncements import translate_announcements
+from utils.scrapeannouncement import scrapeannouncement
 
 app = FastAPI()
 
@@ -19,7 +19,6 @@ app.add_middleware(
 
 
 app.include_router(indian_router)
-
 
 
 if __name__ == "__main__":
