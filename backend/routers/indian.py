@@ -21,7 +21,7 @@ async def get_indian_news(target_lan:str="English"):
         indian_announcements = await get_all_announcements()
 
         if not indian_announcements :
-            return HTTPException(404,detail="announcement didn't found")
+            return HTTPException(404,detail="announcements don't find")
         
         
         if target_lan != "English":
