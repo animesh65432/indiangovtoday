@@ -12,7 +12,7 @@ from slowapi.middleware import SlowAPIMiddleware
 
 app = FastAPI()
 
-origins = ["http://localhost:3000"]
+origins = ["http://localhost:3000","https://indian-gov-today-123.vercel.app"]
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
