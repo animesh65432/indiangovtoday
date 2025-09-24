@@ -5,7 +5,7 @@ import Main from './Main'
 
 export default function Home() {
     return (
-        <div>
+        <div className='h-[100vh]'>
             <Header />
             <Main />
         </div>

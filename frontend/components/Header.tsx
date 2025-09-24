@@ -8,9 +8,11 @@ import {
 } from "@/components/ui/select";
 import { optionsforLanguages } from "@/lib/lan";
 import { UseLanguageContext } from "@/context/Lan";
+import { useRouter } from "next/router";
 
 export default function Header() {
     const languageContext = UseLanguageContext();
+    const router = useRouter()
 
     if (!languageContext) {
         return null;
@@ -18,11 +20,9 @@ export default function Header() {
 
     const { onSelectLanguage, language } = languageContext;
 
-    console.log(language)
-
     return (
-        <header className="flex items-center justify-between w-[85%] mx-auto pt-7">
-            <h1 className="text-2xl lg:text-4xl text-[#168b5d]">
+        <header className="flex h-[10vh] items-center justify-between w-[85%] mx-auto pt-7">
+            <h1 className="text-2xl lg:text-4xl text-[#168b5d]" onClick={() => router.push("/")}>
                 IndianGovToday
             </h1>
             <ul>
