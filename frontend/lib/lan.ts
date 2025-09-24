@@ -1,0 +1,22 @@
+export const optionsforLanguages = [
+    { label: "हिन्दी", value: "hi" },
+    { label: "বাংলা", value: "bn" },
+    { label: "தமிழ்", value: "ta" },
+    { label: "తెలుగు", value: "te" },
+    { label: "मराठी", value: "mr" },
+    { label: "ગુજરાતી", value: "gu" },
+    { label: "ಕನ್ನಡ", value: "kn" },
+    { label: "മലയാളം", value: "ml" },
+    { label: "ਪੰਜਾਬੀ", value: "pa" },
+    { label: "ଓଡ଼ିଆ", value: "or" },
+    { label: "اردو", value: "ur" },
+    { label: "অসমীয়া", value: "as" },
+    { label: "संस्कृतम्", value: "sa" },
+    { label: "मैथिली", value: "mai" },
+    { label: "संथाली", value: "sat" },
+    { label: "नेपाली", value: "ne" },
+    { label: "डोगरी", value: "doi" },
+    { label: "बोडो", value: "brx" },
+    { label: "मणिपुरी", value: "mni" },
+    { label: "English", value: "en" }
+]

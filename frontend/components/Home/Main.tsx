@@ -3,16 +3,25 @@ import { getAllAnnouncements } from "@/api/announcements"
 import { AnnouncementsTypes } from "@/types"
 import Announcement from './Announcement'
 import AnnouncementSkeleton from './AnnouncementSkeleton'
+import { UseLanguageContext } from '@/context/Lan'
 
 const Main: React.FC = () => {
 
     const [Announcements, setAnnouncements] = useState<AnnouncementsTypes[]>([])
     const [IsLoading, SetIsLoading] = useState<boolean>(false)
+    const LanguageContext = UseLanguageContext()
+
+    if (!LanguageContext) {
+        return null;
+    }
+
+    const { language } = LanguageContext
+
 
     async function fetchAnnouncements() {
         SetIsLoading(true)
         try {
-            const data = await getAllAnnouncements() as AnnouncementsTypes[];
+            const data = await getAllAnnouncements(language) as AnnouncementsTypes[];
             setAnnouncements(data)
         } catch (error) {
             console.error(error);
@@ -24,7 +33,7 @@ const Main: React.FC = () => {
 
     useEffect(() => {
         fetchAnnouncements();
-    }, []);
+    }, [language]);
 
     if (IsLoading) {
         return <div className='flex flex-col gap-4 w-[85%] mx-auto pt-7'>
