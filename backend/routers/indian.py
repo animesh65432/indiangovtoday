@@ -25,8 +25,7 @@ async def get_indian_news(target_lan:str="English"):
             return JSONResponse([],status_code=200)
         
         
-        if target_lan != "English":
-            indian_announcements = await translate_announcements(indian_announcements, target_lan)
+        indian_announcements = await translate_announcements(indian_announcements, target_lan)
 
         
         if indian_announcements:

@@ -9,7 +9,13 @@ router = APIRouter()
 async def add (payload:AddSave,request: Request):
     user = getattr(request.state, "user", None)
     try :
+        checkalready = saves.find_one({"title": payload.title, "userId": user["id"]})
+
+        if checkalready :
+            return JSONResponse("already save it",status_code=401)
+        
         saves.insert_one({"title":payload.title,"content":payload.content,"userId": user["id"],"source":payload.source})
+        
         return JSONResponse("sucessfully save it",status_code=201)
     except Exception :
         return JSONResponse("internal server error",status_code=500)

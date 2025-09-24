@@ -9,10 +9,11 @@ import AnnouncementSkeleton from './AnnouncementSkeleton'
 import { toast } from "react-toastify"
 
 type Props = {
-    news_id: string
+    news_id: string,
+    title: string
 }
 
-const Announcement = ({ news_id }: Props) => {
+const Announcement = ({ news_id, title }: Props) => {
     const [announcement, setannouncement] = useState<ShowAnnouncementsTypes[] | null>(null)
     const LanContext = UseLanguageContext()
     const [IsLoading, SetIsLoading] = useState<boolean>(false)
@@ -53,7 +54,7 @@ const Announcement = ({ news_id }: Props) => {
     return (
         <div>
             <Header />
-            <ShowAnnouncement source={news_id} title={announcement[0].title} content={announcement[0].content} />
+            <ShowAnnouncement source={news_id} title={title} content={announcement[0].content} />
         </div>
     )
 }

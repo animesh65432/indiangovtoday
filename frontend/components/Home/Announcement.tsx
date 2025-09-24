@@ -9,13 +9,18 @@ type Props = {
 const Announcement: React.FC<Props> = ({ Announcement }) => {
     const router = useRouter()
 
-    const redirect_to = (news_id: string) => {
-        router.push(`/Announcement?news_id=${news_id}`)
+    const redirect_to = (news_id: string, title: string) => {
+        router.push(`/Announcement?news_id=${news_id}&title=${title}`)
     }
+
     return (
-        <li onClick={() => redirect_to(Announcement.link)} className='text-[#353535] hover:underline text-[0.85rem] md:text-[1rem] lg:text-[1.1rem]'>
+        <li
+            onClick={() => redirect_to(Announcement.link, Announcement.title)}
+            className='text-[#353535] hover:underline cursor-pointer focus:underline active:underline text-[0.85rem] md:text-[1rem] lg:text-[1.1rem]'
+        >
             {Announcement.title}
         </li>
+
     )
 }
 
