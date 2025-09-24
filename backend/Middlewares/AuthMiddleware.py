@@ -16,6 +16,7 @@ class AuthMiddleware(BaseHTTPMiddleware):
         
         token = request.headers.get("Authorization")
 
+
         if not token:
               return JSONResponse(status_code=401, content={"detail": "Missing authorization token"})
 
@@ -28,6 +29,7 @@ class AuthMiddleware(BaseHTTPMiddleware):
           
             payload = jwt.decode(token_value, SECRET_KEY, algorithms=[ALGORITHM])
             email = payload.get("sub")
+
             if not email:
                 return JSONResponse(status_code=401, content={"detail": "email not found"})
 

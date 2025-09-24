@@ -15,10 +15,22 @@ async def add (payload:AddSave,request: Request):
         return JSONResponse("internal server error",status_code=500)
 
 @router.get("/saves")
-async def Get (request: Request):
+async def get_saves(request: Request):
     user = getattr(request.state, "user", None)
+    if not user:
+        return JSONResponse({"detail": "Unauthorized"}, status_code=401)
+    
     try:
-        UsersSaves = saves.find({"userId": user["id"]})
-        return  UsersSaves
-    except Exception :
-        return JSONResponse("internal server error",status_code=500)
+        UsersSaves = [
+            {
+                "id": str(item["_id"]),
+                "title": item.get("title"),
+                "content": item.get("content"),
+                "source": item.get("source")
+            }
+            for item in saves.find({"userId": user["id"]})
+        ]
+        return UsersSaves
+    except Exception as e:
+        print(e)
+        return JSONResponse({"detail": "Internal server error"}, status_code=500)
