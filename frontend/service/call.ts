@@ -49,7 +49,6 @@ export async function Call<T, ResponseType>({
         const response: AxiosResponse<ResponseType> = await axios(config);
         return response.data;
     } catch (error: unknown) {
-        const errMsg = "Something went wrong.";
         if (!suppressError) {
             console.error(error);
         }
@@ -60,14 +59,16 @@ export async function Call<T, ResponseType>({
                 toast.error(`${error.response.data.message}`);
             } else if (error.request) {
                 console.error("Error Request:", error.request);
+                toast.error("Too many requests, please try again later.")
             } else {
                 console.error("Error Message:", error.message);
+                toast.error("Too many requests, please try again later.")
             }
         }
 
         throw {
             handled: !suppressError,
-            wrapped: error instanceof Error ? error.message : errMsg,
+            wrapped: "",
         };
     }
 }
