@@ -51,7 +51,7 @@ async def Getannouncement(body:IndianannouncementModel):
         announcement_scraped = scrapeannouncement(body.link)
 
         if not announcement_scraped :
-            return HTTPException(status_code=404, detail="announcement not found")
+            return JSONResponse("announcement not found",status_code=404)
 
         translate_announcement = await translateannouncement(announcement_scraped,body.target_lan)
         
@@ -60,5 +60,5 @@ async def Getannouncement(body:IndianannouncementModel):
         return translate_announcement
     except Exception as e:
         print("Error fetching Indian news:", e)
-        raise HTTPException(status_code=500, detail="Internal Server Error")
+        raise JSONResponse("Internal Server Error",500)
 

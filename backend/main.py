@@ -1,8 +1,8 @@
-from fastapi import FastAPI, Request
-from fastapi.responses import JSONResponse
+from fastapi import FastAPI
 from routers.indian import router as indian_router
 from routers.saves import router as saves_router
 from routers.users import router as users_router
+from routers.spechai import router as spechai_router
 from fastapi.middleware.cors import CORSMiddleware
 from Middlewares.AuthMiddleware import AuthMiddleware
 from slowapi.middleware import SlowAPIMiddleware
@@ -29,6 +29,7 @@ app.add_middleware(AuthMiddleware)
 app.include_router(indian_router)
 app.include_router(users_router)
 app.include_router(saves_router)
+app.include_router(spechai_router)
 
 
 if __name__ == "__main__":

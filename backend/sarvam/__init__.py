@@ -1,6 +1,6 @@
 from sarvamai import SarvamAI
 from config import config
 
-SarvamAIclient = SarvamAI(
+SarvamAIClient = SarvamAI(
     api_subscription_key=config["SARVAMAI"],
 )
