@@ -6,7 +6,6 @@ import { UseLanguageContext } from '@/context/Lan'
 import ShowAnnouncement from './ShowAnnouncement'
 import { ShowAnnouncementsTypes } from "@/types"
 import AnnouncementSkeleton from './AnnouncementSkeleton'
-import { toast } from "react-toastify"
 
 type Props = {
     news_id: string,
@@ -48,9 +47,8 @@ const Announcement = ({ news_id, title }: Props) => {
         </div>
     }
 
-    if (!announcement) {
+    if (!announcement || announcement.length == 0) {
         return
-        //don't add toast
     }
 
     return (

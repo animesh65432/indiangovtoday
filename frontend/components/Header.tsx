@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
     Select,
     SelectContent,
@@ -13,10 +13,15 @@ import { useRouter } from "next/router";
 export default function Header() {
     const languageContext = UseLanguageContext();
     const router = useRouter()
+    const [isHome, setIsHome] = useState(false);
 
     if (!languageContext) {
         return null;
     }
+
+    useEffect(() => {
+        setIsHome(router.pathname === "/");
+    }, [router.pathname]);
 
     const { onSelectLanguage, language } = languageContext;
 
@@ -25,29 +30,31 @@ export default function Header() {
             <h1 className="text-2xl lg:text-4xl text-[#168b5d]" onClick={() => router.push("/")}>
                 IndianGovToday
             </h1>
-            <ul>
-                <Select
-                    onValueChange={(value) => {
-                        onSelectLanguage(value);
-                    }}
-                    value={language}
-                >
-                    <SelectTrigger className="border border-[#b8b6b6] p-1 font-light rounded focus:border-[#353535] shadow-none text-[#353535] data-[placeholder]:text-[#353535] focus:ring-0 focus:outline-none">
-                        <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent className="text-[#353535]">
-                        {optionsforLanguages.map((lan) => (
-                            <SelectItem
-                                key={lan.label}
-                                value={lan.label}
-                                className="text-[#353535] font-medium focus:bg-gray-100"
-                            >
-                                {lan.label}
-                            </SelectItem>
-                        ))}
-                    </SelectContent>
-                </Select>
-            </ul>
+            {isHome &&
+                <ul>
+                    <Select
+                        onValueChange={(value) => {
+                            onSelectLanguage(value);
+                        }}
+                        value={language}
+                    >
+                        <SelectTrigger className="border border-[#b8b6b6] p-1 font-light rounded focus:border-[#353535] shadow-none text-[#353535] data-[placeholder]:text-[#353535] focus:ring-0 focus:outline-none">
+                            <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent className="text-[#353535]">
+                            {optionsforLanguages.map((lan) => (
+                                <SelectItem
+                                    key={lan.label}
+                                    value={lan.label}
+                                    className="text-[#353535] font-medium focus:bg-gray-100"
+                                >
+                                    {lan.label}
+                                </SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
+                </ul>
+            }
         </header>
     );
 }

@@ -55,8 +55,7 @@ export async function Call<T, ResponseType>({
 
         if (axios.isAxiosError(error)) {
             if (error.response) {
-                console.error("Error Response:", error.response.data);
-                toast.error(`${error.response.data.message}`);
+                toast.error(`${error.response.data}`);
             } else if (error.request) {
                 console.error("Error Request:", error.request);
                 toast.error("Too many requests, please try again later.")
