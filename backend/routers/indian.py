@@ -29,7 +29,7 @@ async def get_indian_news(target_lan:str="English"):
 
         
         if indian_announcements:
-            redis.set(f"indianannouncements{target_lan}", json.dumps(indian_announcements), ex=1800)
+            redis.set(f"indianannouncements{target_lan}", json.dumps(indian_announcements), ex=3600)
         
         return indian_announcements
     
@@ -54,7 +54,7 @@ async def Getannouncement(body:IndianannouncementModel):
 
         translate_announcement = await translateannouncement(announcement_scraped,body.target_lan)
         
-        redis.set(f"indianannouncement{body.target_lan}{body.link}", json.dumps(translate_announcement), ex=1800)
+        redis.set(f"indianannouncement{body.target_lan}{body.link}", json.dumps(translate_announcement), ex=3600)
         
         return translate_announcement
     except Exception as e:

@@ -20,6 +20,8 @@ def scrape_announcements(BASE_URL: str):
 
         soup = BeautifulSoup(resp.text, "html.parser")
 
+        print(soup)
+
         announcements = []
 
         release_lists = soup.find_all("ul", class_="num")
