@@ -47,7 +47,6 @@ const Announcement = ({ news_id, title }: Props) => {
     }
 
     if (!announcement) {
-        toast.error("announcement didn't found")
         return
     }
 
