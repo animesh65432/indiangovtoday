@@ -10,5 +10,6 @@ config = {
     "UPSTASH_REDIS_REST_TOKEN": os.getenv("UPSTASH_REDIS_REST_TOKEN"),
     "GROQ_API_KEY":os.getenv("GROQ_API_KEY"),
     "JWT_SECRET" :os.getenv("JWT_SECRET"),
-    "SARVAMAI": os.getenv("SARVAMAI")
+    "SARVAMAI": os.getenv("SARVAMAI"),
+    "SCRAPERAPI" : os.getenv("SCRAPERAPI")
 }
