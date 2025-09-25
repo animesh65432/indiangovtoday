@@ -48,6 +48,7 @@ const Announcement = ({ news_id, title }: Props) => {
 
     if (!announcement) {
         return
+        //don't add toast
     }
 
     return (
