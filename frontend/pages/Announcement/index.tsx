@@ -1,29 +1,22 @@
 import { useRouter } from 'next/router';
 import Announcement from '@/components/Announcement';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 const AnnouncementPage = () => {
     const router = useRouter();
-    const [newsId, setNewsId] = useState<string | null>(null);
-    const [title, setTitle] = useState<string | null>(null)
+    const { news_id, title } = router.query as { news_id: string, title: string }
 
-    useEffect(() => {
-        const { news_id, title } = router.query;
+    if (!news_id || !title) {
+        return
+    }
 
-        if (!news_id || !title) {
-            router.push("/");
-            return;
-        }
+    console.log(news_id)
 
+    return <Announcement
+        news_id={news_id}
+        title={title}
+    />
 
-        setNewsId(Array.isArray(news_id) ? news_id[0] : news_id);
-        setTitle(Array.isArray(title) ? title[0] : title)
-    }, [router.query, router]);
-
-
-    if (!newsId || !title) return null;
-
-    return <Announcement news_id={newsId} title={title} />;
 };
 
 export default AnnouncementPage;

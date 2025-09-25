@@ -33,7 +33,7 @@ class RateLimiterMiddleware(BaseHTTPMiddleware):
                 
                 redis.incr(key)
             else:
-                await redis.set(key, "1", ex=self.window_sec)
+                redis.set(key, "1", ex=self.window_sec)
         except Exception as e:
             print(f"Redis rate limiter error: {e}")
             # Fail-open

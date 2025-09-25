@@ -45,6 +45,7 @@ async def Getannouncement(body:IndianannouncementModel):
         cached_data = redis.get(f"indianannouncement{body.target_lan}{body.link}")
 
         if cached_data:
+            print("from redis")
             return json.loads(cached_data)
         
         announcement_scraped = scrapeannouncement(body.link)

@@ -35,6 +35,7 @@ def GetPrompt(announcements: List[Announcement], target_language: str) -> str:
 - For currency amounts (like Rs 5,100 crore), keep the numerical format but translate currency terms simply
 - Make the content understandable to common people, not just government officials
 - Focus on the main action or benefit that affects regular citizens
+-don't use 1,2,3 likes that
 
 **Titles to translate:**
 {content_text}

@@ -30,7 +30,7 @@ def scrape_announcements(BASE_URL: str):
 
                 title = link_elem.get("title") or link_elem.get_text(strip=True)
                 href = link_elem.get("href")
-                full_link = f"https://www.pib.gov.in{href}" if href and href.startswith("/") else href
+                full_link = href
 
                 announcements.append({
                     "title": title.strip(),

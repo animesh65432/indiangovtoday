@@ -7,7 +7,8 @@ API_KEY = config["SCRAPERAPI"]
 
 def scrapeannouncement(BASE_URL: str) -> Announcement | None:
     try:
-       
+        print("call in",BASE_URL)
+
         resp = requests.get(
             f"https://api.scraperapi.com?api_key={API_KEY}&url={BASE_URL}&render=true",
             timeout=30
@@ -15,6 +16,8 @@ def scrapeannouncement(BASE_URL: str) -> Announcement | None:
         resp.raise_for_status() 
 
         soup = BeautifulSoup(resp.text, "html.parser")
+
+        print(soup)
 
      
         main_container = soup.find("div", class_="innner-page-main-about-us-content-right-part")
