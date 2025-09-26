@@ -3,9 +3,10 @@ from prompts.translateannouncement import GetPrompt
 from models.announcement import Announcement
 from ai import GroqClient
 
-async def translateannouncement (announcement:Announcement,target_language:str):
+
+async def translateannouncement(announcement: Announcement, target_language: str):
     try:
-        prompt = GetPrompt(announcement,target_language)
+        prompt = GetPrompt(announcement, target_language)
 
         response = GroqClient.chat.completions.create(
             model="openai/gpt-oss-20b",
@@ -18,19 +19,20 @@ async def translateannouncement (announcement:Announcement,target_language:str):
                 },
                 {
                     "role": "user",
-                    "content": f"{prompt}\n\nReturn output strictly as a JSON object with this structure:\n"
-                               "{ \"translations\": [ {\"title\": \"...\", \"content\": \"...\"} ] }"
+                    "content": (
+                        f"{prompt}\n\nReturn output strictly as a JSON object with this structure:\n"
+                        "{ \"translations\": [ {\"title\": \"...\", \"content\": \"...\"} ] }"
+                    )
                 }
             ],
-            response_format={ "type": "json_object" }
+            response_format={"type": "json_object"}
         )
 
-        content = response.choices[0].message.content  
+        content = response.choices[0].message.content
 
-        
         data = json.loads(content)
-        
+
         return data.get("translations", [])
 
     except Exception as e:
-        return f"Translation error: {str(e)}"
+        return {"error": f"Translation error: {str(e)}"}
