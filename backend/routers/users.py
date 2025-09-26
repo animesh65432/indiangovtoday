@@ -12,7 +12,7 @@ router = APIRouter()
 @router.post("/signup")
 async def signup(body: SingupRequest):
     try:
-        user = users.find_one({"email": body.email})
+        user = await users.find_one({"email": body.email})
 
         if user:
             raise HTTPException(status_code=400, detail="User already exists")
@@ -22,7 +22,7 @@ async def signup(body: SingupRequest):
             "password": hash_password(body.password),
             "name": body.name,
         }
-        users.insert_one(new_user)
+        await users.insert_one(new_user)
 
         return JSONResponse(
             content={"message": "Successfully created user"},
@@ -37,7 +37,7 @@ async def signup(body: SingupRequest):
 @router.post("/signin")
 async def signin(body: SingingRequest):
     try:
-        user = users.find_one({"email": body.email})
+        user = await users.find_one({"email": body.email})
 
         if not user:
             raise HTTPException(status_code=400, detail="User not found")
@@ -73,10 +73,10 @@ async def google_auth(body: GoogleAuthRequest):
     if not email:
         raise HTTPException(status_code=400, detail="Invalid Google token payload")
 
-    user = users.find_one({"email": email})
+    user = await users.find_one({"email": email})
 
     if not user:
-        users.insert_one({"email": email})
+        await users.insert_one({"email": email})
         message = "Account created and logged in"
         code = status.HTTP_201_CREATED
     else:

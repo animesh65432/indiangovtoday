@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 
 class IndianannouncementModel(BaseModel):
-    link : str
+    id:str
     target_lan: str
     

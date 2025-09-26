@@ -1,9 +1,9 @@
 from config import config
-from pymongo import MongoClient
+from motor.motor_asyncio import AsyncIOMotorClient
 
-client = MongoClient(config["MONGODB_URL"])
-
+client = AsyncIOMotorClient(config["MONGODB_URL"])
 db = client["IndianGovtAnnouncements"]
+
 users = db["users"]
 saves = db["saves"]
-
+announcements = db["announcements"]

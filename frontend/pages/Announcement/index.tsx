@@ -4,17 +4,15 @@ import React from 'react';
 
 const AnnouncementPage = () => {
     const router = useRouter();
-    const { news_id, title } = router.query as { news_id: string, title: string }
+    const { id } = router.query as { id: string }
 
-    if (!news_id || !title) {
+    if (!id) {
         return
     }
 
-    console.log(news_id)
 
     return <Announcement
-        news_id={news_id}
-        title={title}
+        id={id}
     />
 
 };

@@ -11,7 +11,7 @@ ALGORITHM = "HS256"
 
 class AuthMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request: Request, call_next):
-        if request.url.path.startswith("/google/auth") or request.url.path.startswith("/signup") or request.url.path.startswith("/signin") or request.url.path.startswith("/indian-announcements") or request.url.path.startswith("/indian-announcement") or request.url.path.startswith("/texttospeech"):
+        if request.url.path.startswith("/google/auth") or request.url.path.startswith("/signup") or request.url.path.startswith("/signin") or request.url.path.startswith("/indian-announcements") or request.url.path.startswith("/indian-announcement") or request.url.path.startswith("/texttospeech") or request.url.path.startswith("/deleteoldannouncements") or request.url.path.startswith("/updateannouncements"):
             return await call_next(request)
         
         token = request.headers.get("Authorization")
@@ -34,7 +34,8 @@ class AuthMiddleware(BaseHTTPMiddleware):
                 return JSONResponse(status_code=401, content={"detail": "email not found"})
 
     
-            user = users.find_one({"email": email})
+            user = await users.find_one({"email": email})
+
             if not user:
                 return JSONResponse(status_code=401, content={"detail": "user not found"})
 
@@ -48,6 +49,6 @@ class AuthMiddleware(BaseHTTPMiddleware):
         except jwt.ExpiredSignatureError:
             return JSONResponse(status_code=401, content={"detail": "token is experied"})
         except jwt.InvalidTokenError:
-            JSONResponse(status_code=401, content={"detail": "invaild token"})
+            return JSONResponse(status_code=401, content={"detail": "invaild token"})
 
         return await call_next(request)

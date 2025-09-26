@@ -8,12 +8,11 @@ import { ShowAnnouncementsTypes } from "@/types"
 import AnnouncementSkeleton from './AnnouncementSkeleton'
 
 type Props = {
-    news_id: string,
-    title: string
+    id: string
 }
 
-const Announcement = ({ news_id, title }: Props) => {
-    const [announcement, setannouncement] = useState<ShowAnnouncementsTypes[] | null>(null)
+const Announcement = ({ id }: Props) => {
+    const [announcement, setannouncement] = useState<ShowAnnouncementsTypes | null>(null)
     const LanContext = UseLanguageContext()
     const [IsLoading, SetIsLoading] = useState<boolean>(false)
     if (!LanContext) {
@@ -24,7 +23,7 @@ const Announcement = ({ news_id, title }: Props) => {
     async function fetch() {
         SetIsLoading(true)
         try {
-            const data = await getAnnouncement(language, `https://www.pib.gov.in/${news_id}`) as ShowAnnouncementsTypes[]
+            const data = await getAnnouncement(language, id) as ShowAnnouncementsTypes
             setannouncement(data)
         } catch (error) {
             console.log(error)
@@ -35,10 +34,10 @@ const Announcement = ({ news_id, title }: Props) => {
     }
 
     useEffect(() => {
-        if (news_id && title) {
+        if (id) {
             fetch()
         }
-    }, [language, news_id, title])
+    }, [id,])
 
     if (IsLoading) {
         return <div>
@@ -47,14 +46,14 @@ const Announcement = ({ news_id, title }: Props) => {
         </div>
     }
 
-    if (!announcement || announcement.length == 0) {
+    if (!announcement) {
         return
     }
 
     return (
         <div>
             <Header />
-            <ShowAnnouncement source={news_id} title={title} content={announcement[0].content} />
+            <ShowAnnouncement source={announcement.source} title={announcement.title} content={announcement.content} />
         </div>
     )
 }

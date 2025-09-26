@@ -88,9 +88,14 @@
 
 body {
   color: var(--foreground);
-  font-family: 'Poppins';
+  font-family: 'Poppins', sans-serif;
   background-image: url("/backgroundimage.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
 }
+
 
 h1,
 h2,

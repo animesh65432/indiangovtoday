@@ -1,12 +1,10 @@
 import json
 from fastapi import APIRouter,HTTPException
 from fastapi.responses import JSONResponse 
-from config import config
+from bson import ObjectId
 from redis import redis
 from utils.translateannouncements import translate_announcements
-from models.Indianannouncements import IndianannouncementModel
-from utils.scrapeannouncementsreleases import scrape_announcements
-from utils.scrapeannouncement import scrapeannouncement
+from database import announcements
 from utils.translateannouncement import translateannouncement
 
 router = APIRouter()
@@ -19,15 +17,20 @@ async def get_indian_news(target_lan:str="English"):
         if cached_data:
             return json.loads(cached_data)
         
-        indian_announcements = scrape_announcements(config["INDIAN_GOVERMENT_BASE_URL"])
+        cursor = announcements.find({})
+        
+        indian_announcements = []
+        async for item in cursor:
+          indian_announcements.append({
+                "id": str(item["_id"]),
+                "title": item.get("title"),
+                "content": item.get("content")
+            })
+          
+        if target_lan != "English":
+            print(target_lan)
+            indian_announcements = await translate_announcements(indian_announcements, target_lan)
 
-        if not indian_announcements :
-            return JSONResponse([],status_code=200)
-        
-        
-        indian_announcements = await translate_announcements(indian_announcements, target_lan)
-
-        
         if indian_announcements:
             redis.set(f"indianannouncements{target_lan}", json.dumps(indian_announcements), ex=3600)
         
@@ -37,28 +40,36 @@ async def get_indian_news(target_lan:str="English"):
         print("Error fetching Indian news:", e)
         raise HTTPException(status_code=500, detail="Internal Server Error")
     
-    
 
-@router.post("/indian-announcement")
-async def Getannouncement(body:IndianannouncementModel):
-    try :
-        cached_data = redis.get(f"indianannouncement{body.target_lan}{body.link}")
-
+@router.get("/indian-announcement")
+async def get_announcement(id: str, target_lan: str = "English"):
+    try:
+        if not ObjectId.is_valid(id):
+            raise HTTPException(status_code=400, detail="Invalid announcement ID format")
+        
+        cache_key = f"indianannouncement:{id}:{target_lan}"
+        cached_data = redis.get(cache_key)
         if cached_data:
             print("from redis")
             return json.loads(cached_data)
-        
-        announcement_scraped = scrapeannouncement(body.link)
 
-        if not announcement_scraped :
-            return JSONResponse("announcement not found",status_code=404)
+        announcement = await announcements.find_one({"_id": ObjectId(id)})
+        if not announcement:
+            raise HTTPException(status_code=404, detail="Announcement not found")
+        
+        announcement["_id"] = str(announcement["_id"])
 
-        translate_announcement = await translateannouncement(announcement_scraped,body.target_lan)
-        
-        redis.set(f"indianannouncement{body.target_lan}{body.link}", json.dumps(translate_announcement), ex=3600)
-        
-        return translate_announcement
+        print(announcement["title"])
+
+        if target_lan != "English":
+            trans_announcement = await translateannouncement(announcement["title"],announcement["content"],target_lan)
+            announcement["title"]=trans_announcement['Title']
+            announcement["content"]=trans_announcement['Content']
+
+
+        redis.set(cache_key, json.dumps(announcement), ex=3600)
+        return announcement
+
     except Exception as e:
-        print("Error fetching Indian news:", e)
-        raise JSONResponse("Internal Server Error",500)
-
+        print(f"Error fetching Indian announcement: {e}")
+        return JSONResponse("Internal Server Error", status_code=500)
