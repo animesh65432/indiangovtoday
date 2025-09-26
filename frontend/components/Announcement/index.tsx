@@ -24,7 +24,7 @@ const Announcement = ({ news_id, title }: Props) => {
     async function fetch() {
         SetIsLoading(true)
         try {
-            const data = await getAnnouncement(language, `https://www.pib.gov.in${news_id}`) as ShowAnnouncementsTypes[]
+            const data = await getAnnouncement(language, `https://www.pib.gov.in/${news_id}`) as ShowAnnouncementsTypes[]
             setannouncement(data)
         } catch (error) {
             console.log(error)

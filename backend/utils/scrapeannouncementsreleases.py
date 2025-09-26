@@ -30,11 +30,13 @@ def scrape_announcements(BASE_URL: str):
 
                 title = link_elem.get("title") or link_elem.get_text(strip=True)
                 href = link_elem.get("href")
-                full_link = href
+                if href.startswith("/"):
+                    href = href.lstrip("/")
+
 
                 announcements.append({
                     "title": title.strip(),
-                    "link": full_link
+                    "link": href
                 })
 
         return filter_announcements(announcements)
