@@ -26,6 +26,9 @@ app.add_middleware(RateLimiterMiddleware, limit=5, window_ms=10_000)
 
 app.add_middleware(AuthMiddleware)
 
+@app.get("/")
+def Check():
+    return "Okay"
 
 app.include_router(indian_router)
 app.include_router(users_router)
