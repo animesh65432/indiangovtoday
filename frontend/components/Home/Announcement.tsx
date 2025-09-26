@@ -16,7 +16,7 @@ const Announcement: React.FC<Props> = ({ Announcement }) => {
     return (
         <li
             onClick={() => redirect_to(Announcement.link, Announcement.title)}
-            className='text-[#353535] hover:underline cursor-pointer focus:underline active:underline text-[0.85rem] md:text-[1rem] lg:text-[1.1rem]'
+            className='text-[#353535] w-[85%] mx-auto hover:underline cursor-pointer focus:underline active:underline text-[0.85rem] md:text-[1rem] lg:text-[1.1rem]'
         >
             {Announcement.title}
         </li>

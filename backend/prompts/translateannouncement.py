@@ -1,6 +1,4 @@
-from models.announcement import Announcement
-
-def GetPrompt(announcement:Announcement, target_language: str) -> str:
+def GetPrompt(content:str, target_language: str) -> str:
     prompt = f"""
 You are a helpful Indian translator and simplifier. Please translate and explain the following government announcement.
 
@@ -9,18 +7,15 @@ You are a helpful Indian translator and simplifier. Please translate and explain
 2. Explain the content in very simple words that a 5-year-old can understand
 3. Keep the total response under 2500 characters
 4. Structure your response as follows:
-   - Translated Title
    - Translated Content  
    - Simple Explanation (like explaining to a 5-year-old)
 
 **Original Announcement:**
-Title: {announcement.title}
-Content: {announcement.content}
+Content: {content}
 
 **Target Language:** {target_language}
 
 **Response Format:**
-**शीर्षक/Title:** [Translated title here]
 
 **सामग्री/Content:** [Translated content here]
 

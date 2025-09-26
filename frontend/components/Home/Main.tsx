@@ -56,7 +56,7 @@ const Main: React.FC = () => {
 
 
     return (
-        <ul className='w-[85%] list-disc pl-5 h-[88vh] overflow-x-auto  mx-auto pt-8 pb-6 flex flex-col gap-4'>
+        <ul className='w-[100%] list-disc pl-5 h-[88vh] overflow-x-auto  mx-auto pt-8 pb-6 flex flex-col gap-4'>
             {
                 Announcements.map
                     ((announcement, index) =>

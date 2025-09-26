@@ -38,15 +38,15 @@ export default function Header() {
                         }}
                         value={language}
                     >
-                        <SelectTrigger className="border border-[#b8b6b6] p-1 font-light rounded focus:border-[#353535] shadow-none text-[#353535] data-[placeholder]:text-[#353535] focus:ring-0 focus:outline-none">
-                            <SelectValue />
+                        <SelectTrigger className="border border-white p-1 font-light rounded focus:border-[#353535] shadow-none text-[#353535] data-[placeholder]:text-[#353535] focus:ring-0 focus:outline-none">
+                            <SelectValue className="text-[#168b5d]" />
                         </SelectTrigger>
-                        <SelectContent className="text-[#353535]">
+                        <SelectContent className="text-[#168b5d]">
                             {optionsforLanguages.map((lan) => (
                                 <SelectItem
                                     key={lan.label}
                                     value={lan.label}
-                                    className="text-[#353535] font-medium focus:bg-gray-100"
+                                    className="text-[#168b5d] font-medium "
                                 >
                                     {lan.label}
                                 </SelectItem>

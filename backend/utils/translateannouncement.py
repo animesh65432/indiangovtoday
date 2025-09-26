@@ -6,7 +6,7 @@ from ai import GroqClient
 
 async def translateannouncement(announcement: Announcement, target_language: str):
     try:
-        prompt = GetPrompt(announcement, target_language)
+        prompt = GetPrompt(announcement.content, target_language)
 
         response = GroqClient.chat.completions.create(
             model="openai/gpt-oss-20b",
@@ -21,7 +21,7 @@ async def translateannouncement(announcement: Announcement, target_language: str
                     "role": "user",
                     "content": (
                         f"{prompt}\n\nReturn output strictly as a JSON object with this structure:\n"
-                        "{ \"translations\": [ {\"title\": \"...\", \"content\": \"...\"} ] }"
+                        "{ \"translations\": [ {\"content\": \"...\"} ] }"
                     )
                 }
             ],
