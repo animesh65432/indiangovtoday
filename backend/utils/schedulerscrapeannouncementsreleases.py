@@ -70,5 +70,7 @@ async def scrape_and_store_announcements():
 
         print(f"Processed {len(update_indian_announcements)} announcements")
 
+        return True
+
     except Exception as e:
-        print(f"Error in scrape_and_store_announcements: {e}")
+        return False

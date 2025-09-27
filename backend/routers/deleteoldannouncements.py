@@ -12,5 +12,6 @@ async def delete_old_announcements():
             content={"deleted_count": result.deleted_count},
             status_code=200
         )
-    except Exception :
+    except Exception as e :
+        print("deleteoldannouncements",e)
         return JSONResponse("internal server errors",500)
