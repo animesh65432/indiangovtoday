@@ -73,4 +73,5 @@ async def scrape_and_store_announcements():
         return True
 
     except Exception as e:
+        print(e,"scrape_and_store_announcements functions")
         return False

@@ -22,7 +22,7 @@ app.add_middleware(
 )
 
 
-app.add_middleware(RateLimiterMiddleware, limit=5, window_ms=10_000)
+app.add_middleware(RateLimiterMiddleware, limit=15, window_ms=10_000)
 
 app.add_middleware(AuthMiddleware)
 
