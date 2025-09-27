@@ -8,11 +8,7 @@ import asyncio
 
 from models.announcement import Announcement
 
-async def insert_announcement(title: str, link: str):
-    check = await announcements.find_one({"title": title})
-    if check:
-        return
-
+async def insert_announcement(title: str, link: str,orginaltitle:str):
     try:
       
         announcement_data = await asyncio.to_thread(scrapeannouncement, link)
@@ -31,12 +27,18 @@ async def insert_announcement(title: str, link: str):
             "title": title,
             "source": f"https://www.pib.gov.in/{link}",
             "content": translated_content,
-            "language": "English"
+            "language": "English",
+            "original_title":orginaltitle
         })
 
         print(f"Saved successfully: {title}")
     except Exception as e:
         print(f"Error inserting announcement '{title}': {e}")
+
+async def announcement_exists(title: str) -> bool:
+    check = await announcements.find_one({"orginaltitle": title})
+    return check is not None
+
 
 async def scrape_and_store_announcements():
     try:
@@ -45,14 +47,25 @@ async def scrape_and_store_announcements():
         if not indian_announcements:
             print("No announcements found")
             return
+
         
-     
-        indian_announcements = await translate_announcements(indian_announcements, "English")
-
+        filter_indian_announcements = []
         for ann in indian_announcements:
-            await insert_announcement(ann["title"], ann["link"])
+            if not await announcement_exists(ann["title"]):
+                filter_indian_announcements.append(ann)
 
-        print(f"Processed {len(indian_announcements)} announcements")
+      
+        update_indian_announcements = await translate_announcements(
+            filter_indian_announcements, "English"
+        )
+
+     
+        for ann in update_indian_announcements:
+            await insert_announcement(
+                ann["title"], ann["link"], ann["original_title"]  
+            )
+
+        print(f"Processed {len(update_indian_announcements)} announcements")
 
     except Exception as e:
         print(f"Error in scrape_and_store_announcements: {e}")

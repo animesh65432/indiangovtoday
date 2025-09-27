@@ -7,8 +7,9 @@ class Announcement(TypedDict):
     title: str
     link: str
 
-
-async def translate_announcements(announcements: List[Announcement], target_language: str) -> List[Announcement]:
+async def translate_announcements(
+    announcements: List[Announcement], target_language: str
+) -> List[dict]:
     try:
         if not announcements:
             return []
@@ -26,8 +27,10 @@ async def translate_announcements(announcements: List[Announcement], target_lang
                 },
                 {
                     "role": "user",
-                    "content": f"{prompt}\n\nReturn output strictly as a JSON object with this structure:\n"
-                               "{ \"translations\": [ {\"title\": \"...\", \"link\": \"...\"} ] }"
+                    "content": (
+                        f"{prompt}\n\nReturn output strictly as a JSON object with this structure:\n"
+                        "{ \"translations\": [ {\"title\": \"...\", \"link\": \"...\"} ] }"
+                    )
                 }
             ],
             response_format={"type": "json_object"}
@@ -44,7 +47,18 @@ async def translate_announcements(announcements: List[Announcement], target_lang
             print(f"JSON parsing failed: {e}, content: {content}")
             return []
 
-        return data.get("translations", [])
+        translated = data.get("translations", [])
+
+      
+        results = []
+        for original, trans in zip(announcements, translated):
+            results.append({
+                "original_title": original["title"],  
+                "title": trans.get("title"),           
+                "link": trans.get("link")
+            })
+
+        return results
 
     except Exception as e:
         print(f"Translation error: {e}")
