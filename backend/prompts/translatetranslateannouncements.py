@@ -2,7 +2,7 @@ from typing import List, TypedDict
 
 class Announcement(TypedDict):
     title: str
-    id: str
+    link: str
 
 def GetPrompt(announcements: List[Announcement], target_language: str) -> str:
     """
@@ -19,7 +19,7 @@ def GetPrompt(announcements: List[Announcement], target_language: str) -> str:
    
     formatted_announcements = []
     for announcement in announcements:
-        formatted_text = f"Title: {announcement['title']}\nID: {announcement['id']}"
+        formatted_text = f"Title: {announcement['title']}\nID: {announcement['link']}"
         formatted_announcements.append(formatted_text)
     
     announcements_text = "\n---\n".join(formatted_announcements)
@@ -33,8 +33,8 @@ Rules:
 - Use everyday language
 
 Format:
-Title: [Simple translated title]
-ID: [Same ID]
+title: [Simple translated title]
+link: [paste the user link]
 
 Announcements:
 {announcements_text}

@@ -8,7 +8,7 @@ router = APIRouter()
 @router.post("/updateannouncements")
 async def updateannouncements():
     try :
-        scrape_and_store_announcements()
+        await scrape_and_store_announcements()
         return JSONResponse("update it",200)
     except : 
         return JSONResponse("internal server errors",500)

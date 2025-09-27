@@ -35,4 +35,4 @@ async def simplefyannouncement(content:str, target_language: str):
         return data.get("translations", [])
 
     except Exception as e:
-        return {"error": f"Translation error: {str(e)}"}
+        return {"error": f"simplefyannouncement error: {str(e)}"}

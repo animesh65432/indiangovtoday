@@ -45,7 +45,7 @@ async def scrape_and_store_announcements():
         if not indian_announcements:
             print("No announcements found")
             return
-
+        
      
         indian_announcements = await translate_announcements(indian_announcements, "English")
 

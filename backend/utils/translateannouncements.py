@@ -5,7 +5,7 @@ from prompts.translatetranslateannouncements import GetPrompt
 
 class Announcement(TypedDict):
     title: str
-    id: str
+    link: str
 
 
 async def translate_announcements(announcements: List[Announcement], target_language: str) -> List[Announcement]:
@@ -27,7 +27,7 @@ async def translate_announcements(announcements: List[Announcement], target_lang
                 {
                     "role": "user",
                     "content": f"{prompt}\n\nReturn output strictly as a JSON object with this structure:\n"
-                               "{ \"translations\": [ {\"title\": \"...\", \"id\": \"...\"} ] }"
+                               "{ \"translations\": [ {\"title\": \"...\", \"link\": \"...\"} ] }"
                 }
             ],
             response_format={"type": "json_object"}
