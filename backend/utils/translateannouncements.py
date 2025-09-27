@@ -2,7 +2,7 @@ import json
 from typing import List, TypedDict
 from ai import GroqClient
 from prompts.translatetranslateannouncements import GetPrompt
-
+import asyncio
 from typing import Optional
 
 class Announcement(TypedDict, total=False): 
@@ -19,28 +19,30 @@ async def translate_announcements(
             return []
 
         prompt = GetPrompt(announcements, target_language)
-
-        response = GroqClient.chat.completions.create(
+        
+        response = await asyncio.to_thread(
+            GroqClient.chat.completions.create,
             model="openai/gpt-oss-20b",
             messages=[
                 {
                     "role": "system",
                     "content": f"You are an expert translator for Indian government documents. "
-                               f"Translate accurately into {target_language} while maintaining official tone and terminology. "
-                               f"Respond ONLY in valid JSON format."
+                    f"Translate accurately into {target_language} while maintaining official tone and terminology. "
+                    f"Respond ONLY in valid JSON format."
                 },
                 {
                     "role": "user",
                     "content": (
                         f"{prompt}\n\nReturn output strictly as a JSON object with this structure:\n"
                         "{ \"translations\": [ {\"title\": \"...\", \"link\": \"...\"} ] }"
-                    )
+                        )
                 }
             ],
             response_format={"type": "json_object"}
         )
 
         content = getattr(response.choices[0].message, "content", None)
+        
         if not content:
             print("Translation API returned empty content")
             return []
