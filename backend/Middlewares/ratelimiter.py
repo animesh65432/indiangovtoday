@@ -14,10 +14,13 @@ class RateLimiterMiddleware(BaseHTTPMiddleware):
             print("Redis client not initialized!")
             return await call_next(request)
 
-        ip = request.client.host
+        # Get real client IP
+        ip = (
+            request.headers.get("x-forwarded-for", "").split(",")[0]
+            or request.headers.get("cf-connecting-ip")
+            or request.client.host
+        )
 
-        print(ip)
-        
         key = f"rate-limit:{ip}"
 
         try:
@@ -26,20 +29,18 @@ class RateLimiterMiddleware(BaseHTTPMiddleware):
                 current = int(count)
                 ttl = await redis.ttl(key)
                 if ttl == -1:
-                    redis.expire(key, self.window_sec)
+                    await redis.expire(key, self.window_sec)
                 if current >= self.limit:
                     return JSONResponse(
                         status_code=429,
                         content={"message": "Too many requests, please try again later."},
                         headers={"Retry-After": str(self.window_sec)}
                     )
-                
                 await redis.incr(key)
             else:
                 await redis.set(key, "1", ex=self.window_sec)
         except Exception as e:
             print(f"Redis rate limiter error: {e}")
-            # Fail-open
-
+           
         response = await call_next(request)
         return response
