@@ -25,7 +25,7 @@ async def insert_announcement(title: str, link: str,orginaltitle:str):
 
         await announcements.insert_one({
             "title": title,
-            "source": f"https://www.pib.gov.in/{link}",
+            "source": f"{link}",
             "content": translated_content,
             "language": "English",
             "original_title":orginaltitle

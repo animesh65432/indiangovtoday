@@ -42,6 +42,8 @@ const ShowAnnouncement: React.FC<Props> = ({ title, content, source }) => {
         return <Volume2 className="text-[#757575] w-5 h-5" />
     }
 
+    console.log(source)
+
     return (
         <div className='w-[85%] mx-auto flex flex-col gap-6 pt-7'>
 
@@ -67,12 +69,12 @@ const ShowAnnouncement: React.FC<Props> = ({ title, content, source }) => {
                 <p className="text-gray-500 italic">
                     Source:{" "}
                     <a
-                        href={`https://www.pib.gov.in${source}`}
+                        href={`${source}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-blue-600 hover:underline"
                     >
-                        {`https://www.pib.gov.in${source}`}
+                        {`${source}`}
                     </a>
                 </p>
             </div>
