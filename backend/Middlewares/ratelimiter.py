@@ -15,6 +15,9 @@ class RateLimiterMiddleware(BaseHTTPMiddleware):
             return await call_next(request)
 
         ip = request.client.host
+
+        print(ip)
+        
         key = f"rate-limit:{ip}"
 
         try:
