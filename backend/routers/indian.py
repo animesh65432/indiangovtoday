@@ -60,8 +60,6 @@ async def get_announcement(id: str, target_lan: str = "English"):
         
         announcement["_id"] = str(announcement["_id"])
 
-        print(announcement["title"])
-
         if target_lan != "English":
             trans_announcement = await translateannouncement(announcement["title"],announcement["content"],target_lan)
             announcement["title"]=trans_announcement['Title']
