@@ -8,7 +8,7 @@ async def simplefyannouncement(content:str, target_language: str):
     try:
         prompt = GetPrompt(content, target_language)
 
-        response = GroqClient.chat.completions.create(
+        response = await GroqClient.chat.completions.create(
             model="openai/gpt-oss-20b",
             messages=[
                 {

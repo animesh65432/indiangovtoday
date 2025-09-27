@@ -1,4 +1,3 @@
-import asyncio
 import json
 from prompts.translatetranslateannouncement import GetPrompt
 from ai import GroqClient
@@ -7,8 +6,7 @@ async def translateannouncement(title: str, content: str, target_lan: str):
     try:
         prompt = GetPrompt(content, title, target_lan)
         
-        response = await asyncio.to_thread(
-            GroqClient.chat.completions.create,
+        response = await GroqClient.chat.completions.create(
             model="openai/gpt-oss-20b",
             messages=[
                 {"role": "system", "content": "You are an expert translator..."},

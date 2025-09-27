@@ -5,7 +5,7 @@ from config import config
 
 API_KEY = config["SCRAPERAPI"]  
 
-def scrapeannouncement(BASE_URL: str) -> Announcement | None:
+async def scrapeannouncement(BASE_URL: str) -> Announcement | None:
     try:
         print("call in",BASE_URL)
 

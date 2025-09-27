@@ -6,7 +6,7 @@ from urllib.parse import urljoin, quote
 
 API_KEY = config["SCRAPERAPI"]
 
-def scrape_announcements(BASE_URL: str):
+async def scrape_announcements(BASE_URL: str):
     if not BASE_URL or BASE_URL.strip() == "":
         return []
 

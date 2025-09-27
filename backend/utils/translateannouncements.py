@@ -2,7 +2,6 @@ import json
 from typing import List, TypedDict
 from ai import GroqClient
 from prompts.translatetranslateannouncements import GetPrompt
-import asyncio
 from typing import Optional
 
 class Announcement(TypedDict, total=False): 
@@ -20,8 +19,7 @@ async def translate_announcements(
 
         prompt = GetPrompt(announcements, target_language)
         
-        response = await asyncio.to_thread(
-            GroqClient.chat.completions.create,
+        response = await GroqClient.chat.completions.create(
             model="openai/gpt-oss-20b",
             messages=[
                 {

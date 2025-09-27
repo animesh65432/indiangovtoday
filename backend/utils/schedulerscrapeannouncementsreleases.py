@@ -4,19 +4,17 @@ from database import announcements
 from config import config
 from .translateannouncements import translate_announcements
 from .simplefyannouncement import simplefyannouncement
-import asyncio
 
 from models.announcement import Announcement
 
 async def insert_announcement(title: str, link: str,orginaltitle:str):
     try:
-      
-        announcement_data = await asyncio.to_thread(scrapeannouncement, link)
+        announcement_data = await scrapeannouncement(link)
 
         if not announcement_data or not announcement_data.content:
             return
 
-      
+
         announcement_obj = Announcement(content=announcement_data.content)
 
       
@@ -42,7 +40,7 @@ async def announcement_exists(title: str) -> bool:
 
 async def scrape_and_store_announcements():
     try:
-        indian_announcements = scrape_announcements(config["INDIAN_GOVERMENT_BASE_URL"])
+        indian_announcements = await scrape_announcements(config["INDIAN_GOVERMENT_BASE_URL"])
 
         if not indian_announcements:
             print("No announcements found")
