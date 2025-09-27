@@ -48,11 +48,11 @@ async def get_announcement(id: str, target_lan: str = "English"):
         if not ObjectId.is_valid(id):
             raise HTTPException(status_code=400, detail="Invalid announcement ID format")
         
-        cache_key = f"indianannouncement:{id}:{target_lan}"
-        cached_data = await redis.get(cache_key)
-        if cached_data:
-            print("from redis")
-            return json.loads(cached_data)
+        # cache_key = f"indianannouncement:{id}:{target_lan}"
+        # cached_data = await redis.get(cache_key)
+        # if cached_data:
+        #     print("from redis")
+        #     return json.loads(cached_data)
 
         announcement = await announcements.find_one({"_id": ObjectId(id)})
         if not announcement:
@@ -66,7 +66,7 @@ async def get_announcement(id: str, target_lan: str = "English"):
         #     announcement["content"]=trans_announcement['Content']
 
 
-        await redis.set(cache_key, json.dumps(announcement), ex=3600)
+        # await redis.set(cache_key, json.dumps(announcement), ex=3600)
         return announcement
 
     except Exception as e:
