@@ -54,11 +54,11 @@ async def get_announcement(id: str, target_lan: str = "English"):
         #     print("from redis")
         #     return json.loads(cached_data)
 
-        announcement = await announcements.find_one({"_id": ObjectId(id)})
-        if not announcement:
-            raise HTTPException(status_code=404, detail="Announcement not found")
+        # announcement = await announcements.find_one({"_id": ObjectId(id)})
+        # if not announcement:
+        #     raise HTTPException(status_code=404, detail="Announcement not found")
         
-        announcement["_id"] = str(announcement["_id"])
+        # announcement["_id"] = str(announcement["_id"])
 
         # if target_lan != "English":
         #     trans_announcement = await translateannouncement(announcement["title"],announcement["content"],target_lan)
@@ -67,7 +67,7 @@ async def get_announcement(id: str, target_lan: str = "English"):
 
 
         # await redis.set(cache_key, json.dumps(announcement), ex=3600)
-        return announcement
+        return {id}
 
     except Exception as e:
         print(f"Error fetching Indian announcement: {e}")
