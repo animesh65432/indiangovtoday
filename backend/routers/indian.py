@@ -4,7 +4,7 @@ from fastapi.responses import JSONResponse
 from bson import ObjectId
 from redis import redis
 from utils.translateannouncements import translate_announcements
-from database import announcements
+from database import get_database
 from utils.translateannouncement import translateannouncement
 
 router = APIRouter()
@@ -12,11 +12,15 @@ router = APIRouter()
 @router.get("/indian-announcements")
 async def get_indian_news(target_lan:str="English"):
     try:
-        cached_data = await redis.get(f"indianannouncements{target_lan}")
+        # cached_data = await redis.get(f"indianannouncements{target_lan}")
 
-        if cached_data:
-            return json.loads(cached_data)
+        # if cached_data:
+        #     return json.loads(cached_data)
         
+        db = await get_database()
+
+        announcements=db["announcements"]
+
         cursor = announcements.find({})
         
         indian_announcements = []
@@ -32,8 +36,8 @@ async def get_indian_news(target_lan:str="English"):
             print(target_lan)
             indian_announcements = await translate_announcements(indian_announcements, target_lan)
 
-        if indian_announcements:
-            await redis.set(f"indianannouncements{target_lan}", json.dumps(indian_announcements), ex=3600)
+        # if indian_announcements:
+        #     await redis.set(f"indianannouncements{target_lan}", json.dumps(indian_announcements), ex=3600)
         
         return indian_announcements
     
@@ -48,25 +52,32 @@ async def get_announcement(id: str, target_lan: str = "English"):
         if not ObjectId.is_valid(id):
             raise HTTPException(status_code=400, detail="Invalid announcement ID format")
         
-        # cache_key = f"indianannouncement:{id}:{target_lan}"
-        # cached_data = await redis.get(cache_key)
-        # if cached_data:
-        #     print("from redis")
-        #     return json.loads(cached_data)
+        cache_key = f"indianannouncement:{id}:{target_lan}"
+        cached_data = await redis.get(cache_key)
+        if cached_data:
+            print("from redis")
+            return json.loads(cached_data)
 
-        # announcement = await announcements.find_one({"_id": ObjectId(id)})
-        # if not announcement:
-        #     raise HTTPException(status_code=404, detail="Announcement not found")
+        db = await get_database()
+
+        announcements=db["announcements"]
+
+        announcement = await announcements.find_one({"_id": ObjectId(id)})
+
+        print(announcement)
+
+        if not announcement:
+            raise HTTPException(status_code=404, detail="Announcement not found")
         
-        # announcement["_id"] = str(announcement["_id"])
+        announcement["_id"] = str(announcement["_id"])
 
-        # if target_lan != "English":
-        #     trans_announcement = await translateannouncement(announcement["title"],announcement["content"],target_lan)
-        #     announcement["title"]=trans_announcement['Title']
-        #     announcement["content"]=trans_announcement['Content']
+        if target_lan != "English":
+            trans_announcement = await translateannouncement(announcement["title"],announcement["content"],target_lan)
+            announcement["title"]=trans_announcement['Title']
+            announcement["content"]=trans_announcement['Content']
 
 
-        # await redis.set(cache_key, json.dumps(announcement), ex=3600)
+        await redis.set(cache_key, json.dumps(announcement), ex=3600)
         return {id}
 
     except Exception as e:

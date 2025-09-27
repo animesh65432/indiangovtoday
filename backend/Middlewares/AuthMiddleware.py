@@ -3,7 +3,7 @@ from fastapi.responses import JSONResponse
 from starlette.middleware.base import BaseHTTPMiddleware
 import jwt
 from config import config
-from database import users  
+from database import get_database 
 
 SECRET_KEY = config["JWT_SECRET"]
 ALGORITHM = "HS256"
@@ -32,7 +32,11 @@ class AuthMiddleware(BaseHTTPMiddleware):
 
             if not email:
                 return JSONResponse(status_code=401, content={"detail": "email not found"})
+            
+            
+            db = await get_database()
 
+            users = db["users"]
     
             user = await users.find_one({"email": email})
 

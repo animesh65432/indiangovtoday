@@ -53,7 +53,7 @@ const Announcement = ({ id }: Props) => {
     return (
         <div>
             <Header />
-            <ShowAnnouncement source={announcement.source} title={announcement.title} content={announcement.content} />
+            <ShowAnnouncement source={announcement.link} title={announcement.title} content={announcement.content} />
         </div>
     )
 }

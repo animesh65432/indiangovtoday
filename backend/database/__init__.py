@@ -1,9 +1,14 @@
 from config import config
 from motor.motor_asyncio import AsyncIOMotorClient
 
-client = AsyncIOMotorClient(config["MONGODB_URL"])
-db = client["IndianGovtAnnouncements"]
+_client: AsyncIOMotorClient | None = None
+_db = None
 
-users = db["users"]
-saves = db["saves"]
-announcements = db["announcements"]
+async def get_database():
+    global _client, _db
+
+    if _client is None:
+        _client = AsyncIOMotorClient(config["MONGODB_URL"])
+        _db = _client["IndianGovtAnnouncements"]
+
+    return _db

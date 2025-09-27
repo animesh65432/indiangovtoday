@@ -1,17 +1,21 @@
 from fastapi import APIRouter, HTTPException, status
 from fastapi.responses import JSONResponse
-from database import users
+from database import get_database
 from google.oauth2 import id_token
 from google.auth.transport import requests
 from utils.create_token import create_token
 from models.AuthModel import GoogleAuthRequest, SingingRequest, SingupRequest
 from utils.security import hash_password, verify_password
 
+
 router = APIRouter()
 
 @router.post("/signup")
 async def signup(body: SingupRequest):
     try:
+        db = await get_database()
+        users = db["users"]
+
         user = await users.find_one({"email": body.email})
 
         if user:
@@ -37,6 +41,9 @@ async def signup(body: SingupRequest):
 @router.post("/signin")
 async def signin(body: SingingRequest):
     try:
+        db = await get_database()
+        users = db["users"]
+
         user = await users.find_one({"email": body.email})
 
         if not user:
@@ -72,6 +79,10 @@ async def google_auth(body: GoogleAuthRequest):
     email = payload.get("email")
     if not email:
         raise HTTPException(status_code=400, detail="Invalid Google token payload")
+    
+    db = await get_database()
+    
+    users = db["users"]
 
     user = await users.find_one({"email": email})
 

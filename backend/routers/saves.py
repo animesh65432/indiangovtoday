@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Request
 from fastapi.responses import JSONResponse
-from database import saves
+from database import get_database
 from models.SaveModel import AddSave
 
 router = APIRouter()
@@ -12,6 +12,9 @@ async def add(payload: AddSave, request: Request):
         return JSONResponse({"detail": "Unauthorized"}, status_code=401)
 
     try:
+        db = await get_database()
+
+        saves=db["saves"]
        
         checkalready = await saves.find_one({"title": payload.title, "userId": user["id"]})
         if checkalready:
@@ -39,6 +42,8 @@ async def get_saves(request: Request):
         return JSONResponse({"detail": "Unauthorized"}, status_code=401)
 
     try:
+        db = await get_database()
+        saves=db["saves"]
         cursor = saves.find({"userId": user["id"]})
         users_saves = []
         async for item in cursor:

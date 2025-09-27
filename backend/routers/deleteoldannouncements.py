@@ -1,11 +1,13 @@
 from fastapi import APIRouter, BackgroundTasks
 from fastapi.responses import JSONResponse 
-from database import announcements
+from database import get_database
 
 router = APIRouter()
 
 async def delete_all_announcements():
     try:
+        db = await get_database()
+        announcements=db["announcementss"]
         result = await announcements.delete_many({})
         print(f"Deleted {result.deleted_count} announcements")
     except Exception as e:

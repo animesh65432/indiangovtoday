@@ -1,6 +1,6 @@
 from .scrapeannouncementsreleases import scrape_announcements
 from .scrapeannouncement import scrapeannouncement
-from database import announcements
+from database import get_database
 from config import config
 from .translateannouncements import translate_announcements
 from .simplefyannouncement import simplefyannouncement
@@ -13,7 +13,10 @@ async def insert_announcement(title: str, link: str,orginaltitle:str):
 
         if not announcement_data or not announcement_data.content:
             return
-
+        
+        db = await get_database()
+        
+        announcements = db["announcements"]
 
         announcement_obj = Announcement(content=announcement_data.content)
 
@@ -34,6 +37,8 @@ async def insert_announcement(title: str, link: str,orginaltitle:str):
         print(f"Error inserting announcement '{title}': {e}")
 
 async def announcement_exists(title: str) -> bool:
+    db = await get_database()
+    announcements = db["announcements"]
     check = await announcements.find_one({"orginaltitle": title})
     return check is not None
 
@@ -45,6 +50,7 @@ async def scrape_and_store_announcements():
         if not indian_announcements:
             print("No announcements found")
             return
+
 
         
         filter_indian_announcements = []
