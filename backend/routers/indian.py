@@ -25,6 +25,7 @@ async def get_indian_news(target_lan:str="English"):
         
         indian_announcements = []
         async for item in cursor:
+          print(item)
           indian_announcements.append({
                 "id": str(item["_id"]),
                 "title": item.get("title"),
@@ -64,8 +65,6 @@ async def get_announcement(id: str, target_lan: str = "English"):
 
         announcement = await announcements.find_one({"_id": ObjectId(id)})
 
-        print(announcement)
-
         if not announcement:
             raise HTTPException(status_code=404, detail="Announcement not found")
         
@@ -78,7 +77,8 @@ async def get_announcement(id: str, target_lan: str = "English"):
 
 
         await redis.set(cache_key, json.dumps(announcement), ex=3600)
-        return {id}
+
+        return announcement
 
     except Exception as e:
         print(f"Error fetching Indian announcement: {e}")
