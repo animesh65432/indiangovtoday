@@ -60,10 +60,10 @@ async def get_announcement(id: str, target_lan: str = "English"):
         
         announcement["_id"] = str(announcement["_id"])
 
-        if target_lan != "English":
-            trans_announcement = await translateannouncement(announcement["title"],announcement["content"],target_lan)
-            announcement["title"]=trans_announcement['Title']
-            announcement["content"]=trans_announcement['Content']
+        # if target_lan != "English":
+        #     trans_announcement = await translateannouncement(announcement["title"],announcement["content"],target_lan)
+        #     announcement["title"]=trans_announcement['Title']
+        #     announcement["content"]=trans_announcement['Content']
 
 
         await redis.set(cache_key, json.dumps(announcement), ex=3600)
