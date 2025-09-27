@@ -21,9 +21,9 @@ Requirements:
 - If content is too long, summarize while keeping key information
 - Use everyday language, not complex words
 
-Title: {title}
+title: {title}
 
-Content: {content}
+content: {content}
 
 Target Language: {target_language}
 

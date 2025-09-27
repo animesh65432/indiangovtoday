@@ -1,13 +1,14 @@
+import asyncio
 import json
 from prompts.translatetranslateannouncement import GetPrompt
 from ai import GroqClient
-import asyncio
 
 async def translateannouncement(title: str, content: str, target_lan: str):
     try:
         prompt = GetPrompt(content, title, target_lan)
 
-        response = await asyncio.to_thread(GroqClient.chat.completions.create(
+        response = await asyncio.to_thread(
+            GroqClient.chat.completions.create,
             model="openai/gpt-oss-20b",
             messages=[
                 {
@@ -26,11 +27,10 @@ async def translateannouncement(title: str, content: str, target_lan: str):
                 }
             ],
             response_format={"type": "json_object"}
-        ))
+        )
 
         data = json.loads(response.choices[0].message.content)
-
         return data
 
     except Exception as e:
-        return f"Translation error: {str(e)}"
+        return {"error": f"Translation error: {str(e)}"}
