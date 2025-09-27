@@ -24,7 +24,8 @@ async def get_indian_news(target_lan:str="English"):
           indian_announcements.append({
                 "id": str(item["_id"]),
                 "title": item.get("title"),
-                "content": item.get("content")
+                "content": item.get("content"),
+                "link" : item.get("source")
             })
           
         if target_lan != "English":

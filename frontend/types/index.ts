@@ -2,7 +2,7 @@ export type AnnouncementsTypes = {
     id: string,
     title: string,
     content: string,
-    source: string
+    link: string
 }
 
 export type ShowAnnouncementsTypes = {

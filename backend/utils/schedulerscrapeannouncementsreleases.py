@@ -54,6 +54,9 @@ async def scrape_and_store_announcements():
             if not await announcement_exists(ann["title"]):
                 filter_indian_announcements.append(ann)
 
+        if len(filter_indian_announcements) == 0 :
+            print("nothing new")
+            return
       
         update_indian_announcements = await translate_announcements(
             filter_indian_announcements, "English"

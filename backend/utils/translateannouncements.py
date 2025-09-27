@@ -3,9 +3,13 @@ from typing import List, TypedDict
 from ai import GroqClient
 from prompts.translatetranslateannouncements import GetPrompt
 
-class Announcement(TypedDict):
+from typing import Optional
+
+class Announcement(TypedDict, total=False): 
     title: str
     link: str
+    id: Optional[str]
+
 
 async def translate_announcements(
     announcements: List[Announcement], target_language: str
@@ -53,9 +57,10 @@ async def translate_announcements(
         results = []
         for original, trans in zip(announcements, translated):
             results.append({
-                "original_title": original["title"],  
+                "original_title": original.get("title"),  
                 "title": trans.get("title"),           
-                "link": trans.get("link")
+                "link": trans.get("link"),
+                "id": original.get("id") if "id" in original else None
             })
 
         return results
