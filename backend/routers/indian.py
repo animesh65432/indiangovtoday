@@ -12,10 +12,10 @@ router = APIRouter()
 @router.get("/indian-announcements")
 async def get_indian_news(target_lan:str="English"):
     try:
-        # cached_data = await redis.get(f"indianannouncements{target_lan}")
+        cached_data = await redis.get(f"indianannouncements{target_lan}")
 
-        # if cached_data:
-        #     return json.loads(cached_data)
+        if cached_data:
+            return json.loads(cached_data)
         
         db = await get_database()
 
@@ -36,8 +36,8 @@ async def get_indian_news(target_lan:str="English"):
             print(target_lan)
             indian_announcements = await translate_announcements(indian_announcements, target_lan)
 
-        # if indian_announcements:
-        #     await redis.set(f"indianannouncements{target_lan}", json.dumps(indian_announcements), ex=3600)
+        if indian_announcements:
+            await redis.set(f"indianannouncements{target_lan}", json.dumps(indian_announcements), ex=3600)
         
         return indian_announcements
     
