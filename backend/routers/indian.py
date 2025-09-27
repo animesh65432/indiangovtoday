@@ -12,7 +12,7 @@ router = APIRouter()
 @router.get("/indian-announcements")
 async def get_indian_news(target_lan:str="English"):
     try:
-        cached_data = redis.get(f"indianannouncements{target_lan}")
+        cached_data = await redis.get(f"indianannouncements{target_lan}")
 
         if cached_data:
             return json.loads(cached_data)
@@ -33,7 +33,7 @@ async def get_indian_news(target_lan:str="English"):
             indian_announcements = await translate_announcements(indian_announcements, target_lan)
 
         if indian_announcements:
-            redis.set(f"indianannouncements{target_lan}", json.dumps(indian_announcements), ex=3600)
+            await redis.set(f"indianannouncements{target_lan}", json.dumps(indian_announcements), ex=3600)
         
         return indian_announcements
     
@@ -49,7 +49,7 @@ async def get_announcement(id: str, target_lan: str = "English"):
             raise HTTPException(status_code=400, detail="Invalid announcement ID format")
         
         cache_key = f"indianannouncement:{id}:{target_lan}"
-        cached_data = redis.get(cache_key)
+        cached_data = await redis.get(cache_key)
         if cached_data:
             print("from redis")
             return json.loads(cached_data)
@@ -66,7 +66,7 @@ async def get_announcement(id: str, target_lan: str = "English"):
             announcement["content"]=trans_announcement['Content']
 
 
-        redis.set(cache_key, json.dumps(announcement), ex=3600)
+        await redis.set(cache_key, json.dumps(announcement), ex=3600)
         return announcement
 
     except Exception as e:

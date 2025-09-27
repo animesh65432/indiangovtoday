@@ -1,6 +1,5 @@
+from upstash_redis.asyncio import Redis
 from config import config
-from upstash_redis import Redis
-
 
 redis = Redis(
     url=config["UPSTASH_REDIS_REST_URL"], 
