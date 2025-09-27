@@ -21,10 +21,10 @@ class RateLimiterMiddleware(BaseHTTPMiddleware):
         key = f"rate-limit:{ip}"
 
         try:
-            count = redis.get(key)
+            count = await redis.get(key)
             if count:
                 current = int(count)
-                ttl = redis.ttl(key)
+                ttl = await redis.ttl(key)
                 if ttl == -1:
                     redis.expire(key, self.window_sec)
                 if current >= self.limit:
@@ -34,9 +34,9 @@ class RateLimiterMiddleware(BaseHTTPMiddleware):
                         headers={"Retry-After": str(self.window_sec)}
                     )
                 
-                redis.incr(key)
+                await redis.incr(key)
             else:
-                redis.set(key, "1", ex=self.window_sec)
+                await redis.set(key, "1", ex=self.window_sec)
         except Exception as e:
             print(f"Redis rate limiter error: {e}")
             # Fail-open
