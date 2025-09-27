@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from routers.indian import router as indian_router
+from routers.indian import router as indian_router,patch_event_loop
 from routers.saves import router as saves_router
 from routers.users import router as users_router
 from routers.spechai import router as spechai_router
@@ -21,6 +21,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+patch_event_loop()
 
 app.add_middleware(RateLimiterMiddleware, limit=20, window_ms=10_000)
 
