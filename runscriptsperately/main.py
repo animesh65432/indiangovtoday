@@ -1,11 +1,10 @@
 import asyncio
 import json
-from upstash_redis.asyncio import Redis
-from config import config
 from utils.schedulerscrapeannouncementsreleases import scrape_and_store_announcements
 from redis import redis
 
 async def worker():
+    print("call function")
     while True:
         task_json = await redis.rpop("task_queue")
         if task_json:
