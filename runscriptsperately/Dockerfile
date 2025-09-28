@@ -20,6 +20,6 @@ COPY . .
 # Expose port (FastAPI will run on 8000)
 EXPOSE 8000
 
-CMD ["bash", "-c", "python main.py & uvicorn main_api:app --host 0.0.0.0 --port 8000"]
+CMD ["bash", "-c", "python main.py & uvicorn main:app --reload --host 0.0.0.0 --port 8000"]
 
 
