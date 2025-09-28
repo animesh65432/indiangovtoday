@@ -1,4 +1,4 @@
-import requests
+import httpx
 from bs4 import BeautifulSoup
 from utils.filteroutannoucment import filter_announcements
 from config import config
@@ -10,13 +10,14 @@ async def scrape_announcements(BASE_URL: str):
     if not BASE_URL or BASE_URL.strip() == "":
         return []
 
+    url = quote(BASE_URL, safe='')
+
     try:
-        url = quote(BASE_URL, safe='')
-        resp = requests.get(
-            f"https://api.scraperapi.com?api_key={API_KEY}&url={url}&render=true",
-            timeout=30
-        )
-        resp.raise_for_status()
+        async with httpx.AsyncClient(timeout=30.0) as client:
+            resp = await client.get(
+                f"https://api.scraperapi.com?api_key={API_KEY}&url={url}&render=true"
+            )
+            resp.raise_for_status()
 
         soup = BeautifulSoup(resp.text, "html.parser")
         announcements = []
@@ -40,6 +41,6 @@ async def scrape_announcements(BASE_URL: str):
 
         return filter_announcements(announcements)
 
-    except requests.RequestException as e:
+    except httpx.RequestError as e:
         print(f"Error fetching the webpage: {e}")
         return []
