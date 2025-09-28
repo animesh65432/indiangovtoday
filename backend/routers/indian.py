@@ -9,7 +9,6 @@ from utils.translateannouncement import translateannouncement
 import asyncio
 import traceback
 
-# Patch the event loop close method to see where it's called
 original_close = None
 
 def patch_event_loop():
@@ -29,7 +28,7 @@ def patch_event_loop():
         pass
 
 
-# Add this simple check function
+
 def check_loop(where):
     try:
         loop = asyncio.get_event_loop()
@@ -76,15 +75,6 @@ async def get_indian_news(target_lan:str="English"):
         print("Error fetching Indian news:", e)
         raise HTTPException(status_code=500, detail="Internal Server Error")
     
-
-def check_loop(where):
-    try:
-        loop = asyncio.get_event_loop()
-        print(f"✅ {where}: Loop OK (closed: {loop.is_closed()})")
-    except Exception as e:
-        print(f"❌ {where}: Loop ERROR - {e}")
-
-# Now just add check_loop("description") anywhere you want to check:
 
 @router.get("/indian-announcement")
 async def get_announcement(id: str, target_lan: str = "English"):

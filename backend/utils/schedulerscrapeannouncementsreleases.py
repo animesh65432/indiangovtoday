@@ -39,7 +39,7 @@ async def insert_announcement(title: str, link: str,orginaltitle:str):
 async def announcement_exists(title: str) -> bool:
     db = await get_database()
     announcements = db["announcements"]
-    check = await announcements.find_one({"orginaltitle": title})
+    check = await announcements.find_one({"orginal_title": title})
     return check is not None
 
 

@@ -7,7 +7,7 @@ router = APIRouter()
 async def delete_all_announcements():
     try:
         db = await get_database()
-        announcements=db["announcementss"]
+        announcements=db["announcements"]
         result = await announcements.delete_many({})
         print(f"Deleted {result.deleted_count} announcements")
     except Exception as e:
