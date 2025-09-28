@@ -1,15 +1,15 @@
-from fastapi import APIRouter, BackgroundTasks
+from fastapi import APIRouter
 from fastapi.responses import JSONResponse
+import asyncio
 from utils.schedulerscrapeannouncementsreleases import scrape_and_store_announcements
 
 router = APIRouter()
 
 @router.post("/updateannouncements")
-async def updateannouncements(background_tasks: BackgroundTasks):
+async def updateannouncements():
     try:
-       
-        background_tasks.add_task(scrape_and_store_announcements)
-    
+        asyncio.create_task(scrape_and_store_announcements())
+
         return JSONResponse(
             content={"message": "Update started in background"},
             status_code=200
