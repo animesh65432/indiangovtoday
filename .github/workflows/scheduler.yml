@@ -2,7 +2,7 @@ name: Scheduled Scraper
 
 on:
   schedule:
-    - cron: "24 7 * * *"  
+    - cron: "29 7 * * *"   # Runs daily at 12:59 PM IST
   workflow_dispatch:
 
 jobs:
