@@ -11,5 +11,5 @@ jobs:
     steps:
       - name: Trigger delete old announcements
         run: |
-          curl -X DELETE https://indiangovtoday.app/deleteoldannouncements \
+          curl -X DELETE https://indiagovspeak.vercel.app/deleteoldannouncements \
           -H "Content-Type: application/json"

@@ -2,7 +2,7 @@ name: Scheduled Scraper
 
 on:
   schedule:
-    - cron: "8 19 * * *"   
+    - cron: "24 7 * * *"  
   workflow_dispatch:
 
 jobs:
@@ -11,5 +11,5 @@ jobs:
     steps:
       - name: Trigger update announcements endpoint
         run: |
-          curl -X POST https://indiangovtoday.app/updateannouncements \
+          curl -X POST https://indiagovspeak.vercel.app/updateannouncements \
           -H "Content-Type: application/json"
