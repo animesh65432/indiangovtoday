@@ -4,3 +4,5 @@ node_modules/
 venu/m.lock
 venv
 .next
+package-lock.json
+dist
