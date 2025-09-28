@@ -3,8 +3,7 @@ import json
 from upstash_redis.asyncio import Redis
 from config import config
 from utils.schedulerscrapeannouncementsreleases import scrape_and_store_announcements
-
-redis = Redis(url=config["UPSTASH_REDIS_REST_URL"], token=config["UPSTASH_REDIS_REST_TOKEN"])
+from redis import redis
 
 async def worker():
     while True:
@@ -14,7 +13,7 @@ async def worker():
             if task["task"] == "scrape_announcements":
                 await scrape_and_store_announcements()
         else:
-            await asyncio.sleep(5)  
-            
+            await asyncio.sleep(5)
+
 if __name__ == "__main__":
     asyncio.run(worker())
