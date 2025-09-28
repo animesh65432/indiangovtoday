@@ -15,5 +15,6 @@ async def worker():
                 await scrape_and_store_announcements()
         else:
             await asyncio.sleep(5)  
+            
 if __name__ == "__main__":
     asyncio.run(worker())
