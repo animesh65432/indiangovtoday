@@ -2,13 +2,12 @@ name: Scheduled Scraper
 
 on:
   schedule:
-    - cron: "0 */2 * * *"   
-  workflow_dispatch:        
+    - cron: "8 19 * * *"   
+  workflow_dispatch:
 
 jobs:
   run-scraper:
     runs-on: ubuntu-latest
-
     steps:
       - name: Trigger update announcements endpoint
         run: |

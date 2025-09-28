@@ -2,13 +2,12 @@ name: Delete Old Announcements
 
 on:
   schedule:
-    - cron: "30 18 * * *"   
-  workflow_dispatch:         
+    - cron: "30 18 * * *"
+  workflow_dispatch:
 
 jobs:
   delete-announcements:
     runs-on: ubuntu-latest
-
     steps:
       - name: Trigger delete old announcements
         run: |
