@@ -1,10 +1,8 @@
 import axios from "axios";
 import type { AxiosRequestConfig, AxiosResponse } from "axios";
-import { API_BASE_URL, env, LocalhostUrl } from "@/config";
+import { API_BASE_URL } from "@/config"
 import { toast } from "react-toastify";
 
-// const apiUrl = env === "PROD" ? API_BASE_URL : LocalhostUrl;
-const apiUrl = API_BASE_URL
 
 export async function Call<T, ResponseType>({
     path,
@@ -21,9 +19,9 @@ export async function Call<T, ResponseType>({
     method: "POST" | "GET" | "PUT" | "DELETE";
     headers?: Record<string, string>;
     formDataRequest?: boolean;
-    responseType?: "json" | "blob"; // <-- Add this
+    responseType?: "json" | "blob";
 }): Promise<ResponseType> {
-    const mergedPath = path.startsWith("https://") ? path : `${apiUrl}${path}`;
+    const mergedPath = path.startsWith("https://") ? path : `${API_BASE_URL}${path}`;
 
     const config: AxiosRequestConfig = {
         method,
@@ -50,25 +48,25 @@ export async function Call<T, ResponseType>({
         const response: AxiosResponse<ResponseType> = await axios(config);
         return response.data;
     } catch (error: unknown) {
+        const errMsg = "Something went wrong.";
         if (!suppressError) {
             console.error(error);
         }
 
         if (axios.isAxiosError(error)) {
             if (error.response) {
-                toast.error(`${error.response.data}`);
+                console.error("Error Response:", error.response.data);
+                toast.error(`${error.response.data.message}`);
             } else if (error.request) {
                 console.error("Error Request:", error.request);
-                toast.error("Too many requests, please try again later.")
             } else {
                 console.error("Error Message:", error.message);
-                toast.error("Too many requests, please try again later.")
             }
         }
 
         throw {
             handled: !suppressError,
-            wrapped: "",
+            wrapped: error instanceof Error ? error.message : errMsg,
         };
     }
 }
