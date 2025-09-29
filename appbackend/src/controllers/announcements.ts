@@ -7,9 +7,10 @@ import { translateannouncements, TranslatedAnnouncement } from "../utils/transla
 import { translateannouncement, translatedAnnouncementTypes } from "../utils/translateannouncement"
 
 export const GetIndiaAnnnouncements = asyncerrorhandler(async (req: Request, res: Response) => {
-    const { target_lan } = req.query
+    const { target_lan, Currentdate } = req.query
 
-    const redis_key = `Annnouncements${target_lan ? target_lan : "English"}`
+    const redis_key = `Annnouncements${target_lan ? target_lan : "English"}${Currentdate ? "_" + Currentdate : ""}`;
+
 
     const cached_data = await redis.get(redis_key)
 
@@ -17,11 +18,22 @@ export const GetIndiaAnnnouncements = asyncerrorhandler(async (req: Request, res
         res.status(200).json(cached_data)
         return
     }
+    let filter: any = {};
+
+    if (Currentdate) {
+        const start = new Date(Currentdate as string);
+        start.setUTCHours(0, 0, 0, 0);
+
+        const end = new Date(Currentdate as string);
+        end.setUTCHours(23, 59, 59, 999);
+
+        filter.created_at = { $gte: start, $lte: end };
+    }
 
     const db = await connectDB();
 
 
-    let IndiaAnnnouncements = await db.collection("announcements").find().sort({ _id: -1 }).toArray() as TranslatedAnnouncement[];
+    let IndiaAnnnouncements = await db.collection("announcements").find(filter).sort({ _id: -1 }).toArray() as TranslatedAnnouncement[];
 
     if (target_lan) {
         IndiaAnnnouncements = await translateannouncements(IndiaAnnnouncements, String(target_lan))

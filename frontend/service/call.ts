@@ -1,7 +1,9 @@
 import axios from "axios";
 import type { AxiosRequestConfig, AxiosResponse } from "axios";
-import { API_BASE_URL } from "@/config"
+import { API_BASE_URL, env, LocalhostUrl } from "@/config"
 import { toast } from "react-toastify";
+
+const API_URL = env === "PROD" ? API_BASE_URL : LocalhostUrl
 
 
 export async function Call<T, ResponseType>({
@@ -21,7 +23,7 @@ export async function Call<T, ResponseType>({
     formDataRequest?: boolean;
     responseType?: "json" | "blob";
 }): Promise<ResponseType> {
-    const mergedPath = path.startsWith("https://") ? path : `${API_BASE_URL}${path}`;
+    const mergedPath = path.startsWith("https://") ? path : `${API_URL}${path}`;
 
     const config: AxiosRequestConfig = {
         method,

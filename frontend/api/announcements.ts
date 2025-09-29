@@ -1,8 +1,8 @@
 import { Call } from "@/service/call"
 
-export const getAllAnnouncements = (target_lan: string) => Call({
+export const getAllAnnouncements = (target_lan: string, Currentdate: Date) => Call({
     method: "GET",
-    path: `/GetIndiaAnnnouncements?target_lan=${target_lan}`
+    path: `/GetIndiaAnnnouncements?target_lan=${target_lan}&Currentdate=${Currentdate}`
 })
 
 export const getAnnouncement = (target_lan: string, id: string) => Call({
