@@ -2,18 +2,39 @@ import { Request, Response } from "express"
 import { asyncerrorhandler } from "../middleware/ayncerrorhandler"
 import { connectDB } from "../db"
 import { ObjectId } from "mongodb";
-
+import { redis } from "../services/redis"
+import { translateannouncements, TranslatedAnnouncement } from "../utils/translateannouncements"
+import { translateannouncement, translatedAnnouncementTypes } from "../utils/translateannouncement"
 
 export const GetIndiaAnnnouncements = asyncerrorhandler(async (req: Request, res: Response) => {
+    const { target_lan } = req.query
+    const redis_key = `Annnouncements${target_lan ? target_lan : "English"}`
+
+    const cached_data = await redis.get(redis_key)
+
+    if (cached_data) {
+        res.status(200).json(cached_data)
+        return
+    }
+
     const db = await connectDB();
-    const docs = await db.collection("announcements").find().sort({ _id: -1 }).toArray();
-    res.status(200).json(docs);
+
+
+    let IndiaAnnnouncements = await db.collection("announcements").find().sort({ _id: -1 }).toArray() as TranslatedAnnouncement[];
+
+    if (target_lan) {
+        IndiaAnnnouncements = await translateannouncements(IndiaAnnnouncements, String(target_lan))
+    }
+
+    await redis.set(redis_key, IndiaAnnnouncements, { ex: 300 });
+
+    res.status(200).json(IndiaAnnnouncements);
     return
 })
 
 
 export const GetIndiaAnnouncement = asyncerrorhandler(async (req: Request, res: Response) => {
-    const { id } = req.query;
+    const { id, target_lan } = req.query;
 
     if (!id || typeof id !== "string") {
         res.status(400).json({
@@ -21,6 +42,16 @@ export const GetIndiaAnnouncement = asyncerrorhandler(async (req: Request, res: 
         });
         return
     }
+
+    const redis_key = `Annnouncement${target_lan ? target_lan : "English"}-${id}`
+
+    const cached_data = await redis.get(redis_key)
+
+    if (cached_data) {
+        res.status(200).json(cached_data)
+        return
+    }
+
 
     const db = await connectDB();
 
@@ -34,13 +65,20 @@ export const GetIndiaAnnouncement = asyncerrorhandler(async (req: Request, res: 
         return
     }
 
-    const doc = await db.collection("announcements").findOne({ _id: objectId });
+    let IndiaAnnnouncement = await db.collection("announcements").findOne({ _id: objectId }) as translatedAnnouncementTypes;
 
-    if (!doc) {
+
+    if (!IndiaAnnnouncement) {
         res.status(404).json({ error: "Not found" });
         return
     }
 
-    res.status(200).json(doc);
+    if (target_lan) {
+        IndiaAnnnouncement = await translateannouncement(IndiaAnnnouncement, String(target_lan))
+    }
+
+    await redis.set(redis_key, IndiaAnnnouncement, { ex: 300 });
+
+    res.status(200).json(IndiaAnnnouncement);
     return
 });
