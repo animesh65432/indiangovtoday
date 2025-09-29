@@ -14,12 +14,13 @@ const Announcement: React.FC<Props> = ({ Announcement }) => {
     }
 
     return (
-        <li
+        <div
             onClick={() => redirect_to(Announcement._id)}
-            className='text-[#353535] w-[85%] mx-auto hover:underline cursor-pointer focus:underline active:underline text-[0.85rem] md:text-[1rem] lg:text-[1.1rem]'
+            className='text-[#353535] border border-[#5e5e5e] p-3 rounded-lg w-[85%] mx-auto hover:cursor-pointer text-[0.85rem] md:text-[1rem] lg:text-[1.1rem] shadow-sm hover:shadow-md transition-shadow duration-300'
         >
             {Announcement.title}
-        </li>
+        </div>
+
 
     )
 }
