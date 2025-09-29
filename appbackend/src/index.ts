@@ -7,7 +7,7 @@ import router from "./router"
 const app = express()
 
 app.use(cors({
-    origin: ["http://localhost:3000",],
+    origin: ["http://localhost:3000", "https://indiangovtoday.app"],
     credentials: true
 }))
 app.use(express.json({ limit: "20mb" }))
