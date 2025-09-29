@@ -20,7 +20,7 @@ export const usetexttospech = () => {
             const { language } = context
             const response = await Call({
                 method: "POST",
-                path: "/texttospeech",
+                path: "/texttospech",
                 request: {
                     text,
                     target_language: language

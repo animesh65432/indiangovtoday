@@ -42,8 +42,6 @@ const ShowAnnouncement: React.FC<Props> = ({ title, content, source }) => {
         return <Volume2 className="text-[#757575] w-5 h-5" />
     }
 
-    console.log(source)
-
     return (
         <div className='w-[85%] mx-auto flex flex-col gap-6 pt-7'>
 
@@ -60,10 +58,9 @@ const ShowAnnouncement: React.FC<Props> = ({ title, content, source }) => {
             </div>
 
 
-            <div className='text-[#353535] leading-relaxed text-[0.85rem] md:text-[1rem] lg:text-[1.1rem]'>
+            <div className='text-[#353535] leading-relaxed text-[0.85rem] md:text-[1rem] lg:text-[1.1rem] whitespace-pre-line'>
                 {content}
             </div>
-
 
             <div className='text-[#353535] text-[0.85rem] md:text-[1rem] lg:text-[1.1rem]'>
                 <p className="text-gray-500 italic">

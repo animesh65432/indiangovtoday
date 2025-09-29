@@ -3,7 +3,8 @@ import type { AxiosRequestConfig, AxiosResponse } from "axios";
 import { API_BASE_URL, env, LocalhostUrl } from "@/config";
 import { toast } from "react-toastify";
 
-const apiUrl = env === "PROD" ? API_BASE_URL : LocalhostUrl;
+// const apiUrl = env === "PROD" ? API_BASE_URL : LocalhostUrl;
+const apiUrl = API_BASE_URL
 
 export async function Call<T, ResponseType>({
     path,
