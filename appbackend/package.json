@@ -1,4 +1,7 @@
-{
+{ 
+  "scripts": {
+    "build": "tsc"
+    },
   "dependencies": {
     "@types/cors": "^2.8.19",
     "@types/dotenv": "^6.1.1",

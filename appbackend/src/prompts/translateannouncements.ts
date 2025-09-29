@@ -28,17 +28,26 @@ CRITICAL - Do NOT translate or modify:
 - File paths or references
 - Any technical identifiers
 
-Format your response EXACTLY as shown:
-title: [Simple translated title in ${target_language}]
-link: [paste the exact original link - DO NOT CHANGE]
-_id:[paste the exact original _id - DO NOT CHANGE]
+Return your response as a valid JSON object with this exact structure:
+{
+  "announcements": [
+    {
+      "title": "Simple translated title in ${target_language}",
+      "link": "exact original source link - DO NOT CHANGE",
+      "_id": "exact original _id - DO NOT CHANGE"
+    }
+  ]
+}
 
 Announcements to translate:
 ${announcements_text}
 
 Target Language: ${target_language}
 
-IMPORTANT: Translate ONLY the titles. Keep all links exactly the same as provided.`;
+IMPORTANT: 
+- Translate ONLY the titles
+- Keep all "link" (source) and "_id" values exactly the same as provided
+- Return ONLY valid JSON, no additional text`;
 
     return prompt;
 }

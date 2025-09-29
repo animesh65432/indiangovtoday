@@ -8,6 +8,7 @@ import { translateannouncement, translatedAnnouncementTypes } from "../utils/tra
 
 export const GetIndiaAnnnouncements = asyncerrorhandler(async (req: Request, res: Response) => {
     const { target_lan } = req.query
+
     const redis_key = `Annnouncements${target_lan ? target_lan : "English"}`
 
     const cached_data = await redis.get(redis_key)
@@ -73,7 +74,7 @@ export const GetIndiaAnnouncement = asyncerrorhandler(async (req: Request, res: 
         return
     }
 
-    if (target_lan) {
+    if (target_lan || target_lan !== "English") {
         IndiaAnnnouncement = await translateannouncement(IndiaAnnnouncement, String(target_lan))
     }
 

@@ -21,7 +21,7 @@ export const translateannouncement = async (
     target_lan: string
 ): Promise<translatedAnnouncementTypes> => {
 
-    const prompt = Get_propmt(announcement.content, announcement.title, announcement._id, target_lan);
+    const prompt = Get_propmt(announcement.content, announcement.title, announcement._id, announcement.source, target_lan);
 
     try {
         const response = await groq.chat.completions.create({
@@ -32,23 +32,22 @@ export const translateannouncement = async (
 
         const text = response.choices?.[0]?.message?.content;
 
+        console.log(text)
+
         if (!text) {
             throw new Error("No response content received from API");
         }
 
-
         const translatedData = JSON.parse(text);
 
-
-        if (!translatedData.title || !translatedData.content || !translatedData._id || !translatedData.source) {
+        if (!translatedData.title || !translatedData.content) {
             throw new Error("Invalid response format: missing required fields");
         }
-
 
         return {
             title: translatedData.title,
             content: translatedData.content,
-            _id: translatedData._id,
+            _id: announcement._id,
             source: announcement.source
         };
 

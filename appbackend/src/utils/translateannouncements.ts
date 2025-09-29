@@ -22,13 +22,16 @@ export const translateannouncements = async (
     const prompt = Get_Prompt(announcements, target_lan);
 
     try {
+
         const response = await groq.chat.completions.create({
-            messages: [{ role: "user", content: prompt }],
+            messages: [{ role: "system", content: prompt }],
             model: "openai/gpt-oss-20b",
             response_format: { type: "json_object" }
         });
 
         const text = response.choices?.[0]?.message?.content;
+
+        console.log(text)
 
         if (!text) {
             throw new Error("No response content received from API");
