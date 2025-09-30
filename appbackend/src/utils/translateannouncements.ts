@@ -6,12 +6,14 @@ interface Announcement {
     title: string;
     source: string;
     _id: ObjectId,
+    type: string
 }
 
 export interface TranslatedAnnouncement {
     title: string;
     source: string;
-    _id: ObjectId
+    _id: ObjectId;
+    type: string
 }
 
 export const translateannouncements = async (
@@ -30,8 +32,6 @@ export const translateannouncements = async (
         });
 
         const text = response.choices?.[0]?.message?.content;
-
-        console.log(text)
 
         if (!text) {
             throw new Error("No response content received from API");
@@ -54,7 +54,8 @@ export const translateannouncements = async (
             return {
                 title: item.title || announcements[index]?.title || "Untitled",
                 link: item.link || announcements[index]?.source || "",
-                _id: item._id || announcements[index]?._id || ""
+                _id: item._id || announcements[index]?._id || "",
+                type: item.type || announcements[index]?.type || ""
             };
         });
 

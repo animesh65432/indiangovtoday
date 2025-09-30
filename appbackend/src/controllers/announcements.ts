@@ -9,15 +9,15 @@ import { translateannouncement, translatedAnnouncementTypes } from "../utils/tra
 export const GetIndiaAnnnouncements = asyncerrorhandler(async (req: Request, res: Response) => {
     const { target_lan, Currentdate } = req.query
 
-    const redis_key = `Annnouncements${target_lan ? target_lan : "English"}${Currentdate ? "_" + Currentdate : ""}`;
+    // const redis_key = `Annnouncements${target_lan ? target_lan : "English"}${Currentdate ? "_" + Currentdate : ""}`;
 
 
-    const cached_data = await redis.get(redis_key)
+    // const cached_data = await redis.get(redis_key)
 
-    if (cached_data) {
-        res.status(200).json(cached_data)
-        return
-    }
+    // if (cached_data) {
+    //     res.status(200).json(cached_data)
+    //     return
+    // }
     let filter: any = {};
 
     if (Currentdate) {
@@ -35,11 +35,13 @@ export const GetIndiaAnnnouncements = asyncerrorhandler(async (req: Request, res
 
     let IndiaAnnnouncements = await db.collection("announcements").find(filter).sort({ _id: -1 }).toArray() as TranslatedAnnouncement[];
 
-    if (target_lan) {
-        IndiaAnnnouncements = await translateannouncements(IndiaAnnnouncements, String(target_lan))
+    console.log(IndiaAnnnouncements, "IndiaAnnnouncements")
+
+    if (target_lan && target_lan !== "English") {
+        IndiaAnnnouncements = await translateannouncements(IndiaAnnnouncements, String(target_lan));
     }
 
-    await redis.set(redis_key, IndiaAnnnouncements, { ex: 300 });
+    // await redis.set(redis_key, IndiaAnnnouncements, { ex: 300 });
 
     res.status(200).json(IndiaAnnnouncements);
     return
@@ -86,7 +88,7 @@ export const GetIndiaAnnouncement = asyncerrorhandler(async (req: Request, res: 
         return
     }
 
-    if (target_lan || target_lan !== "English") {
+    if (target_lan && target_lan !== "English") {
         IndiaAnnnouncement = await translateannouncement(IndiaAnnnouncement, String(target_lan))
     }
 

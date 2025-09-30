@@ -1,40 +1,58 @@
 import { ObjectId } from 'mongodb'
 
 interface Announcement {
-    title: string;
-    source: string;
-    _id: ObjectId
+  title: string;
+  source: string;
+  _id: ObjectId;
+  type: string
 }
 
 export const Get_Prompt = (announcements: Announcement[], target_language: string): string => {
 
-    const formatted_announcements = announcements.map(announcement =>
-        `title: ${announcement.title}\nsource: ${announcement.source}\n_id:${announcement._id}`
-    );
+  const formatted_announcements = announcements.map(announcement =>
+    `title: ${announcement.title}\nsource: ${announcement.source}\ntype: ${announcement.type}\n_id: ${announcement._id}`
+  );
 
-    const announcements_text = formatted_announcements.join("\n---\n");
+  const announcements_text = formatted_announcements.join("\n---\n");
 
-    const prompt = `Translate government announcement titles to ${target_language} using simple words.
+  const prompt = `You are translating government announcement titles and types to ${target_language}. Use the simplest, most common words that ordinary people use in everyday conversation.
 
-Rules:
-- Use simple words that anyone can understand
-- Keep the meaning clear and accurate
-- Make title short and clear
-- Use everyday language that common people understand
+Translation Guidelines:
 
-CRITICAL - Do NOT translate or modify:
-- Links/URLs (keep EXACTLY as provided)
-- Website addresses
-- File paths or references
-- Any technical identifiers
+FOR TITLES:
+- Use simple, everyday words
+- Keep the core meaning clear
+- Make it short and easy to understand
+- Avoid complex or formal language
 
-Return your response as a valid JSON object with this exact structure:
+FOR TYPES:
+- Use the SIMPLEST common word format
+- Add the local word for "announcement" or "news" after the category
+- Pattern: [simple category word] + [word for announcement in ${target_language}]
+- Examples:
+  * Bengali: "International" → "আন্তর্জাতিক ঘোষণা" (category + ঘোষণা)
+  * Hindi: "International" → "अंतर्राष्ट्रीय घोषणा" (category + घोषणा)
+  * Tamil: "International" → "சர்வதேச அறிவிப்பு" (category + அறிவிப்பு)
+  * Telugu: "International" → "అంతర్జాతీయ ప్రకటన" (category + ప్రకటన)
+- Common type translations:
+  * "Press Release" → [News/Press] + [announcement word]
+  * "International" → [International/World] + [announcement word]
+  * "Obituary" → [Mourning/Death news] + [announcement word]
+- Use words that everyone knows and commonly uses
+
+CRITICAL - NEVER change these:
+- source/link URLs (copy EXACTLY as given)
+- _id values (copy EXACTLY as given)
+- Any technical codes or references
+
+Required JSON format:
 {
   "announcements": [
     {
-      "title": "Simple translated title in ${target_language}",
-      "link": "exact original source link - DO NOT CHANGE",
-      "_id": "exact original _id - DO NOT CHANGE"
+      "title": "translated title here",
+      "link": "exact original source - DO NOT MODIFY",
+      "_id": "exact original _id - DO NOT MODIFY",
+      "type": "simple category  + announcement word"
     }
   ]
 }
@@ -44,10 +62,11 @@ ${announcements_text}
 
 Target Language: ${target_language}
 
-IMPORTANT: 
-- Translate ONLY the titles
-- Keep all "link" (source) and "_id" values exactly the same as provided
-- Return ONLY valid JSON, no additional text`;
+Remember: 
+- Translate title and type to simple everyday language
+- For types, use: [category in ${target_language}] + [word for announcement/news in ${target_language}]
+- Copy link and _id EXACTLY as provided
+- Return ONLY the JSON object, nothing else`;
 
-    return prompt;
+  return prompt;
 }

@@ -39,12 +39,37 @@ export default function Header() {
     const { onSelectLanguage, language } = languageContext;
 
     return (
-        <main className="flex flex-col gap-4">
-            <header className="flex h-[10vh] items-center justify-between w-[85%] mx-auto pt-7">
-                <h1 className="text-2xl lg:text-4xl text-[#168b5d]" onClick={() => router.push("/")}>
+        <main className="flex flex-col mt-5 mb-5">
+            <header className="mb-8 text-center">
+                <h1 onClick={() => router.push("/")} className="text-2xl md:text-4xl font-serif font-bold tracking-tight text-emerald-800">
                     IndianGovToday
                 </h1>
-                {isHome &&
+                <p className="mt-2 text-gray-600 text-xs sm:text-[0.9rem] lg:text-xl italic">
+                    Curated insights from the heart of India
+                </p>
+            </header>
+            {isHome &&
+                <div className="w-[93%] flex gap-5 justify-end">
+                    <Popover>
+                        <PopoverTrigger asChild>
+                            <Button
+                                variant="outline"
+                                data-empty={!date}
+                                className="text-black justify-start text-left font-normal"
+                            >
+                                <CalendarIcon />
+                                {date ? format(date, "PPP") : <span>Pick a date</span>}
+                            </Button>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-auto p-0">
+                            <Calendar
+                                mode="single"
+                                selected={date}
+                                onSelect={Oncahngedate}
+                                required
+                            />
+                        </PopoverContent>
+                    </Popover>
                     <ul>
                         <Select
                             onValueChange={(value) => {
@@ -68,30 +93,6 @@ export default function Header() {
                             </SelectContent>
                         </Select>
                     </ul>
-                }
-            </header>
-            {isHome &&
-                <div className="w-[93%] flex justify-end">
-                    <Popover>
-                        <PopoverTrigger asChild>
-                            <Button
-                                variant="outline"
-                                data-empty={!date}
-                                className="text-black justify-start text-left font-normal"
-                            >
-                                <CalendarIcon />
-                                {date ? format(date, "PPP") : <span>Pick a date</span>}
-                            </Button>
-                        </PopoverTrigger>
-                        <PopoverContent className="w-auto p-0">
-                            <Calendar
-                                mode="single"
-                                selected={date}
-                                onSelect={Oncahngedate}
-                                required
-                            />
-                        </PopoverContent>
-                    </Popover>
                 </div>
             }
         </main>
