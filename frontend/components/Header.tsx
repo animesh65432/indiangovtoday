@@ -49,7 +49,7 @@ export default function Header() {
                 </p>
             </header>
             {isHome &&
-                <div className="w-[93%] flex gap-5 justify-end">
+                <div className={`w-[93%] flex gap-5 justify-end ${!isHome ? "hidden" : null}`}>
                     <Popover>
                         <PopoverTrigger asChild>
                             <Button

@@ -43,7 +43,7 @@ const ShowAnnouncement: React.FC<Props> = ({ title, content, source }) => {
     }
 
     return (
-        <div className='w-[85%] mx-auto flex flex-col gap-6 pt-7'>
+        <div className='w-[85%] h-[75vh] overflow-y-auto  mx-auto flex flex-col gap-6 pt-7 '>
 
             <div className='flex items-center justify-between text-[1rem] sm:text-[1.1rem] lg:text-[1.4rem] text-[#1a1919]'>
                 <div>{title}</div>
