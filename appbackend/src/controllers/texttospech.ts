@@ -1,20 +1,26 @@
-import { sarvamai } from "../services/SarvamAi"
+import { sarvamai } from "../services/SarvamAi";
 import { Request, Response } from "express";
 import { asyncerrorhandler } from "../middleware/ayncerrorhandler";
 import { LanguageSupport } from "../types";
-import { languagespporiton } from "../utils/lan"
+import { languageCodeMap } from "../utils/lan";
 
-export const translatespech = asyncerrorhandler(async (req: Request, res: Response) => {
-    const { text, target_language_code } = req.body
+export const translateSpeech = asyncerrorhandler(async (req: Request, res: Response) => {
+    const { text, target_language } = req.body;
 
-    if (!text || !target_language_code) {
-        res.status(400).json({ message: "Text and target_language_code are required" })
-        return
+    if (!text || !target_language) {
+        res.status(400).json({ message: "Text and target_language are required" });
+        return;
     }
 
-    if (!languagespporiton.includes(target_language_code as LanguageSupport)) {
-        res.status(400).json({ message: "Unsupported language code" })
-        return
+
+    const target_language_code = languageCodeMap[target_language as keyof typeof languageCodeMap];
+
+    if (!target_language_code) {
+        res.status(400).json({
+            message: "Unsupported language",
+            supportedLanguages: Object.keys(languageCodeMap)
+        });
+        return;
     }
 
     const response = await sarvamai.textToSpeech.convert({
@@ -23,9 +29,11 @@ export const translatespech = asyncerrorhandler(async (req: Request, res: Respon
     });
 
     res.status(200).json({
-        sucess: true,
+        success: true,
         message: "Text converted to speech successfully",
         audioContent: response.audios[0],
-    })
-    return
-})
+        language: target_language,
+        languageCode: target_language_code
+    });
+    return;
+});

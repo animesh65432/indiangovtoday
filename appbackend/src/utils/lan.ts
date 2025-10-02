@@ -21,6 +21,20 @@ export const languageMap = {
     en: "English"
 };
 
-export const languagespporiton = [
+export const languageSupport = [
     "en", "bn", "hi", "ta", "te", "ml", "kn", "mr", "gu", "pa"
 ]
+
+
+export const languageCodeMap = {
+    বাংলা: "bn",
+    English: "en",
+    हिन्दी: "hi",
+    தமிழ்: "ta",
+    తెలుగు: "te",
+    മലയാളം: "ml",
+    ಕನ್ನಡ: "kn",
+    मराठी: "mr",
+    ગુજરાતી: "gu",
+    ਪੰਜਾਬੀ: "pa"
+}
