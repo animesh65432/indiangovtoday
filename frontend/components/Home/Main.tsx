@@ -5,11 +5,22 @@ import Announcement from './Announcement';
 import AnnouncementSkeleton from './AnnouncementSkeleton';
 import { UseLanguageContext } from '@/context/Lan';
 import { Currentdate } from "@/context/Currentdate";
+import { AnnouncementsContext } from "@/context/AnnouncementsProvider"
+import GroupofAnnouncement from './GroupofAnnouncement';
 import { Inbox } from "lucide-react";
 import { fixAnnouncements } from "@/lib/fixAnnouncements"
+import {
+    Card,
+    CardAction,
+    CardContent,
+    CardDescription,
+    CardFooter,
+    CardHeader,
+    CardTitle,
+} from "@/components/ui/card"
 
 const Main: React.FC = () => {
-    const [Announcements, setAnnouncements] = useState<AnnouncementsTypes[]>([]);
+    const { Announcements, OntoggleAnnouncements } = useContext(AnnouncementsContext)
     const [IsLoading, SetIsLoading] = useState<boolean>(false);
 
     const LanguageContext = UseLanguageContext();
@@ -23,7 +34,8 @@ const Main: React.FC = () => {
         SetIsLoading(true);
         try {
             const data = await getAllAnnouncements(language, date) as AnnouncementsTypes[];
-            setAnnouncements(data);
+            const Groupdata = fixAnnouncements(data)
+            OntoggleAnnouncements(Groupdata);
         } catch (error) {
             console.error(error);
         } finally {
@@ -37,15 +49,13 @@ const Main: React.FC = () => {
 
     if (IsLoading) {
         return (
-            <div className="flex flex-col gap-4 w-[85%] mx-auto pt-7">
-                {Array.from({ length: 5 }).map((_, i) => (
-                    <AnnouncementSkeleton key={i} />
-                ))}
-            </div>
+            <div>loading</div>
         );
     }
 
-    if (Announcements.length === 0) {
+    const AnnouncementsEntries = Object.entries(Announcements);
+
+    if (AnnouncementsEntries.length === 0) {
         return (
             <div className="flex-1 w-full h-[40vh] flex flex-col justify-center items-center text-center text-gray-500">
                 <Inbox className="w-10 h-10 mb-2" />
@@ -55,14 +65,15 @@ const Main: React.FC = () => {
     }
 
     return (
-        <div className="w-full h-[75vh] overflow-y-auto pt-8 pb-8">
-            <div className="flex flex-col items-center gap-4">
-                {Announcements.map((announcement) => (
-                    <div className="w-full" key={announcement._id}>
-                        <Announcement Announcement={announcement} />
-                    </div>
-                ))}
-            </div>
+        <div className='flex'>
+            {
+                AnnouncementsEntries.map(([type, items]) => (
+                    <Card key={type}>
+                        <CardHeader>{type}</CardHeader>
+                        {items.map(a => <div key={a._id}>{a.title}</div>)}
+                    </Card>
+                ))
+            }
         </div>
     );
 };

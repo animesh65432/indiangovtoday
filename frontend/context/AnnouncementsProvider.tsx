@@ -1,7 +1,7 @@
 import { createContext, ReactNode, useState } from "react"
 import { AnnouncementsTypes } from "@/types"
 
-const AnnouncementsContext = createContext<{
+export const AnnouncementsContext = createContext<{
     Announcements: Record<string, AnnouncementsTypes[]>,
     OntoggleAnnouncements: (Announcements: Record<string, AnnouncementsTypes[]>) => void
 }>({
@@ -14,7 +14,7 @@ type Props = {
 }
 
 export const AnnouncementsProvider = ({ children }: Props) => {
-    const [Announcements, SetAnnouncements] = useState({})
+    const [Announcements, SetAnnouncements] = useState<Record<string, AnnouncementsTypes[]>>({})
 
     const OntoggleAnnouncements = (Announcements: Record<string, AnnouncementsTypes[]>) => {
         SetAnnouncements(Announcements)
