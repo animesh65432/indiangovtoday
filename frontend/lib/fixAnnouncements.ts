@@ -1,9 +1,16 @@
-import { AnnouncementsTypes } from "@/types"
-export const fixAnnouncements = (Announcements: AnnouncementsTypes[]) => {
+import { AnnouncementsTypes } from "@/types";
 
-    const res = []
+export const fixAnnouncements = (
+    announcements: AnnouncementsTypes[]
+): Record<string, AnnouncementsTypes[]> => {
+    return announcements.reduce((acc, announcement) => {
+        const { type } = announcement;
 
-    for (let i = 0; i < Announcements.length; i++) {
+        if (!acc[type]) {
+            acc[type] = [];
+        }
 
-    }
-}
+        acc[type].push(announcement);
+        return acc;
+    }, {} as Record<string, AnnouncementsTypes[]>);
+};

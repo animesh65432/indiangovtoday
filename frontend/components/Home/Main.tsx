@@ -6,6 +6,7 @@ import AnnouncementSkeleton from './AnnouncementSkeleton';
 import { UseLanguageContext } from '@/context/Lan';
 import { Currentdate } from "@/context/Currentdate";
 import { Inbox } from "lucide-react";
+import { fixAnnouncements } from "@/lib/fixAnnouncements"
 
 const Main: React.FC = () => {
     const [Announcements, setAnnouncements] = useState<AnnouncementsTypes[]>([]);
@@ -52,8 +53,6 @@ const Main: React.FC = () => {
             </div>
         );
     }
-
-    console.log(Announcements)
 
     return (
         <div className="w-full h-[75vh] overflow-y-auto pt-8 pb-8">

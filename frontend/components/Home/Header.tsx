@@ -45,7 +45,7 @@ const Header: React.FC = () => {
                             <Button
                                 variant="outline"
                                 data-empty={!date}
-                                className="text-[#4A3820] lg:w-[50%] justify-start text-left font-normal"
+                                className="text-[#4A3820] lg:w-[50%] lg:h-[44px] justify-start text-left font-normal"
                             >
                                 <CalendarIcon />
                                 {date ? format(date, "PPP") : <span>Pick a date</span>}
@@ -67,7 +67,7 @@ const Header: React.FC = () => {
                         }}
                         value={language}
                     >
-                        <SelectTrigger className="border bg-white p-2 font-light rounded-md  shadow-none text-[#4A3820] data-[placeholder]:text-[#4A3820] focus:ring-0 focus:outline-none">
+                        <SelectTrigger className="border bg-white p-2  lg:h-11 font-light rounded-md  shadow-none text-[#4A3820] data-[placeholder]:text-[#4A3820] focus:ring-0 focus:outline-none">
                             <SelectValue className="" />
                         </SelectTrigger>
                         <SelectContent className="">
