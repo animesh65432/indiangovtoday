@@ -53,12 +53,14 @@ const Main: React.FC = () => {
         );
     }
 
+    console.log(Announcements)
+
     return (
         <div className="w-full h-[75vh] overflow-y-auto pt-8 pb-8">
             <div className="flex flex-col items-center gap-4">
                 {Announcements.map((announcement) => (
-                    <div className="w-full">
-                        <Announcement Announcement={announcement} key={announcement._id} />
+                    <div className="w-full" key={announcement._id}>
+                        <Announcement Announcement={announcement} />
                     </div>
                 ))}
             </div>
