@@ -20,6 +20,7 @@ import { CalendarIcon } from "lucide-react";
 import { format } from "date-fns"
 import { Currentdate } from "@/context/Currentdate"
 import { useContext } from "react"
+import Image from "next/image";
 
 export default function Header() {
     const languageContext = UseLanguageContext();
@@ -39,17 +40,19 @@ export default function Header() {
     const { onSelectLanguage, language } = languageContext;
 
     return (
-        <main className="flex flex-col mt-5 mb-5">
-            <header className="mb-8 text-center">
-                <h1 onClick={() => router.push("/")} className="text-2xl md:text-4xl font-serif font-bold tracking-tight text-emerald-800">
-                    IndianGovToday
-                </h1>
-                <p className="mt-2 text-gray-600 text-xs sm:text-[0.9rem] lg:text-xl italic">
-                    Curated insights from the heart of India
-                </p>
+        <main className="flex flex-col sm:flex-row items-center w-[85%] mx-auto sm:justify-between">
+            <header className=" mb-0 sm:mb-8 w-full ">
+                <div onClick={() => router.push("/")} className="relative h-[15vh] sm:h-[20vh] lg:h-[14vh] w-[32vw] sm:w-[20vw] lg:w-[10vw] hover:underline">
+                    <Image
+                        src="/logo.png"
+                        alt="logo"
+                        fill
+                        className="object-fill"
+                    />
+                </div>
             </header>
             {isHome &&
-                <div className={`w-[93%] flex gap-5 justify-end ${!isHome ? "hidden" : null}`}>
+                <div className="flex gap-4 w-full justify-center">
                     <Popover>
                         <PopoverTrigger asChild>
                             <Button
@@ -77,7 +80,7 @@ export default function Header() {
                             }}
                             value={language}
                         >
-                            <SelectTrigger className="border border-white p-1 font-light rounded focus:border-[#353535] shadow-none text-[#353535] data-[placeholder]:text-[#353535] focus:ring-0 focus:outline-none">
+                            <SelectTrigger className="border border-[#424242] p-1 font-light rounded  shadow-none text-[#353535] data-[placeholder]:text-[#353535] focus:ring-0 focus:outline-none">
                                 <SelectValue className="" />
                             </SelectTrigger>
                             <SelectContent className="">

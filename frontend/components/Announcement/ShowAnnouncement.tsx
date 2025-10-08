@@ -23,10 +23,12 @@ const ShowAnnouncement: React.FC<Props> = ({ title, content, source }) => {
 
         if (IsLoading) return
 
+        const cleanedContent = content.replace(/[.,/*]/g, "");
+
         if (isPlaying || isPaused) {
             togglePlayPause()
         } else {
-            await call(content)
+            await call(cleanedContent)
         }
     }
 
@@ -91,8 +93,8 @@ const ShowAnnouncement: React.FC<Props> = ({ title, content, source }) => {
 
                     <button
                         className={`group relative bg-white/90 backdrop-blur-sm p-4 rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 ${IsLoading
-                                ? 'cursor-not-allowed opacity-60'
-                                : 'hover:scale-110 active:scale-95'
+                            ? 'cursor-not-allowed opacity-60'
+                            : 'hover:scale-110 active:scale-95'
                             }`}
                         onClick={IsLoading ? undefined : handleAudioAction}
                         disabled={IsLoading}
