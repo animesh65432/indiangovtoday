@@ -18,6 +18,9 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card"
+import Image from 'next/image';
+import { Input } from '../ui/input';
+import { Button } from '../ui/button';
 
 const Main: React.FC = () => {
     const { Announcements, OntoggleAnnouncements } = useContext(AnnouncementsContext)
@@ -43,38 +46,43 @@ const Main: React.FC = () => {
         }
     };
 
-    useEffect(() => {
-        fetchAnnouncements();
-    }, [language, date]);
+    // useEffect(() => {
+    //     fetchAnnouncements();
+    // }, [language, date]);
 
-    if (IsLoading) {
-        return (
-            <div>loading</div>
-        );
-    }
+    // if (IsLoading) {
+    //     return (
+    //         <div>loading</div>
+    //     );
+    // }
 
-    const AnnouncementsEntries = Object.entries(Announcements);
+    // const AnnouncementsEntries = Object.entries(Announcements);
 
-    if (AnnouncementsEntries.length === 0) {
-        return (
-            <div className="flex-1 w-full h-[40vh] flex flex-col justify-center items-center text-center text-gray-500">
-                <Inbox className="w-10 h-10 mb-2" />
-                <p className="text-base lg:text-lg">No announcements found for today</p>
-            </div>
-        );
-    }
+    // if (AnnouncementsEntries.length === 0) {
+    //     return (
+    //         <div className="flex-1 w-full h-[40vh] flex flex-col justify-center items-center text-center text-gray-500">
+    //             <Inbox className="w-10 h-10 mb-2" />
+    //             <p className="text-base lg:text-lg">No announcements found for today</p>
+    //         </div>
+    //     );
+    // }
 
     return (
-        <div className='flex'>
-            {
-                AnnouncementsEntries.map(([type, items]) => (
-                    <Card key={type}>
-                        <CardHeader>{type}</CardHeader>
-                        {items.map(a => <div key={a._id}>{a.title}</div>)}
-                    </Card>
-                ))
-            }
+        <div className='pt-39 flex flex-col gap-5'>
+            <div className='flex items-center justify-center gap-3'>
+                <div className='relative w-[37px] h-[25px]'>
+                    <Image alt='logo' fill src="/indiaIcon.svg" />
+                </div>
+                <h1 className='text-center text-[#E0614B] text-[1.6rem]'>
+                    ALL GOVERNMENT ANNOUNCEMENTS, IN ONE PLACE
+                </h1>
+            </div>
+            <div className='bg-[#F9F9F9] border flex gap-2 items-center border-[#EDEDED] w-[32%] mx-auto h-[10vh] rounded-md'>
+                <Input className='w-[70%] bg-[#FFFFFF] rounded-xl ml-9' placeholder='Search by...' />
+                <Button className='bg-[#E0614B] hover:bg-[#dd8272] rounded-xl'>Search</Button>
+            </div>
         </div>
+
     );
 };
 
