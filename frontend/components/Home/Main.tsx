@@ -21,6 +21,7 @@ import {
 import Image from 'next/image';
 import { Input } from '../ui/input';
 import { Button } from '../ui/button';
+import { ScrollArea } from "@/components/ui/scroll-area"
 
 const Main: React.FC = () => {
     const { Announcements, OntoggleAnnouncements } = useContext(AnnouncementsContext)
@@ -37,8 +38,7 @@ const Main: React.FC = () => {
         SetIsLoading(true);
         try {
             const data = await getAllAnnouncements(language, date) as AnnouncementsTypes[];
-            const Groupdata = fixAnnouncements(data)
-            OntoggleAnnouncements(Groupdata);
+            OntoggleAnnouncements(data);
         } catch (error) {
             console.error(error);
         } finally {
@@ -46,9 +46,9 @@ const Main: React.FC = () => {
         }
     };
 
-    // useEffect(() => {
-    //     fetchAnnouncements();
-    // }, [language, date]);
+    useEffect(() => {
+        fetchAnnouncements();
+    }, [language, date]);
 
     // if (IsLoading) {
     //     return (
@@ -68,18 +68,28 @@ const Main: React.FC = () => {
     // }
 
     return (
-        <div className='pt-39 flex flex-col gap-5'>
-            <div className='flex items-center justify-center gap-3'>
-                <div className='relative w-[37px] h-[25px]'>
-                    <Image alt='logo' fill src="/indiaIcon.svg" />
+        <div className='pt-22 sm:pt-30 xl:pt-37 flex flex-col gap-5'>
+            <div className="flex items-start sm:items-center justify-center gap-1 sm:gap-3">
+                <div className="relative w-[30px] h-[16px] sm:h-[20px] lg:h-[25px] pt-8 sm:pt-0">
+                    <Image alt="logo" fill src="/indiaIcon.svg" />
                 </div>
-                <h1 className='text-center text-[#E0614B] text-[1.6rem]'>
+                <h1 className="text-center text-[#E0614B] text-[1.2rem] sm:text-[1.3rem] lg:text-[1.6rem]
+                 whitespace-normal break-normal max-w-[70vw] sm:max-w-none">
                     ALL GOVERNMENT ANNOUNCEMENTS, IN ONE PLACE
                 </h1>
             </div>
-            <div className='bg-[#F9F9F9] border flex gap-2 items-center border-[#EDEDED] w-[32%] mx-auto h-[10vh] rounded-md'>
-                <Input className='w-[70%] bg-[#FFFFFF] rounded-xl ml-9' placeholder='Search by...' />
-                <Button className='bg-[#E0614B] hover:bg-[#dd8272] rounded-xl'>Search</Button>
+
+            <div className='bg-[#F9F9F9] border flex flex-col justify-center sm:justify-start sm:flex-row gap-2 items-center border-[#EDEDED] w-[85vw] sm:w-[70vw] md:w-[50vw] lg:w-[528px] mx-auto h-[15vh] sm:h-[10vh] rounded-md'>
+                <Input className='w-[90%] sm:w-[70%] lg:w-[346px] bg-[#FFFFFF] rounded-xl ml-4 ' placeholder='Search by...' />
+                <Button className='bg-[#E0614B] lg:w-[121px] hover:bg-[#dd8272] rounded-xl shadow-[4px_4px_0_0_#00000029]'>Search</Button>
+            </div>
+            <div className="bg-[#C8C8C833] w-[50%] h-[38vh] mx-auto rounded-md p-6">
+                <div className="flex flex-col gap-3 p-1 h-[32vh] overflow-y-auto custom-scroll">
+                    {Announcements.map((announcement) => (
+                        <Announcement Announcement={announcement} key={announcement._id} />
+                    ))}
+                </div>
+
             </div>
         </div>
 

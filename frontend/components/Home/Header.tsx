@@ -50,7 +50,7 @@ const Header: React.FC = () => {
                         <Button
                             variant="outline"
                             data-empty={!date}
-                            className="text-[#E0614B] bg-[#FFFFFF] rounded-lg justify-start text-left font-normal border border-[#E0614B]"
+                            className="text-[#E0614B] shadow-[4px_4px_0_0_#00000029] bg-[#FFFFFF]  rounded-lg justify-start text-left font-normal border border-[#E0614B]"
                         >
                             <CalendarIcon />
                             {date ? format(date, "PPP") : <span>Pick a date</span>}
@@ -72,7 +72,7 @@ const Header: React.FC = () => {
                         }}
                         value={language}
                     >
-                        <SelectTrigger className="border border-[#E0614B] bg-[#FFFFFF] rounded-lg  p-[6px] font-light shadow-none text-[#E0614B] data-[placeholder]:text-[#E0614B] focus:ring-0 focus:outline-none">
+                        <SelectTrigger className="border border-[#E0614B]  bg-[#FFFFFF] rounded-lg  p-[6px] font-light shadow-[4px_4px_0_0_#00000029] text-[#E0614B] data-[placeholder]:text-[#E0614B] focus:ring-0 focus:outline-none">
                             <SelectValue className="" />
                         </SelectTrigger>
                         <SelectContent className="text-[#E0614B]">
@@ -89,19 +89,54 @@ const Header: React.FC = () => {
                     </Select>
                 </ul>
             </div>
-            <div className=' block md:hidden'>
+            <div className='block md:hidden'>
                 <Sheet>
-                    <SheetTrigger>
-                        <MenuIcon className='text-[#E0614B] font-bold h-8 w-10' />
+                    <SheetTrigger className=''>
+                        <MenuIcon className='text-[#E0614B] font-bold h-8 w-10 z-10' />
                     </SheetTrigger>
-                    <SheetContent>
-                        <SheetHeader>
-                            <SheetTitle>Are you absolutely sure?</SheetTitle>
-                            <SheetDescription>
-                                This action cannot be undone. This will permanently delete your account
-                                and remove your data from our servers.
-                            </SheetDescription>
-                        </SheetHeader>
+                    <SheetContent className='p-10'>
+                        <Popover>
+                            <PopoverTrigger asChild>
+                                <Button
+                                    variant="outline"
+                                    data-empty={!date}
+                                    className="text-[#E0614B] w-[180px] mx-auto bg-[#FFFFFF] rounded-lg justify-start text-left font-normal border border-[#E0614B]"
+                                >
+                                    <CalendarIcon />
+                                    {date ? format(date, "PPP") : <span>Pick a date</span>}
+                                </Button>
+                            </PopoverTrigger>
+                            <PopoverContent className="w-auto p-0">
+                                <Calendar
+                                    mode="single"
+                                    selected={date}
+                                    onSelect={Oncahngedate}
+                                    required
+                                />
+                            </PopoverContent>
+                        </Popover>
+
+                        <Select
+                            onValueChange={(value) => {
+                                onSelectLanguage(value);
+                            }}
+                            value={language}
+                        >
+                            <SelectTrigger className="border border-[#E0614B] w-[180px] mx-auto bg-[#FFFFFF] rounded-lg  p-[6px] font-light shadow-none text-[#E0614B] data-[placeholder]:text-[#E0614B] focus:ring-0 focus:outline-none">
+                                <SelectValue className="" />
+                            </SelectTrigger>
+                            <SelectContent className="text-[#E0614B]">
+                                {optionsforLanguages.map((lan) => (
+                                    <SelectItem
+                                        key={lan.label}
+                                        value={lan.label}
+                                        className="font-medium hover:text-[#E0614B] "
+                                    >
+                                        {lan.label}
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
                     </SheetContent>
                 </Sheet>
             </div>
