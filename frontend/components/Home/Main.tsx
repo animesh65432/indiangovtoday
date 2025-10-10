@@ -6,22 +6,9 @@ import AnnouncementSkeleton from './AnnouncementSkeleton';
 import { UseLanguageContext } from '@/context/Lan';
 import { Currentdate } from "@/context/Currentdate";
 import { AnnouncementsContext } from "@/context/AnnouncementsProvider"
-import GroupofAnnouncement from './GroupofAnnouncement';
-import { Inbox } from "lucide-react";
-import { fixAnnouncements } from "@/lib/fixAnnouncements"
-import {
-    Card,
-    CardAction,
-    CardContent,
-    CardDescription,
-    CardFooter,
-    CardHeader,
-    CardTitle,
-} from "@/components/ui/card"
 import Image from 'next/image';
 import { Input } from '../ui/input';
 import { Button } from '../ui/button';
-import { ScrollArea } from "@/components/ui/scroll-area"
 
 const Main: React.FC = () => {
     const { Announcements, OntoggleAnnouncements } = useContext(AnnouncementsContext)
