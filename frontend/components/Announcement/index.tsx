@@ -6,6 +6,7 @@ import { UseLanguageContext } from '@/context/Lan'
 import ShowAnnouncement from './ShowAnnouncement'
 import { ShowAnnouncementsTypes } from "@/types"
 import AnnouncementSkeleton from './AnnouncementSkeleton'
+import { Inbox } from 'lucide-react'
 
 type Props = {
     id: string
@@ -37,14 +38,8 @@ const Announcement = ({ id }: Props) => {
         if (id) {
             fetch()
         }
-    }, [id,])
+    }, [id])
 
-    if (IsLoading) {
-        return <div>
-            <Header />
-            <AnnouncementSkeleton />
-        </div>
-    }
 
     if (!announcement) {
         return
@@ -53,7 +48,23 @@ const Announcement = ({ id }: Props) => {
     return (
         <div className="bg-[#FFFFFF] flex flex-col h-[100vh] w-[100vw] overflow-hidden">
             <Header />
-            <ShowAnnouncement source={announcement.source} title={announcement.title} content={announcement.content} />
+            {!IsLoading ?
+                (announcement ?
+                    <ShowAnnouncement
+                        title={announcement.title}
+                        content={announcement.content}
+                        source={announcement.source}
+                    /> :
+                    <div className='h-[70vh] flex justify-center items-center'>
+                        <div className='flex items-center gap-2'>
+                            <Inbox className="w-10 h-10 mb-2 text-[#E0614B]" />
+                            <p className="text-[1rem] sm:text-lg text-[#2B2B2B]">
+                                No announcement found
+                            </p>
+                        </div>
+                    </div>) :
+                <AnnouncementSkeleton />
+            }
         </div>
     )
 }
