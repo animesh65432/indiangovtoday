@@ -40,11 +40,6 @@ const Announcement = ({ id }: Props) => {
         }
     }, [id])
 
-
-    if (!announcement) {
-        return
-    }
-
     return (
         <div className="bg-[#FFFFFF] flex flex-col h-[100vh] w-[100vw] overflow-hidden">
             <Header />
