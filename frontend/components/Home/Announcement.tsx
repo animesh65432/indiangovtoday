@@ -1,16 +1,8 @@
 import React from 'react'
 import { AnnouncementsTypes } from "@/types"
 import { useRouter } from 'next/router'
-import {
-    Card,
-    CardAction,
-    CardContent,
-    CardDescription,
-    CardFooter,
-    CardHeader,
-    CardTitle,
-} from "@/components/ui/card"
-import { Badge } from '../ui/badge'
+import { Button } from '../ui/button'
+
 
 type Props = {
     Announcement: AnnouncementsTypes
@@ -24,24 +16,13 @@ const Announcement: React.FC<Props> = ({ Announcement }) => {
     }
 
     return (
-        <Card
-            onClick={() => redirect_to(Announcement._id)}
-            className="cursor-pointer rounded-xl border w-[85%] mx-auto border-gray-100 bg-white shadow-sm hover:shadow-md transition-shadow duration-200"
-        >
-            <CardContent className="p-6 space-y-3">
-                <Badge
-                    variant="outline"
-                    className="text-[0.7rem] sm:text-xs text-[#757575] break-words whitespace-normal max-w-[100%]"
-                >
-                    {Announcement.type}
-                </Badge>
-
-
-                <h2 className=" text-[0.9rem] sm:text-[1rem] md:text-xl font-semibold leading-snug">
-                    {Announcement.title}
-                </h2>
-            </CardContent>
-        </Card>
+        <div onClick={() => redirect_to(Announcement._id)} className='p-2 flex flex-col sm:flex-row gap-4 sm:gap-0 sm:items-center rounded-md justify-between w-[97%] bg-[#FFFFFF] pb-3'>
+            <div className='flex flex-col gap-2'>
+                <div className='text-[#E0614B] font-medium text-[1.1rem]'>{Announcement.type}</div>
+                <div className='text-[#2B2B2B] text-[0.9rem]'>{Announcement.title}</div>
+            </div>
+            <Button className='bg-[#FFFFFF] ml-auto border border-[#E0614B] text-[#E0614B] rounded-xl w-[120px] hover:bg-[#FFFFFF]  cursor-pointer'>See Details</Button>
+        </div>
     )
 }
 

@@ -9,7 +9,10 @@ type Props = {
     children: ReactNode;
 };
 
-export const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
+export const LanguageContext = createContext<LanguageContextType>({
+    language: "English",
+    onSelectLanguage: () => { }
+});
 
 export const LanguageProvider = ({ children }: Props) => {
     const [language, setLanguage] = useState("English");

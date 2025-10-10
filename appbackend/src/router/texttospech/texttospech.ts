@@ -4,7 +4,7 @@ import { rateLimiter } from "../../middleware/ratelimiter"
 
 const texttospech = Router()
 
-texttospech.use(rateLimiter(5, 6000))
+texttospech.use(rateLimiter(10, 60000))
 
 texttospech.post("/texttospech", translateSpeech)
 

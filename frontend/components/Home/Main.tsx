@@ -5,11 +5,16 @@ import Announcement from './Announcement';
 import AnnouncementSkeleton from './AnnouncementSkeleton';
 import { UseLanguageContext } from '@/context/Lan';
 import { Currentdate } from "@/context/Currentdate";
-import { Inbox } from "lucide-react";
+import { AnnouncementsContext } from "@/context/AnnouncementsProvider"
+import Image from 'next/image';
+import { Input } from '../ui/input';
+import { Button } from '../ui/button';
+import { Inbox } from 'lucide-react';
+import { TextGenerateEffect } from "@/components/ui/text-generate-effect"
 
 const Main: React.FC = () => {
-    const [Announcements, setAnnouncements] = useState<AnnouncementsTypes[]>([]);
-    const [IsLoading, SetIsLoading] = useState<boolean>(false);
+    const { Announcements, OntoggleAnnouncements } = useContext(AnnouncementsContext)
+    const [IsLoading, SetIsLoading] = useState<boolean>(true);
 
     const LanguageContext = UseLanguageContext();
     const { date } = useContext(Currentdate);
@@ -22,7 +27,7 @@ const Main: React.FC = () => {
         SetIsLoading(true);
         try {
             const data = await getAllAnnouncements(language, date) as AnnouncementsTypes[];
-            setAnnouncements(data);
+            OntoggleAnnouncements(data);
         } catch (error) {
             console.error(error);
         } finally {
@@ -34,35 +39,51 @@ const Main: React.FC = () => {
         fetchAnnouncements();
     }, [language, date]);
 
-    if (IsLoading) {
-        return (
-            <div className="flex flex-col gap-4 w-[85%] mx-auto pt-7">
-                {Array.from({ length: 5 }).map((_, i) => (
-                    <AnnouncementSkeleton key={i} />
-                ))}
-            </div>
-        );
-    }
-
-    if (Announcements.length === 0) {
-        return (
-            <div className="flex-1 w-full h-[40vh] flex flex-col justify-center items-center text-center text-gray-500">
-                <Inbox className="w-10 h-10 mb-2" />
-                <p className="text-base lg:text-lg">No announcements found for today</p>
-            </div>
-        );
-    }
 
     return (
-        <div className="w-full h-[75vh] overflow-y-auto pt-8 pb-8">
-            <div className="flex flex-col items-center gap-4">
-                {Announcements.map((announcement) => (
-                    <div className="w-full">
-                        <Announcement Announcement={announcement} key={announcement._id} />
-                    </div>
-                ))}
+        <div className='pt-22 sm:pt-30 xl:pt-37 [@media(min-width:1600px)]:pt-40  [@media(min-width:1700px)]:pt-46 [@media(min-width:1900px)]:pt-48 [@media(min-width:2000px)]:pt-52  [@media(min-width:2100px)]:pt-60 [@media(min-width:2300px)]:pt-72 [@media(min-width:2600px)]:pt-80  [@media(min-width:2800px)]:pt-88 [@media(min-width:3000px)]:pt-96 flex flex-col gap-5'>
+            <div className="flex items-start sm:items-center justify-center gap-1 sm:gap-3">
+                <div className="relative w-[30px] h-[16px] sm:h-[20px] lg:h-[25px] pt-8 sm:pt-0">
+                    <Image alt="logo" fill src="/indiaIcon.svg" />
+                </div>
+                <h1 className="text-center text-[#E0614B] text-[1.2rem] sm:text-[1.3rem] lg:text-[1.6rem]
+                 whitespace-normal break-normal max-w-[70vw] sm:max-w-none">
+                    ALL GOVERNMENT ANNOUNCEMENTS, IN ONE PLACE
+                </h1>
+            </div>
+
+            <div className='bg-[#F9F9F9] border flex flex-col justify-center sm:justify-start sm:flex-row gap-2 items-center border-[#EDEDED] w-[85vw] sm:w-[70vw] md:w-[50vw] lg:w-[528px] mx-auto h-[15vh] sm:h-[10vh] rounded-md'>
+                <Input className='w-[90%] sm:w-[70%] lg:w-[346px] bg-[#FFFFFF] rounded-xl ml-4 ' placeholder='Search by...' />
+                <Button className='bg-[#E0614B] lg:w-[121px] hover:bg-[#dd8272] rounded-xl shadow-[4px_4px_0_0_#00000029]'>Search</Button>
+            </div>
+            <div className="bg-[#C8C8C833] w-[83vw] sm:w-[69vw] md:w-[60vw] xl:w-[50%] h-[43vh] xl:h-[38vh] mx-auto rounded-md p-2 sm:p-6">
+                <div className="flex flex-col gap-3 p-1 h-[38vh] xl:h-[32vh] overflow-y-auto custom-scroll">
+
+                    {IsLoading ? (
+                        <div className="flex flex-col gap-4">
+                            {[...Array(3)].map((_, index) => (
+                                <AnnouncementSkeleton key={index} />
+                            ))}
+                        </div>
+                    ) : Announcements.length > 0 ? (
+                        Announcements.map((announcement) => (
+                            <Announcement Announcement={announcement} key={announcement._id} />
+                        ))
+                    ) : (
+                        <div className='mx-auto flex justify-center items-center gap-2 h-full w-full'>
+                            <div className='flex items-center gap-2'>
+                                <Inbox className="w-10 h-10 mb-2 text-[#E0614B]" />
+                                <p className="text-[1rem] sm:text-lg text-[#2B2B2B]">
+                                    No announcements found for today
+                                </p>
+                            </div>
+                        </div>
+                    )}
+
+                </div>
             </div>
         </div>
+
     );
 };
 
