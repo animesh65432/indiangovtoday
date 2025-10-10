@@ -7,7 +7,7 @@ import router from "./router"
 const app = express()
 
 app.use(cors({
-    origin: ["http://localhost:3000", "https://indiangovtoday.app", "http://localhost:3001"],
+    origin: ["http://localhost:3000", "https://indiangovtoday.app", "http://localhost:3001", "https://demo-lilac-sigma-56.vercel.app"],
     credentials: true
 }))
 app.use(express.json({ limit: "20mb" }))
