@@ -5,7 +5,7 @@ import Main from './Main'
 
 export default function Home() {
     return (
-        <div className='h-[100vh] w-[100vw] flex flex-col'>
+        <div className="h-[100vh] w-[100vw] flex flex-col ">
             <Header />
             <Main />
         </div>

@@ -45,40 +45,39 @@ const ShowAnnouncement: React.FC<Props> = ({ title, content, source }) => {
     }
 
     return (
-        <div className='h-[75vh] w-[100%] overflow-y-auto   flex flex-col gap-6 pt-7 '>
-
-            <div className='flex w-[85%] mx-auto items-center justify-between text-[1rem] sm:text-[1.1rem] lg:text-[1.4rem] text-[#1a1919]'>
-                <div>{title}</div>
+        <div className='w-[82%] mx-auto  flex flex-col gap-6 pt-7 '>
+            <div className='flex items-center justify-between text-[1rem] sm:text-[1.3rem] lg:text-[1.6rem] text-[#1a1919]'>
+                <h1 className='text-[#E0614B]'>{title}</h1>
                 <div>
                     <Share
                         onClick={() => setToggle(prev => !prev)}
                         role="button"
                         aria-label="Share announcement"
+                        className='text-[#E0614B]'
                     />
                     {toggle && <ShareSection Announcement={title} setisShareOPen={setToggle} />}
                 </div>
             </div>
 
-
-            <div className='text-[#353535] w-[85%] mx-auto leading-relaxed text-[0.85rem] md:text-[1rem] lg:text-[1.1rem] whitespace-pre-line'>
+            <div className='text-[#2B2B2B] h-[60vh] custom-scroll overflow-x-auto  leading-8 md:leading-9 text-[0.9rem] md:text-[1rem] lg:text-[1.1rem] whitespace-pre-line '>
                 {content}
             </div>
 
-            <div className='text-[#353535] w-[85%] mx-auto text-[0.85rem] md:text-[1rem] lg:text-[1.1rem]'>
+            <div className='text-[#353535]   text-[0.85rem] md:text-[1rem] lg:text-[1.1rem]'>
                 <p className="text-gray-500 italic">
                     Source:{" "}
                     <a
                         href={`${source}`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-blue-600 hover:underline"
+                        className="text-[#E0614B] hover:underline"
                     >
                         {`${source}`}
                     </a>
                 </p>
             </div>
 
-            <div className="fixed bottom-8 right-8 lg:bottom-12 lg:right-12 z-50">
+            <div className="fixed bottom-8 right-8 lg:bottom-12 lg:right-12 z-20">
                 <div className="flex items-center gap-3">
                     {(isPlaying || isPaused) && (
                         <button
