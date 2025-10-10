@@ -16,8 +16,8 @@ const ShowAnnouncement: React.FC<Props> = ({ title, content, source }) => {
 
 
     const handleAudioAction = async () => {
-        if (!content) {
-            toast.error("No content to read")
+        if (content.length > 2500) {
+            toast.error("Text is too long")
             return
         }
 

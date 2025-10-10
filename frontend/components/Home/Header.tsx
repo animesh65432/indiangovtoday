@@ -90,9 +90,9 @@ const Header: React.FC = () => {
             <div className='block md:hidden'>
                 <Sheet>
                     <SheetTrigger className=''>
-                        <MenuIcon className='text-[#E0614B] font-bold h-8 w-10 z-10' />
+                        <MenuIcon className='text-[#ffff] font-bold h-8 w-10 z-20' />
                     </SheetTrigger>
-                    <SheetContent className='p-10'>
+                    <SheetContent className='pt-20'>
                         <Popover>
                             <PopoverTrigger asChild>
                                 <Button
