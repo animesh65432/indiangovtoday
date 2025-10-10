@@ -83,8 +83,8 @@ const Main: React.FC = () => {
                 <Input className='w-[90%] sm:w-[70%] lg:w-[346px] bg-[#FFFFFF] rounded-xl ml-4 ' placeholder='Search by...' />
                 <Button className='bg-[#E0614B] lg:w-[121px] hover:bg-[#dd8272] rounded-xl shadow-[4px_4px_0_0_#00000029]'>Search</Button>
             </div>
-            <div className="bg-[#C8C8C833] w-[50%] h-[38vh] mx-auto rounded-md p-6">
-                <div className="flex flex-col gap-3 p-1 h-[32vh] overflow-y-auto custom-scroll">
+            <div className="bg-[#C8C8C833] w-[83vw] sm:w-[69vw] md:w-[60vw] xl:w-[50%] h-[43vh] xl:h-[38vh] mx-auto rounded-md p-2 sm:p-6">
+                <div className="flex flex-col gap-3 p-1 h-[38vh] xl:h-[32vh] overflow-y-auto custom-scroll">
                     {Announcements.map((announcement) => (
                         <Announcement Announcement={announcement} key={announcement._id} />
                     ))}
