@@ -22,9 +22,6 @@ import { Currentdate } from "@/context/Currentdate"
 import {
     Sheet,
     SheetContent,
-    SheetDescription,
-    SheetHeader,
-    SheetTitle,
     SheetTrigger,
 } from "@/components/ui/sheet"
 
@@ -62,6 +59,7 @@ const Header: React.FC = () => {
                             selected={date}
                             onSelect={Oncahngedate}
                             required
+                            className='text-[#E0614B]'
                         />
                     </PopoverContent>
                 </Popover>
