@@ -47,7 +47,7 @@ const Header: React.FC = () => {
                         <Button
                             variant="outline"
                             data-empty={!date}
-                            className="text-[#E0614B] shadow-[4px_4px_0_0_#00000029] bg-[#FFFFFF]  rounded-lg justify-start text-left font-normal border border-[#E0614B]"
+                            className="text-[#E0614B] shadow-[4px_4px_0_0_#00000029] bg-[#FFFFFF]  rounded-lg justify-start text-left font-normal border border-[#E0614B] group-hover:text-[#E0614B]"
                         >
                             <CalendarIcon />
                             {date ? format(date, "PPP") : <span>Pick a date</span>}
