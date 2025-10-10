@@ -30,25 +30,25 @@ export default function ShareSection({ Announcement, setisShareOPen }: Props) {
             name: "WhatsApp",
             icon: <MessageCircle className="w-5 h-5 sm:w-6 sm:h-6" />,
             url: `https://wa.me/?text=${encodedMessageWithUrl}`,
-            className: "text-white",
-            bgColor: "bg-green-500",
-            hoverColor: "hover:bg-green-600"
+            className: "text-[#E0614B]",
+            bgColor: "bg-[#ffff]",
+            hoverColor: "hover:bg-[#ffff]"
         },
         {
             name: "X (Twitter)",
             icon: <Twitter className="w-5 h-5 sm:w-6 sm:h-6" />,
             url: `https://twitter.com/intent/tweet?text=${encodedMessage}&url=${encodedUrl}`,
-            className: "text-white",
-            bgColor: "bg-gray-800",
-            hoverColor: "hover:bg-gray-900"
+            className: "text-[#E0614B]",
+            bgColor: "bg-[#ffff]",
+            hoverColor: "hover:bg-[#ffff]"
         },
         {
             name: "Email",
             icon: <Mail className="w-5 h-5 sm:w-6 sm:h-6" />,
             url: `mailto:?subject=${encodeURIComponent("Check this amazing recipe!")}&body=${encodedMessageWithUrl}`,
-            className: "text-white",
-            bgColor: "bg-green-600",
-            hoverColor: "hover:bg-green-700"
+            className: "text-[#E0614B]",
+            bgColor: "bg-[#ffff]",
+            hoverColor: "hover:bg-[#ffff]"
         },
     ]
 
@@ -81,10 +81,10 @@ export default function ShareSection({ Announcement, setisShareOPen }: Props) {
                     </button>
 
                     <div className="flex items-center gap-3 mb-2">
-                        <div className="p-2 bg-green-100 rounded-full">
-                            <Share2 className="w-5 h-5 sm:w-6 sm:h-6 text-[#168B5D]" />
+                        <div className="p-2 bg-[#E0614B] rounded-full">
+                            <Share2 className="w-5 h-5 sm:w-6 sm:h-6 text-[#ffff]" />
                         </div>
-                        <h3 className="text-lg sm:text-xl font-semibold text-gray-900">Share Announcement</h3>
+                        <p className="text-lg sm:text-xl font-semibold text-[#E0614B]">Share Announcement</p>
                     </div>
                     <p className="text-gray-600 text-sm sm:text-base">Help others discover this Announcement!</p>
                 </div>
@@ -95,20 +95,20 @@ export default function ShareSection({ Announcement, setisShareOPen }: Props) {
                         <p className="text-sm sm:text-base font-medium text-gray-900 mb-2 leading-relaxed">
                             {shareMessage}
                         </p>
-                        <p className="text-xs sm:text-sm text-green-600 truncate font-mono bg-green-50 px-2 py-1 rounded">
+                        <p className="text-xs sm:text-sm text-[#E0614B] truncate font-mono  px-2 py-1 rounded">
                             {shareUrl}
                         </p>
                     </div>
                 </div>
 
                 {/* Share Options */}
-                <div className="p-4 sm:p-6 pt-3 sm:pt-4">
+                <div className="p-4 sm:p-6 pt-3 sm:pt-4 ">
                     <div className="grid gap-2 sm:gap-3">
                         {shareOptions.map((option) => (
                             <button
                                 key={option.name}
                                 onClick={() => handleShare(option.url)}
-                                className={`flex items-center gap-3 sm:gap-4 p-3 sm:p-4 rounded-xl transition-all duration-200 transform hover:scale-[1.02] ${option.bgColor} ${option.hoverColor} ${option.className} shadow-md hover:shadow-lg`}
+                                className={`flex items-center gap-3 border  border-slate-200 sm:gap-4 p-3 sm:p-4 rounded-xl transition-all duration-200 transform hover:scale-[1.02] ${option.bgColor} ${option.hoverColor} ${option.className} shadow-md hover:shadow-lg`}
                                 aria-label={`Share on ${option.name}`}
                             >
                                 <div className="flex-shrink-0">
@@ -129,8 +129,8 @@ export default function ShareSection({ Announcement, setisShareOPen }: Props) {
 
                 {/* Footer */}
                 <div className="px-4 sm:px-6 pb-4 sm:pb-6">
-                    <div className="bg-green-50 rounded-lg p-3 text-center">
-                        <p className="text-xs sm:text-sm text-green-700 leading-relaxed">
+                    <div className="rounded-lg p-3 text-center">
+                        <p className="text-xs sm:text-sm text-[#E0614B] leading-relaxed">
                             💡 Click any option above to share with your network
                         </p>
                     </div>

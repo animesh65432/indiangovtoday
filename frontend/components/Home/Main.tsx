@@ -10,7 +10,6 @@ import Image from 'next/image';
 import { Input } from '../ui/input';
 import { Button } from '../ui/button';
 import { Inbox } from 'lucide-react';
-import { TextGenerateEffect } from "@/components/ui/text-generate-effect"
 
 const Main: React.FC = () => {
     const { Announcements, OntoggleAnnouncements } = useContext(AnnouncementsContext)

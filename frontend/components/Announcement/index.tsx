@@ -51,7 +51,7 @@ const Announcement = ({ id }: Props) => {
     }
 
     return (
-        <div>
+        <div className="bg-[#FFFFFF] flex flex-col h-[100vh] w-[100vw] overflow-hidden">
             <Header />
             <ShowAnnouncement source={announcement.source} title={announcement.title} content={announcement.content} />
         </div>
