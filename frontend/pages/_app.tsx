@@ -3,28 +3,31 @@ import type { AppProps } from "next/app";
 import { LanguageProvider } from "@/context/Lan";
 import { CurrentdateProvider } from "@/context/Currentdate";
 import { AnnouncementsProvider } from "@/context/AnnouncementsProvider"
+import { FilterAnnouncementsProvider } from "@/context/FilterAnnoucements"
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <LanguageProvider>
-      <AnnouncementsProvider>
-        <CurrentdateProvider>
-          <Component {...pageProps} />
-          <ToastContainer
-            position="top-right"
-            autoClose={3000}
-            hideProgressBar={false}
-            newestOnTop={false}
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover
-          />
-        </CurrentdateProvider>
-      </AnnouncementsProvider>
+      <FilterAnnouncementsProvider>
+        <AnnouncementsProvider>
+          <CurrentdateProvider>
+            <Component {...pageProps} />
+            <ToastContainer
+              position="top-right"
+              autoClose={3000}
+              hideProgressBar={false}
+              newestOnTop={false}
+              closeOnClick
+              rtl={false}
+              pauseOnFocusLoss
+              draggable
+              pauseOnHover
+            />
+          </CurrentdateProvider>
+        </AnnouncementsProvider>
+      </FilterAnnouncementsProvider>
     </LanguageProvider>
   );
 }

@@ -5,6 +5,7 @@ import Announcement from './Announcement';
 import AnnouncementSkeleton from './AnnouncementSkeleton';
 import { UseLanguageContext } from '@/context/Lan';
 import { Currentdate } from "@/context/Currentdate";
+import { FilterAnnouncementsContext } from "@/context/FilterAnnoucements"
 import { AnnouncementsContext } from "@/context/AnnouncementsProvider"
 import Image from 'next/image';
 import { Input } from '../ui/input';
@@ -12,8 +13,10 @@ import { Button } from '../ui/button';
 import { Inbox } from 'lucide-react';
 
 const Main: React.FC = () => {
+    const { FilterAnnouncements, SetFilterAnnouncements } = useContext(FilterAnnouncementsContext)
     const { Announcements, OntoggleAnnouncements } = useContext(AnnouncementsContext)
     const [IsLoading, SetIsLoading] = useState<boolean>(true);
+    const [SearchInput, SetSearchInput] = useState<string>("")
 
     const LanguageContext = UseLanguageContext();
     const { date } = useContext(Currentdate);
@@ -26,9 +29,8 @@ const Main: React.FC = () => {
         SetIsLoading(true);
         try {
             const data = await getAllAnnouncements(language, date) as AnnouncementsTypes[];
-            OntoggleAnnouncements(data);
-        } catch (error) {
-            console.error(error);
+            SetFilterAnnouncements(data)
+            OntoggleAnnouncements(data)
         } finally {
             SetIsLoading(false);
         }
@@ -37,6 +39,22 @@ const Main: React.FC = () => {
     useEffect(() => {
         fetchAnnouncements();
     }, [language, date]);
+
+    const OnSearchAnnouncement = () => {
+
+        if (SearchInput.length === 0 || SearchInput.toLowerCase() === "all") {
+            console.log(Announcements)
+            SetFilterAnnouncements(Announcements)
+            return
+        }
+
+        const Filter = Announcements.filter((announcement) =>
+            announcement.title.toLowerCase().includes(SearchInput.toLowerCase()) ||
+            announcement.type.toLowerCase().includes(SearchInput.toLowerCase())
+        );
+
+        SetFilterAnnouncements(Filter)
+    };
 
 
     return (
@@ -52,8 +70,14 @@ const Main: React.FC = () => {
             </div>
 
             <div className='bg-[#F9F9F9] border flex flex-col justify-center sm:justify-start sm:flex-row gap-2 items-center border-[#EDEDED] w-[85vw] sm:w-[70vw] md:w-[50vw] lg:w-[528px] mx-auto h-[15vh] sm:h-[10vh] rounded-md'>
-                <Input className='w-[90%] sm:w-[70%] lg:w-[346px] bg-[#FFFFFF] rounded-xl ml-4 ' placeholder='Search by...' />
-                <Button className='bg-[#E0614B] lg:w-[121px] hover:bg-[#dd8272] rounded-xl shadow-[4px_4px_0_0_#00000029]'>Search</Button>
+                <Input
+                    value={SearchInput}
+                    onChange={(e) => SetSearchInput(e.target.value)}
+                    className="w-[90%] sm:w-[70%] lg:w-[346px] bg-[#FFFFFF] rounded-xl ml-4 text-[#2B2B2B]"
+                    placeholder="Search by..."
+                />
+
+                <Button onClick={OnSearchAnnouncement} className='bg-[#E0614B] lg:w-[121px] hover:bg-[#dd8272] rounded-xl shadow-[4px_4px_0_0_#00000029]'>Search</Button>
             </div>
             <div className="bg-[#C8C8C833] w-[83vw] sm:w-[69vw] md:w-[60vw] xl:w-[50%] h-[43vh] xl:h-[38vh] mx-auto rounded-md p-2 sm:p-6">
                 <div className="flex flex-col gap-3 p-1 h-[38vh] xl:h-[32vh] overflow-y-auto custom-scroll">
@@ -64,8 +88,8 @@ const Main: React.FC = () => {
                                 <AnnouncementSkeleton key={index} />
                             ))}
                         </div>
-                    ) : Announcements.length > 0 ? (
-                        Announcements.map((announcement) => (
+                    ) : FilterAnnouncements.length > 0 ? (
+                        FilterAnnouncements.map((announcement) => (
                             <Announcement Announcement={announcement} key={announcement._id} />
                         ))
                     ) : (
@@ -73,7 +97,7 @@ const Main: React.FC = () => {
                             <div className='flex items-center gap-2'>
                                 <Inbox className="w-10 h-10 mb-2 text-[#E0614B]" />
                                 <p className="text-[1rem] sm:text-lg text-[#2B2B2B]">
-                                    No announcements found for today
+                                    No announcements found
                                 </p>
                             </div>
                         </div>
