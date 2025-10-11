@@ -3,14 +3,16 @@ import { AudioLines, Pause, Play, Share, Square, Volume2 } from "lucide-react"
 import ShareSection from '../Share'
 import { usetexttospech } from '@/hooks/usetexttospech'
 import { toast } from 'react-toastify'
+import { TranslateText } from "@/lib/translatetext"
 
 type Props = {
     title: string
     content: string
     source: string
+    lan: string
 }
 
-const ShowAnnouncement: React.FC<Props> = ({ title, content, source }) => {
+const ShowAnnouncement: React.FC<Props> = ({ title, content, source, lan }) => {
     const [toggle, setToggle] = useState<boolean>(false)
     const { call, stop, togglePlayPause, IsLoading, isPlaying, isPaused } = usetexttospech()
 
@@ -68,7 +70,7 @@ const ShowAnnouncement: React.FC<Props> = ({ title, content, source }) => {
 
             <div className='text-[#353535]   text-[0.85rem] md:text-[1rem] lg:text-[1.1rem]'>
                 <p className="text-gray-500 italic">
-                    Source:{" "}
+                    {TranslateText[lan].SOURCE}:{" "}
                     <a
                         href={`${source}`}
                         target="_blank"

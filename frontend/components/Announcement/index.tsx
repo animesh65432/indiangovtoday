@@ -5,6 +5,7 @@ import { getAnnouncement } from "@/api/announcements"
 import ShowAnnouncement from './ShowAnnouncement'
 import { ShowAnnouncementsTypes } from "@/types"
 import AnnouncementSkeleton from './AnnouncementSkeleton'
+import { TranslateText } from "@/lib/translatetext"
 import { Inbox } from 'lucide-react'
 
 type Props = {
@@ -44,12 +45,13 @@ const Announcement = ({ id, lan }: Props) => {
                         title={announcement.title}
                         content={announcement.content}
                         source={announcement.source}
+                        lan={lan}
                     /> :
                     <div className='h-[70vh] flex justify-center items-center'>
                         <div className='flex items-center gap-2'>
                             <Inbox className="w-10 h-10 mb-2 text-[#E0614B]" />
                             <p className="text-[1rem] sm:text-lg text-[#2B2B2B]">
-                                No announcement found
+                                {TranslateText[lan].No_announcements_found}
                             </p>
                         </div>
                     </div>) :
