@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { AnnouncementsTypes } from "@/types"
 import { useRouter } from 'next/router'
 import { Button } from '../ui/button'
+import { LanguageContext } from "@/context/Lan"
 
 
 type Props = {
@@ -10,9 +11,10 @@ type Props = {
 
 const Announcement: React.FC<Props> = ({ Announcement }) => {
     const router = useRouter()
+    const { language } = useContext(LanguageContext)
 
     const redirect_to = (id: string) => {
-        router.push(`/Announcement?id=${id}`)
+        router.push(`/Announcement?id=${id}&lan=${language}`)
     }
 
     return (

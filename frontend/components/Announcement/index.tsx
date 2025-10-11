@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import Header from '../Header'
 import { useEffect } from "react"
 import { getAnnouncement } from "@/api/announcements"
-import { UseLanguageContext } from '@/context/Lan'
 import ShowAnnouncement from './ShowAnnouncement'
 import { ShowAnnouncementsTypes } from "@/types"
 import AnnouncementSkeleton from './AnnouncementSkeleton'
@@ -10,21 +9,17 @@ import { Inbox } from 'lucide-react'
 
 type Props = {
     id: string
+    lan: string
 }
 
-const Announcement = ({ id }: Props) => {
+const Announcement = ({ id, lan }: Props) => {
     const [announcement, setannouncement] = useState<ShowAnnouncementsTypes | null>(null)
-    const LanContext = UseLanguageContext()
     const [IsLoading, SetIsLoading] = useState<boolean>(false)
-    if (!LanContext) {
-        return null
-    }
-    const { language } = LanContext
 
     async function fetch() {
         SetIsLoading(true)
         try {
-            const data = await getAnnouncement(language, id) as ShowAnnouncementsTypes
+            const data = await getAnnouncement(lan, id) as ShowAnnouncementsTypes
             setannouncement(data)
         } catch (error) {
             console.log(error)
