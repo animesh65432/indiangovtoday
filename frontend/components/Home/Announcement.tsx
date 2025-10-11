@@ -1,7 +1,9 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { AnnouncementsTypes } from "@/types"
 import { useRouter } from 'next/router'
 import { Button } from '../ui/button'
+import { LanguageContext } from "@/context/Lan"
+import { TranslateText } from "@/lib/translatetext"
 
 
 type Props = {
@@ -10,9 +12,10 @@ type Props = {
 
 const Announcement: React.FC<Props> = ({ Announcement }) => {
     const router = useRouter()
+    const { language } = useContext(LanguageContext)
 
     const redirect_to = (id: string) => {
-        router.push(`/Announcement?id=${id}`)
+        router.push(`/Announcement?id=${id}&lan=${language}`)
     }
 
     return (
@@ -21,7 +24,7 @@ const Announcement: React.FC<Props> = ({ Announcement }) => {
                 <div className='text-[#E0614B] font-medium text-[1.1rem]'>{Announcement.type}</div>
                 <div className='text-[#2B2B2B] text-[0.9rem]'>{Announcement.title}</div>
             </div>
-            <Button onClick={() => redirect_to(Announcement._id)} className='bg-[#FFFFFF] ml-auto border border-[#E0614B] text-[#E0614B] rounded-xl w-[120px] hover:bg-[#FFFFFF]  cursor-pointer'>See Details</Button>
+            <Button onClick={() => redirect_to(Announcement._id)} className='bg-[#FFFFFF] ml-auto border border-[#E0614B] text-[#E0614B] rounded-xl w-[120px] hover:bg-[#FFFFFF]  cursor-pointer'>{TranslateText[language].See_Details}</Button>
         </div>
     )
 }

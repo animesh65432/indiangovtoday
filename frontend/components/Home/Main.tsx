@@ -12,6 +12,7 @@ import Image from 'next/image';
 import { Input } from '../ui/input';
 import { Button } from '../ui/button';
 import { Inbox, ChevronLeft, ChevronRight } from 'lucide-react';
+import { TranslateText } from "@/lib/translatetext"
 
 const Main: React.FC = () => {
     const { FilterAnnouncements, SetFilterAnnouncements } = useContext(FilterAnnouncementsContext)
@@ -104,6 +105,8 @@ const Main: React.FC = () => {
     const isNextDisabled = EndPage >= TotalAnnouncements || IsSearchActive;
     const isPrevDisabled = StartPage === 0;
 
+    console.log(TranslateText[language].ALL_GOVERNMENT_ANNOUNCEMENTS_IN_ONE_PLACE)
+
     return (
         <div className='pt-22 sm:pt-30 xl:pt-37 [@media(min-width:1600px)]:pt-40 [@media(min-width:1700px)]:pt-46 [@media(min-width:1900px)]:pt-48 [@media(min-width:2000px)]:pt-52 [@media(min-width:2100px)]:pt-60 [@media(min-width:2300px)]:pt-72 [@media(min-width:2600px)]:pt-80 [@media(min-width:2800px)]:pt-88 [@media(min-width:3000px)]:pt-96 flex flex-col gap-5'>
             <div className="flex items-start sm:items-center justify-center gap-1 sm:gap-3">
@@ -111,7 +114,7 @@ const Main: React.FC = () => {
                     <Image alt="logo" fill src="/indiaIcon.svg" />
                 </div>
                 <h1 className="text-center text-[#E0614B] text-[1.2rem] sm:text-[1.3rem] lg:text-[1.6rem] whitespace-normal break-normal max-w-[70vw] sm:max-w-none">
-                    ALL GOVERNMENT ANNOUNCEMENTS, IN ONE PLACE
+                    {TranslateText[language].ALL_GOVERNMENT_ANNOUNCEMENTS_IN_ONE_PLACE}
                 </h1>
             </div>
 
@@ -121,14 +124,14 @@ const Main: React.FC = () => {
                     onChange={(e) => SetSearchInput(e.target.value)}
                     onKeyDown={(e) => e.key === 'Enter' && OnSearchAnnouncement()}
                     className="w-[90%] sm:w-[70%] lg:w-[346px] bg-[#FFFFFF] rounded-xl ml-4 text-[#2B2B2B]"
-                    placeholder="Search by title or type..."
+                    placeholder={TranslateText[language].INPUT_PLACEHOLDER}
                 />
 
                 <Button
                     onClick={OnSearchAnnouncement}
                     className='bg-[#E0614B] lg:w-[121px] hover:bg-[#dd8272] rounded-xl shadow-[4px_4px_0_0_#00000029]'
                 >
-                    Search
+                    {TranslateText[language].SEARCH}
                 </Button>
             </div>
 
@@ -139,7 +142,7 @@ const Main: React.FC = () => {
                         onClick={!isPrevDisabled ? handlePrevPage : undefined}
                     />
                     <span className="text-sm text-[#2B2B2B]">
-                        Page {currentPage + 1} of {totalPages || 1}
+                        {TranslateText[language].PAGE} {currentPage + 1} {TranslateText[language].OF} {totalPages || 1}
                         {IsSearchActive && ' (filtered)'}
                     </span>
                     <ChevronRight
@@ -164,7 +167,7 @@ const Main: React.FC = () => {
                             <div className='flex items-center gap-2'>
                                 <Inbox className="w-10 h-10 mb-2 text-[#E0614B]" />
                                 <p className="text-[1rem] sm:text-lg text-[#2B2B2B]">
-                                    No announcements found
+                                    {TranslateText[language].No_announcements_found}
                                 </p>
                             </div>
                         </div>

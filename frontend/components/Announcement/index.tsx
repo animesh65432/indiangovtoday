@@ -2,29 +2,25 @@ import React, { useState } from 'react'
 import Header from '../Header'
 import { useEffect } from "react"
 import { getAnnouncement } from "@/api/announcements"
-import { UseLanguageContext } from '@/context/Lan'
 import ShowAnnouncement from './ShowAnnouncement'
 import { ShowAnnouncementsTypes } from "@/types"
 import AnnouncementSkeleton from './AnnouncementSkeleton'
+import { TranslateText } from "@/lib/translatetext"
 import { Inbox } from 'lucide-react'
 
 type Props = {
     id: string
+    lan: string
 }
 
-const Announcement = ({ id }: Props) => {
+const Announcement = ({ id, lan }: Props) => {
     const [announcement, setannouncement] = useState<ShowAnnouncementsTypes | null>(null)
-    const LanContext = UseLanguageContext()
     const [IsLoading, SetIsLoading] = useState<boolean>(false)
-    if (!LanContext) {
-        return null
-    }
-    const { language } = LanContext
 
     async function fetch() {
         SetIsLoading(true)
         try {
-            const data = await getAnnouncement(language, id) as ShowAnnouncementsTypes
+            const data = await getAnnouncement(lan, id) as ShowAnnouncementsTypes
             setannouncement(data)
         } catch (error) {
             console.log(error)
@@ -49,12 +45,13 @@ const Announcement = ({ id }: Props) => {
                         title={announcement.title}
                         content={announcement.content}
                         source={announcement.source}
+                        lan={lan}
                     /> :
                     <div className='h-[70vh] flex justify-center items-center'>
                         <div className='flex items-center gap-2'>
                             <Inbox className="w-10 h-10 mb-2 text-[#E0614B]" />
                             <p className="text-[1rem] sm:text-lg text-[#2B2B2B]">
-                                No announcement found
+                                {TranslateText[lan].No_announcements_found}
                             </p>
                         </div>
                     </div>) :
