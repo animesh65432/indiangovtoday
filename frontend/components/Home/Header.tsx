@@ -1,7 +1,5 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import Image from 'next/image'
-import { Button } from '../ui/button'
-import { format } from "date-fns"
 import {
     Select,
     SelectContent,
@@ -11,24 +9,28 @@ import {
 } from "@/components/ui/select";
 import { optionsforLanguages } from "@/lib/lan";
 import { LanguageContext } from "@/context/Lan";
-import { Calendar } from "@/components/ui/calendar"
-import {
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
-} from "@/components/ui/popover"
-import { CalendarIcon, MenuIcon } from "lucide-react";
+import { MenuIcon } from "lucide-react";
 import { Currentdate } from "@/context/Currentdate"
 import {
     Sheet,
     SheetContent,
     SheetTrigger,
 } from "@/components/ui/sheet"
+import { DateRangePicker } from "@/components/ui/DateRangePicker"
 
 
 const Header: React.FC = () => {
-    const { date, Oncahngedate } = useContext(Currentdate)
+    const { startdate, endDate, onChangeDate } = useContext(Currentdate)
     const { onSelectLanguage, language } = useContext(LanguageContext)
+
+    const OnChangeDateRangePicker = (values: {
+        range: { from?: Date; to?: Date };
+        rangeCompare?: { from?: Date; to?: Date };
+    }) => {
+        if (values.range.from && values.range.to) {
+            onChangeDate(values.range.from, values.range.to);
+        }
+    };
 
     return (
         <div className='w-[85vw] mx-auto pt-10 flex items-center  justify-between '>
@@ -42,27 +44,15 @@ const Header: React.FC = () => {
             </div>
 
             <div className="hidden md:flex gap-4  ">
-                <Popover>
-                    <PopoverTrigger asChild>
-                        <Button
-                            variant="outline"
-                            data-empty={!date}
-                            className="text-[#E0614B] shadow-[4px_4px_0_0_#00000029] bg-[#FFFFFF]  rounded-lg justify-start text-left font-normal border border-[#E0614B] group-hover:text-[#E0614B]"
-                        >
-                            <CalendarIcon />
-                            {date ? format(date, "PPP") : <span>Pick a date</span>}
-                        </Button>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0">
-                        <Calendar
-                            mode="single"
-                            selected={date}
-                            onSelect={Oncahngedate}
-                            required
-                            className='text-[#E0614B]'
-                        />
-                    </PopoverContent>
-                </Popover>
+                <DateRangePicker
+                    onUpdate={OnChangeDateRangePicker}
+                    initialDateFrom={startdate}
+                    initialDateTo={endDate}
+                    align="start"
+                    locale="en-GB"
+                    showCompare={false}
+                />
+
                 <ul>
                     <Select
                         onValueChange={(value) => {
@@ -93,26 +83,15 @@ const Header: React.FC = () => {
                         <MenuIcon className='text-[#ffff] font-extrabold h-8 w-10 z-20' />
                     </SheetTrigger>
                     <SheetContent className='pt-20'>
-                        <Popover>
-                            <PopoverTrigger asChild>
-                                <Button
-                                    variant="outline"
-                                    data-empty={!date}
-                                    className="text-[#E0614B] w-[180px] mx-auto bg-[#FFFFFF] rounded-lg justify-start text-left font-normal border border-[#E0614B]"
-                                >
-                                    <CalendarIcon />
-                                    {date ? format(date, "PPP") : <span>Pick a date</span>}
-                                </Button>
-                            </PopoverTrigger>
-                            <PopoverContent className="w-auto p-0">
-                                <Calendar
-                                    mode="single"
-                                    selected={date}
-                                    onSelect={Oncahngedate}
-                                    required
-                                />
-                            </PopoverContent>
-                        </Popover>
+
+                        <DateRangePicker
+                            onUpdate={OnChangeDateRangePicker}
+                            initialDateFrom={startdate}
+                            initialDateTo={endDate}
+                            align="start"
+                            locale="en-GB"
+                            showCompare={false}
+                        />
 
                         <Select
                             onValueChange={(value) => {
@@ -138,6 +117,8 @@ const Header: React.FC = () => {
                     </SheetContent>
                 </Sheet>
             </div>
+
+
         </div>
 
 

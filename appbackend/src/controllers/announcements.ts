@@ -6,48 +6,75 @@ import { redis } from "../services/redis"
 import { translateannouncements, TranslatedAnnouncement } from "../utils/translateannouncements"
 import { translateannouncement, translatedAnnouncementTypes } from "../utils/translateannouncement"
 
-export const GetIndiaAnnnouncements = asyncerrorhandler(async (req: Request, res: Response) => {
-    const { target_lan, Currentdate } = req.query
+export const GetIndiaAnnouncements = asyncerrorhandler(async (req: Request, res: Response) => {
+    const { target_lan, startdate, endDate, StartPage, EndPage } = req.query;
 
-    // const redis_key = `Annnouncements${target_lan ? target_lan : "English"}${Currentdate ? "_" + Currentdate : ""}`;
+    const announcementsStartDate = startdate
+        ? new Date(startdate as string)
+        : new Date(new Date().setDate(new Date().getDate() - 7));
+
+    const announcementsEndDate = endDate
+        ? new Date(endDate as string)
+        : new Date();
+
+    const StartPageIndex = StartPage ? parseInt(StartPage as string) : 0;
+    const EndPageIndex = EndPage ? parseInt(EndPage as string) : 10;
 
 
-    // const cached_data = await redis.get(redis_key)
+    const redis_key = `Announcements_${target_lan || "English"}_${announcementsStartDate.toISOString()}_${announcementsEndDate.toISOString()}_${StartPageIndex}_${EndPageIndex}`;
 
-    // if (cached_data) {
-    //     res.status(200).json(cached_data)
-    //     return
-    // }
-    let filter: any = {};
+    const cached_data = await redis.get(redis_key);
 
-    if (Currentdate) {
-        const start = new Date(Currentdate as string);
-        start.setUTCHours(0, 0, 0, 0);
-
-        const end = new Date(Currentdate as string);
-        end.setUTCHours(23, 59, 59, 999);
-
-        filter.created_at = { $gte: start, $lte: end };
+    if (cached_data) {
+        res.status(200).json(cached_data);
+        return;
     }
+
+    const start = new Date(announcementsStartDate);
+    start.setUTCHours(0, 0, 0, 0);
+
+    const end = new Date(announcementsEndDate);
+    end.setUTCHours(23, 59, 59, 999);
+
+    const filter: any = {
+        created_at: { $gte: start, $lte: end }
+    };
 
     const db = await connectDB();
 
 
-    let IndiaAnnnouncements = await db.collection("announcements").find(filter).sort({ _id: -1 }).toArray() as TranslatedAnnouncement[];
+    const totalCount = await db
+        .collection("announcements")
+        .countDocuments(filter);
 
-    console.log(IndiaAnnnouncements, "IndiaAnnnouncements")
+
+    let indiaAnnouncements = await db
+        .collection("announcements")
+        .find(filter)
+        .sort({ _id: -1 })
+        .skip(StartPageIndex)
+        .limit(EndPageIndex - StartPageIndex)
+        .toArray() as TranslatedAnnouncement[];
 
     if (target_lan && target_lan !== "English") {
-        IndiaAnnnouncements = await translateannouncements(IndiaAnnnouncements, String(target_lan));
+        indiaAnnouncements = await translateannouncements(indiaAnnouncements, String(target_lan));
     }
 
-    // await redis.set(redis_key, IndiaAnnnouncements, { ex: 300 });
+    const response = {
+        data: indiaAnnouncements,
+        pagination: {
+            total: totalCount,
+            startPage: StartPageIndex,
+            endPage: EndPageIndex,
+            hasMore: EndPageIndex < totalCount
+        }
+    };
 
-    res.status(200).json(IndiaAnnnouncements);
-    return
-})
+    await redis.set(redis_key, JSON.stringify(response), { ex: 300 });
 
-
+    res.status(200).json(response);
+    return;
+});
 export const GetIndiaAnnouncement = asyncerrorhandler(async (req: Request, res: Response) => {
     const { id, target_lan } = req.query;
 
