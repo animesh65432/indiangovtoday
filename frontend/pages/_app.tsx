@@ -4,30 +4,33 @@ import { LanguageProvider } from "@/context/Lan";
 import { CurrentdateProvider } from "@/context/Currentdate";
 import { AnnouncementsProvider } from "@/context/AnnouncementsProvider"
 import { FilterAnnouncementsProvider } from "@/context/FilterAnnoucements"
+import { PageNationProvider } from "@/context/PageNationProvider"
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <LanguageProvider>
-      <FilterAnnouncementsProvider>
-        <AnnouncementsProvider>
-          <CurrentdateProvider>
-            <Component {...pageProps} />
-            <ToastContainer
-              position="top-right"
-              autoClose={3000}
-              hideProgressBar={false}
-              newestOnTop={false}
-              closeOnClick
-              rtl={false}
-              pauseOnFocusLoss
-              draggable
-              pauseOnHover
-            />
-          </CurrentdateProvider>
-        </AnnouncementsProvider>
-      </FilterAnnouncementsProvider>
+      <PageNationProvider>
+        <FilterAnnouncementsProvider>
+          <AnnouncementsProvider>
+            <CurrentdateProvider>
+              <Component {...pageProps} />
+              <ToastContainer
+                position="top-right"
+                autoClose={3000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+              />
+            </CurrentdateProvider>
+          </AnnouncementsProvider>
+        </FilterAnnouncementsProvider>
+      </PageNationProvider>
     </LanguageProvider>
   );
 }
