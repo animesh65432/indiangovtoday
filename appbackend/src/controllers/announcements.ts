@@ -17,8 +17,11 @@ export const GetIndiaAnnouncements = asyncerrorhandler(async (req: Request, res:
         ? new Date(endDate as string)
         : new Date();
 
+
+    console.log(StartPage, EndPage)
+
     const StartPageIndex = StartPage ? parseInt(StartPage as string) : 0;
-    const EndPageIndex = EndPage ? parseInt(EndPage as string) : 10;
+    const EndPageIndex = EndPage ? parseInt(EndPage as string) : 5;
 
 
     const redis_key = `Announcements_${target_lan || "English"}_${announcementsStartDate.toISOString()}_${announcementsEndDate.toISOString()}_${StartPageIndex}_${EndPageIndex}`;
