@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext } from 'react'
 import Image from 'next/image'
 import {
     Select,
@@ -11,12 +11,19 @@ import { optionsforLanguages } from "@/lib/lan";
 import { LanguageContext } from "@/context/Lan";
 import { Currentdate } from "@/context/Currentdate"
 import { DateRangePicker } from "@/components/ui/DateRangePicker"
-import { OnChangeDateRangePicker } from "@/lib/OnChangeDateRangePicker"
-
 
 const Header: React.FC = () => {
-    const { startdate, endDate } = useContext(Currentdate)
+    const { startdate, endDate, onChangeDate } = useContext(Currentdate)
     const { onSelectLanguage, language } = useContext(LanguageContext)
+
+    const OnChangeDateRangePicker = (values: {
+        range: { from?: Date; to?: Date };
+        rangeCompare?: { from?: Date; to?: Date };
+    }) => {
+        if (values.range.from && values.range.to) {
+            onChangeDate(values.range.from, values.range.to);
+        }
+    };
     return (
         <div className=' w-[95%]  [@media(min-width:900px)]:w-[85vw] mx-auto  pt-5  [@media(min-width:900px)]:pt-10 flex items-center  justify-between '>
             <div className="relative  hidden sm:block h-[52px] sm:w-[168px] lg:h-[70px] lg:w-[230px] xl:h-[82px] xl:w-[265px]">
