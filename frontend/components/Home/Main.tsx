@@ -27,18 +27,14 @@ import { optionsforLanguages } from '@/lib/lan';
 
 const Main: React.FC = () => {
     const { FilterAnnouncements, SetFilterAnnouncements } = useContext(FilterAnnouncementsContext)
-    const { Announcements, OntoggleAnnouncements } = useContext(AnnouncementsContext)
-    const { SetPageIndexs, StartPage, EndPage } = useContext(PageNationContext)
+    const { Announcements, OntoggleAnnouncements, } = useContext(AnnouncementsContext)
+    const { SetPageIndexs, StartPage, EndPage, itemsPerPage } = useContext(PageNationContext)
     const [IsLoading, SetIsLoading] = useState<boolean>(true);
     const [TotalAnnouncements, SetTotalAnnouncements] = useState<number>(0)
     const [SearchInput, SetSearchInput] = useState<string>("")
     const [IsSearchActive, SetIsSearchActive] = useState<boolean>(false)
-    const { width, height } = useWindowDimensions()
-
     const LanguageContext = UseLanguageContext();
-    const { startdate, endDate, onChangeDate } = useContext(Currentdate);
-
-    const itemsPerPage = 4;
+    const { startdate, endDate } = useContext(Currentdate);
 
 
     const displayTotal = IsSearchActive ? FilterAnnouncements.length : TotalAnnouncements;
