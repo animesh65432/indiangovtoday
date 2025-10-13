@@ -118,7 +118,7 @@ body {
 
 @media (max-width: 900px) {
   body {
-    background-image: url("/TabBackGround.png");
+    background-image: url("/Tab_900.png");
     background-repeat: no-repeat;
     background-size: cover;
     background-position: top;
