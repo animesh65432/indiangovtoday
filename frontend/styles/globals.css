@@ -106,6 +106,16 @@ body {
 
 }
 
+@media (max-width: 1600px) {
+  body {
+    background-image: url("/backgroundimage.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: top;
+    background-attachment: scroll;
+  }
+}
+
 @media (max-width: 900px) {
   body {
     background-image: url("/TabBackGround.png");

@@ -17,6 +17,7 @@ import {
 import { Switch } from './switch'
 import { ChevronUpIcon, ChevronDownIcon, CheckIcon } from '@radix-ui/react-icons'
 import { cn } from '@/lib/utils'
+import Image from 'next/image'
 
 export interface DateRangePickerProps {
     /** Click handler for applying the updates from DateRangePicker. */
@@ -338,9 +339,10 @@ export const DateRangePicker: FC<DateRangePickerProps> & {
                 }}
             >
                 <PopoverTrigger asChild>
-                    <Button size={'lg'} variant="outline" className='text-[#E0614B] hover:text-[#E0614B] md:shadow-[4px_4px_0_0_#00000029] bg-[#FFFFFF] mx-auto  md:mx-0 rounded-lg justify-start text-left font-normal border border-[#E0614B] group-hover:text-[#E0614B] w-[240px] md:w-[240px]' >
+                    <Button size={'lg'} variant="outline" className='text-[#E0614B] hover:text-[#E0614B] md:shadow-[4px_4px_0_0_#00000029] bg-[#FFFFFF] mx-auto  md:mx-0 rounded-lg justify-start text-left font-normal border border-[#E0614B] group-hover:text-[#E0614B] [@media(min-width:450px)]:w-[240px] md:w-[240px]' >
                         <div className="text-right ">
-                            <div className="py-1">
+                            <div className="py-1 flex items-center gap-2">
+                                <Image alt='logo' width={14} height={14} src="/calender.svg" />
                                 <div>{`${formatDate(range.from, locale)}${range.to != null ? ' - ' + formatDate(range.to, locale) : ''
                                     }`}</div>
                             </div>
@@ -354,9 +356,6 @@ export const DateRangePicker: FC<DateRangePickerProps> & {
                                     </>
                                 </div>
                             )}
-                        </div>
-                        <div className="pl-1 opacity-60 -mr-2 scale-125">
-                            {isOpen ? (<ChevronUpIcon width={24} />) : (<ChevronDownIcon width={24} />)}
                         </div>
                     </Button>
                 </PopoverTrigger>

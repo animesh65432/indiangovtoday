@@ -53,6 +53,9 @@ export const PageNationProvider = ({ children }: Props) => {
         else if (width >= 767 && width <= 1025) {
             return 3
         }
+        else if (width <= 500) {
+            return 10
+        }
         else {
             return 4
         }
