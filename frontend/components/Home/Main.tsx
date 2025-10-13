@@ -22,7 +22,6 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
-import { OnChangeDateRangePicker } from "@/lib/OnChangeDateRangePicker"
 import { optionsforLanguages } from '@/lib/lan';
 
 const Main: React.FC = () => {
@@ -34,7 +33,7 @@ const Main: React.FC = () => {
     const [SearchInput, SetSearchInput] = useState<string>("")
     const [IsSearchActive, SetIsSearchActive] = useState<boolean>(false)
     const LanguageContext = UseLanguageContext();
-    const { startdate, endDate } = useContext(Currentdate);
+    const { startdate, endDate, onChangeDate } = useContext(Currentdate);
 
 
     const displayTotal = IsSearchActive ? FilterAnnouncements.length : TotalAnnouncements;
@@ -113,6 +112,14 @@ const Main: React.FC = () => {
     const isPrevDisabled = StartPage === 0;
 
 
+    const OnChangeDateRangePicker = (values: {
+        range: { from?: Date; to?: Date };
+        rangeCompare?: { from?: Date; to?: Date };
+    }) => {
+        if (values.range.from && values.range.to) {
+            onChangeDate(values.range.from, values.range.to);
+        }
+    };
     return (
         <div className='pt-35 sm:pt-15 md:pt-18  [@media(min-width:900px)]:pt-16  lg:pt-14 xl:pt-7 [@media(min-width:1600px)]:pt-14 [@media(min-width:1700px)]:pt-16 [@media(min-width:1900px)]:pt-22 [@media(min-width:2000px)]:pt-22 [@media(min-width:2100px)]:pt-26 [@media(min-width:2300px)]:pt-32 [@media(min-width:2600px)]:pt-38 [@media(min-width:2800px)]:pt-44 [@media(min-width:3000px)]:pt-48 flex flex-col gap-5'>
             <div className=' block sm:hidden relative h-[47px] w-[150px] mx-auto'>
