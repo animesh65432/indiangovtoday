@@ -114,9 +114,12 @@ const Main: React.FC = () => {
 
 
     return (
-        <div className='pt-22 sm:pt-15 md:pt-18  [@media(min-width:900px)]:pt-10  lg:pt-11 xl:pt-7 [@media(min-width:1600px)]:pt-14 [@media(min-width:1700px)]:pt-16 [@media(min-width:1900px)]:pt-22 [@media(min-width:2000px)]:pt-22 [@media(min-width:2100px)]:pt-26 [@media(min-width:2300px)]:pt-32 [@media(min-width:2600px)]:pt-38 [@media(min-width:2800px)]:pt-44 [@media(min-width:3000px)]:pt-48 flex flex-col gap-5'>
+        <div className='pt-35 sm:pt-15 md:pt-18  [@media(min-width:900px)]:pt-16  lg:pt-14 xl:pt-7 [@media(min-width:1600px)]:pt-14 [@media(min-width:1700px)]:pt-16 [@media(min-width:1900px)]:pt-22 [@media(min-width:2000px)]:pt-22 [@media(min-width:2100px)]:pt-26 [@media(min-width:2300px)]:pt-32 [@media(min-width:2600px)]:pt-38 [@media(min-width:2800px)]:pt-44 [@media(min-width:3000px)]:pt-48 flex flex-col gap-5'>
+            <div className=' block sm:hidden relative h-[47px] w-[150px] mx-auto'>
+                <Image src="/Logo.png" alt='logo' fill />
+            </div>
             <div className="flex items-start sm:items-center justify-center gap-1 sm:gap-3">
-                <div className="relative w-[30px] h-[16px] sm:h-[20px] lg:h-[25px] pt-8 sm:pt-0">
+                <div className="  relative w-[30px] h-[16px] sm:h-[20px] lg:h-[25px] pt-8 sm:pt-0">
                     <Image alt="logo" fill src="/indiaIcon.svg" />
                 </div>
                 <h1 className="text-center text-[#E0614B] text-[1.2rem] sm:text-[1.3rem] lg:text-[1.6rem] whitespace-normal break-normal max-w-[70vw] sm:max-w-none">
@@ -192,7 +195,7 @@ const Main: React.FC = () => {
                 <div className="flex flex-col gap-2 ">
                     {IsLoading ? (
                         <div className="flex flex-col gap-4">
-                            {[...Array(3)].map((_, index) => (
+                            {[...Array(itemsPerPage)].map((_, index) => (
                                 <AnnouncementSkeleton key={index} />
                             ))}
                         </div>
