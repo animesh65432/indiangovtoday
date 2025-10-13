@@ -126,6 +126,16 @@ body {
   }
 }
 
+@media (max-width: 500px) {
+  body {
+    background-image: url("/Phone_375.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: top;
+    background-attachment: scroll;
+  }
+}
+
 h1,
 h2,
 h3,
