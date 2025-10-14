@@ -15,7 +15,7 @@ import {
     SelectValue
 } from './select'
 import { Switch } from './switch'
-import { ChevronUpIcon, ChevronDownIcon, CheckIcon } from '@radix-ui/react-icons'
+import { CheckIcon } from '@radix-ui/react-icons'
 import { cn } from '@/lib/utils'
 import Image from 'next/image'
 
@@ -137,6 +137,17 @@ export const DateRangePicker: FC<DateRangePickerProps> & {
                 window.removeEventListener('resize', handleResize)
             }
         }, [])
+
+        // ADD THIS NEW useEffect RIGHT HERE:
+        useEffect(() => {
+            setRange({
+                from: getDateAdjustedForTimezone(initialDateFrom),
+                to: initialDateTo
+                    ? getDateAdjustedForTimezone(initialDateTo)
+                    : getDateAdjustedForTimezone(initialDateFrom)
+            })
+        }, [initialDateFrom, initialDateTo])
+
 
         const getPresetRange = (presetName: string): DateRange => {
             const preset = PRESETS.find(({ name }) => name === presetName)
