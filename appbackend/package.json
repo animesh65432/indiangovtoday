@@ -1,18 +1,1 @@
-{ 
-  "scripts": {
-    "build": "tsc"
-    },
-  "dependencies": {
-    "@types/cors": "^2.8.19",
-    "@types/dotenv": "^6.1.1",
-    "@types/express": "^5.0.3",
-    "@upstash/redis": "^1.35.4",
-    "cors": "^2.8.5",
-    "dotenv": "^17.2.2",
-    "express": "^5.1.0",
-    "groq-sdk": "^0.33.0",
-    "mongodb": "^6.20.0",
-    "sarvamai": "^0.1.9",
-    "typescript": "^5.9.2"
-  }
-}
+{"scripts":{"build":"tsc"},"dependencies":{"@types/cors":"^2.8.19","@types/dotenv":"^6.1.1","@types/express":"^5.0.3","@upstash/redis":"^1.35.4","cors":"^2.8.5","dotenv":"^17.2.2","express":"^5.1.0","groq-sdk":"^0.33.0","mongodb":"^6.20.0","nodemailer":"^7.0.9","sarvamai":"^0.1.9","typescript":"^5.9.2"},"devDependencies":{"@types/nodemailer":"^7.0.2"}}
