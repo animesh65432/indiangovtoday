@@ -8,11 +8,15 @@ import { toast } from "react-toastify";
 const Subscribe: React.FC = () => {
     const [mounted, setMounted] = useState(false);
     const [showPopup, setShowPopup] = useState(false);
-    const [Email, setEmail] = useState<string>("")
-    const [IsLoading, SetIsLoading] = useState<boolean>(false)
+    const [Email, setEmail] = useState<string>("");
+    const [IsLoading, SetIsLoading] = useState<boolean>(false);
 
     useEffect(() => {
         setMounted(true);
+        const savedEmail = localStorage.getItem("Email");
+        if (savedEmail) {
+            return;
+        }
         const timer = setTimeout(() => {
             setShowPopup(true);
         }, 10000);
@@ -23,15 +27,23 @@ const Subscribe: React.FC = () => {
     if (!mounted) return null;
 
     const handlesubscribe = async () => {
-        SetIsLoading(true)
-        try {
-            await addthesubscribe(Email)
-            setShowPopup(false)
-            toast.success("Successfully subscribed")
-        } finally {
-            SetIsLoading(false)
+        if (!Email) {
+            toast.error("Please enter your email");
+            return;
         }
-    }
+
+        SetIsLoading(true);
+        try {
+            await addthesubscribe(Email);
+            setShowPopup(false);
+            localStorage.setItem("Email", JSON.stringify(Email));
+            toast.success("Successfully subscribed");
+        } catch (err) {
+            toast.error("Failed to subscribe");
+        } finally {
+            SetIsLoading(false);
+        }
+    };
 
     const popup = (
         <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
