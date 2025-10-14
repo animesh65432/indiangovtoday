@@ -31,6 +31,12 @@ const Subscribe: React.FC = () => {
             toast.error("Please enter your email");
             return;
         }
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        if (!emailRegex.test(Email)) {
+            toast.error("Please enter a valid email address");
+            return;
+        }
 
         SetIsLoading(true);
         try {
