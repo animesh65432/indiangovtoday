@@ -2,8 +2,6 @@
 import React from 'react'
 import Header from './Header'
 import Main from './Main'
-import Subscribe from '../Subscribe'
-
 
 export default function Home() {
 
@@ -11,7 +9,6 @@ export default function Home() {
         <div className="h-[100vh] w-[100vw] flex flex-col ">
             <Header />
             <Main />
-            <Subscribe />
         </div>
     )
 }

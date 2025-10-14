@@ -1,11 +1,15 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
-import { X } from "lucide-react"
+import { X, LoaderCircle } from "lucide-react"
+import { addthesubscribe } from "../api/aleart"
+import { toast } from "react-toastify";
 
 const Subscribe: React.FC = () => {
     const [mounted, setMounted] = useState(false);
     const [showPopup, setShowPopup] = useState(false);
+    const [Email, setEmail] = useState<string>("")
+    const [IsLoading, SetIsLoading] = useState<boolean>(false)
 
     useEffect(() => {
         setMounted(true);
@@ -18,6 +22,16 @@ const Subscribe: React.FC = () => {
 
     if (!mounted) return null;
 
+    const handlesubscribe = async () => {
+        SetIsLoading(true)
+        try {
+            await addthesubscribe(Email)
+            setShowPopup(false)
+            toast.success("Successfully subscribed")
+        } finally {
+            SetIsLoading(false)
+        }
+    }
 
     const popup = (
         <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
@@ -32,22 +46,23 @@ const Subscribe: React.FC = () => {
                 </p>
                 <form className="flex flex-col gap-3">
                     <input
+                        value={Email}
+                        onChange={(e) => setEmail(e.target.value)}
                         type="text"
                         placeholder="Enter your Email"
-                        className="border rounded-md p-2 w-full placeholder:text-gray-600 "
+                        className="border rounded-md p-2 text-gray-600 w-full placeholder:text-gray-600 "
                     />
                     <button
                         type="button"
-                        onClick={() => setShowPopup(false)}
+                        onClick={handlesubscribe}
                         className="bg-[#E0614B] text-white py-2 rounded-md hover:bg-[#dd8272] transition"
                     >
-                        Subscribe
+                        {IsLoading ? <LoaderCircle className="text-white mx-auto animate-spin h-6 w-6" /> : " Subscribe"}
                     </button>
                 </form>
             </div>
         </div>
     );
-
 
     return showPopup ? createPortal(popup, document.body) : null;
 };

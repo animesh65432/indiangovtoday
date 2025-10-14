@@ -9,7 +9,10 @@ const config = {
     JWT_SECRET: process.env.JWT_SECRET,
     SARVAMAI: process.env.SARVAMAI,
     SCRAPERAPI: process.env.SCRAPERAPI,
-    PORT: 3000
+    PORT: 3000,
+    ALERTS_DATABASE_URL: process.env.ALERTS_DATABASE_URL,
+    EMAIL_USER: process.env.EMAIL_USER,
+    EMAIL_PASS: process.env.EMAIL_PASS
 };
 
 export default config;

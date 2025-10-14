@@ -7,6 +7,7 @@ import { FilterAnnouncementsProvider } from "@/context/FilterAnnoucements"
 import { PageNationProvider } from "@/context/PageNationProvider"
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Subscribe from "@/components/Subscribe";
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
@@ -27,6 +28,7 @@ export default function App({ Component, pageProps }: AppProps) {
                 draggable
                 pauseOnHover
               />
+              <Subscribe />
             </CurrentdateProvider>
           </AnnouncementsProvider>
         </FilterAnnouncementsProvider>
