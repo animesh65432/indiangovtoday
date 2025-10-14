@@ -5,6 +5,7 @@ import Main from './Main'
 import { useSearchParams } from 'next/navigation'
 import { Currentdate } from "@/context/Currentdate"
 
+
 export default function Home() {
     const { onChangeDate } = useContext(Currentdate)
     const searchParams = useSearchParams()
@@ -13,6 +14,7 @@ export default function Home() {
     useEffect(() => {
         if (dateSearch) {
             const selectedDate = new Date(dateSearch);
+
             if (!isNaN(selectedDate.getTime())) {
                 onChangeDate(selectedDate, selectedDate)
             } else {
