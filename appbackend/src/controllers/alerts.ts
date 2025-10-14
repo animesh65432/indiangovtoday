@@ -41,7 +41,7 @@ export const AddSubscribe = asyncerrorhandler(async (req: Request, res: Response
     const mailOptions = {
         from: config.EMAIL_USER,
         to: Email,
-        subject: "Thank you for subscribing to theseindiangovtoday.app!",
+        subject: "Thank you for subscribing to indiangovtoday.app!",
         html: `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
             <div style="text-align: center; padding: 20px 0;">
@@ -50,7 +50,7 @@ export const AddSubscribe = asyncerrorhandler(async (req: Request, res: Response
             <h1 style="color: #333;">Hello!</h1>
             <p>Thank you for subscribing to our updates on <strong>theseindiangovtoday.app</strong>.</p>
             <p>We'll keep you informed about important Indian government announcements.</p>
-            <p>Best regards,<br>The team at theseindiangovtoday.app</p>
+            <p>Best regards,<br>The team at indiangovtoday.app</p>
           </div>
         `,
     };
