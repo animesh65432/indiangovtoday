@@ -7,6 +7,7 @@ interface Announcement {
     source: string;
     _id: ObjectId,
     type: string
+    content: string
 }
 
 export interface TranslatedAnnouncement {
@@ -14,6 +15,7 @@ export interface TranslatedAnnouncement {
     source: string;
     _id: ObjectId;
     type: string
+    content: string
 }
 
 export const translateannouncements = async (
@@ -55,7 +57,8 @@ export const translateannouncements = async (
                 title: item.title || announcements[index]?.title || "Untitled",
                 link: item.link || announcements[index]?.source || "",
                 _id: item._id || announcements[index]?._id || "",
-                type: item.type || announcements[index]?.type || ""
+                type: item.type || announcements[index]?.type || "",
+                content: item.content || announcements[index]?.content || ""
             };
         });
 

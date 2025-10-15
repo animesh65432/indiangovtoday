@@ -4,13 +4,14 @@ interface Announcement {
   title: string;
   source: string;
   _id: ObjectId;
-  type: string
+  type: string,
+  content: string
 }
 
 export const Get_Prompt = (announcements: Announcement[], target_language: string): string => {
 
   const formatted_announcements = announcements.map(announcement =>
-    `title: ${announcement.title}\nsource: ${announcement.source}\ntype: ${announcement.type}\n_id: ${announcement._id}`
+    `title: ${announcement.title}\nsource: ${announcement.source}\ntype: ${announcement.type}\n_id: ${announcement._id}\ncontent:${announcement.content.slice(0, 150) + "..."}`
   );
 
   const announcements_text = formatted_announcements.join("\n---\n");
@@ -52,7 +53,8 @@ Required JSON format:
       "title": "translated title here",
       "link": "exact original source - DO NOT MODIFY",
       "_id": "exact original _id - DO NOT MODIFY",
-      "type": "simple category  + announcement word"
+      "type": "simple category  + announcement word",
+      "content":"translated content here"
     }
   ]
 }
