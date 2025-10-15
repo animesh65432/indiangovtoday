@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext, useCallback } from 'react';
+import React, { useEffect, useState, useContext, useCallback, useRef } from 'react';
 import { getAllAnnouncements } from "@/api/announcements";
 import { AnnouncementsTypes } from "@/types";
 import Announcement from './Announcement';
@@ -13,7 +13,6 @@ import { Input } from '../ui/input';
 import { Button } from '../ui/button';
 import { Inbox, ChevronLeft, ChevronRight } from 'lucide-react';
 import { TranslateText } from "@/lib/translatetext"
-import { useWindowDimensions } from "@/hooks/useWindowDimensions"
 import { DateRangePicker } from "@/components/ui/DateRangePicker"
 import {
     Select,
@@ -25,6 +24,7 @@ import {
 import { optionsforLanguages } from '@/lib/lan';
 
 const Main: React.FC = () => {
+    const latestrequest = useRef<symbol | null>(null);
     const { FilterAnnouncements, SetFilterAnnouncements } = useContext(FilterAnnouncementsContext)
     const { Announcements, OntoggleAnnouncements, } = useContext(AnnouncementsContext)
     const { SetPageIndexs, StartPage, EndPage, itemsPerPage } = useContext(PageNationContext)
@@ -36,6 +36,7 @@ const Main: React.FC = () => {
     const { startdate, endDate, onChangeDate } = useContext(Currentdate);
 
 
+
     const displayTotal = IsSearchActive ? FilterAnnouncements.length : TotalAnnouncements;
     const totalPages = Math.ceil(displayTotal / itemsPerPage);
     const currentPage = Math.floor(StartPage / itemsPerPage);
@@ -44,33 +45,42 @@ const Main: React.FC = () => {
 
     const { language, onSelectLanguage } = LanguageContext;
 
-    const fetchAnnouncements = useCallback(async () => {
-        SetIsLoading(true);
-        console.log(startdate, endDate)
-        try {
-            const response = await getAllAnnouncements(language, startdate, endDate, StartPage, EndPage) as {
-                data: AnnouncementsTypes[],
-                pagination: {
-                    total: number,
-                    startPage: number,
-                    endPage: number,
-                    hasMore: boolean
+    const fetchAnnouncements = useCallback(() => {
+        let isLatest = true;
+        const requestId = Symbol();
+        latestrequest.current = requestId;
+
+        const fetchData = async () => {
+            SetIsLoading(true);
+            try {
+                const response = await getAllAnnouncements(language, startdate, endDate, StartPage, EndPage) as {
+                    data: AnnouncementsTypes[],
+                    pagination: { total: number; startPage: number; endPage: number; hasMore: boolean }
+                };
+
+                if (latestrequest.current === requestId) {
+                    SetFilterAnnouncements(response.data);
+                    OntoggleAnnouncements(response.data);
+                    SetTotalAnnouncements(response.pagination.total);
+                    SetIsSearchActive(false);
+                    SetSearchInput("");
                 }
-            };
+            } catch (error) {
+                console.error("Error fetching announcements:", error);
+            } finally {
+                if (latestrequest.current === requestId) {
+                    SetIsLoading(false);
+                }
+            }
+        };
 
+        fetchData();
 
-            SetFilterAnnouncements(response.data)
-            OntoggleAnnouncements(response.data)
-            SetTotalAnnouncements(response.pagination.total)
-            SetIsSearchActive(false)
-
-            SetSearchInput("")
-        } catch (error) {
-            console.error("Error fetching announcements:", error);
-        } finally {
-            SetIsLoading(false);
-        }
+        return () => {
+            isLatest = false;
+        };
     }, [language, startdate, endDate, StartPage, EndPage, SetFilterAnnouncements, OntoggleAnnouncements]);
+
 
     useEffect(() => {
         fetchAnnouncements();
