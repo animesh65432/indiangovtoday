@@ -23,6 +23,7 @@ export default function Home() {
             }
         }
     }, [dateSearch]);
+
     return (
         <div className="h-[100vh] w-[100vw] flex flex-col ">
             <Header />

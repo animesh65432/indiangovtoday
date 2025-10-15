@@ -6,7 +6,7 @@ export const AnnouncementsContext = createContext<{
     OntoggleAnnouncements: (Announcements: AnnouncementsTypes[]) => void
 }>({
     Announcements: [],
-    OntoggleAnnouncements: (Announcements) => { }
+    OntoggleAnnouncements: (Announcements: AnnouncementsTypes[]) => { }
 })
 
 type Props = {

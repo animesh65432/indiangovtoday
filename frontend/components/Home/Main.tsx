@@ -44,8 +44,9 @@ const Main: React.FC = () => {
 
     const { language, onSelectLanguage } = LanguageContext;
 
-    const fetchAnnouncements = async () => {
+    const fetchAnnouncements = useCallback(async () => {
         SetIsLoading(true);
+        console.log(startdate, endDate)
         try {
             const response = await getAllAnnouncements(language, startdate, endDate, StartPage, EndPage) as {
                 data: AnnouncementsTypes[],
@@ -57,16 +58,19 @@ const Main: React.FC = () => {
                 }
             };
 
+
             SetFilterAnnouncements(response.data)
             OntoggleAnnouncements(response.data)
             SetTotalAnnouncements(response.pagination.total)
             SetIsSearchActive(false)
+
+            SetSearchInput("")
         } catch (error) {
             console.error("Error fetching announcements:", error);
         } finally {
             SetIsLoading(false);
         }
-    }
+    }, [language, startdate, endDate, StartPage, EndPage, SetFilterAnnouncements, OntoggleAnnouncements]);
 
     useEffect(() => {
         fetchAnnouncements();
@@ -118,8 +122,14 @@ const Main: React.FC = () => {
     }) => {
         if (values.range.from && values.range.to) {
             onChangeDate(values.range.from, values.range.to);
+
+            SetSearchInput("");
+            SetIsSearchActive(false);
         }
     };
+
+    console.log(startdate, endDate)
+
     return (
         <div className='pt-35 sm:pt-15 md:pt-18  [@media(min-width:900px)]:pt-16  lg:pt-14 xl:pt-7 [@media(min-width:1600px)]:pt-14 [@media(min-width:1700px)]:pt-16 [@media(min-width:1900px)]:pt-22 [@media(min-width:2000px)]:pt-22 [@media(min-width:2100px)]:pt-26 [@media(min-width:2300px)]:pt-32 [@media(min-width:2600px)]:pt-38 [@media(min-width:2800px)]:pt-44 [@media(min-width:3000px)]:pt-48 flex flex-col gap-5'>
             <div className=' block sm:hidden relative h-[47px] w-[150px] mx-auto'>
