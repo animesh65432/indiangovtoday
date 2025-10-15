@@ -3,7 +3,8 @@ export type AnnouncementsTypes = {
     title: string,
     link: string,
     type: string,
-    content: string
+    content: string,
+    summary: string
 }
 
 export type ShowAnnouncementsTypes = {

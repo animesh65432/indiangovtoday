@@ -23,9 +23,7 @@ const Announcement: React.FC<Props> = ({ Announcement }) => {
             <div className='flex flex-col gap-2'>
                 <div className='text-[#E0614B] font-medium text-[1.1rem]'>{Announcement.title}</div>
                 <div className='text-[#2B2B2B] text-[1rem] w-[95%]'>
-                    {Announcement.content.length > 150
-                        ? Announcement.content.slice(0, 150) + "..."
-                        : Announcement.content}
+                    {Announcement.summary}
                 </div>
                 <div className='text-[#2B2B2B] text-[0.8rem]'>{Announcement.type}</div>
             </div>
