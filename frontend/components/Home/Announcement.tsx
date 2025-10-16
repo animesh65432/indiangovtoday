@@ -18,6 +18,7 @@ const Announcement: React.FC<Props> = ({ Announcement }) => {
         router.push(`/Announcement?id=${id}&lan=${language}`)
     }
 
+    console.log(Announcement.summary)
     return (
         <div className='p-2 flex flex-col sm:flex-row gap-4 sm:gap-0 sm:items-center rounded-md justify-between w-[97%] bg-[#FFFFFF] pb-3'>
             <div className='flex flex-col gap-2'>

@@ -58,7 +58,7 @@ export const translateannouncements = async (
                 link: item.link || announcements[index]?.source || "",
                 _id: item._id || announcements[index]?._id || "",
                 type: item.type || announcements[index]?.type || "",
-                content: item.content || announcements[index]?.content || ""
+                summary: item.content || announcements[index]?.content || ""
             };
         });
 
