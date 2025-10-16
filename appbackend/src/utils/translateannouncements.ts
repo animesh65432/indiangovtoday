@@ -7,7 +7,8 @@ interface Announcement {
     source: string;
     _id: ObjectId,
     type: string
-    content: string
+    content: string,
+    summary: string
 }
 
 export interface TranslatedAnnouncement {
@@ -16,6 +17,7 @@ export interface TranslatedAnnouncement {
     _id: ObjectId;
     type: string
     content: string
+    summary: string
 }
 
 export const translateannouncements = async (

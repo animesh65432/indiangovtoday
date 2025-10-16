@@ -4,14 +4,15 @@ interface Announcement {
   title: string;
   source: string;
   _id: ObjectId;
-  type: string,
-  content: string
+  type: string;
+  content: string;
+  summary: string
 }
 
 export const Get_Prompt = (announcements: Announcement[], target_language: string): string => {
 
   const formatted_announcements = announcements.map(announcement =>
-    `title: ${announcement.title}\nsource: ${announcement.source}\ntype: ${announcement.type}\n_id: ${announcement._id}\ncontent:${announcement.content.slice(0, 150) + "..."}`
+    `title: ${announcement.title}\nsource: ${announcement.source}\ntype: ${announcement.type}\n_id: ${announcement._id}\ncontent:${announcement.summary}`
   );
 
   const announcements_text = formatted_announcements.join("\n---\n");
