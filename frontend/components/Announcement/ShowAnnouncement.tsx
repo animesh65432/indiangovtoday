@@ -4,6 +4,7 @@ import ShareSection from '../Share'
 import { usetexttospech } from '@/hooks/usetexttospech'
 import { toast } from 'react-toastify'
 import { TranslateText } from "@/lib/translatetext"
+import Content from './Content'
 
 type Props = {
     title: string
@@ -64,7 +65,7 @@ const ShowAnnouncement: React.FC<Props> = ({ title, content, source, lan }) => {
             <div
                 className="whitespace-pre-line text-[#2B2B2B] h-[60vh] custom-scroll overflow-x-auto leading-8 md:leading-9 text-[0.9rem] md:text-[1rem] lg:text-[1.1rem]"
             >
-                {content.replace(/\\n/g, '\n')}
+                <Content content={`${content.replace(/\\n/g, '\n')}`} />
             </div>
 
 
