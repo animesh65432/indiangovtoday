@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import { AudioLines, Pause, Play, Share, Square, Volume2 } from "lucide-react"
 import ShareSection from '../Share'
 import { usetexttospech } from '@/hooks/usetexttospech'
-import { toast } from 'react-toastify'
 import { TranslateText } from "@/lib/translatetext"
 import Content from './Content'
 
@@ -19,19 +18,11 @@ const ShowAnnouncement: React.FC<Props> = ({ title, content, source, lan }) => {
 
 
     const handleAudioAction = async () => {
-        if (content.length > 2500) {
-            toast.error("Text is too long")
-            return
-        }
-
         if (IsLoading) return
-
-        const cleanedContent = content.replace(/[.,/*]/g, "");
-
         if (isPlaying || isPaused) {
             togglePlayPause()
         } else {
-            await call(cleanedContent)
+            await call(content)
         }
     }
 

@@ -7,7 +7,6 @@ Requirements:
 - Use simple, easy words that common people understand
 - Keep the meaning the same
 - Make it sound natural and fluent
-- IMPORTANT: Keep the entire translated content under 2500 characters
 - If content is too long, summarize while keeping key information
 - Use everyday language, not complex or formal words
 

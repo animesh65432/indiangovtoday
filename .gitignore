@@ -6,3 +6,4 @@ venv
 .next
 package-lock.json
 dist
+
