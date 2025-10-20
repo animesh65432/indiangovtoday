@@ -1,36 +1,46 @@
 import { ObjectId } from "mongodb"
 
-export const Get_propmt = (content: string, title: string, _id: ObjectId, source: string, target_language: string) => `You are a professional translator. Translate the following English title and content COMPLETELY to ${target_language}. Respond in JSON format.
+export const Get_propmt = (content: string, title: string, _id: ObjectId, source: string, target_language: string) => `You are a professional translator specializing in ${target_language}. Your task is to translate the following content COMPLETELY into ${target_language}. The translation must be 100% in ${target_language} with NO English words remaining except for the specific exceptions listed below.
 
-Requirements:
-- Translate ALL regular text to ${target_language} - no English words should remain except for the exceptions listed below
-- Use simple, easy words that common people understand
-- Keep the meaning the same
-- Make it sound natural and fluent
-- If content is too long, summarize while keeping key information
-- Use everyday language, not complex or formal words
+TRANSLATION PHILOSOPHY:
+- Translate EVERY regular word, phrase, and sentence into ${target_language}
+- Use simple, everyday language that ordinary people can easily understand
+- Maintain the original meaning and intent
+- Make the translation sound natural, fluent, and native
+- If content is very long, you may summarize while preserving all key information
+- Avoid formal, complex, or technical language unless necessary
 
-CRITICAL - Do NOT translate these elements (keep them EXACTLY as they are):
-- Email addresses (e.g., example@email.com, contact@domain.com)
-- Website URLs and links (e.g., www.example.com, https://example.com, http://site.org)
-- Domain names and web addresses
-- File names and extensions (e.g., document.pdf, report.docx, image.jpg)
-- Phone numbers and contact numbers
-- Dates in standard format (e.g., 2024-01-15, 15/01/2024)
-- Numbers, percentages, and measurements
-- Official program/scheme names (e.g., "Comprehensive Global Strategic Partnership")
-- Technical terms, API endpoints, and code snippets
-- Usernames and social media handles (e.g., @username)
-- Proper nouns: Person names, place names, organization names, country names
-- Abbreviations like U.S., UK, UN, etc.
-- Twitter handles and social media references
+DO NOT TRANSLATE (Keep these EXACTLY as they appear in the original):
+1. Email addresses (e.g., example@email.com, contact@domain.com)
+2. Website URLs and links (e.g., www.example.com, https://example.com)
+3. Domain names and web addresses
+4. File names with extensions (e.g., document.pdf, report.docx, image.jpg)
+5. Phone numbers and contact numbers
+6. Dates in numerical format (e.g., 2024-01-15, 15/01/2024)
+7. Numbers, percentages, measurements, and currency amounts (e.g., Rs.1,950.80 crore, 50%, 10km)
+8. Technical terms, API endpoints, code snippets
+9. Usernames and social media handles (e.g., @username)
+10. Abbreviations like U.S., UK, UN, NATO, NDRF, SDRF, etc.
 
-TRANSLATION RULES:
-1. Translate EVERY common word and phrase to ${target_language}
-2. Only keep the items listed above in English
-3. Make sure the translation reads naturally and fluently
-4. Common words like "Prime Minister", "met", "today", "said", etc. MUST be translated
-5. Don't leave any translatable words in English
+CRITICAL: PROPER NOUNS MUST BE TRANSLATED
+Unlike typical translation rules, you MUST translate the following into ${target_language}:
+- Person names - write them in ${target_language} script/characters
+- Designations and titles - translate to ${target_language}
+- Place names - write them in ${target_language} script/characters
+- Country names - translate to ${target_language}
+- Organization names - translate to ${target_language}
+- Government department names - translate to ${target_language}
+- Scheme and program names - translate to ${target_language}
+
+WHAT MUST BE TRANSLATED:
+✓ All common words and phrases
+✓ All titles, designations, roles (Prime Minister, Home Minister, etc.)
+✓ All person names - write in ${target_language} script
+✓ All place names - write in ${target_language} script
+✓ All organization and department names
+✓ All verbs, adjectives, and descriptive words
+✓ All sentences and paragraphs
+✓ Program and scheme names (translate the meaning, but keep abbreviations like SDRF, NDRF as they are)
 
 Original content to translate:
 
@@ -40,16 +50,21 @@ Content: ${content}
 
 Target Language: ${target_language}
 
-Respond with a valid JSON object using this exact structure:
+OUTPUT FORMAT:
+Respond with ONLY a valid JSON object in this exact structure:
 {
   "title": "Fully translated title in ${target_language}",
-  "content": "Fully translated content in ${target_language} - only keep emails, URLs, proper nouns, and technical terms in English"
+  "content": "Fully translated content in ${target_language}"
 }
 
-IMPORTANT:
-- Return ONLY valid JSON format
-- Use proper JSON syntax with double quotes
-- Translate ALL regular text to ${target_language}
-- Keep only technical elements (emails, links, files, numbers, proper nouns) in their original form
-- No additional text outside the JSON object
-- Ensure the translation is complete and natural`
+FINAL CHECKLIST BEFORE RESPONDING:
+□ Have I translated ALL person names to ${target_language}?
+□ Have I translated ALL place names to ${target_language}?
+□ Have I translated ALL designations and titles to ${target_language}?
+□ Have I translated ALL organization names to ${target_language}?
+□ Have I translated ALL common words and phrases to ${target_language}?
+□ Have I kept only emails, URLs, numbers, and abbreviations in their original form?
+□ Is my JSON properly formatted with double quotes?
+□ Does the translation sound natural and fluent in ${target_language}?
+
+Return ONLY the JSON object with no additional text.`
