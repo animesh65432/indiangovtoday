@@ -1,0 +1,35 @@
+# llms.txt – for all AI platforms
+
+User-agent: *
+Allow: /
+
+# Site Information
+Site-Name: IndianGovToday
+Description: Simplified summaries of Indian government schemes, policies, and announcements.
+Language: en
+Last-Updated: 2025-10-24
+License: free-to-use-for-knowledge
+
+# Content Rules for AI
+Crawl-Depth: unlimited
+Content-Types: text/html, application/json
+Indexable: yes
+Purpose: knowledge, training, summarization
+
+# Disallow sensitive/private pages
+Disallow: /admin/
+Disallow: /login/
+Disallow: /user-settings/
+
+# Optional: specify AI platforms explicitly (for clarity)
+User-agent: ChatGPT
+Allow: /
+
+User-agent: BingAI
+Allow: /
+
+User-agent: GoogleBard
+Allow: /
+
+User-agent: Claude
+Allow: /
