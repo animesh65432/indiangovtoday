@@ -18,6 +18,11 @@ export default function Document() {
         />
         <meta name="author" content="IndianGovToday" />
         <meta name="robots" content="index, follow" />
+        <meta property="og:title" content="IndianGovToday – Simplified Government Announcements" />
+        <meta property="og:description" content="AI-powered translations of Indian government circulars into simple regional languages." />
+        <meta property="og:image" content="https://indiangovtoday.app/og-image.png" />
+        <meta property="og:url" content="https://indiangovtoday.app/" />
+        <meta property="og:title" content="Indian Announcements" />
       </Head>
       <body className="antialiased">
         <Main />
