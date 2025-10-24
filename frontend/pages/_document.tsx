@@ -5,6 +5,10 @@ export default function Document() {
     <Html lang="en">
       <Head>
         <meta
+          name="google-site-verification"
+          content="qiWXwGnUnJyq0vrurVeRUcnIBcJdHFr9BMhfmSr5qZw"
+        />
+        <meta
           name="description"
           content="View Indian government announcements and circulars in simple, easy-to-understand language. Our AI-powered platform translates official updates into regional languages and audio for better public access."
         />
