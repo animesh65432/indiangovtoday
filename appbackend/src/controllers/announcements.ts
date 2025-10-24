@@ -7,7 +7,7 @@ import { translateannouncements, TranslatedAnnouncement } from "../utils/transla
 import { translateannouncement, translatedAnnouncementTypes } from "../utils/translateannouncement"
 
 export const GetIndiaAnnouncements = asyncerrorhandler(async (req: Request, res: Response) => {
-    const { target_lan, startdate, endDate, StartPage, EndPage } = req.query;
+    const { target_lan, startdate, endDate } = req.query;
 
     const announcementsStartDate = startdate
         ? new Date(startdate as string)
@@ -17,14 +17,7 @@ export const GetIndiaAnnouncements = asyncerrorhandler(async (req: Request, res:
         ? new Date(endDate as string)
         : new Date();
 
-
-    console.log(StartPage, EndPage)
-
-    const StartPageIndex = StartPage ? parseInt(StartPage as string) : 0;
-    const EndPageIndex = EndPage ? parseInt(EndPage as string) : 5;
-
-
-    const redis_key = `Announcements_${target_lan || "English"}_${announcementsStartDate.toISOString()}_${announcementsEndDate.toISOString()}_${StartPageIndex}_${EndPageIndex}`;
+    const redis_key = `Announcements_${target_lan || "English"}_${announcementsStartDate.toISOString()}_${announcementsEndDate.toISOString()}`;
 
     const cached_data = await redis.get(redis_key);
 
@@ -46,38 +39,36 @@ export const GetIndiaAnnouncements = asyncerrorhandler(async (req: Request, res:
     const db = await connectDB();
 
 
-    const totalCount = await db
-        .collection("announcements")
-        .countDocuments(filter);
-
-
     let indiaAnnouncements = await db
         .collection("announcements")
-        .find(filter)
-        .sort({ _id: -1 })
-        .skip(StartPageIndex)
-        .limit(EndPageIndex - StartPageIndex)
-        .toArray() as TranslatedAnnouncement[];
+        .aggregate([
+            { $match: filter },
+            {
+                $group: {
+                    _id: "$type",
+                    announcements: { $push: "$$ROOT" },
+                    count: { $sum: 1 }
+                }
+            },
+            {
+                $project: {
+                    type: "$_id",
+                    announcements: 1,
+                    count: 1,
+                    _id: 0
+                }
+            },
+            { $sort: { type: 1 } }
+        ])
+        .toArray() as { type: string, announcements: TranslatedAnnouncement[] }[];
 
-    if (target_lan && target_lan !== "English") {
-        indiaAnnouncements = await translateannouncements(indiaAnnouncements, String(target_lan));
-    }
 
-    const response = {
-        data: indiaAnnouncements,
-        pagination: {
-            total: totalCount,
-            startPage: StartPageIndex,
-            endPage: EndPageIndex,
-            hasMore: EndPageIndex < totalCount
-        }
-    };
+    await redis.set(redis_key, JSON.stringify(indiaAnnouncements), { ex: 300 });
 
-    await redis.set(redis_key, JSON.stringify(response), { ex: 300 });
-
-    res.status(200).json(response);
+    res.status(200).json(indiaAnnouncements);
     return;
 });
+
 export const GetIndiaAnnouncement = asyncerrorhandler(async (req: Request, res: Response) => {
     const { id, target_lan } = req.query;
 
