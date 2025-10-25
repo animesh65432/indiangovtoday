@@ -17,14 +17,14 @@ export const GetIndiaAnnouncements = asyncerrorhandler(async (req: Request, res:
         ? new Date(endDate as string)
         : new Date();
 
-    const redis_key = `Announcements_${target_lan || "English"}_${announcementsStartDate.toISOString()}_${announcementsEndDate.toISOString()}`;
+    // const redis_key = `Announcements_${target_lan || "English"}_${announcementsStartDate.toISOString()}_${announcementsEndDate.toISOString()}`;
 
-    const cached_data = await redis.get(redis_key);
+    // const cached_data = await redis.get(redis_key);
 
-    if (cached_data) {
-        res.status(200).json(cached_data);
-        return;
-    }
+    // if (cached_data) {
+    //     res.status(200).json(cached_data);
+    //     return;
+    // }
 
     const start = new Date(announcementsStartDate);
     start.setUTCHours(0, 0, 0, 0);
@@ -53,17 +53,18 @@ export const GetIndiaAnnouncements = asyncerrorhandler(async (req: Request, res:
             {
                 $project: {
                     type: "$_id",
-                    announcements: 1,
+                    announcements: { $slice: ["$announcements", 3] },
                     count: 1,
-                    _id: 0
+                    _id: 0,
+                    created_at: 1,
                 }
             },
-            { $sort: { type: 1 } }
+            { $sort: { type: -1 } }
         ])
         .toArray() as { type: string, announcements: TranslatedAnnouncement[] }[];
 
 
-    await redis.set(redis_key, JSON.stringify(indiaAnnouncements), { ex: 300 });
+    // await redis.set(redis_key, JSON.stringify(indiaAnnouncements), { ex: 300 });
 
     res.status(200).json(indiaAnnouncements);
     return;

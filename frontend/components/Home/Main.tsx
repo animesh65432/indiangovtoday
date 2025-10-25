@@ -1,17 +1,12 @@
 import React, { useEffect, useState, useContext, useCallback, useRef } from 'react';
 import { getAllAnnouncements } from "@/api/announcements";
-import { AnnouncementsTypes } from "@/types";
-import Announcement from './Announcement';
-import AnnouncementSkeleton from './AnnouncementSkeleton';
+import { GroupedAnnouncements } from "@/types";
 import { UseLanguageContext } from '@/context/Lan';
 import { Currentdate } from "@/context/Currentdate";
-import { FilterAnnouncementsContext } from "@/context/FilterAnnoucements"
-import { AnnouncementsContext } from "@/context/AnnouncementsProvider"
 import { PageNationContext } from "@/context/PageNationProvider"
 import Image from 'next/image';
 import { Input } from '../ui/input';
 import { Button } from '../ui/button';
-import { Inbox, ChevronLeft, ChevronRight } from 'lucide-react';
 import { TranslateText } from "@/lib/translatetext"
 import { DateRangePicker } from "@/components/ui/DateRangePicker"
 import {
@@ -22,24 +17,17 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 import { optionsforLanguages } from '@/lib/lan';
+import GroupofAnnouncement from './GroupofAnnouncement';
 
 const Main: React.FC = () => {
     const latestrequest = useRef<symbol | null>(null);
-    const { FilterAnnouncements, SetFilterAnnouncements } = useContext(FilterAnnouncementsContext)
-    const { Announcements, OntoggleAnnouncements, } = useContext(AnnouncementsContext)
+    const [GroupAnnouncements, SetGroupAnnouncements] = useState<GroupedAnnouncements[]>([])
     const { SetPageIndexs, StartPage, EndPage, itemsPerPage } = useContext(PageNationContext)
     const [IsLoading, SetIsLoading] = useState<boolean>(true);
-    const [TotalAnnouncements, SetTotalAnnouncements] = useState<number>(0)
     const [SearchInput, SetSearchInput] = useState<string>("")
     const [IsSearchActive, SetIsSearchActive] = useState<boolean>(false)
     const LanguageContext = UseLanguageContext();
     const { startdate, endDate, onChangeDate } = useContext(Currentdate);
-
-
-
-    const displayTotal = IsSearchActive ? FilterAnnouncements.length : TotalAnnouncements;
-    const totalPages = Math.ceil(displayTotal / itemsPerPage);
-    const currentPage = Math.floor(StartPage / itemsPerPage);
 
     if (!LanguageContext) return null;
 
@@ -53,18 +41,14 @@ const Main: React.FC = () => {
         const fetchData = async () => {
             SetIsLoading(true);
             try {
-                const response = await getAllAnnouncements(language, startdate, endDate, StartPage, EndPage) as {
-                    data: AnnouncementsTypes[],
-                    pagination: { total: number; startPage: number; endPage: number; hasMore: boolean }
-                };
+                const GroupAnnouncementsresponse = await getAllAnnouncements(language, startdate, endDate) as GroupedAnnouncements[];
 
                 if (latestrequest.current === requestId) {
-                    SetFilterAnnouncements(response.data);
-                    OntoggleAnnouncements(response.data);
-                    SetTotalAnnouncements(response.pagination.total);
+                    SetGroupAnnouncements(GroupAnnouncementsresponse)
                     SetIsSearchActive(false);
                     SetSearchInput("");
                 }
+
             } catch (error) {
                 console.error("Error fetching announcements:", error);
             } finally {
@@ -79,7 +63,7 @@ const Main: React.FC = () => {
         return () => {
             isLatest = false;
         };
-    }, [language, startdate, endDate, StartPage, EndPage, SetFilterAnnouncements, OntoggleAnnouncements]);
+    }, [language, startdate, endDate, StartPage, EndPage]);
 
 
     useEffect(() => {
@@ -88,43 +72,8 @@ const Main: React.FC = () => {
 
     const OnSearchAnnouncement = () => {
         SetPageIndexs({ StartPage: 0, EndPage: itemsPerPage });
-
-        if (SearchInput.length === 0 || SearchInput.toLowerCase() === "all") {
-            SetFilterAnnouncements(Announcements)
-            SetIsSearchActive(false)
-            return
-        }
-
-        const Filter = Announcements.filter((announcement) =>
-            announcement.title.toLowerCase().includes(SearchInput.toLowerCase()) ||
-            announcement.type.toLowerCase().includes(SearchInput.toLowerCase())
-        );
-
-        SetFilterAnnouncements(Filter)
         SetIsSearchActive(true)
     };
-
-    const handleNextPage = () => {
-        if (EndPage < TotalAnnouncements) {
-            SetPageIndexs((prev) => ({
-                StartPage: prev.StartPage + itemsPerPage,
-                EndPage: prev.EndPage + itemsPerPage
-            }));
-        }
-    };
-
-    const handlePrevPage = () => {
-        if (StartPage > 0) {
-            SetPageIndexs((prev) => ({
-                StartPage: Math.max(0, prev.StartPage - itemsPerPage),
-                EndPage: prev.EndPage - itemsPerPage
-            }));
-        }
-    };
-
-    const isNextDisabled = EndPage >= TotalAnnouncements || IsSearchActive;
-    const isPrevDisabled = StartPage === 0;
-
 
     const OnChangeDateRangePicker = (values: {
         range: { from?: Date; to?: Date };
@@ -137,8 +86,6 @@ const Main: React.FC = () => {
             SetIsSearchActive(false);
         }
     };
-
-    console.log(startdate, endDate)
 
     return (
         <div className='pt-35 sm:pt-15 md:pt-18  [@media(min-width:900px)]:pt-16  lg:pt-14 xl:pt-7 [@media(min-width:1600px)]:pt-14 [@media(min-width:1700px)]:pt-16 [@media(min-width:1900px)]:pt-22 [@media(min-width:2000px)]:pt-22 [@media(min-width:2100px)]:pt-26 [@media(min-width:2300px)]:pt-32 [@media(min-width:2600px)]:pt-38 [@media(min-width:2800px)]:pt-44 [@media(min-width:3000px)]:pt-48 flex flex-col gap-5'>
@@ -202,46 +149,9 @@ const Main: React.FC = () => {
                     {TranslateText[language].SEARCH}
                 </Button>
             </div>
-
-            <div className="bg-[#C8C8C833] w-[83vw] flex flex-col gap-4 sm:w-[95vw] md:w-[85vw] [@media(min-width:900px)]:w-[70%] lg:w-[75%] xl:w-[70%] [@media(min-width:1600px)]:w-[65%]   mx-auto rounded-md p-2 sm:p-6 xl:p-3">
-                <div className='w-full flex items-center gap-4 justify-end'>
-                    <ChevronLeft
-                        className={`text-[#E0614B] cursor-pointer ${isPrevDisabled ? 'opacity-50 cursor-not-allowed' : ''}`}
-                        onClick={!isPrevDisabled ? handlePrevPage : undefined}
-                    />
-                    <span className="text-sm text-[#2B2B2B]">
-                        {TranslateText[language].PAGE} {currentPage + 1} {TranslateText[language].OF} {totalPages || 1}
-                        {IsSearchActive && ' (filtered)'}
-                    </span>
-                    <ChevronRight
-                        className={`text-[#E0614B] cursor-pointer ${isNextDisabled ? 'opacity-50 cursor-not-allowed' : ''}`}
-                        onClick={!isNextDisabled ? handleNextPage : undefined}
-                    />
-                </div>
-
-                <div className="flex flex-col gap-2 ">
-                    {IsLoading ? (
-                        <div className="flex flex-col gap-4">
-                            {[...Array(itemsPerPage)].map((_, index) => (
-                                <AnnouncementSkeleton key={index} />
-                            ))}
-                        </div>
-                    ) : FilterAnnouncements.length > 0 ? (
-                        FilterAnnouncements.map((announcement) => (
-                            <Announcement Announcement={announcement} key={announcement._id} />
-                        ))
-                    ) : (
-                        <div className='mx-auto flex justify-center items-center gap-2 h-full w-full'>
-                            <div className='flex items-center gap-2'>
-                                <Inbox className="w-10 h-10 mb-2 text-[#E0614B]" />
-                                <p className="text-[1rem] sm:text-lg text-[#2B2B2B]">
-                                    {TranslateText[language].No_announcements_found}
-                                </p>
-                            </div>
-                        </div>
-                    )}
-                </div>
-            </div>
+            {!IsLoading &&
+                <GroupofAnnouncement announcements={GroupAnnouncements} />
+            }
         </div>
     );
 };
