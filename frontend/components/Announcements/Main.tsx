@@ -1,7 +1,6 @@
 import React, { useContext, useState } from "react";
 import { GetallGroupsIndiaAnnouncements as AnnouncementsTyps } from "@/types";
 import { DateRangePicker } from "../ui/DateRangePicker";
-import { DateRange } from "react-day-picker";
 import Image from "next/image";
 import { TranslateText } from "@/lib/translatetext";
 import { LanguageContext } from "@/context/Lan"
@@ -18,7 +17,7 @@ type Props = {
 
 const Main: React.FC<Props> = ({ Announcements }) => {
     const { language, onSelectLanguage } = useContext(LanguageContext)
-    const { startdate, endDate } = useContext(Currentdate)
+    const { startdate, endDate, onChangeDate } = useContext(Currentdate)
     const [SearchInput, SetSearchInput] = useState<string>("")
     const router = useRouter()
 
@@ -34,9 +33,14 @@ const Main: React.FC<Props> = ({ Announcements }) => {
         );
     }
 
-    function OnChangeDateRangePicker(values: { range: DateRange; rangeCompare?: DateRange | undefined; }): void {
-        throw new Error("Function not implemented.");
-    }
+    const OnChangeDateRangePicker = (values: {
+        range: { from?: Date; to?: Date };
+        rangeCompare?: { from?: Date; to?: Date };
+    }) => {
+        if (values.range.from && values.range.to) {
+            onChangeDate(values.range.from, values.range.to);
+        }
+    };
 
     return (
         <div className="min-h-screen   overflow-x-auto flex flex-col gap-4">
@@ -116,10 +120,6 @@ const Main: React.FC<Props> = ({ Announcements }) => {
                                     {/* Decorative Element */}
                                     <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-[#E0614B]/10 to-transparent rounded-bl-full transform translate-x-8 -translate-y-8 group-hover:scale-150 transition-transform duration-500"></div>
 
-                                    {/* Card Number Badge */}
-                                    <div className="absolute top-4 right-4 w-8 h-8 bg-gradient-to-br from-[#E0614B] to-[#ff8c75] rounded-full flex items-center justify-center text-white text-xs font-bold shadow-md">
-                                        {idx + 1}
-                                    </div>
 
                                     <a
                                         target="_blank"

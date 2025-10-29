@@ -66,14 +66,16 @@ export const GetIndiaAnnouncements = asyncerrorhandler(async (req: Request, res:
                 $addFields: {
                     title: { $ifNull: ["$translation.title", "$title"] },
                     type: { $ifNull: ["$translation.type", "$type"] },
+                    original_type: "$type"
                 },
             },
-            { $unset: ["translations", "translation", "content", "source"] }
+            { $unset: ["translations", "translation", "content", "source", "original_title"] }
         );
     }
 
     pipeline.push(
         { $sort: { created_at: -1 } },
+        { $limit: 3 },
         {
             $group: {
                 _id: "$type",
@@ -115,10 +117,8 @@ export const GetIndiaAnnouncements = asyncerrorhandler(async (req: Request, res:
     res.status(200).json(responseData);
     return
 });
-
 export const GetGroupIndiaAnnouncements = asyncerrorhandler(async (req: Request, res: Response) => {
     const { target_lan, startdate, endDate, typeofGroup } = req.query;
-
 
     if (!typeofGroup) {
         res.status(400).json({
@@ -163,7 +163,6 @@ export const GetGroupIndiaAnnouncements = asyncerrorhandler(async (req: Request,
 
     const db = await connectDB();
 
-    // ✅ Build filter
     const filter: any = {
         created_at: { $gte: start, $lte: end }
     };

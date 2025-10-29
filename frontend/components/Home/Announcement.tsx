@@ -91,7 +91,7 @@ const Announcement: React.FC<Props> = ({ Announcement }) => {
 
             <CardFooter className='pt-4 border-t'>
                 <Button
-                    onClick={() => redirect_to(Announcement[0]._id)}
+                    onClick={() => router.push(`/announcements/${language === "English" ? Announcement[0].type : Announcement[0].original_type}`)}
                     className='bg-[#E0614B] ml-auto lg:w-[121px] hover:bg-[#dd8272] rounded-xl shadow-[4px_4px_0_0_#00000029]'
                 >
                     View All

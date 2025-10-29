@@ -12,6 +12,7 @@ export type GroupedAnnouncement = {
     title: string;
     type: string;
     created_at: string
+    original_type?: string
 };
 
 export type GroupedAnnouncements = {

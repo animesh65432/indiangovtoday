@@ -15,3 +15,9 @@ export const GetallGroupsIndiaAnnouncements = (target_lan: string, startdate: Da
     method: "GET",
     path: `/GetallGroupsIndiaAnnouncements?target_lan=${target_lan}&startdate=${startdate}&endDate=${endDate}&page=${page}&limit=${limit}`
 })
+
+
+export const GetGroupIndiaAnnouncements = (target_lan: string, startdate: Date, endDate: Date, typeofGroup: string) => Call({
+    method: "GET",
+    path: `/GetGroupIndiaAnnouncements?target_lan=${target_lan}&startdate=${startdate}&endDate=${endDate}&typeofGroup=${typeofGroup}`
+})

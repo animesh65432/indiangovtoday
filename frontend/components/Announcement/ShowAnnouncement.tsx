@@ -86,7 +86,6 @@ const ShowAnnouncement: React.FC<Props> = ({ title, content, source, lan }) => {
                             <div className="absolute inset-0 rounded-full bg-gray-100/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                         </button>
                     )}
-
                     <button
                         className={`group relative bg-white/90 backdrop-blur-sm p-4 rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 ${IsLoading
                             ? 'cursor-not-allowed opacity-60'
