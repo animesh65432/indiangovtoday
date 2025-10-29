@@ -12,8 +12,6 @@ export const GetIndiaAnnouncements = asyncerrorhandler(async (req: Request, res:
     const pageSize = parseInt(limit as string) || 2;
     const skip = (pageNumber - 1) * pageSize;
 
-    console.log(pageSize, limit)
-
     const announcementsStartDate = startdate
         ? new Date(startdate as string)
         : new Date(new Date().setDate(new Date().getDate() - 7));
@@ -252,7 +250,7 @@ export const GetGroupIndiaAnnouncements = asyncerrorhandler(async (req: Request,
 });
 
 export const GetallGroupsIndiaAnnouncements = asyncerrorhandler(async (req: Request, res: Response) => {
-    const { target_lan, startdate, endDate } = req.query;
+    const { target_lan, startdate, endDate, page, limit } = req.query;
 
     const announcementsStartDate = startdate
         ? new Date(startdate as string)
@@ -261,6 +259,10 @@ export const GetallGroupsIndiaAnnouncements = asyncerrorhandler(async (req: Requ
     const announcementsEndDate = endDate
         ? new Date(endDate as string)
         : new Date();
+
+    const pageNumber = parseInt(page as string) || 1;
+    const pageSize = parseInt(limit as string) || 10;
+    const skip = (pageNumber - 1) * pageSize;
 
     if (isNaN(announcementsStartDate.getTime()) || isNaN(announcementsEndDate.getTime())) {
         res.status(400).json({ error: "Invalid date format" });
@@ -271,7 +273,7 @@ export const GetallGroupsIndiaAnnouncements = asyncerrorhandler(async (req: Requ
     const lan = LANGUAGE_CODES[targetLanguage] || "en";
 
 
-    const redis_key = `AllGroupsIndiaAnnouncements_${targetLanguage}_${announcementsStartDate.toISOString().split('T')[0]}_${announcementsEndDate.toISOString().split('T')[0]}`;
+    const redis_key = `AllGroupsIndiaAnnouncements_${targetLanguage}_${announcementsStartDate.toISOString().split('T')[0]}_${announcementsEndDate.toISOString().split('T')[0]}${page}${limit}`;
 
     const cached_data = await redis.get(redis_key);
 
@@ -366,7 +368,9 @@ export const GetallGroupsIndiaAnnouncements = asyncerrorhandler(async (req: Requ
                 _id: 0
             }
         },
-        { $sort: { type: 1 } }
+        { $sort: { type: 1 } },
+        { $skip: skip },
+        { $limit: pageSize },
     );
 
     const indiaAnnouncements = await db
@@ -387,6 +391,7 @@ export const GetallGroupsIndiaAnnouncements = asyncerrorhandler(async (req: Requ
     await redis.set(redis_key, JSON.stringify(responseData), { ex: 300 });
 
     res.status(200).json(responseData);
+    return
 });
 
 

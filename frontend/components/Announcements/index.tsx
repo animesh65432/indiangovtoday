@@ -1,13 +1,16 @@
 "use client"
 import React, { useEffect, useState, useContext } from 'react'
-import Header from '../Home/Header'
+import Header from './Header'
 import { GetallGroupsIndiaAnnouncements } from "@/api/announcements"
 import { Currentdate } from "@/context/Currentdate"
 import { LanguageContext } from "@/context/Lan"
 import { GetallGroupsIndiaAnnouncementsResponse, GetallGroupsIndiaAnnouncements as AnnouncementsTyps } from "@/types"
+import Main from './Main'
 
 const Announcements = () => {
     const [IsLoading, SetIsLoading] = useState<boolean>(false)
+    const [Announcements, SetAnnouncements] = useState<AnnouncementsTyps[]>([])
+
     const { startdate, endDate } = useContext(Currentdate)
     const { language } = useContext(LanguageContext)
 
@@ -15,7 +18,7 @@ const Announcements = () => {
         SetIsLoading(true)
         try {
             const IndiaAnnouncementsResponse = await GetallGroupsIndiaAnnouncements(language, startdate, endDate) as GetallGroupsIndiaAnnouncementsResponse
-            console.log(IndiaAnnouncementsResponse.data)
+            SetAnnouncements(IndiaAnnouncementsResponse.data)
         } finally {
             SetIsLoading(false)
         }
@@ -29,6 +32,7 @@ const Announcements = () => {
     return (
         <div>
             <Header />
+            <Main Announcements={Announcements} />
         </div>
     )
 }
