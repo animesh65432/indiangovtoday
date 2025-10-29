@@ -1,11 +1,27 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import { GetallGroupsIndiaAnnouncements as AnnouncementsTyps } from "@/types";
+import { DateRangePicker } from "../ui/DateRangePicker";
+import { DateRange } from "react-day-picker";
+import Image from "next/image";
+import { TranslateText } from "@/lib/translatetext";
+import { LanguageContext } from "@/context/Lan"
+import { Currentdate } from "@/context/Currentdate"
+import { Input } from "../ui/input";
+import { Button } from "../ui/button";
+import { SelectContent, SelectItem, SelectTrigger, SelectValue, Select } from "../ui/select";
+import { optionsforLanguages } from "@/lib/lan";
+import { useRouter } from "next/router"
 
 type Props = {
     Announcements: AnnouncementsTyps[];
 };
 
 const Main: React.FC<Props> = ({ Announcements }) => {
+    const { language, onSelectLanguage } = useContext(LanguageContext)
+    const { startdate, endDate } = useContext(Currentdate)
+    const [SearchInput, SetSearchInput] = useState<string>("")
+    const router = useRouter()
+
     if (Announcements.length === 0) {
         return (
             <div className="h-[70vh] w-full flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100">
@@ -18,21 +34,75 @@ const Main: React.FC<Props> = ({ Announcements }) => {
         );
     }
 
+    function OnChangeDateRangePicker(values: { range: DateRange; rangeCompare?: DateRange | undefined; }): void {
+        throw new Error("Function not implemented.");
+    }
+
     return (
-        <div className="min-h-screen  py-12 overflow-x-auto">
-            <div className="flex flex-col space-y-16 px-4 md:px-8 lg:px-16 max-w-7xl mx-auto">
+        <div className="min-h-screen   overflow-x-auto flex flex-col gap-4">
+            <div className=' block sm:hidden relative h-[47px] w-[150px] ml-[5%]' onClick={() => router.push("/")} >
+                <Image src="/Logo.png" alt='logo' fill />
+            </div>
+
+            <div className='bg-[#F9F9F9] pt-7 border flex flex-col justify-center sm:justify-start sm:flex-row gap-5 sm:gap-2 items-center border-[#EDEDED] w-[85vw]  sm:w-[70vw] md:w-[50vw] lg:w-[600px] mx-auto  sm:h-[10vh] p-4  sm:p-2 rounded-md'>
+                <Input
+                    value={SearchInput}
+                    onChange={(e) => SetSearchInput(e.target.value)}
+                    className="w-[90%] sm:w-[70%] lg:w-[546px] bg-[#FFFFFF] rounded-xl ml-4 text-[#2B2B2B]"
+                    placeholder={TranslateText[language].INPUT_PLACEHOLDER}
+                />
+                <div className='flex flex-col [@media(min-width:450px)]:flex-row gap-4 sm:hidden items-center'>
+                    <DateRangePicker
+                        onUpdate={OnChangeDateRangePicker}
+                        initialDateFrom={startdate}
+                        initialDateTo={endDate}
+                        align="start"
+                        locale="en-GB"
+                        showCompare={false}
+                    />
+
+                    <Select
+                        onValueChange={(value) => {
+                            onSelectLanguage(value);
+                        }}
+                        value={language}
+                    >
+                        <SelectTrigger className="mx-auto [@media(min-width:450px)]:mx-0  border border-[#E0614B] self-end  bg-[#FFFFFF] rounded-lg   font-light shadow-[4px_4px_0_0_#00000029] text-[#E0614B] data-[placeholder]:text-[#E0614B] focus:ring-0 focus:outline-none">
+                            <SelectValue className="" />
+                        </SelectTrigger>
+                        <SelectContent className="text-[#E0614B]">
+                            {optionsforLanguages.map((lan) => (
+                                <SelectItem
+                                    key={lan.label}
+                                    value={lan.label}
+                                    className="font-medium hover:text-[#E0614B] "
+                                >
+                                    {lan.label}
+                                </SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
+                </div>
+
+                <Button
+                    className='bg-[#E0614B] lg:w-[121px] hover:bg-[#dd8272] rounded-xl shadow-[4px_4px_0_0_#00000029]'
+                >
+                    {TranslateText[language].SEARCH}
+                </Button>
+            </div>
+            <div className="flex flex-col space-y-16 px-4 md:px-8 lg:px-16 max-w-7xl mx-auto mt-10">
                 {Announcements.map((group, groupIdx) => (
                     <div
                         key={group.type}
-                        className="w-full flex flex-col space-y-6 animate-fade-in"
+                        className="w-full flex flex-col space-y-6 animate-fade-in hover:underline hover:cursor-pointer"
                         style={{ animationDelay: `${groupIdx * 100}ms` }}
                     >
                         {/* Group Title with Accent */}
                         <div className="flex items-center space-x-4">
                             <div className="h-12 w-1.5 bg-gradient-to-b from-[#E0614B] to-[#ff8c75] rounded-full"></div>
-                            <h2 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-[#E0614B] to-[#ff8c75] bg-clip-text text-transparent">
+                            <p className="  text-2xl sm:text-3xl md:text-4xl font-bold bg-gradient-to-r from-[#E0614B] to-[#ff8c75] bg-clip-text text-transparent">
                                 {group.type}
-                            </h2>
+                            </p>
                         </div>
 
                         {/* Announcement Cards */}
@@ -54,7 +124,7 @@ const Main: React.FC<Props> = ({ Announcements }) => {
                                     <a
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="text-xl font-bold text-gray-800 hover:text-[#E0614B] transition-colors duration-300 pr-10 leading-tight group-hover:underline decoration-2 underline-offset-4"
+                                        className=" text-[1rem] sm:text-xl font-bold text-gray-800 hover:text-[#E0614B] transition-colors duration-300 pr-10 leading-tight group-hover:underline decoration-2 underline-offset-4"
                                     >
                                         {an.title}
                                     </a>

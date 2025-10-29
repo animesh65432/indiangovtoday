@@ -378,14 +378,18 @@ export const GetallGroupsIndiaAnnouncements = asyncerrorhandler(async (req: Requ
         .aggregate(pipeline)
         .toArray();
 
+    const totalCount = await db.collection("announcements").countDocuments(filter);
+    const totalPages = Math.ceil(totalCount / pageSize);
+
     const responseData = {
         success: true,
         data: indiaAnnouncements,
-        languageCode: lan,
-        dateRange: {
-            start: start.toISOString(),
-            end: end.toISOString()
-        }
+        pagination: {
+            page: pageNumber,
+            totalPages,
+            totalCount,
+            pageSize,
+        },
     };
 
     await redis.set(redis_key, JSON.stringify(responseData), { ex: 300 });
