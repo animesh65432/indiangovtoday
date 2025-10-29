@@ -368,7 +368,7 @@ export const GetallGroupsIndiaAnnouncements = asyncerrorhandler(async (req: Requ
                 _id: 0
             }
         },
-        { $sort: { type: 1 } },
+        { $sort: { type: -1 } },
         { $skip: skip },
         { $limit: pageSize },
     );
