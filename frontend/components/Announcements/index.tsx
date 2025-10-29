@@ -102,7 +102,7 @@ const Announcements = () => {
             {/* Initial loading state */}
             {IsLoading && Announcements.length === 0 && (
                 <div className='h-[60vh] flex items-center justify-center'>
-                    <LoaderCircle className='h-5 w-5 animate-spin' />
+                    <LoaderCircle className='h-8 w-8 animate-spin text-[#E0614B]' />
                 </div>
             )}
 

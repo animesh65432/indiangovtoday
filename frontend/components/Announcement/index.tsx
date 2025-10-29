@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import Header from './Header'
 import { useEffect } from "react"
 import { getAnnouncement } from "@/api/announcements"
@@ -7,6 +7,7 @@ import { ShowAnnouncementsTypes } from "@/types"
 import AnnouncementSkeleton from './AnnouncementSkeleton'
 import { TranslateText } from "@/lib/translatetext"
 import { Inbox } from 'lucide-react'
+import { LanguageContext } from "@/context/Lan"
 
 type Props = {
     id: string
@@ -16,11 +17,12 @@ type Props = {
 const Announcement = ({ id, lan }: Props) => {
     const [announcement, setannouncement] = useState<ShowAnnouncementsTypes | null>(null)
     const [IsLoading, SetIsLoading] = useState<boolean>(false)
+    const { language } = useContext(LanguageContext)
 
     async function fetch() {
         SetIsLoading(true)
         try {
-            const response = await getAnnouncement(lan, id) as { data: ShowAnnouncementsTypes }
+            const response = await getAnnouncement(language, id) as { data: ShowAnnouncementsTypes }
             setannouncement(response.data)
         }
         finally {
@@ -32,7 +34,7 @@ const Announcement = ({ id, lan }: Props) => {
         if (id) {
             fetch()
         }
-    }, [id])
+    }, [id, language])
 
     return (
         <div className="bg-[#FFFFFF] flex flex-col h-[100vh] w-[100vw] overflow-hidden">
