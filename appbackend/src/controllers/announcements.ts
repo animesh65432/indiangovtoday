@@ -471,7 +471,7 @@ export const GetIndiaAnnouncement = asyncerrorhandler(async (req: Request, res: 
         );
     } else {
         pipeline.push({
-            $unset: ["translations", "language", "original_title", "source"]
+            $unset: ["translations", "language", "original_title", "summary",]
         });
     }
     const result = await db

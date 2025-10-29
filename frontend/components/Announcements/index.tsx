@@ -7,7 +7,6 @@ import { LanguageContext } from "@/context/Lan"
 import { GetallGroupsIndiaAnnouncementsResponse, GetallGroupsIndiaAnnouncements as AnnouncementsTyps } from "@/types"
 import Main from './Main'
 import { LoaderCircle } from "lucide-react"
-import { useWindowDimensions } from "@/hooks/useWindowDimensions"
 
 const Announcements = () => {
     const [IsLoading, SetIsLoading] = useState<boolean>(false)
@@ -82,7 +81,7 @@ const Announcements = () => {
         }
     }, [Startpage, hasMore, IsLoadingMore])
 
-    // Initial load when language changes
+
     useEffect(() => {
         SetStartpage(0)
         setHasMore(true)
@@ -90,7 +89,7 @@ const Announcements = () => {
         fetchGetGroupIndiaAnnouncements(0, false)
     }, [language])
 
-    // Attach scroll listener
+
     useEffect(() => {
         window.addEventListener('scroll', handleScroll)
         return () => window.removeEventListener('scroll', handleScroll)

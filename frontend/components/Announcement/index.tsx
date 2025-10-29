@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import Header from '../Header'
+import Header from './Header'
 import { useEffect } from "react"
 import { getAnnouncement } from "@/api/announcements"
 import ShowAnnouncement from './ShowAnnouncement'
@@ -20,10 +20,8 @@ const Announcement = ({ id, lan }: Props) => {
     async function fetch() {
         SetIsLoading(true)
         try {
-            const data = await getAnnouncement(lan, id) as ShowAnnouncementsTypes
-            setannouncement(data)
-        } catch (error) {
-            console.log(error)
+            const response = await getAnnouncement(lan, id) as { data: ShowAnnouncementsTypes }
+            setannouncement(response.data)
         }
         finally {
             SetIsLoading(false)

@@ -16,7 +16,7 @@ const Announcement: React.FC<Props> = ({ Announcement }) => {
     const { language } = useContext(LanguageContext)
 
     const redirect_to = (id: string) => {
-        router.push(`/Announcement?id=${id}&lan=${language}`)
+        router.push(`/announcement?id=${id}&lan=${language}`)
     }
 
     const formatDate = (dateString: string | Date | undefined) => {
