@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { Announcement as AnnouncementsTypes } from "@/types"
+import { GroupedAnnouncement as AnnouncementsTypes } from "@/types"
 import { useRouter } from 'next/router'
 import { Button } from '../ui/button'
 import { LanguageContext } from "@/context/Lan"
@@ -39,7 +39,7 @@ const Announcement: React.FC<Props> = ({ Announcement }) => {
     const hasMore = Announcement.length > 4
 
     return (
-        <Card className='flex flex-col h-full hover:shadow-lg transition-shadow duration-300'>
+        <Card className=' w-[75vw] md:w-full md:flex-1 flex flex-col h-full hover:shadow-lg transition-shadow duration-300'>
             <CardHeader className='pb-2'>
                 <div className='flex items-center justify-between'>
                     <div className='flex items-center gap-1'>
@@ -89,11 +89,10 @@ const Announcement: React.FC<Props> = ({ Announcement }) => {
                 )}
             </CardContent>
 
-            {/* Footer */}
             <CardFooter className='pt-4 border-t'>
                 <Button
                     onClick={() => redirect_to(Announcement[0]._id)}
-                    className='w-full bg-[#E0614B] hover:bg-[#ec3b1c] text-white gap-2'
+                    className='bg-[#E0614B] ml-auto lg:w-[121px] hover:bg-[#dd8272] rounded-xl shadow-[4px_4px_0_0_#00000029]'
                 >
                     View All
                     <ArrowRight className='size-4' />

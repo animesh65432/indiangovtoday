@@ -7,19 +7,46 @@ export type AnnouncementsTypes = {
     summary: string
 }
 
-export type Announcement = {
+export type GroupedAnnouncement = {
     _id: string;
     title: string;
-    language: string;
     type: string;
     created_at: string
 };
 
 export type GroupedAnnouncements = {
     type: string;
-    count: number;
-    announcements: Announcement[];
+    announcements: GroupedAnnouncement[];
 };
+
+export type GroupAnnouncementsresponse = {
+    data: GroupedAnnouncements[],
+    languageCode: string,
+    pagination: {
+        page: number,
+        totalPages: number,
+        totalCount: number,
+        pageSize: number
+    }
+}
+
+export type GetallGroupsIndiaAnnouncement = {
+    _id: string,
+    title: string,
+    created_at: string,
+    type: string,
+    summary: string,
+    original_type: string
+}
+
+export type GetallGroupsIndiaAnnouncements = {
+    type: string,
+    announcements: GetallGroupsIndiaAnnouncement[]
+}
+
+export type GetallGroupsIndiaAnnouncementsResponse = {
+    data: GetallGroupsIndiaAnnouncements[]
+}
 
 
 export type ShowAnnouncementsTypes = {

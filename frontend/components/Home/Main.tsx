@@ -1,9 +1,8 @@
 import React, { useEffect, useState, useContext, useCallback, useRef } from 'react';
 import { getAllAnnouncements } from "@/api/announcements";
-import { GroupedAnnouncements } from "@/types";
+import { GroupedAnnouncements, GroupAnnouncementsresponse } from "@/types";
 import { UseLanguageContext } from '@/context/Lan';
 import { Currentdate } from "@/context/Currentdate";
-import { PageNationContext } from "@/context/PageNationProvider"
 import Image from 'next/image';
 import { Input } from '../ui/input';
 import { Button } from '../ui/button';
@@ -18,16 +17,21 @@ import {
 } from "@/components/ui/select";
 import { optionsforLanguages } from '@/lib/lan';
 import GroupofAnnouncement from './GroupofAnnouncement';
+import { useRouter } from "next/router"
+import { useWindowDimensions } from '@/hooks/useWindowDimensions';
 
 const Main: React.FC = () => {
     const latestrequest = useRef<symbol | null>(null);
     const [GroupAnnouncements, SetGroupAnnouncements] = useState<GroupedAnnouncements[]>([])
-    const { SetPageIndexs, StartPage, EndPage, itemsPerPage } = useContext(PageNationContext)
     const [IsLoading, SetIsLoading] = useState<boolean>(true);
     const [SearchInput, SetSearchInput] = useState<string>("")
-    const [IsSearchActive, SetIsSearchActive] = useState<boolean>(false)
     const LanguageContext = UseLanguageContext();
+    const [page, setPage] = useState<number>(1);
+    const [limit, setlimit] = useState<number>(2);
+    const [pageSize, setPageSize] = useState<number>(0)
     const { startdate, endDate, onChangeDate } = useContext(Currentdate);
+    const router = useRouter()
+    const { width } = useWindowDimensions()
 
     if (!LanguageContext) return null;
 
@@ -41,12 +45,12 @@ const Main: React.FC = () => {
         const fetchData = async () => {
             SetIsLoading(true);
             try {
-                const GroupAnnouncementsresponse = await getAllAnnouncements(language, startdate, endDate) as GroupedAnnouncements[];
+                const GroupAnnouncementsresponse = await getAllAnnouncements(language, startdate, endDate, page, limit) as GroupAnnouncementsresponse;
 
                 if (latestrequest.current === requestId) {
-                    SetGroupAnnouncements(GroupAnnouncementsresponse)
-                    SetIsSearchActive(false);
+                    SetGroupAnnouncements(GroupAnnouncementsresponse.data)
                     SetSearchInput("");
+                    setPageSize(GroupAnnouncementsresponse.pagination.totalPages)
                 }
 
             } catch (error) {
@@ -63,17 +67,34 @@ const Main: React.FC = () => {
         return () => {
             isLatest = false;
         };
-    }, [language, startdate, endDate, StartPage, EndPage]);
+    }, [language, startdate, endDate, page, limit]);
 
 
     useEffect(() => {
         fetchAnnouncements();
-    }, [language, startdate, endDate, StartPage, EndPage]);
+    }, [language, startdate, endDate, page, limit]);
 
-    const OnSearchAnnouncement = () => {
-        SetPageIndexs({ StartPage: 0, EndPage: itemsPerPage });
-        SetIsSearchActive(true)
+    const goToNextPage = () => {
+        if (page < pageSize) {
+            setPage(page + 1);
+        }
     };
+
+    const goToPrevPage = () => {
+        if (page > 1) {
+            setPage(page - 1);
+        }
+    };
+
+    useEffect(() => {
+        if (width <= 768) {
+            setlimit(5)
+        }
+        else {
+            setlimit(2)
+        }
+    }, [width])
+
 
     const OnChangeDateRangePicker = (values: {
         range: { from?: Date; to?: Date };
@@ -83,7 +104,6 @@ const Main: React.FC = () => {
             onChangeDate(values.range.from, values.range.to);
 
             SetSearchInput("");
-            SetIsSearchActive(false);
         }
     };
 
@@ -105,7 +125,6 @@ const Main: React.FC = () => {
                 <Input
                     value={SearchInput}
                     onChange={(e) => SetSearchInput(e.target.value)}
-                    onKeyDown={(e) => e.key === 'Enter' && OnSearchAnnouncement()}
                     className="w-[90%] sm:w-[70%] lg:w-[346px] bg-[#FFFFFF] rounded-xl ml-4 text-[#2B2B2B]"
                     placeholder={TranslateText[language].INPUT_PLACEHOLDER}
                 />
@@ -143,15 +162,40 @@ const Main: React.FC = () => {
                 </div>
 
                 <Button
-                    onClick={OnSearchAnnouncement}
                     className='bg-[#E0614B] lg:w-[121px] hover:bg-[#dd8272] rounded-xl shadow-[4px_4px_0_0_#00000029]'
                 >
                     {TranslateText[language].SEARCH}
                 </Button>
             </div>
-            {!IsLoading &&
-                <GroupofAnnouncement announcements={GroupAnnouncements} />
-            }
+            <div className='min-w-[250px]  border rounded-lg h-[30vh] p-6 hidden lg:hidden flex-col justify-between '>
+                <div className='text-lg font-semibold flex flex-col'>
+                    <span className='text-gray-600'> Discover More</span>
+                    <span className='text-[#E0614B]'>Indian Announcements</span>
+                </div>
+                <Button onClick={() => router.push("/announcements")} className='bg-[#E0614B] lg:w-[121px] hover:bg-[#dd8272] rounded-xl shadow-[4px_4px_0_0_#00000029]'>
+                    See More
+                </Button>
+            </div>
+
+            <div className='w-[65vw] mx-auto  border rounded-lg h-[30vh] p-6  lg:hidden flex flex-col justify-between '>
+                <div className='text-lg font-semibold flex flex-col'>
+                    <span className='text-gray-600'> Discover More</span>
+                    <span className='text-[#E0614B]'>Indian Announcements</span>
+                </div>
+                <Button onClick={() => router.push("/announcements")} className='bg-[#E0614B] lg:w-[121px] hover:bg-[#dd8272] rounded-xl shadow-[4px_4px_0_0_#00000029]'>
+                    See More
+                </Button>
+            </div>
+
+            <GroupofAnnouncement
+                announcements={GroupAnnouncements}
+                onNextPage={goToNextPage}
+                onPrevPage={goToPrevPage}
+                currentPage={page}
+                totalPages={pageSize}
+                IsLoading={IsLoading}
+            />
+
         </div>
     );
 };
