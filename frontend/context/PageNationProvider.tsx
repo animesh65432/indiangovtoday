@@ -33,31 +33,12 @@ export const PageNationProvider = ({ children }: Props) => {
     const { width, height } = useWindowDimensions()
     const [itemsPerPage, SetitemsPerPage] = useState(4)
     const getInitialEndPage = () => {
-        if (width <= 500) {
-            return 10;
+        if (width >= 767) {
+            return 2;
         }
-
-        // Tablet range
-        if (width >= 767 && width <= 1025) {
-            return 3;
+        else {
+            return 8;
         }
-
-        // Small desktop
-        if (width >= 1024 && width <= 1280) {
-            return 3;
-        }
-
-        if (width >= 1600) {
-            if (height <= 800) return 4;
-            if (width < 1900 && height < 1000) return 5;
-            if (width < 2100 && height < 1181) return 6;
-            if (width < 2600 && height < 1463) return 7;
-            if (width < 2800 && height < 1575) return 8;
-            if (width < 3000 && height < 1688) return 9;
-            return 10; // 3000+ width and 1688+ height
-        }
-
-        return 4;
     };
 
     const [PageIndexs, SetPageIndexs] = useState<PageIndexsType>({

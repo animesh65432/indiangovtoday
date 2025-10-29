@@ -11,10 +11,12 @@ import { optionsforLanguages } from "@/lib/lan";
 import { LanguageContext } from "@/context/Lan";
 import { Currentdate } from "@/context/Currentdate"
 import { DateRangePicker } from "@/components/ui/DateRangePicker"
+import { useRouter } from "next/router"
 
 const Header: React.FC = () => {
     const { startdate, endDate, onChangeDate } = useContext(Currentdate)
     const { onSelectLanguage, language } = useContext(LanguageContext)
+    const router = useRouter()
 
     const OnChangeDateRangePicker = (values: {
         range: { from?: Date; to?: Date };
@@ -26,7 +28,7 @@ const Header: React.FC = () => {
     };
     return (
         <div className=' w-[95%]  [@media(min-width:900px)]:w-[85vw] mx-auto  pt-5  [@media(min-width:900px)]:pt-10 flex items-center  justify-between '>
-            <div className="relative  hidden sm:block h-[52px] sm:w-[168px] lg:h-[70px] lg:w-[230px] xl:h-[82px] xl:w-[265px]">
+            <div onClick={() => router.push("/")} className="relative  hidden sm:block h-[52px] sm:w-[168px] lg:h-[70px] lg:w-[230px] xl:h-[82px] xl:w-[265px]">
                 <Image
                     alt="logo"
                     src="/Logo.png"
