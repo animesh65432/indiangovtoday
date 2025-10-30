@@ -13,3 +13,21 @@ export const formatDate = (dateString: string | Date | undefined) => {
 
     return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
 }
+
+export const formatDateInLanguage = (
+    date: Date | string | number,
+    languageCode: string,
+    options?: Intl.DateTimeFormatOptions
+): string => {
+    const defaultOptions: Intl.DateTimeFormatOptions = {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        ...options
+    };
+
+    return new Intl.DateTimeFormat(languageCode, defaultOptions).format(
+        new Date(date)
+    );
+};
+

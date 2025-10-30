@@ -6,7 +6,8 @@ import { LanguageContext } from "@/context/Lan"
 import { Card, CardContent, CardHeader, CardFooter } from '../ui/card'
 import { ArrowRight, Bell } from "lucide-react"
 import { TranslateText } from "@/lib/translatetext"
-import { formatDate } from "@/lib/formatDate"
+import { formatDateInLanguage } from "@/lib/formatDate"
+import { LANGUAGE_CODES } from "@/lib/lan"
 
 
 type Props = {
@@ -41,7 +42,7 @@ const Announcement: React.FC<Props> = ({ Announcement }) => {
 
             <CardContent className='flex-1 space-y-1'>
                 {Announcement.map((ann) => {
-                    const formattedDate = formatDate(ann.created_at)
+                    const formattedDate = formatDateInLanguage(ann.created_at, LANGUAGE_CODES[language])
 
                     return (
                         <div

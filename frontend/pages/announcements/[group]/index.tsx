@@ -1,11 +1,11 @@
 "use client"
-import React, { useEffect, useState, useContext, useMemo } from "react"
+import React, { useEffect, useState, useContext } from "react"
 import { useRouter } from "next/router"
 import Header from '@/components/Home/Header'
 import { Input } from "@/components/ui/input"
 import { DateRangePicker } from "@/components/ui/DateRangePicker"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { optionsforLanguages } from "@/lib/lan"
+import { LANGUAGE_CODES, optionsforLanguages } from "@/lib/lan"
 import { Button } from "@/components/ui/button"
 import { TranslateText } from "@/lib/translatetext"
 import { LanguageContext } from "@/context/Lan"
@@ -13,7 +13,7 @@ import { Currentdate } from "@/context/Currentdate"
 import { GetGroupIndiaAnnouncements } from "@/api/announcements"
 import { LoaderCircle, Calendar } from "lucide-react"
 import Image from "next/image"
-import { formatDate } from "@/lib/formatDate"
+import { formatDateInLanguage } from "@/lib/formatDate"
 
 
 type AnnouncementsTypes = {
@@ -194,7 +194,7 @@ export default function GroupPage() {
                                         </h3>
                                         <div className="flex items-center gap-1.5 text-gray-500 text-xs md:text-sm whitespace-nowrap flex-shrink-0">
                                             <Calendar className="h-3.5 w-3.5 md:h-4 md:w-4" />
-                                            <span>{formatDate(announcement.created_at)}</span>
+                                            <span>{formatDateInLanguage(announcement.created_at, LANGUAGE_CODES[language])}</span>
                                         </div>
                                     </div>
                                     {announcement.summary && (
@@ -202,7 +202,9 @@ export default function GroupPage() {
                                             {announcement.summary}
                                         </p>
                                     )}
-                                    <Button onClick={() => router.push(`/announcement?id=${announcement._id}&lan=${language}`)} className="bg-[#E0614B] w-[100px] ml-auto hover:bg-[#b78d86]">See More</Button>
+                                    <Button onClick={() => router.push(`/announcement?id=${announcement._id}&lan=${language}`)} className="bg-[#E0614B] w-[100px] ml-auto hover:bg-[#b78d86]">
+                                        {TranslateText[language].SEE_MORE}
+                                    </Button>
                                 </div>
                             ))}
                         </div>
