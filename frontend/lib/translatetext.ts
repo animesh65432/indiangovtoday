@@ -5,20 +5,45 @@ type TranslationKeys = {
     PAGE: string;
     OF: string;
     SOURCE: string;
-    No_announcements_found: string;
-    See_Details: string;
+    NO_ANNOUNCEMENTS_FOUND: string;
+    SEE_DETAILS: string;
+    DISCOVER_MORE: string;
+    INDIAN_ANNOUNCEMENTS: string;
+    SEE_MORE: string;
+    VIEW_ALL: string;
+    VIEW_DETAILS: string;
 };
 
 export const TranslateText: Record<string, TranslationKeys> = {
+    English: {
+        ALL_GOVERNMENT_ANNOUNCEMENTS_IN_ONE_PLACE: "All Government Announcements in One Place",
+        INPUT_PLACEHOLDER: "Search type or title....",
+        SEARCH: "Search",
+        PAGE: "Page",
+        OF: "of",
+        SOURCE: "Source",
+        NO_ANNOUNCEMENTS_FOUND: "No announcements found",
+        SEE_DETAILS: "See Details",
+        DISCOVER_MORE: "Discover More",
+        INDIAN_ANNOUNCEMENTS: "Indian Announcements",
+        SEE_MORE: "See More",
+        VIEW_ALL: "View All",
+        VIEW_DETAILS: "View Details"
+    },
     हिन्दी: {
         ALL_GOVERNMENT_ANNOUNCEMENTS_IN_ONE_PLACE: "सभी सरकारी घोषणाएँ, एक ही स्थान पर",
-        INPUT_PLACEHOLDER: "खोज प्रकार या शीर्षक ....",
+        INPUT_PLACEHOLDER: "खोज प्रकार या शीर्षक....",
         SEARCH: "खोज",
         PAGE: "पृष्ठ",
         OF: "का",
         SOURCE: "स्रोत",
-        No_announcements_found: "कोई घोषणा नहीं मिली",
-        See_Details: "विवरण देखें"
+        NO_ANNOUNCEMENTS_FOUND: "कोई घोषणा नहीं मिली",
+        SEE_DETAILS: "विवरण देखें",
+        DISCOVER_MORE: "अधिक खोजें",
+        INDIAN_ANNOUNCEMENTS: "भारतीय घोषणाएँ",
+        SEE_MORE: "और देखें",
+        VIEW_ALL: "सभी देखें",
+        VIEW_DETAILS: "विवरण देखें"
     },
     বাংলা: {
         ALL_GOVERNMENT_ANNOUNCEMENTS_IN_ONE_PLACE: "সকল সরকারি ঘোষণা, এক জায়গায়",
@@ -27,8 +52,13 @@ export const TranslateText: Record<string, TranslationKeys> = {
         PAGE: "পৃষ্ঠা",
         OF: "টির মধ্যে",
         SOURCE: "উৎস",
-        No_announcements_found: "কোনো ঘোষণা পাওয়া যায়নি",
-        See_Details: "বিস্তারিত দেখুন"
+        NO_ANNOUNCEMENTS_FOUND: "কোনো ঘোষণা পাওয়া যায়নি",
+        SEE_DETAILS: "বিস্তারিত দেখুন",
+        DISCOVER_MORE: "আরও আবিষ্কার করুন",
+        INDIAN_ANNOUNCEMENTS: "ভারতীয় ঘোষণা",
+        SEE_MORE: "আরও দেখুন",
+        VIEW_ALL: "সব দেখুন",
+        VIEW_DETAILS: "বিস্তারিত দেখুন"
     },
     தமிழ்: {
         ALL_GOVERNMENT_ANNOUNCEMENTS_IN_ONE_PLACE: "அனைத்து அரசு அறிவிப்புகளும் ஒரே இடத்தில்",
@@ -37,8 +67,13 @@ export const TranslateText: Record<string, TranslationKeys> = {
         PAGE: "பக்கம்",
         OF: "இல்",
         SOURCE: "ஆதாரம்",
-        No_announcements_found: "எந்த அறிவிப்புகளும் கிடைக்கவில்லை",
-        See_Details: "விவரங்களைப் பார்க்கவும்"
+        NO_ANNOUNCEMENTS_FOUND: "எந்த அறிவிப்புகளும் கிடைக்கவில்லை",
+        SEE_DETAILS: "விவரங்களைப் பார்க்கவும்",
+        DISCOVER_MORE: "மேலும் கண்டறியவும்",
+        INDIAN_ANNOUNCEMENTS: "இந்திய அறிவிப்புகள்",
+        SEE_MORE: "மேலும் பார்க்கவும்",
+        VIEW_ALL: "அனைத்தையும் காண்க",
+        VIEW_DETAILS: "விவரங்களைப் பார்க்கவும்"
     },
     తెలుగు: {
         ALL_GOVERNMENT_ANNOUNCEMENTS_IN_ONE_PLACE: "అన్ని ప్రభుత్వ ప్రకటనలు ఒకే చోట",
@@ -47,8 +82,13 @@ export const TranslateText: Record<string, TranslationKeys> = {
         PAGE: "పేజీ",
         OF: "లో",
         SOURCE: "మూలం",
-        No_announcements_found: "ప్రకటనలు కనుగొనబడలేదు",
-        See_Details: "వివరాలు చూడండి"
+        NO_ANNOUNCEMENTS_FOUND: "ప్రకటనలు కనుగొనబడలేదు",
+        SEE_DETAILS: "వివరాలు చూడండి",
+        DISCOVER_MORE: "మరిన్ని కనుగొనండి",
+        INDIAN_ANNOUNCEMENTS: "భారతీయ ప్రకటనలు",
+        SEE_MORE: "మరిన్ని చూడండి",
+        VIEW_ALL: "అన్నీ చూడండి",
+        VIEW_DETAILS: "వివరాలు చూడండి"
     },
     मराठी: {
         ALL_GOVERNMENT_ANNOUNCEMENTS_IN_ONE_PLACE: "सर्व सरकारी घोषणा, एकाच ठिकाणी",
@@ -57,8 +97,13 @@ export const TranslateText: Record<string, TranslationKeys> = {
         PAGE: "पृष्ठ",
         OF: "चे",
         SOURCE: "स्रोत",
-        No_announcements_found: "कोणतीही घोषणा आढळली नाही",
-        See_Details: "तपशील पहा"
+        NO_ANNOUNCEMENTS_FOUND: "कोणतीही घोषणा आढळली नाही",
+        SEE_DETAILS: "तपशील पहा",
+        DISCOVER_MORE: "अधिक शोधा",
+        INDIAN_ANNOUNCEMENTS: "भारतीय घोषणा",
+        SEE_MORE: "अधिक पहा",
+        VIEW_ALL: "सर्व पहा",
+        VIEW_DETAILS: "तपशील पहा"
     },
     ગુજરાતી: {
         ALL_GOVERNMENT_ANNOUNCEMENTS_IN_ONE_PLACE: "બધી સરકારી જાહેરાતો, એક જ જગ્યાએ",
@@ -67,8 +112,13 @@ export const TranslateText: Record<string, TranslationKeys> = {
         PAGE: "પૃષ્ઠ",
         OF: "નું",
         SOURCE: "સ્ત્રોત",
-        No_announcements_found: "કોઈ જાહેરાતો મળી નથી",
-        See_Details: "વિગતો જુઓ"
+        NO_ANNOUNCEMENTS_FOUND: "કોઈ જાહેરાતો મળી નથી",
+        SEE_DETAILS: "વિગતો જુઓ",
+        DISCOVER_MORE: "વધુ શોધો",
+        INDIAN_ANNOUNCEMENTS: "ભારતીય જાહેરાતો",
+        SEE_MORE: "વધુ જુઓ",
+        VIEW_ALL: "બધું જુઓ",
+        VIEW_DETAILS: "વિગતો જુઓ"
     },
     ಕನ್ನಡ: {
         ALL_GOVERNMENT_ANNOUNCEMENTS_IN_ONE_PLACE: "ಎಲ್ಲಾ ಸರ್ಕಾರಿ ಘೋಷಣೆಗಳು, ಒಂದೇ ಸ್ಥಳದಲ್ಲಿ",
@@ -77,8 +127,13 @@ export const TranslateText: Record<string, TranslationKeys> = {
         PAGE: "ಪುಟ",
         OF: "ರ",
         SOURCE: "ಮೂಲ",
-        No_announcements_found: "ಯಾವುದೇ ಘೋಷಣೆಗಳು ಕಂಡುಬಂದಿಲ್ಲ",
-        See_Details: "ವಿವರಗಳನ್ನು ನೋಡಿ"
+        NO_ANNOUNCEMENTS_FOUND: "ಯಾವುದೇ ಘೋಷಣೆಗಳು ಕಂಡುಬಂದಿಲ್ಲ",
+        SEE_DETAILS: "ವಿವರಗಳನ್ನು ನೋಡಿ",
+        DISCOVER_MORE: "ಇನ್ನಷ್ಟು ಕಂಡುಹಿಡಿಯಿರಿ",
+        INDIAN_ANNOUNCEMENTS: "ಭಾರತೀಯ ಪ್ರಕಟಣೆಗಳು",
+        SEE_MORE: "ಇನ್ನಷ್ಟು ನೋಡಿ",
+        VIEW_ALL: "ಎಲ್ಲವನ್ನೂ ನೋಡಿ",
+        VIEW_DETAILS: "ವಿವರಗಳನ್ನು ನೋಡಿ"
     },
     മലയാളം: {
         ALL_GOVERNMENT_ANNOUNCEMENTS_IN_ONE_PLACE: "എല്ലാ സർക്കാർ അറിയിപ്പുകളും ഒരിടത്ത്",
@@ -87,28 +142,13 @@ export const TranslateText: Record<string, TranslationKeys> = {
         PAGE: "പേജ്",
         OF: "ൽ",
         SOURCE: "ഉറവിടം",
-        No_announcements_found: "അറിയിപ്പുകളൊന്നും കണ്ടെത്തിയില്ല",
-        See_Details: "വിശദാംശങ്ങൾ കാണുക"
-    },
-    ਪੰਜਾਬੀ: {
-        ALL_GOVERNMENT_ANNOUNCEMENTS_IN_ONE_PLACE: "ਸਾਰੀਆਂ ਸਰਕਾਰੀ ਘੋਸ਼ਣਾਵਾਂ, ਇੱਕ ਹੀ ਥਾਂ 'ਤੇ",
-        INPUT_PLACEHOLDER: "ਖੋਜ ਦੀ ਕਿਸਮ ਜਾਂ ਸਿਰਲੇਖ....",
-        SEARCH: "ਖੋਜੋ",
-        PAGE: "ਪੰਨਾ",
-        OF: "ਦਾ",
-        SOURCE: "ਸਰੋਤ",
-        No_announcements_found: "ਕੋਈ ਘੋਸ਼ਣਾਵਾਂ ਨਹੀਂ ਮਿਲੀਆਂ",
-        See_Details: "ਵੇਰਵੇ ਦੇਖੋ"
-    },
-    ଓଡ଼ିଆ: {
-        ALL_GOVERNMENT_ANNOUNCEMENTS_IN_ONE_PLACE: "ସମସ୍ତ ସରକାରୀ ଘୋଷଣା, ଗୋଟିଏ ସ୍ଥାନରେ",
-        INPUT_PLACEHOLDER: "ଖୋଜ ପ୍ରକାର କିମ୍ବା ଶୀର୍ଷକ....",
-        SEARCH: "ଖୋଜନ୍ତୁ",
-        PAGE: "ପୃଷ୍ଠା",
-        OF: "ର",
-        SOURCE: "ଉତ୍ସ",
-        No_announcements_found: "କୌଣସି ଘୋଷଣା ମିଳିଲା ନାହିଁ",
-        See_Details: "ବିବରଣୀ ଦେଖନ୍ତୁ"
+        NO_ANNOUNCEMENTS_FOUND: "അറിയിപ്പുകളൊന്നും കണ്ടെത്തിയില്ല",
+        SEE_DETAILS: "വിശദാംശങ്ങൾ കാണുക",
+        DISCOVER_MORE: "കൂടുതൽ കണ്ടെത്തുക",
+        INDIAN_ANNOUNCEMENTS: "ഇന്ത്യൻ പ്രഖ്യാപനങ്ങൾ",
+        SEE_MORE: "കൂടുതൽ കാണുക",
+        VIEW_ALL: "എല്ലാം കാണുക",
+        VIEW_DETAILS: "വിശദാംശങ്ങൾ കാണുക"
     },
     اردو: {
         ALL_GOVERNMENT_ANNOUNCEMENTS_IN_ONE_PLACE: "تمام سرکاری اعلانات، ایک ہی جگہ",
@@ -117,97 +157,12 @@ export const TranslateText: Record<string, TranslationKeys> = {
         PAGE: "صفحہ",
         OF: "کا",
         SOURCE: "ماخذ",
-        No_announcements_found: "کوئی اعلان نہیں ملا",
-        See_Details: "تفصیلات دیکھیں"
-    },
-    অসমীয়া: {
-        ALL_GOVERNMENT_ANNOUNCEMENTS_IN_ONE_PLACE: "সকলো চৰকাৰী ঘোষণা, এটা ঠাইতে",
-        INPUT_PLACEHOLDER: "সন্ধান প্ৰকাৰ বা শিৰোনাম....",
-        SEARCH: "সন্ধান কৰক",
-        PAGE: "পৃষ্ঠা",
-        OF: "ৰ",
-        SOURCE: "উৎস",
-        No_announcements_found: "কোনো ঘোষণা পোৱা নগ'ল",
-        See_Details: "বিৱৰণ চাওক"
-    },
-    संस्कृतम्: {
-        ALL_GOVERNMENT_ANNOUNCEMENTS_IN_ONE_PLACE: "सर्वे शासकीयाः घोषणाः, एकस्मिन् स्थाने",
-        INPUT_PLACEHOLDER: "अन्वेषणप्रकारः अथवा शीर्षकम्....",
-        SEARCH: "अन्विष्यताम्",
-        PAGE: "पृष्ठम्",
-        OF: "तः",
-        SOURCE: "स्रोतः",
-        No_announcements_found: "कोऽपि घोषणा न प्राप्तः",
-        See_Details: "विवरणं पश्यतु"
-    },
-    मैथिली: {
-        ALL_GOVERNMENT_ANNOUNCEMENTS_IN_ONE_PLACE: "सभ सरकारी घोषणा, एकहि ठाम पर",
-        INPUT_PLACEHOLDER: "खोज प्रकार या शीर्षक....",
-        SEARCH: "खोजू",
-        PAGE: "पृष्ठ",
-        OF: "केर",
-        SOURCE: "स्रोत",
-        No_announcements_found: "कोनो घोषणा नहि भेटल",
-        See_Details: "विवरण देखू"
-    },
-    संथाली: {
-        ALL_GOVERNMENT_ANNOUNCEMENTS_IN_ONE_PLACE: "ᱡᱷᱚᱛᱚ ᱥᱚᱨᱠᱟᱨᱤ ᱜᱷᱳᱥᱚᱬᱟ, ᱢᱤᱫ ᱴᱷᱟᱶ ᱨᱮ",
-        INPUT_PLACEHOLDER: "ᱥᱮᱸᱫᱽᱨᱟ ᱞᱮᱠᱟᱱ ᱟᱨᱵᱟᱝ ᱥᱤᱨᱯᱷᱟᱹ....",
-        SEARCH: "ᱥᱮᱸᱫᱽᱨᱟ",
-        PAGE: "ᱥᱟᱦᱴᱟ",
-        OF: "ᱨᱮᱭᱟᱜ",
-        SOURCE: "ᱥᱨᱚᱛ",
-        No_announcements_found: "ᱡᱟᱦᱟᱸ ᱜᱷᱳᱥᱚᱬᱟ ᱵᱟᱝ ᱧᱟᱢ ᱞᱮᱱᱟ",
-        See_Details: "ᱵᱤᱵᱨᱚᱬ ᱧᱮᱞ ᱢᱮ"
-    },
-    नेपाली: {
-        ALL_GOVERNMENT_ANNOUNCEMENTS_IN_ONE_PLACE: "सबै सरकारी घोषणाहरू, एकै ठाउँमा",
-        INPUT_PLACEHOLDER: "खोज प्रकार वा शीर्षक....",
-        SEARCH: "खोज्नुहोस्",
-        PAGE: "पृष्ठ",
-        OF: "को",
-        SOURCE: "स्रोत",
-        No_announcements_found: "कुनै घोषणाहरू फेला परेन",
-        See_Details: "विवरण हेर्नुहोस्"
-    },
-    डोगरी: {
-        ALL_GOVERNMENT_ANNOUNCEMENTS_IN_ONE_PLACE: "सारे सरकारी घोशणां, इक्क गै थाह् र",
-        INPUT_PLACEHOLDER: "तलाश किस्म जां शीर्षक....",
-        SEARCH: "तलाश करो",
-        PAGE: "पन्ना",
-        OF: "दा",
-        SOURCE: "स्रोत",
-        No_announcements_found: "कोई घोशणा नेईं मिल्ली",
-        See_Details: "ब्योरा दिक्खो"
-    },
-    बोडो: {
-        ALL_GOVERNMENT_ANNOUNCEMENTS_IN_ONE_PLACE: "गासै सरकारी घोषणा, मिथि जायगाआव",
-        INPUT_PLACEHOLDER: "नायथिनाय बिबाव नाथाय मुं....",
-        SEARCH: "नायथि",
-        PAGE: "पेज",
-        OF: "नि",
-        SOURCE: "सोरसि",
-        No_announcements_found: "गाव घोषणा मोननानै",
-        See_Details: "बिबरान नायनो"
-    },
-    मणिपुरी: {
-        ALL_GOVERNMENT_ANNOUNCEMENTS_IN_ONE_PLACE: "পুম্নমক্কী সরকারগী ৱারোলশিং, অমত্তা মফম অমদা",
-        INPUT_PLACEHOLDER: "ৱাথোক্কী মখল নত্ত্রগা মীং....",
-        SEARCH: "ৱাথোক্কদবা",
-        PAGE: "পেজ",
-        OF: "কী",
-        SOURCE: "মখল",
-        No_announcements_found: "ৱারোল অমত্তা ফংদ্রে",
-        See_Details: "শিংনবা উবা"
-    },
-    English: {
-        ALL_GOVERNMENT_ANNOUNCEMENTS_IN_ONE_PLACE: "ALL GOVERNMENT ANNOUNCEMENTS IN ONE PLACE",
-        INPUT_PLACEHOLDER: "Search type or title....",
-        SEARCH: "Search",
-        PAGE: "Page",
-        OF: "of",
-        SOURCE: "Source",
-        No_announcements_found: "No announcements found",
-        See_Details: "See Details"
+        NO_ANNOUNCEMENTS_FOUND: "کوئی اعلان نہیں ملا",
+        SEE_DETAILS: "تفصیلات دیکھیں",
+        DISCOVER_MORE: "مزید دریافت کریں",
+        INDIAN_ANNOUNCEMENTS: "ہندوستانی اعلانات",
+        SEE_MORE: "مزید دیکھیں",
+        VIEW_ALL: "سب دیکھیں",
+        VIEW_DETAILS: "تفصیلات دیکھیں"
     }
 };

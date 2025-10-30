@@ -1,8 +1,11 @@
 import { GroupedAnnouncements } from "../../types/index";
+import { useContext } from "react"
+import { LanguageContext } from "@/context/Lan"
 import AnnouncementComponent from "./Announcement";
 import Discover from "../Discover";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import AnnouncementSkeleton from "./AnnouncementSkeleton";
+import { TranslateText } from "@/lib/translatetext"
 
 type Props = {
     announcements: GroupedAnnouncements[];
@@ -21,6 +24,7 @@ const GroupOfAnnouncement: React.FC<Props> = ({
     onNextPage,
     onPrevPage,
 }) => {
+    const { language } = useContext(LanguageContext)
     return (
         <div className="w-[85%] mx-auto pt-10">
             <div className="flex flex-col md:flex-row gap-4 items-center md:items-start relative min-h-[400px]">
@@ -49,7 +53,7 @@ const GroupOfAnnouncement: React.FC<Props> = ({
                                         <ArrowLeft className="h-6 text-[#E0614B]" />
                                     </button>
                                     <span className="text-sm text-gray-600">
-                                        Page {currentPage} of {totalPages}
+                                        {TranslateText[language].PAGE} {currentPage}  {TranslateText[language].OF} {totalPages}
                                     </span>
                                     <button
                                         onClick={onNextPage}

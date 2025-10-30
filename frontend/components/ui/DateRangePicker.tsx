@@ -1,7 +1,7 @@
 /* eslint-disable max-lines */
 'use client'
 
-import React, { type FC, useState, useEffect, useRef, JSX } from 'react'
+import React, { type FC, useState, useEffect, useRef, JSX, useContext } from 'react'
 import { Button } from './button'
 import { Popover, PopoverContent, PopoverTrigger } from './popover'
 import { Calendar } from './calendar'
@@ -18,6 +18,26 @@ import { Switch } from './switch'
 import { CheckIcon } from '@radix-ui/react-icons'
 import { cn } from '@/lib/utils'
 import Image from 'next/image'
+import { LanguageContext } from "@/context/Lan"
+import { Locale } from 'date-fns'
+import { enUS, hi, bn, ta, te, gu, kn } from 'date-fns/locale'
+
+// Update the getDateFnsLocale function to return the locale object
+const getDateFnsLocale = (languageCode: string): Locale => {
+    const localeMap: Record<string, Locale> = {
+        'हिन्दी': hi,
+        'বাংলা': bn,
+        'தமிழ்': ta,
+        'తెలుగు': te,
+        'मराठी': enUS, // Fallback to English (not available in date-fns)
+        'ગુજરાતી': gu,
+        'ಕನ್ನಡ': kn,
+        'മലയാളം': enUS, // Fallback to English (not available in date-fns)
+        'اُردُو': enUS, // Fallback to English (not available in date-fns)
+        'English': enUS
+    }
+    return localeMap[languageCode] || enUS
+}
 
 export interface DateRangePickerProps {
     /** Click handler for applying the updates from DateRangePicker. */
@@ -38,7 +58,24 @@ export interface DateRangePickerProps {
     showCompare?: boolean
 }
 
-const formatDate = (date: Date, locale: string = 'en-us'): string => {
+// Helper function to map language codes to locale strings
+const getLocaleFromLanguage = (languageCode: string): string => {
+    const localeMap: Record<string, string> = {
+        'हिन्दी': 'hi-IN',
+        'বাংলা': 'bn-IN',
+        'தமிழ்': 'ta-IN',
+        'తెలుగు': 'te-IN',
+        'मराठी': 'mr-IN',
+        'ગુજરાતી': 'gu-IN',
+        'ಕನ್ನಡ': 'kn-IN',
+        'മലയാളം': 'ml-IN',
+        'اُردُو': 'ur-IN',
+        'English': 'en-US'
+    }
+    return localeMap[languageCode] || 'en-US'
+}
+
+const formatDate = (date: Date, locale: string = 'en-US'): string => {
     return date.toLocaleDateString(locale, {
         month: 'short',
         day: 'numeric',
@@ -48,14 +85,10 @@ const formatDate = (date: Date, locale: string = 'en-us'): string => {
 
 const getDateAdjustedForTimezone = (dateInput: Date | string): Date => {
     if (typeof dateInput === 'string') {
-        // Split the date string to get year, month, and day parts
         const parts = dateInput.split('-').map((part) => parseInt(part, 10))
-        // Create a new Date object using the local timezone
-        // Note: Month is 0-indexed, so subtract 1 from the month part
         const date = new Date(parts[0], parts[1] - 1, parts[2])
         return date
     } else {
-        // If dateInput is already a Date object, return it directly
         return dateInput
     }
 }
@@ -68,6 +101,170 @@ interface DateRange {
 interface Preset {
     name: string
     label: string
+}
+
+// Preset translations for multiple languages
+const PRESET_TRANSLATIONS: Record<string, Record<string, string>> = {
+    'today': {
+        English: 'Today',
+        हिन्दी: 'आज',
+        বাংলা: 'আজ',
+        தமிழ்: 'இன்று',
+        తెలుగు: 'ఈరోజు',
+        मराठी: 'आज',
+        ગુજરાતી: 'આજે',
+        ಕನ್ನಡ: 'ಇಂದು',
+        മലയാളം: 'ഇന്ന്',
+        اُردُو: 'آج'
+    },
+    'yesterday': {
+        English: 'Yesterday',
+        हिन्दी: 'कल',
+        বাংলা: 'গতকাল',
+        தமிழ்: 'நேற்று',
+        తెలుగు: 'నిన్న',
+        मराठी: 'काल',
+        ગુજરાતી: 'ગઈકાલે',
+        ಕನ್ನಡ: 'ನಿನ್ನೆ',
+        മലയാളം: 'ഇന്നലെ',
+        اُردُو: 'کل'
+    },
+    'last7': {
+        English: 'Last 7 days',
+        हिन्दी: 'पिछले 7 दिन',
+        বাংলা: 'গত ৭ দিন',
+        தமிழ்: 'கடந்த 7 நாட்கள்',
+        తెలుగు: 'గత 7 రోజులు',
+        मराठी: 'मागील 7 दिवस',
+        ગુજરાતી: 'છેલ્લા 7 દિવસ',
+        ಕನ್ನಡ: 'ಕಳೆದ 7 ದಿನಗಳು',
+        മലയാളം: 'കഴിഞ്ഞ 7 ദിവസം',
+        اُردُو: 'پچھلے 7 دن'
+    },
+    'last14': {
+        English: 'Last 14 days',
+        हिन्दी: 'पिछले 14 दिन',
+        বাংলা: 'গত ১৪ দিন',
+        தமிழ்: 'கடந்த 14 நாட்கள்',
+        తెలుగు: 'గత 14 రోజులు',
+        मराठी: 'मागील 14 दिवस',
+        ગુજરાતી: 'છેલ્લા 14 દિવસ',
+        ಕನ್ನಡ: 'ಕಳೆದ 14 ದಿನಗಳು',
+        മലയാളം: 'കഴിഞ്ഞ 14 ദിവസം',
+        اُردُو: 'پچھلے 14 دن'
+    },
+    'last30': {
+        English: 'Last 30 days',
+        हिन्दी: 'पिछले 30 दिन',
+        বাংলা: 'গত ৩০ দিন',
+        தமிழ்: 'கடந்த 30 நாட்கள்',
+        తెలుగు: 'గత 30 రోజులు',
+        मराठी: 'मागील 30 दिवस',
+        ગુજરાતી: 'છેલ્લા 30 દિવસ',
+        ಕನ್ನಡ: 'ಕಳೆದ 30 ದಿನಗಳು',
+        മലയാളം: 'കഴിഞ്ഞ 30 ദിവസം',
+        اُردُو: 'پچھلے 30 دن'
+    },
+    'thisWeek': {
+        English: 'This Week',
+        हिन्दी: 'इस सप्ताह',
+        বাংলা: 'এই সপ্তাহ',
+        தமிழ்: 'இந்த வாரம்',
+        తెలుగు: 'ఈ వారం',
+        मराठी: 'या आठवड्यात',
+        ગુજરાતી: 'આ અઠવાડિયે',
+        ಕನ್ನಡ: 'ಈ ವಾರ',
+        മലയാളം: 'ഈ ആഴ്ച',
+        اُردُو: 'اس ہفتے'
+    },
+    'lastWeek': {
+        English: 'Last Week',
+        हिन्दी: 'पिछले सप्ताह',
+        বাংলা: 'গত সপ্তাহ',
+        தமிழ்: 'கடந்த வாரம்',
+        తెలుగు: 'గత వారం',
+        मराठी: 'मागील आठवडा',
+        ગુજરાતી: 'ગયા અઠવાડિયે',
+        ಕನ್ನಡ: 'ಕಳೆದ ವಾರ',
+        മലയാളം: 'കഴിഞ്ഞ ആഴ്ച',
+        اُردُو: 'پچھلے ہفتے'
+    },
+    'thisMonth': {
+        English: 'This Month',
+        हिन्दी: 'इस महीने',
+        বাংলা: 'এই মাস',
+        தமிழ்: 'இந்த மாதம்',
+        తెలుగు: 'ఈ నెల',
+        मराठी: 'या महिन्यात',
+        ગુજરાતી: 'આ મહિને',
+        ಕನ್ನಡ: 'ಈ ತಿಂಗಳು',
+        മലയാളം: 'ഈ മാസം',
+        اُردُو: 'اس مہینے'
+    },
+    'lastMonth': {
+        English: 'Last Month',
+        हिन्दी: 'पिछले महीने',
+        বাংলা: 'গত মাস',
+        தமிழ்: 'கடந்த மாதம்',
+        తెలుగు: 'గత నెల',
+        मराठी: 'मागील महिना',
+        ગુજરાતી: 'ગયા મહિને',
+        ಕನ್ನಡ: 'ಕಳೆದ ತಿಂಗಳು',
+        മലയാളം: 'കഴിഞ്ഞ മാസം',
+        اُردُو: 'پچھلے مہینے'
+    },
+    'compare': {
+        English: 'Compare',
+        हिन्दी: 'तुलना करें',
+        বাংলা: 'তুলনা করুন',
+        தமிழ்: 'ஒப்பிடுக',
+        తెలుగు: 'పోల్చండి',
+        मराठी: 'तुलना करा',
+        ગુજરાતી: 'સરખામણી કરો',
+        ಕನ್ನಡ: 'ಹೋಲಿಸಿ',
+        മലയാളം: 'താരതമ്യം ചെയ്യുക',
+        اُردُو: 'موازنہ کریں'
+    },
+    'cancel': {
+        English: 'Cancel',
+        हिन्दी: 'रद्द करें',
+        বাংলা: 'বাতিল',
+        தமிழ்: 'ரத்து செய்',
+        తెలుగు: 'రద్దు చేయండి',
+        मराठी: 'रद्द करा',
+        ગુજરાતી: 'રદ કરો',
+        ಕನ್ನಡ: 'ರದ್ದುಮಾಡಿ',
+        മലയാളം: 'റദ്ദാക്കുക',
+        اُردُو: 'منسوخ کریں'
+    },
+    'update': {
+        English: 'Update',
+        हिन्दी: 'अपडेट करें',
+        বাংলা: 'আপডেট',
+        தமிழ்: 'புதுப்பிக்கவும்',
+        తెలుగు: 'నవీకరించండి',
+        मराठी: 'अद्यतनित करा',
+        ગુજરાતી: 'અપડેટ કરો',
+        ಕನ್ನಡ: 'ನವೀಕರಿಸಿ',
+        മലയാളം: 'അപ്ഡേറ്റ് ചെയ്യുക',
+        اُردُو: 'اپ ڈیٹ کریں'
+    },
+    'vs': {
+        English: 'vs.',
+        हिन्दी: 'बनाम',
+        বাংলা: 'বনাম',
+        தமிழ்: 'எதிராக',
+        తెలుగు: 'వర్సెస్',
+        मराठी: 'विरुद्ध',
+        ગુજરાતી: 'વિરુદ્ધ',
+        ಕನ್ನಡ: 'ವಿರುದ್ಧ',
+        മലയാളം: 'എതിരെ',
+        اُردُو: 'بمقابلہ'
+    }
+}
+
+const getTranslation = (key: string, languageCode: string): string => {
+    return PRESET_TRANSLATIONS[key]?.[languageCode] || PRESET_TRANSLATIONS[key]?.['en'] || key
 }
 
 // Define presets
@@ -97,6 +294,13 @@ export const DateRangePicker: FC<DateRangePickerProps> & {
     showCompare = true
 }): JSX.Element => {
         const [isOpen, setIsOpen] = useState(false)
+        const { language } = useContext(LanguageContext)
+
+        // Get the locale based on the current language
+        const currentLocale = getLocaleFromLanguage(language)
+
+        const dateFnsLocale = getDateFnsLocale(language)
+
 
         const [range, setRange] = useState<DateRange>({
             from: getDateAdjustedForTimezone(initialDateFrom),
@@ -115,7 +319,6 @@ export const DateRangePicker: FC<DateRangePickerProps> & {
                 : undefined
         )
 
-        // Refs to store the values of range and rangeCompare when the date picker is opened
         const openedRangeRef = useRef<DateRange | undefined>(undefined)
         const openedRangeCompareRef = useRef<DateRange | undefined>(undefined)
 
@@ -132,13 +335,11 @@ export const DateRangePicker: FC<DateRangePickerProps> & {
 
             window.addEventListener('resize', handleResize)
 
-            // Clean up event listener on unmount
             return () => {
                 window.removeEventListener('resize', handleResize)
             }
         }, [])
 
-        // ADD THIS NEW useEffect RIGHT HERE:
         useEffect(() => {
             setRange({
                 from: getDateAdjustedForTimezone(initialDateFrom),
@@ -147,7 +348,6 @@ export const DateRangePicker: FC<DateRangePickerProps> & {
                     : getDateAdjustedForTimezone(initialDateFrom)
             })
         }, [initialDateFrom, initialDateTo])
-
 
         const getPresetRange = (presetName: string): DateRange => {
             const preset = PRESETS.find(({ name }) => name === presetName)
@@ -317,14 +517,13 @@ export const DateRangePicker: FC<DateRangePickerProps> & {
                     <span className={cn('pr-2 opacity-0', isSelected && 'opacity-70')}>
                         <CheckIcon width={18} height={18} />
                     </span>
-                    {label}
+                    {getTranslation(label, language)}
                 </>
             </Button>
         )
 
-        // Helper function to check if two date ranges are equal
         const areRangesEqual = (a?: DateRange, b?: DateRange): boolean => {
-            if (!a || !b) return a === b // If either is undefined, return true if both are undefined
+            if (!a || !b) return a === b
             return (
                 a.from.getTime() === b.from.getTime() &&
                 (!a.to || !b.to || a.to.getTime() === b.to.getTime())
@@ -350,19 +549,19 @@ export const DateRangePicker: FC<DateRangePickerProps> & {
                 }}
             >
                 <PopoverTrigger asChild>
-                    <Button size={'lg'} variant="outline" className='text-[#E0614B] hover:text-[#E0614B] md:shadow-[4px_4px_0_0_#00000029] bg-[#FFFFFF] mx-auto  md:mx-0 rounded-lg justify-start text-left font-normal border border-[#E0614B] group-hover:text-[#E0614B] [@media(min-width:450px)]:w-[240px] md:w-[240px]' >
-                        <div className="text-right ">
-                            <div className="py-1 flex items-center gap-2">
+                    <Button size={'lg'} variant="outline" className='text-[#E0614B] hover:text-[#E0614B] md:shadow-[4px_4px_0_0_#00000029] bg-[#FFFFFF] mx-auto md:mx-0 rounded-lg justify-start text-left font-normal border border-[#E0614B] group-hover:text-[#E0614B] w-auto min-w-[240px] max-w-fit px-4' >
+                        <div className="text-left">
+                            <div className="py-1 flex items-center gap-2 whitespace-nowrap">
                                 <Image alt='logo' width={14} height={14} src="/calender.svg" />
-                                <div>{`${formatDate(range.from, locale)}${range.to != null ? ' - ' + formatDate(range.to, locale) : ''
+                                <div>{`${formatDate(range.from, currentLocale)}${range.to != null ? ' - ' + formatDate(range.to, currentLocale) : ''
                                     }`}</div>
                             </div>
                             {rangeCompare != null && (
-                                <div className="opacity-60 text-xs -mt-1">
+                                <div className="opacity-60 text-xs -mt-1 whitespace-nowrap">
                                     <>
-                                        vs. {formatDate(rangeCompare.from, locale)}
+                                        {getTranslation('vs', language)} {formatDate(rangeCompare.from, currentLocale)}
                                         {rangeCompare.to != null
-                                            ? ` - ${formatDate(rangeCompare.to, locale)}`
+                                            ? ` - ${formatDate(rangeCompare.to, currentLocale)}`
                                             : ''}
                                     </>
                                 </div>
@@ -411,7 +610,7 @@ export const DateRangePicker: FC<DateRangePickerProps> & {
                                                 }}
                                                 id="compare-mode"
                                             />
-                                            <Label htmlFor="compare-mode">Compare</Label>
+                                            <Label htmlFor="compare-mode">{getTranslation('compare', language)}</Label>
                                         </div>
                                     )}
                                     <div className="flex flex-col gap-2">
@@ -493,7 +692,7 @@ export const DateRangePicker: FC<DateRangePickerProps> & {
                                         <SelectContent>
                                             {PRESETS.map((preset) => (
                                                 <SelectItem key={preset.name} value={preset.name}>
-                                                    {preset.label}
+                                                    {getTranslation(preset.name, language)}
                                                 </SelectItem>
                                             ))}
                                         </SelectContent>
@@ -516,6 +715,7 @@ export const DateRangePicker: FC<DateRangePickerProps> & {
                                                 )
                                             )
                                         }
+                                        locale={dateFnsLocale}
                                     />
                                 </div>
                             </div>
@@ -527,7 +727,7 @@ export const DateRangePicker: FC<DateRangePickerProps> & {
                                         <PresetButton
                                             key={preset.name}
                                             preset={preset.name}
-                                            label={preset.label}
+                                            label={preset.name}
                                             isSelected={selectedPreset === preset.name}
                                         />
                                     ))}
@@ -543,7 +743,7 @@ export const DateRangePicker: FC<DateRangePickerProps> & {
                             }}
                             variant="ghost"
                         >
-                            Cancel
+                            {getTranslation('cancel', language)}
                         </Button>
                         <Button
                             onClick={() => {
@@ -557,7 +757,7 @@ export const DateRangePicker: FC<DateRangePickerProps> & {
                             }}
                             className='bg-[#ffff] text-[#E0614B] hover:text-[#E0614B] border border-[#E0614B] hover:bg-[#ece1e1]'
                         >
-                            Update
+                            {getTranslation('update', language)}
                         </Button>
                     </div>
                 </PopoverContent>

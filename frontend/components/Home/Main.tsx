@@ -20,6 +20,7 @@ import GroupofAnnouncement from './GroupofAnnouncement';
 import { useRouter } from "next/router"
 import { useWindowDimensions } from '@/hooks/useWindowDimensions';
 
+
 const Main: React.FC = () => {
     const latestrequest = useRef<symbol | null>(null);
     const [GroupAnnouncements, SetGroupAnnouncements] = useState<GroupedAnnouncements[]>([])
@@ -170,21 +171,21 @@ const Main: React.FC = () => {
             </div>
             <div className='min-w-[250px]  border rounded-lg h-[30vh] p-6 hidden lg:hidden flex-col justify-between '>
                 <div className='text-lg font-semibold flex flex-col'>
-                    <span className='text-gray-600'> Discover More</span>
-                    <span className='text-[#E0614B]'>Indian Announcements</span>
+                    <span className='text-gray-600'>{TranslateText[language].DISCOVER_MORE}</span>
+                    <span className='text-[#E0614B]'>{TranslateText[language].INDIAN_ANNOUNCEMENTS}</span>
                 </div>
                 <Button onClick={() => router.push("/announcements")} className='bg-[#E0614B] lg:w-[121px] hover:bg-[#dd8272] rounded-xl shadow-[4px_4px_0_0_#00000029]'>
-                    See More
+                    {TranslateText[language].SEE_MORE}
                 </Button>
             </div>
 
             <div className='w-[65vw] mx-auto  border rounded-lg h-[30vh] p-6  lg:hidden flex flex-col justify-between '>
                 <div className='text-lg font-semibold flex flex-col'>
-                    <span className='text-gray-600'> Discover More</span>
-                    <span className='text-[#E0614B]'>Indian Announcements</span>
+                    <span className='text-gray-600'>{TranslateText[language].DISCOVER_MORE}</span>
+                    <span className='text-[#E0614B]'>{TranslateText[language].INDIAN_ANNOUNCEMENTS}</span>
                 </div>
                 <Button onClick={() => router.push("/announcements")} className='bg-[#E0614B] lg:w-[121px] hover:bg-[#dd8272] rounded-xl shadow-[4px_4px_0_0_#00000029]'>
-                    See More
+                    {TranslateText[language].SEE_MORE}
                 </Button>
             </div>
 
