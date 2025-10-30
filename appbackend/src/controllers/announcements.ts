@@ -23,7 +23,7 @@ export const GetIndiaAnnouncements = asyncerrorhandler(async (req: Request, res:
     const targetLanguage = (target_lan as string) || "English";
     const lan = LANGUAGE_CODES[targetLanguage] || "en";
 
-    const redis_key = `Announcements_${targetLanguage}_${announcementsStartDate.toISOString().split('T')[0]}_${announcementsEndDate.toISOString().split('T')[0]}_page${pageNumber}_limit${pageSize}`;
+    const redis_key = `Announcements_${lan}_${announcementsStartDate.toISOString().split('T')[0]}_${announcementsEndDate.toISOString().split('T')[0]}_page${pageNumber}_limit${pageSize}`;
 
     const cached_data = await redis.get(redis_key);
 
@@ -146,7 +146,7 @@ export const GetGroupIndiaAnnouncements = asyncerrorhandler(async (req: Request,
     const targetLanguage = (target_lan as string) || "English";
     const lan = LANGUAGE_CODES[targetLanguage] || "en";
 
-    const redis_key = `Group_Announcements_${targetLanguage}_${announcementsStartDate.toISOString().split('T')[0]}_${announcementsEndDate.toISOString().split('T')[0]}_${typeofGroup || "all"}`;
+    const redis_key = `Group_Announcements_${lan}_${announcementsStartDate.toISOString().split('T')[0]}_${announcementsEndDate.toISOString().split('T')[0]}_${typeofGroup || "all"}`;
 
     const cached_data = await redis.get(redis_key);
 
@@ -249,6 +249,7 @@ export const GetGroupIndiaAnnouncements = asyncerrorhandler(async (req: Request,
     await redis.set(redis_key, JSON.stringify(responseData), { ex: 300 });
 
     res.status(200).json(responseData);
+    return
 });
 
 export const GetallGroupsIndiaAnnouncements = asyncerrorhandler(async (req: Request, res: Response) => {
@@ -276,7 +277,7 @@ export const GetallGroupsIndiaAnnouncements = asyncerrorhandler(async (req: Requ
     const lan = LANGUAGE_CODES[targetLanguage] || "en";
 
 
-    const redis_key = `AllGroupsIndiaAnnouncements_${targetLanguage}_${announcementsStartDate.toISOString().split('T')[0]}_${announcementsEndDate.toISOString().split('T')[0]}${page}${limit}${searchQuery}`;
+    const redis_key = `AllGroupsIndiaAnnouncements_${lan}_${announcementsStartDate.toISOString().split('T')[0]}_${announcementsEndDate.toISOString().split('T')[0]}${page}${limit}${searchQuery}`;
 
     const cached_data = await redis.get(redis_key);
 
@@ -432,7 +433,7 @@ export const GetIndiaAnnouncement = asyncerrorhandler(async (req: Request, res: 
     const targetLanguage = (target_lan as string) || "English";
     const lan = LANGUAGE_CODES[targetLanguage] || "en";
 
-    const redis_key = `Announcement_${targetLanguage}_${id}_${target_lan}`;
+    const redis_key = `Announcement_${lan}_${id}_${target_lan}`;
     const cached_data = await redis.get(redis_key);
 
     if (cached_data) {
@@ -518,4 +519,5 @@ export const GetIndiaAnnouncement = asyncerrorhandler(async (req: Request, res: 
     await redis.set(redis_key, JSON.stringify(responseData), { ex: 300 });
 
     res.status(200).json(responseData);
+    return
 });
