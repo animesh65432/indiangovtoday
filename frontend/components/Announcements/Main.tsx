@@ -138,8 +138,12 @@ const Main: React.FC<Props> = ({ Announcements, IsLoading, QueryInput }) => {
                                         {an.summary || "No summary available."}
                                     </p>
 
-                                    {/* View More Link */}
-                                    <div onClick={() => router.push(`/announcement?id=${an._id}&lan=${language}`)} className="flex items-center space-x-2 text-[#E0614B] font-medium text-sm pt-2 border-t border-gray-100 group-hover:border-[#E0614B]/30 transition-colors">
+                                    <div
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            router.push(`/announcement?id=${an._id}&lan=${language}`);
+                                        }}
+                                        className="flex items-center space-x-2 text-[#E0614B] font-medium text-sm pt-2 border-t border-gray-100 group-hover:border-[#E0614B]/30 transition-colors">
                                         <span>View Details</span>
                                         <svg
                                             className="w-4 h-4 transform group-hover:translate-x-2 transition-transform duration-300"
