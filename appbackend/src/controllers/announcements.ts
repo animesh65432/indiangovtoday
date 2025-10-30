@@ -249,7 +249,7 @@ export const GetGroupIndiaAnnouncements = asyncerrorhandler(async (req: Request,
 });
 
 export const GetallGroupsIndiaAnnouncements = asyncerrorhandler(async (req: Request, res: Response) => {
-    const { target_lan, startdate, endDate, page, limit } = req.query;
+    const { target_lan, startdate, endDate, page, limit, SearchInput } = req.query;
 
     const announcementsStartDate = startdate
         ? new Date(startdate as string)
@@ -262,6 +262,7 @@ export const GetallGroupsIndiaAnnouncements = asyncerrorhandler(async (req: Requ
     const pageNumber = parseInt(page as string) || 1;
     const pageSize = parseInt(limit as string) || 10;
     const skip = (pageNumber - 1) * pageSize;
+    const searchQuery = typeof SearchInput === 'string' ? SearchInput.trim() : null;
 
     if (isNaN(announcementsStartDate.getTime()) || isNaN(announcementsEndDate.getTime())) {
         res.status(400).json({ error: "Invalid date format" });
@@ -272,7 +273,7 @@ export const GetallGroupsIndiaAnnouncements = asyncerrorhandler(async (req: Requ
     const lan = LANGUAGE_CODES[targetLanguage] || "en";
 
 
-    const redis_key = `AllGroupsIndiaAnnouncements_${targetLanguage}_${announcementsStartDate.toISOString().split('T')[0]}_${announcementsEndDate.toISOString().split('T')[0]}${page}${limit}`;
+    const redis_key = `AllGroupsIndiaAnnouncements_${targetLanguage}_${announcementsStartDate.toISOString().split('T')[0]}_${announcementsEndDate.toISOString().split('T')[0]}${page}${limit}${searchQuery}`;
 
     const cached_data = await redis.get(redis_key);
 
@@ -290,9 +291,26 @@ export const GetallGroupsIndiaAnnouncements = asyncerrorhandler(async (req: Requ
     const end = new Date(announcementsEndDate);
     end.setUTCHours(23, 59, 59, 999);
 
-    const filter = {
+    const filter: any = {
         created_at: { $gte: start, $lte: end }
     };
+
+    if (searchQuery) {
+        const searchRegex = new RegExp(searchQuery as string, "i");
+
+        if (lan === "en") {
+            filter.$or = [
+                { title: searchRegex },
+                { type: searchRegex }
+            ];
+        } else {
+            filter["translations.ln_code"] = lan;
+            filter.$or = [
+                { "translations.title": searchRegex },
+                { "translations.type": searchRegex }
+            ];
+        }
+    }
 
     const db = await connectDB();
 
