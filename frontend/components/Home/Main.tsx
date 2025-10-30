@@ -20,6 +20,7 @@ import GroupofAnnouncement from './GroupofAnnouncement';
 import { useRouter } from "next/router"
 import { useWindowDimensions } from '@/hooks/useWindowDimensions';
 
+
 const Main: React.FC = () => {
     const latestrequest = useRef<symbol | null>(null);
     const [GroupAnnouncements, SetGroupAnnouncements] = useState<GroupedAnnouncements[]>([])
@@ -107,6 +108,8 @@ const Main: React.FC = () => {
         }
     };
 
+    console.log(TranslateText[language].SEE_MORE)
+
     return (
         <div className='pt-35 sm:pt-15 md:pt-18  [@media(min-width:900px)]:pt-16  lg:pt-14 xl:pt-7 [@media(min-width:1600px)]:pt-14 [@media(min-width:1700px)]:pt-16 [@media(min-width:1900px)]:pt-22 [@media(min-width:2000px)]:pt-22 [@media(min-width:2100px)]:pt-26 [@media(min-width:2300px)]:pt-32 [@media(min-width:2600px)]:pt-38 [@media(min-width:2800px)]:pt-44 [@media(min-width:3000px)]:pt-48 flex flex-col gap-5'>
             <div className=' block sm:hidden relative h-[47px] w-[150px] mx-auto'>
@@ -174,17 +177,17 @@ const Main: React.FC = () => {
                     <span className='text-[#E0614B]'>Indian Announcements</span>
                 </div>
                 <Button onClick={() => router.push("/announcements")} className='bg-[#E0614B] lg:w-[121px] hover:bg-[#dd8272] rounded-xl shadow-[4px_4px_0_0_#00000029]'>
-                    See More
+                    {TranslateText[language].SEE_MORE}
                 </Button>
             </div>
 
             <div className='w-[65vw] mx-auto  border rounded-lg h-[30vh] p-6  lg:hidden flex flex-col justify-between '>
                 <div className='text-lg font-semibold flex flex-col'>
-                    <span className='text-gray-600'> Discover More</span>
-                    <span className='text-[#E0614B]'>Indian Announcements</span>
+                    <span className='text-gray-600'>{TranslateText[language].DISCOVER_MORE}</span>
+                    <span className='text-[#E0614B]'>{TranslateText[language].INDIAN_ANNOUNCEMENTS}</span>
                 </div>
                 <Button onClick={() => router.push("/announcements")} className='bg-[#E0614B] lg:w-[121px] hover:bg-[#dd8272] rounded-xl shadow-[4px_4px_0_0_#00000029]'>
-                    See More
+                    {TranslateText[language].SEE_MORE}
                 </Button>
             </div>
 

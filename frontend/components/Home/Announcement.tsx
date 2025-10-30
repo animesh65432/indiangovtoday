@@ -5,6 +5,8 @@ import { Button } from '../ui/button'
 import { LanguageContext } from "@/context/Lan"
 import { Card, CardContent, CardHeader, CardFooter } from '../ui/card'
 import { ArrowRight, Bell } from "lucide-react"
+import { TranslateText } from "@/lib/translatetext"
+import { formatDate } from "@/lib/formatDate"
 
 
 type Props = {
@@ -19,24 +21,6 @@ const Announcement: React.FC<Props> = ({ Announcement }) => {
         router.push(`/announcement?id=${id}&lan=${language}`)
     }
 
-    const formatDate = (dateString: string | Date | undefined) => {
-        if (!dateString) return null
-        const date = new Date(dateString)
-        if (isNaN(date.getTime())) return null
-
-        const now = new Date()
-        const diffTime = Math.abs(now.getTime() - date.getTime())
-        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
-
-        if (diffDays === 0) return 'Today'
-        if (diffDays === 1) return 'Yesterday'
-        if (diffDays <= 7) return `${diffDays} days ago`
-
-        return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
-    }
-
-    const displayedAnnouncements = Announcement.slice(0, 4)
-    const hasMore = Announcement.length > 4
 
     return (
         <Card className=' w-[75vw] md:w-full md:flex-1 flex flex-col h-full hover:shadow-lg transition-shadow duration-300'>
@@ -56,7 +40,7 @@ const Announcement: React.FC<Props> = ({ Announcement }) => {
             </CardHeader>
 
             <CardContent className='flex-1 space-y-1'>
-                {displayedAnnouncements.map((ann) => {
+                {Announcement.map((ann) => {
                     const formattedDate = formatDate(ann.created_at)
 
                     return (
@@ -82,11 +66,6 @@ const Announcement: React.FC<Props> = ({ Announcement }) => {
                     )
                 })}
 
-                {hasMore && (
-                    <p className='text-xs text-gray-500 text-center pt-2'>
-                        +{Announcement.length - 4} more
-                    </p>
-                )}
             </CardContent>
 
             <CardFooter className='pt-4 border-t'>
@@ -94,7 +73,7 @@ const Announcement: React.FC<Props> = ({ Announcement }) => {
                     onClick={() => router.push(`/announcements/${language === "English" ? Announcement[0].type : Announcement[0].original_type}`)}
                     className='bg-[#E0614B] ml-auto lg:w-[121px] hover:bg-[#dd8272] rounded-xl shadow-[4px_4px_0_0_#00000029]'
                 >
-                    View All
+                    {TranslateText[language].VIEW_ALL}
                     <ArrowRight className='size-4' />
                 </Button>
             </CardFooter>

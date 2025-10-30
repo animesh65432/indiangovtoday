@@ -13,6 +13,7 @@ import { Currentdate } from "@/context/Currentdate"
 import { GetGroupIndiaAnnouncements } from "@/api/announcements"
 import { LoaderCircle, Calendar } from "lucide-react"
 import Image from "next/image"
+import { formatDate } from "@/lib/formatDate"
 
 
 type AnnouncementsTypes = {
@@ -79,13 +80,6 @@ export default function GroupPage() {
 
 
     // Format date consistently
-    const formatDate = (dateString: string) => {
-        const date = new Date(dateString);
-        const day = date.getDate().toString().padStart(2, '0');
-        const month = (date.getMonth() + 1).toString().padStart(2, '0');
-        const year = date.getFullYear();
-        return `${day}/${month}/${year}`;
-    };
 
     useEffect(() => {
         init()
