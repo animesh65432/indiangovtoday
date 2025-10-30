@@ -154,7 +154,7 @@ const Main: React.FC<Props> = ({ Announcements, IsLoading, QueryInput }) => {
                             ))}
                         </div>
                     </div>
-                )) : <div className="h-[30vh] w-full flex items-center justify-center ">
+                )) : <div className="w-full flex items-center justify-center ">
                     <div className="text-center space-y-3">
                         <div className="text-6xl">📢</div>
                         <p className="text-2xl font-semibold text-gray-800">No Announcements Yet</p>
