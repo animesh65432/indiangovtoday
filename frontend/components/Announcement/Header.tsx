@@ -21,7 +21,7 @@ export default function Header() {
                     className=" object-fill lg:object-contain"
                 />
             </nav>
-            <nav>
+            <nav className="">
                 <Select
                     onValueChange={(value) => {
                         onSelectLanguage(value);

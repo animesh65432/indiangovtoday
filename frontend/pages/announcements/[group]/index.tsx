@@ -1,7 +1,7 @@
 "use client"
 import React, { useEffect, useState, useContext, useMemo } from "react"
 import { useRouter } from "next/router"
-import Header from "@/components/Announcement/Header"
+import Header from '@/components/Home/Header'
 import { Input } from "@/components/ui/input"
 import { DateRangePicker } from "@/components/ui/DateRangePicker"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
@@ -12,6 +12,8 @@ import { LanguageContext } from "@/context/Lan"
 import { Currentdate } from "@/context/Currentdate"
 import { GetGroupIndiaAnnouncements } from "@/api/announcements"
 import { LoaderCircle, Calendar } from "lucide-react"
+import Image from "next/image"
+
 
 type AnnouncementsTypes = {
     created_at: string;
@@ -111,12 +113,14 @@ export default function GroupPage() {
     }, [language, startdate, endDate, groupValue])
 
     const handleSearch = () => {
-        // Search is handled by the filteredAnnouncements memo
-        // This function can be used for additional search logic if needed
     };
 
     return (
         <div className="p-4 bg-white min-h-dvh flex flex-col gap-5">
+            <div className=' block sm:hidden relative h-[47px] w-[150px]' onClick={() => router.push(`/`)}>
+                <Image src="/Logo.png" alt='logo' fill />
+            </div>
+
             <Header />
 
             <div className='bg-[#F9F9F9] pt-7 border flex flex-col justify-center sm:justify-start sm:flex-row gap-5 sm:gap-2 items-center border-[#EDEDED] w-[85vw] sm:w-[70vw] md:w-[50vw] lg:w-[600px] mx-auto sm:h-[10vh] p-4 sm:p-2 rounded-md'>

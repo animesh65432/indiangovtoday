@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { GetallGroupsIndiaAnnouncements as AnnouncementsTyps } from "@/types";
 import { DateRangePicker } from "../ui/DateRangePicker";
 import Image from "next/image";
@@ -10,28 +10,25 @@ import { Button } from "../ui/button";
 import { SelectContent, SelectItem, SelectTrigger, SelectValue, Select } from "../ui/select";
 import { optionsforLanguages } from "@/lib/lan";
 import { useRouter } from "next/router"
+import { LoaderCircleIcon } from "lucide-react"
 
 type Props = {
     Announcements: AnnouncementsTyps[];
+    IsLoading: boolean,
+    QueryInput: string
 };
 
-const Main: React.FC<Props> = ({ Announcements }) => {
+const Main: React.FC<Props> = ({ Announcements, IsLoading, QueryInput }) => {
     const { language, onSelectLanguage } = useContext(LanguageContext)
     const { startdate, endDate, onChangeDate } = useContext(Currentdate)
     const [SearchInput, SetSearchInput] = useState<string>("")
     const router = useRouter()
 
-    if (Announcements.length === 0) {
-        return (
-            <div className="h-[70vh] w-full flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100">
-                <div className="text-center space-y-3">
-                    <div className="text-6xl">📢</div>
-                    <p className="text-2xl font-semibold text-gray-800">No Announcements Yet</p>
-                    <p className="text-gray-500">Check back soon for updates</p>
-                </div>
-            </div>
-        );
-    }
+    useEffect(() => {
+        if (QueryInput) {
+            SetSearchInput(QueryInput)
+        }
+    }, [QueryInput])
 
     const OnChangeDateRangePicker = (values: {
         range: { from?: Date; to?: Date };
@@ -41,6 +38,8 @@ const Main: React.FC<Props> = ({ Announcements }) => {
             onChangeDate(values.range.from, values.range.to);
         }
     };
+
+    console.log(Announcements)
 
     return (
         <div className="min-h-screen   overflow-x-auto flex flex-col gap-4">
@@ -95,11 +94,17 @@ const Main: React.FC<Props> = ({ Announcements }) => {
                 </Button>
             </div>
             <div className="flex flex-col space-y-16 px-4 md:px-8 lg:px-16 max-w-7xl mx-auto mt-10">
-                {Announcements.map((group, groupIdx) => (
+                {IsLoading && Announcements.length === 0 &&
+                    <div className="h-[40vh] flex justify-center items-center">
+                        <LoaderCircleIcon className="h-8 w-8  animate-spin text-[#E0614B]" />
+                    </div>
+                }
+                {!IsLoading && Announcements.length > 0 ? Announcements.map((group, groupIdx) => (
                     <div
                         key={group.type}
                         className="w-full flex flex-col space-y-6 animate-fade-in hover:underline hover:cursor-pointer"
                         style={{ animationDelay: `${groupIdx * 100}ms` }}
+                        onClick={() => router.push(`/announcements/${language === "English" ? group.announcements[0].type : group.announcements[0].original_type}`)}
                     >
                         {/* Group Title with Accent */}
                         <div className="flex items-center space-x-4">
@@ -133,9 +138,6 @@ const Main: React.FC<Props> = ({ Announcements }) => {
                                         {an.summary || "No summary available."}
                                     </p>
 
-
-
-
                                     {/* View More Link */}
                                     <div onClick={() => router.push(`/announcement?id=${an._id}&lan=${language}`)} className="flex items-center space-x-2 text-[#E0614B] font-medium text-sm pt-2 border-t border-gray-100 group-hover:border-[#E0614B]/30 transition-colors">
                                         <span>View Details</span>
@@ -152,7 +154,13 @@ const Main: React.FC<Props> = ({ Announcements }) => {
                             ))}
                         </div>
                     </div>
-                ))}
+                )) : <div className="w-full flex items-center justify-center ">
+                    <div className="text-center space-y-3">
+                        <div className="text-6xl">📢</div>
+                        <p className="text-2xl font-semibold text-gray-800">No Announcements Yet</p>
+                        <p className="text-gray-500">Check back soon for updates</p>
+                    </div>
+                </div>}
             </div>
         </div>
     );

@@ -162,6 +162,7 @@ const Main: React.FC = () => {
                 </div>
 
                 <Button
+                    onClick={() => router.push(`/announcements?SearchInput=${SearchInput}`)}
                     className='bg-[#E0614B] lg:w-[121px] hover:bg-[#dd8272] rounded-xl shadow-[4px_4px_0_0_#00000029]'
                 >
                     {TranslateText[language].SEARCH}
