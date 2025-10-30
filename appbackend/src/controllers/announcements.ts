@@ -69,13 +69,16 @@ export const GetIndiaAnnouncements = asyncerrorhandler(async (req: Request, res:
                     original_type: "$type"
                 },
             },
-            { $unset: ["translations", "translation", "content", "source", "original_title"] }
+            { $unset: ["translations", "translation", "content", "source", "original_title", "summary"] }
         );
     }
-
+    else {
+        pipeline.push({
+            $unset: ["translations", "translation", "content", "source", "original_title", "summary"]
+        })
+    }
     pipeline.push(
         { $sort: { created_at: -1 } },
-        { $limit: 3 },
         {
             $group: {
                 _id: "$type",
@@ -85,7 +88,7 @@ export const GetIndiaAnnouncements = asyncerrorhandler(async (req: Request, res:
         {
             $project: {
                 type: "$_id",
-                announcements: 1,
+                announcements: { $slice: ["$announcements", 3] },
                 _id: 0,
             },
         },
@@ -301,13 +304,15 @@ export const GetallGroupsIndiaAnnouncements = asyncerrorhandler(async (req: Requ
         if (lan === "en") {
             filter.$or = [
                 { title: searchRegex },
-                { type: searchRegex }
+                { type: searchRegex },
+                { summary: searchRegex }
             ];
         } else {
             filter["translations.ln_code"] = lan;
             filter.$or = [
                 { "translations.title": searchRegex },
-                { "translations.type": searchRegex }
+                { "translations.type": searchRegex },
+                { "translations.summary": searchRegex }
             ];
         }
     }
@@ -488,7 +493,7 @@ export const GetIndiaAnnouncement = asyncerrorhandler(async (req: Request, res: 
         );
     } else {
         pipeline.push({
-            $unset: ["translations", "language", "original_title", "summary",]
+            $unset: ["translations", "language", "original_title", "summary", "type"]
         });
     }
     const result = await db
