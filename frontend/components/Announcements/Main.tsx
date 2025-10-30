@@ -154,13 +154,16 @@ const Main: React.FC<Props> = ({ Announcements, IsLoading, QueryInput }) => {
                             ))}
                         </div>
                     </div>
-                )) : <div className="w-full flex items-center justify-center ">
-                    <div className="text-center space-y-3">
-                        <div className="text-6xl">📢</div>
-                        <p className="text-2xl font-semibold text-gray-800">No Announcements Yet</p>
-                        <p className="text-gray-500">Check back soon for updates</p>
+                )) : null}
+                {!IsLoading && Announcements.length === 0 &&
+                    <div className="w-full flex items-center justify-center ">
+                        <div className="text-center space-y-3">
+                            <div className="text-6xl">📢</div>
+                            <p className="text-2xl font-semibold text-gray-800">No Announcements Yet</p>
+                            <p className="text-gray-500">Check back soon for updates</p>
+                        </div>
                     </div>
-                </div>}
+                }
             </div>
         </div>
     );
