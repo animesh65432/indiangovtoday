@@ -118,7 +118,7 @@ const Main: React.FC<Props> = ({ Announcements, IsLoading, QueryInput }) => {
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                             {group.announcements.map((an, idx) => (
                                 <div
-                                    key={an._id || an.title}
+                                    key={idx}
                                     className="group relative bg-white hover:bg-gradient-to-br hover:from-white hover:to-orange-50 shadow-lg hover:shadow-2xl transition-all duration-500 rounded-3xl p-6 border border-gray-100 hover:border-[#E0614B]/30 flex flex-col space-y-3 overflow-hidden transform hover:-translate-y-2"
                                     style={{ animationDelay: `${idx * 50}ms` }}
                                 >
