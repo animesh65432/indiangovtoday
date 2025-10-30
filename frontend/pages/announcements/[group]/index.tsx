@@ -29,7 +29,7 @@ export default function GroupPage() {
     const [announcements, setAnnouncements] = useState<AnnouncementsTypes[]>([])
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const [error, setError] = useState<string | null>(null)
-
+    const [filteredAnnouncements, setfilteredAnnouncements] = useState<AnnouncementsTypes[]>([])
     const router = useRouter()
     const { group } = router.query
     const { language, onSelectLanguage } = useContext(LanguageContext)
@@ -54,7 +54,8 @@ export default function GroupPage() {
                     groupValue
                 ) as { data: AnnouncementsTypes[] }
 
-                setAnnouncements(response.data || [])
+                setAnnouncements(response.data)
+                setfilteredAnnouncements(response.data)
             }
         } catch (err) {
             setError("Failed to load announcements")
@@ -73,31 +74,9 @@ export default function GroupPage() {
         }
     };
 
-    // Filter announcements based on search input
-    const filteredAnnouncements = useMemo(() => {
-        if (!searchInput.trim()) return announcements;
-
-        const searchLower = searchInput.toLowerCase();
-        return announcements.filter(announcement =>
-            announcement.title.toLowerCase().includes(searchLower) ||
-            announcement.type.toLowerCase().includes(searchLower) ||
-            announcement.summary?.toLowerCase().includes(searchLower)
-        );
-    }, [announcements, searchInput]);
 
     // Group announcements by type
-    const groupedAnnouncements = useMemo(() => {
-        const grouped = filteredAnnouncements.reduce((acc, announcement) => {
-            const type = announcement.type || "Other";
-            if (!acc[type]) {
-                acc[type] = [];
-            }
-            acc[type].push(announcement);
-            return acc;
-        }, {} as Record<string, AnnouncementsTypes[]>);
 
-        return grouped;
-    }, [filteredAnnouncements]);
 
     // Format date consistently
     const formatDate = (dateString: string) => {
@@ -113,6 +92,13 @@ export default function GroupPage() {
     }, [language, startdate, endDate, groupValue])
 
     const handleSearch = () => {
+        const searchLower = searchInput.toLowerCase();
+        const filter = announcements.filter(announcement =>
+            announcement.title.toLowerCase().includes(searchLower) ||
+            announcement.type.toLowerCase().includes(searchLower) ||
+            announcement.summary?.toLowerCase().includes(searchLower)
+        );
+        setfilteredAnnouncements(filter)
     };
 
     return (
@@ -123,7 +109,7 @@ export default function GroupPage() {
 
             <Header />
 
-            <div className='bg-[#F9F9F9] pt-7 border flex flex-col justify-center sm:justify-start sm:flex-row gap-5 sm:gap-2 items-center border-[#EDEDED] w-[85vw] sm:w-[70vw] md:w-[50vw] lg:w-[600px] mx-auto sm:h-[10vh] p-4 sm:p-2 rounded-md'>
+            <div className='bg-[#F9F9F9]  sm:pt-7 border flex flex-col justify-center sm:justify-start sm:flex-row gap-5 sm:gap-2 items-center border-[#EDEDED] w-[85vw] sm:w-[70vw] md:w-[50vw] lg:w-[600px] mx-auto sm:h-[10vh] p-4 sm:p-2 rounded-md'>
                 <Input
                     value={searchInput}
                     onChange={(e) => setSearchInput(e.target.value)}
@@ -197,37 +183,37 @@ export default function GroupPage() {
 
             {!isLoading && !error && filteredAnnouncements.length > 0 && (
                 <div className="flex flex-col gap-8 w-[85%] mx-auto mt-7 pb-8">
-                    {Object.entries(groupedAnnouncements).map(([type, typeAnnouncements]) => (
-                        <div key={type} className="flex flex-col gap-4">
-                            <h2 className="text-[#E0614B] text-xl md:text-2xl font-semibold">
-                                {type} ({typeAnnouncements.length})
-                            </h2>
-                            <div className="flex flex-col gap-3">
-                                {typeAnnouncements.map((announcement) => (
-                                    <div
-                                        key={announcement._id}
-                                        className="bg-white border border-[#EDEDED] rounded-lg p-4 hover:shadow-md transition-shadow flex flex-col gap-4"
-                                    >
-                                        <div className="flex items-start justify-between gap-3 mb-3">
-                                            <h3 className="text-[#2B2B2B]  text-base md:text-lg flex-1 line-clamp-2">
-                                                {announcement.title}
-                                            </h3>
-                                            <div className="flex items-center gap-1.5 text-gray-500 text-xs md:text-sm whitespace-nowrap flex-shrink-0">
-                                                <Calendar className="h-3.5 w-3.5 md:h-4 md:w-4" />
-                                                <span>{formatDate(announcement.created_at)}</span>
-                                            </div>
+
+                    <div className="flex flex-col gap-4">
+                        <h2 className="text-[#E0614B] text-xl md:text-2xl font-semibold">
+                            {announcements[0].type} ({announcements.length})
+                        </h2>
+                        <div className="flex flex-col gap-3">
+                            {filteredAnnouncements.map((announcement) => (
+                                <div
+                                    key={announcement._id}
+                                    className="bg-white border border-[#EDEDED] rounded-lg p-4 hover:shadow-md transition-shadow flex flex-col gap-4"
+                                >
+                                    <div className="flex items-start justify-between gap-3 mb-3">
+                                        <h3 className="text-[#2B2B2B]  text-base md:text-lg flex-1 ">
+                                            {announcement.title}
+                                        </h3>
+                                        <div className="flex items-center gap-1.5 text-gray-500 text-xs md:text-sm whitespace-nowrap flex-shrink-0">
+                                            <Calendar className="h-3.5 w-3.5 md:h-4 md:w-4" />
+                                            <span>{formatDate(announcement.created_at)}</span>
                                         </div>
-                                        {announcement.summary && (
-                                            <p className="text-gray-600 ">
-                                                {announcement.summary}
-                                            </p>
-                                        )}
-                                        <Button onClick={() => router.push(`/announcement?id=${announcement._id}&lan=${language}`)} className="bg-[#E0614B] w-[100px] ml-auto hover:bg-[#b78d86]">See More</Button>
                                     </div>
-                                ))}
-                            </div>
+                                    {announcement.summary && (
+                                        <p className="text-gray-600 ">
+                                            {announcement.summary}
+                                        </p>
+                                    )}
+                                    <Button onClick={() => router.push(`/announcement?id=${announcement._id}&lan=${language}`)} className="bg-[#E0614B] w-[100px] ml-auto hover:bg-[#b78d86]">See More</Button>
+                                </div>
+                            ))}
                         </div>
-                    ))}
+                    </div>
+
                 </div>
             )}
         </div>
