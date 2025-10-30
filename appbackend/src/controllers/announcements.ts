@@ -365,16 +365,19 @@ export const GetallGroupsIndiaAnnouncements = asyncerrorhandler(async (req: Requ
                 ],
             }
         );
-    } else {
-        pipeline.push({
-            $unset: [
-                "translations",
-                "content",
-                "original_title",
-                "language",
-                "source",
-            ],
-        });
+    }
+    else {
+        pipeline.push(
+            {
+                $unset: [
+                    "translations",
+                    "content",
+                    "original_title",
+                    "language",
+                    "source",
+                ],
+            }
+        );
     }
 
     pipeline.push(
@@ -391,7 +394,7 @@ export const GetallGroupsIndiaAnnouncements = asyncerrorhandler(async (req: Requ
                 _id: 0
             }
         },
-        { $sort: { type: -1 } },
+        { $sort: { type: 1 } },
         { $skip: skip },
         { $limit: pageSize },
     );
@@ -420,7 +423,6 @@ export const GetallGroupsIndiaAnnouncements = asyncerrorhandler(async (req: Requ
     res.status(200).json(responseData);
     return
 });
-
 
 export const GetIndiaAnnouncement = asyncerrorhandler(async (req: Request, res: Response) => {
     const { id, target_lan } = req.query;
