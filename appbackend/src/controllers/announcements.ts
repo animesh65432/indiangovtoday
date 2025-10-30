@@ -32,13 +32,19 @@ export const GetIndiaAnnouncements = asyncerrorhandler(async (req: Request, res:
         return;
     }
 
-
     const db = await connectDB();
+
+
+    const start = new Date(announcementsStartDate);
+    start.setUTCHours(0, 0, 0, 0);
+
+    const end = new Date(announcementsEndDate);
+    end.setUTCHours(23, 59, 59, 999);
 
     const filter = {
         created_at: {
-            $gte: announcementsStartDate,
-            $lte: announcementsEndDate,
+            $gte: start,
+            $lte: end,
         },
     };
 
@@ -64,19 +70,37 @@ export const GetIndiaAnnouncements = asyncerrorhandler(async (req: Request, res:
             },
             {
                 $addFields: {
+                    original_type: "$type",
                     title: { $ifNull: ["$translation.title", "$title"] },
-                    type: { $ifNull: ["$translation.type", "$type"] },
-                    original_type: "$type"
+                    type: { $ifNull: ["$translation.type", "$type"] }
                 },
             },
-            { $unset: ["translations", "translation", "content", "source", "original_title", "summary"] }
+            {
+                $unset: [
+                    "translations",
+                    "translation",
+                    "content",
+                    "source",
+                    "original_title",
+                    "summary",
+                    "language"
+                ]
+            }
         );
-    }
-    else {
+    } else {
         pipeline.push({
-            $unset: ["translations", "translation", "content", "source", "original_title", "summary"]
-        })
+            $unset: [
+                "translations",
+                "translation",
+                "content",
+                "source",
+                "original_title",
+                "summary",
+                "language"
+            ]
+        });
     }
+
     pipeline.push(
         { $sort: { created_at: -1 } },
         {
@@ -93,7 +117,7 @@ export const GetIndiaAnnouncements = asyncerrorhandler(async (req: Request, res:
             },
         },
         { $skip: skip },
-        { $limit: pageSize },
+        { $limit: pageSize }
     );
 
     const indiaAnnouncements = await db
@@ -118,7 +142,7 @@ export const GetIndiaAnnouncements = asyncerrorhandler(async (req: Request, res:
     await redis.set(redis_key, JSON.stringify(responseData), { ex: 300 });
 
     res.status(200).json(responseData);
-    return
+    return;
 });
 export const GetGroupIndiaAnnouncements = asyncerrorhandler(async (req: Request, res: Response) => {
     const { target_lan, startdate, endDate, typeofGroup } = req.query;
