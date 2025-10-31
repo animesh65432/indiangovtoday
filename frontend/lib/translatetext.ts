@@ -12,6 +12,7 @@ type TranslationKeys = {
     SEE_MORE: string;
     VIEW_ALL: string;
     VIEW_DETAILS: string;
+    No_announcements_found: string
 };
 
 export const TranslateText: Record<string, TranslationKeys> = {
@@ -28,7 +29,8 @@ export const TranslateText: Record<string, TranslationKeys> = {
         INDIAN_ANNOUNCEMENTS: "Indian Announcements",
         SEE_MORE: "See More",
         VIEW_ALL: "View All",
-        VIEW_DETAILS: "View Details"
+        VIEW_DETAILS: "View Details",
+        No_announcements_found: "No announcements found"
     },
     हिन्दी: {
         ALL_GOVERNMENT_ANNOUNCEMENTS_IN_ONE_PLACE: "सभी सरकारी घोषणाएँ, एक ही स्थान पर",
@@ -43,7 +45,8 @@ export const TranslateText: Record<string, TranslationKeys> = {
         INDIAN_ANNOUNCEMENTS: "भारतीय घोषणाएँ",
         SEE_MORE: "और देखें",
         VIEW_ALL: "सभी देखें",
-        VIEW_DETAILS: "विवरण देखें"
+        VIEW_DETAILS: "विवरण देखें",
+        No_announcements_found: "कोई घोषणा नहीं मिली"
     },
     বাংলা: {
         ALL_GOVERNMENT_ANNOUNCEMENTS_IN_ONE_PLACE: "সকল সরকারি ঘোষণা, এক জায়গায়",
@@ -58,7 +61,8 @@ export const TranslateText: Record<string, TranslationKeys> = {
         INDIAN_ANNOUNCEMENTS: "ভারতীয় ঘোষণা",
         SEE_MORE: "আরও দেখুন",
         VIEW_ALL: "সব দেখুন",
-        VIEW_DETAILS: "বিস্তারিত দেখুন"
+        VIEW_DETAILS: "বিস্তারিত দেখুন",
+        No_announcements_found: "কোনো ঘোষণা পাওয়া যায়নি"
     },
     தமிழ்: {
         ALL_GOVERNMENT_ANNOUNCEMENTS_IN_ONE_PLACE: "அனைத்து அரசு அறிவிப்புகளும் ஒரே இடத்தில்",
@@ -73,7 +77,8 @@ export const TranslateText: Record<string, TranslationKeys> = {
         INDIAN_ANNOUNCEMENTS: "இந்திய அறிவிப்புகள்",
         SEE_MORE: "மேலும் பார்க்கவும்",
         VIEW_ALL: "அனைத்தையும் காண்க",
-        VIEW_DETAILS: "விவரங்களைப் பார்க்கவும்"
+        VIEW_DETAILS: "விவரங்களைப் பார்க்கவும்",
+        No_announcements_found: "எந்த அறிவிப்புகளும் கிடைக்கவில்லை"
     },
     తెలుగు: {
         ALL_GOVERNMENT_ANNOUNCEMENTS_IN_ONE_PLACE: "అన్ని ప్రభుత్వ ప్రకటనలు ఒకే చోట",
@@ -88,7 +93,8 @@ export const TranslateText: Record<string, TranslationKeys> = {
         INDIAN_ANNOUNCEMENTS: "భారతీయ ప్రకటనలు",
         SEE_MORE: "మరిన్ని చూడండి",
         VIEW_ALL: "అన్నీ చూడండి",
-        VIEW_DETAILS: "వివరాలు చూడండి"
+        VIEW_DETAILS: "వివరాలు చూడండి",
+        No_announcements_found: "ప్రకటనలు కనుగొనబడలేదు"
     },
     मराठी: {
         ALL_GOVERNMENT_ANNOUNCEMENTS_IN_ONE_PLACE: "सर्व सरकारी घोषणा, एकाच ठिकाणी",
@@ -103,7 +109,8 @@ export const TranslateText: Record<string, TranslationKeys> = {
         INDIAN_ANNOUNCEMENTS: "भारतीय घोषणा",
         SEE_MORE: "अधिक पहा",
         VIEW_ALL: "सर्व पहा",
-        VIEW_DETAILS: "तपशील पहा"
+        VIEW_DETAILS: "तपशील पहा",
+        No_announcements_found: "कोणतीही घोषणा आढळली नाही"
     },
     ગુજરાતી: {
         ALL_GOVERNMENT_ANNOUNCEMENTS_IN_ONE_PLACE: "બધી સરકારી જાહેરાતો, એક જ જગ્યાએ",
@@ -118,7 +125,8 @@ export const TranslateText: Record<string, TranslationKeys> = {
         INDIAN_ANNOUNCEMENTS: "ભારતીય જાહેરાતો",
         SEE_MORE: "વધુ જુઓ",
         VIEW_ALL: "બધું જુઓ",
-        VIEW_DETAILS: "વિગતો જુઓ"
+        VIEW_DETAILS: "વિગતો જુઓ",
+        No_announcements_found: "કોઈ જાહેરાતો મળી નથી"
     },
     ಕನ್ನಡ: {
         ALL_GOVERNMENT_ANNOUNCEMENTS_IN_ONE_PLACE: "ಎಲ್ಲಾ ಸರ್ಕಾರಿ ಘೋಷಣೆಗಳು, ಒಂದೇ ಸ್ಥಳದಲ್ಲಿ",
@@ -133,7 +141,8 @@ export const TranslateText: Record<string, TranslationKeys> = {
         INDIAN_ANNOUNCEMENTS: "ಭಾರತೀಯ ಪ್ರಕಟಣೆಗಳು",
         SEE_MORE: "ಇನ್ನಷ್ಟು ನೋಡಿ",
         VIEW_ALL: "ಎಲ್ಲವನ್ನೂ ನೋಡಿ",
-        VIEW_DETAILS: "ವಿವರಗಳನ್ನು ನೋಡಿ"
+        VIEW_DETAILS: "ವಿವರಗಳನ್ನು ನೋಡಿ",
+        No_announcements_found: "ಯಾವುದೇ ಘೋಷಣೆಗಳು ಕಂಡುಬಂದಿಲ್ಲ"
     },
     മലയാളം: {
         ALL_GOVERNMENT_ANNOUNCEMENTS_IN_ONE_PLACE: "എല്ലാ സർക്കാർ അറിയിപ്പുകളും ഒരിടത്ത്",
@@ -148,7 +157,8 @@ export const TranslateText: Record<string, TranslationKeys> = {
         INDIAN_ANNOUNCEMENTS: "ഇന്ത്യൻ പ്രഖ്യാപനങ്ങൾ",
         SEE_MORE: "കൂടുതൽ കാണുക",
         VIEW_ALL: "എല്ലാം കാണുക",
-        VIEW_DETAILS: "വിശദാംശങ്ങൾ കാണുക"
+        VIEW_DETAILS: "വിശദാംശങ്ങൾ കാണുക",
+        No_announcements_found: "അറിയിപ്പുകളൊന്നും കണ്ടെത്തിയില്ല"
     },
     اردو: {
         ALL_GOVERNMENT_ANNOUNCEMENTS_IN_ONE_PLACE: "تمام سرکاری اعلانات، ایک ہی جگہ",
@@ -163,6 +173,7 @@ export const TranslateText: Record<string, TranslationKeys> = {
         INDIAN_ANNOUNCEMENTS: "ہندوستانی اعلانات",
         SEE_MORE: "مزید دیکھیں",
         VIEW_ALL: "سب دیکھیں",
-        VIEW_DETAILS: "تفصیلات دیکھیں"
+        VIEW_DETAILS: "تفصیلات دیکھیں",
+        No_announcements_found: "کوئی اعلان نہیں ملا"
     }
 };
