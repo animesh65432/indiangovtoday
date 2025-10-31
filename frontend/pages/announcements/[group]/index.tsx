@@ -96,7 +96,7 @@ export default function GroupPage() {
     };
 
     return (
-        <div className="p-4 bg-white min-h-dvh flex flex-col gap-5">
+        <div className="p-4  min-h-dvh w-[100vw] bg-[url(/Annoucementsbackgroundimage.png)] flex flex-col gap-5">
             <div className=' block sm:hidden relative h-[47px] w-[150px]' onClick={() => router.push(`/`)}>
                 <Image src="/Logo.png" alt='logo' fill />
             </div>
