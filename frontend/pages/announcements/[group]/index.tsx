@@ -96,7 +96,7 @@ export default function GroupPage() {
     };
 
     return (
-        <div className="p-4  min-h-dvh w-[100vw] bg-[url(/Annoucementsbackgroundimage.png)] flex flex-col gap-5">
+        <div className="p-4  h-[100vh] w-[100vw] bg-[url(/Annoucementsbackgroundimage.png)] flex flex-col gap-5">
             <div className=' block sm:hidden relative h-[47px] w-[150px]' onClick={() => router.push(`/`)}>
                 <Image src="/Logo.png" alt='logo' fill />
             </div>
@@ -164,7 +164,7 @@ export default function GroupPage() {
             )}
 
             {!isLoading && !error && filteredAnnouncements.length === 0 && announcements.length === 0 && (
-                <div className="w-[85%] mx-auto mt-7 text-center text-gray-500">
+                <div className="w-[85%] h-[40vh] mx-auto mt-7 text-center text-gray-500">
                     No announcements found
                 </div>
             )}
@@ -176,7 +176,7 @@ export default function GroupPage() {
             )}
 
             {!isLoading && !error && filteredAnnouncements.length > 0 && (
-                <div className="flex flex-col gap-8 w-[85%] mx-auto mt-7 pb-8">
+                <div className="flex flex-col gap-8 w-[85%] h-[60vh] mx-auto mt-7 pb-8">
 
                     <div className="flex flex-col gap-4">
                         <h2 className="text-[#E0614B] text-xl md:text-2xl font-semibold">
