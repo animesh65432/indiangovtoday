@@ -11,6 +11,7 @@ import { SelectContent, SelectItem, SelectTrigger, SelectValue, Select } from ".
 import { optionsforLanguages } from "@/lib/lan";
 import { useRouter } from "next/router"
 import { LoaderCircleIcon } from "lucide-react"
+import Content from "../Announcement/Content";
 
 type Props = {
     Announcements: AnnouncementsTyps[];
@@ -135,7 +136,7 @@ const Main: React.FC<Props> = ({ Announcements, IsLoading, QueryInput }) => {
                                     </a>
 
                                     <p className="text-gray-600 text-sm leading-relaxed flex-grow">
-                                        {an.summary || "No summary available."}
+                                        <Content content={an.summary} />
                                     </p>
 
                                     <div
