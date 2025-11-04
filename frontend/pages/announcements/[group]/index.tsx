@@ -75,12 +75,6 @@ export default function GroupPage() {
         }
     };
 
-
-    // Group announcements by type
-
-
-    // Format date consistently
-
     useEffect(() => {
         init()
     }, [language, startdate, endDate, groupValue])

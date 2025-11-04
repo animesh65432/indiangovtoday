@@ -27,7 +27,7 @@ const Header: React.FC = () => {
         }
     };
     return (
-        <div className=' w-[95%]  [@media(min-width:900px)]:w-[85vw] mx-auto  pt-5  [@media(min-width:900px)]:pt-10 flex items-center  justify-between '>
+        <div className=' w-[95%] h-[20vh]  [@media(min-width:900px)]:w-[85vw] mx-auto  pt-5  [@media(min-width:900px)]:pt-10 flex items-center  justify-between '>
             <div onClick={() => router.push("/")} className="relative  hidden sm:block h-[52px] sm:w-[168px] lg:h-[70px] lg:w-[230px] xl:h-[82px] xl:w-[265px]">
                 <Image
                     alt="logo"

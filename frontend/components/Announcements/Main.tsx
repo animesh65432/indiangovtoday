@@ -42,7 +42,7 @@ const Main: React.FC<Props> = ({ Announcements, IsLoading, QueryInput }) => {
     console.log(Announcements)
 
     return (
-        <div className="min-h-screen   overflow-x-auto flex flex-col gap-4">
+        <div className=" flex flex-col gap-4">
             <div className=' block sm:hidden relative h-[47px] w-[150px] ml-[5%]' onClick={() => router.push("/")} >
                 <Image src="/Logo.png" alt='logo' fill />
             </div>
@@ -93,16 +93,16 @@ const Main: React.FC<Props> = ({ Announcements, IsLoading, QueryInput }) => {
                     {TranslateText[language].SEARCH}
                 </Button>
             </div>
-            <div className="flex flex-col space-y-16 px-4 md:px-8 lg:px-16 max-w-7xl mx-auto mt-10">
+            <div className="flex flex-col h-[60vh] overflow-x-auto space-y-16 px-4 md:px-8 lg:px-16  mx-auto mt-10">
                 {IsLoading && Announcements.length === 0 &&
-                    <div className="h-[40vh] flex justify-center items-center">
+                    <div className="h-[40vh] flex justify-center items-center w-[85%] mx-auto">
                         <LoaderCircleIcon className="h-8 w-8  animate-spin text-[#E0614B]" />
                     </div>
                 }
                 {!IsLoading && Announcements.length > 0 ? Announcements.map((group, groupIdx) => (
                     <div
                         key={group.type}
-                        className="w-full flex flex-col space-y-6 animate-fade-in hover:underline hover:cursor-pointer"
+                        className="w-[85%] mx-auto flex flex-col space-y-6 animate-fade-in hover:underline hover:cursor-pointer"
                         style={{ animationDelay: `${groupIdx * 100}ms` }}
                         onClick={() => router.push(`/announcements/${language === "English" ? group.announcements[0].type : group.announcements[0].original_type}`)}
                     >

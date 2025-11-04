@@ -146,7 +146,7 @@ const Announcements = ({ QueryInput }: Props) => {
     }, [handleScroll])
 
     return (
-        <div className='flex flex-col gap-4'>
+        <div className='flex flex-col gap-4 h-[100vh]'>
             <Header />
             <Main Announcements={Announcements} IsLoading={IsLoading} QueryInput={QueryInput} />
         </div>
