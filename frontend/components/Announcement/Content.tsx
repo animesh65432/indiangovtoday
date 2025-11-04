@@ -5,22 +5,26 @@ const Content = ({ content }: { content: string }) => {
     const cleanText = (text: string) => {
         let cleaned = text;
 
-        // 1️⃣ Remove any pic.twitter.com links
+        // Remove pic.twitter.com links
         cleaned = cleaned.replace(/pic\.twitter\.com\/\S+/g, '');
 
-        // 2️⃣ Remove repeated hashtags or mentions joined together
+        // Remove repeated hashtags or mentions joined together
         cleaned = cleaned.replace(/([#@]\w+)([#@]\w+)/g, '$1 ');
 
-        // 3️⃣ Remove sections that contain only hashtags, mentions, or junk characters
+        // Remove sections that contain only hashtags, mentions, or junk characters
         cleaned = cleaned.replace(
             /((?:[#@]\w+\s*){2,}|\*{2,}.*|SS\/\s*MS|ViksitBharat2047\s*)/gi,
             ''
         );
 
-        // 4️⃣ Remove trailing "(1/3)" or similar numbering
+        // Remove trailing "(1/3)" or similar numbering
         cleaned = cleaned.replace(/\(\d+\/\d+\)/g, '');
 
-        // 5️⃣ Collapse extra spaces left behind
+        // Remove press agency codes like "... PK/KC/KJ" or "PK/MS/KJ"
+        cleaned = cleaned.replace(/\.{2,}\s*[A-Z]{2}\/[A-Z]{2}\/[A-Z]{2}\s*/g, '');
+        cleaned = cleaned.replace(/\s+[A-Z]{2}\/[A-Z]{2}\/[A-Z]{2}\s*$/g, '');
+
+        // Collapse extra spaces left behind
         cleaned = cleaned.replace(/\s{2,}/g, ' ').trim();
 
         return cleaned;
@@ -40,6 +44,16 @@ const Content = ({ content }: { content: string }) => {
             if (!part) return null;
 
             if (part.match(/^https?:\/\//)) {
+                // Extract domain or show shortened version
+                let displayText = part;
+                try {
+                    const url = new URL(part);
+                    displayText = url.hostname + (url.pathname !== '/' ? url.pathname.substring(0, 30) : '');
+                    if (part.length > displayText.length + 10) displayText += '...';
+                } catch (e) {
+                    // If URL parsing fails, show first 50 chars
+                    displayText = part.length > 50 ? part.substring(0, 50) + '...' : part;
+                }
                 return (
                     <a
                         key={index}
@@ -47,8 +61,9 @@ const Content = ({ content }: { content: string }) => {
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-blue-600 hover:underline break-all"
+                        title={part}
                     >
-                        {part}
+                        {displayText}
                     </a>
                 );
             }
@@ -59,8 +74,9 @@ const Content = ({ content }: { content: string }) => {
                         key={index}
                         href={`mailto:${part}`}
                         className="text-blue-600 hover:underline break-all"
+                        title={part}
                     >
-                        {part}
+                        📧 {part}
                     </a>
                 );
             }
@@ -98,6 +114,7 @@ const Content = ({ content }: { content: string }) => {
             return <span key={index}>{part}</span>;
         });
     };
+
     return (
         <div className="whitespace-pre-line text-[#2B2B2B] h-[60vh] custom-scroll overflow-x-auto leading-8 md:leading-9 text-[0.9rem] md:text-[1rem] lg:text-[1.1rem]">
             {processContent(content)}

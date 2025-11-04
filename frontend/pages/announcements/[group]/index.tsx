@@ -159,7 +159,7 @@ export default function GroupPage() {
                 }
             </header>
 
-            <main className=" h-[58vh] sm:h-[60vh] overflow-x-auto mt-5 sm:mt-0">
+            <main className=" h-[58vh] sm:h-[60vh] overflow-x-auto mt-5 ">
                 {isLoading && (
                     <div className=" w-full flex justify-center items-center">
                         <LoaderCircle className="text-[#E0614B] h-8 w-8 animate-spin" />
