@@ -144,44 +144,54 @@ export const GetIndiaAnnouncements = asyncerrorhandler(async (req: Request, res:
     res.status(200).json(responseData);
     return;
 });
+
 export const GetGroupIndiaAnnouncements = asyncerrorhandler(async (req: Request, res: Response) => {
     const { target_lan, startdate, endDate, typeofGroup } = req.query;
 
+    // ✅ Ensure typeofGroup exists
     if (!typeofGroup) {
         res.status(400).json({
-            message: "typeofGroup is required"
-        })
-        return
+            message: "typeofGroup is required",
+        });
+        return;
     }
 
+    // ✅ Convert query dates safely
     const announcementsStartDate = startdate
         ? new Date(startdate as string)
         : new Date(new Date().setDate(new Date().getDate() - 7));
 
-    const announcementsEndDate = endDate
-        ? new Date(endDate as string)
-        : new Date();
+    const announcementsEndDate = endDate ? new Date(endDate as string) : new Date();
 
     if (isNaN(announcementsStartDate.getTime()) || isNaN(announcementsEndDate.getTime())) {
         res.status(400).json({ error: "Invalid date format" });
         return;
     }
 
+    // ✅ Resolve language code
     const targetLanguage = (target_lan as string) || "English";
     const lan = LANGUAGE_CODES[targetLanguage] || "en";
 
-    const redis_key = `Group_Announcements_${lan}_${announcementsStartDate.toISOString().split('T')[0]}_${announcementsEndDate.toISOString().split('T')[0]}_${typeofGroup || "all"}`;
+    // ✅ Normalize typeValue
+    const typeValue = Array.isArray(typeofGroup)
+        ? String(typeofGroup[0])
+        : String(typeofGroup);
 
+    // ✅ Build Redis key
+    const redis_key = `Group_Announcements_${lan}_${announcementsStartDate
+        .toISOString()
+        .split("T")[0]}_${announcementsEndDate.toISOString().split("T")[0]}_${typeValue || "all"}`;
+
+    // ✅ Try fetching from cache
     const cached_data = await redis.get(redis_key);
 
     if (cached_data) {
-        const parsedData = typeof cached_data === 'string'
-            ? JSON.parse(cached_data)
-            : cached_data;
+        const parsedData = typeof cached_data === "string" ? JSON.parse(cached_data) : cached_data;
         res.status(200).json(parsedData);
         return;
     }
 
+    // ✅ Compute date range
     const start = new Date(announcementsStartDate);
     start.setUTCHours(0, 0, 0, 0);
 
@@ -190,18 +200,15 @@ export const GetGroupIndiaAnnouncements = asyncerrorhandler(async (req: Request,
 
     const db = await connectDB();
 
+    // ✅ Filter with regex that tolerates underscores/spaces
     const filter: any = {
-        created_at: { $gte: start, $lte: end }
+        created_at: { $gte: start, $lte: end },
+        type: { $regex: new RegExp(typeValue.replace(/[_\s]+/g, "[_\\s]?"), "i") },
     };
 
-    filter.type = typeofGroup;
+    const pipeline: any[] = [{ $match: filter }];
 
-
-    const pipeline: any[] = [
-        { $match: filter }
-    ];
-
-
+    // ✅ Translation stages
     if (lan !== "en") {
         pipeline.push(
             {
@@ -250,14 +257,13 @@ export const GetGroupIndiaAnnouncements = asyncerrorhandler(async (req: Request,
         });
     }
 
+    // ✅ Run aggregation
     const indiaAnnouncements = await db
         .collection("announcements")
         .aggregate(pipeline)
         .toArray();
 
-
-
-
+    // ✅ Prepare and cache response
     const responseData = {
         success: true,
         data: indiaAnnouncements,
@@ -267,13 +273,11 @@ export const GetGroupIndiaAnnouncements = asyncerrorhandler(async (req: Request,
             start: start.toISOString(),
             end: end.toISOString(),
         },
-        group: typeofGroup || null,
+        group: typeValue || null,
     };
 
     await redis.set(redis_key, JSON.stringify(responseData), { ex: 300 });
-
     res.status(200).json(responseData);
-    return
 });
 
 export const GetallGroupsIndiaAnnouncements = asyncerrorhandler(async (req: Request, res: Response) => {

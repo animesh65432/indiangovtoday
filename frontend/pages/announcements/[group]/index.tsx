@@ -75,12 +75,6 @@ export default function GroupPage() {
         }
     };
 
-
-    // Group announcements by type
-
-
-    // Format date consistently
-
     useEffect(() => {
         init()
     }, [language, startdate, endDate, groupValue])
@@ -96,14 +90,16 @@ export default function GroupPage() {
     };
 
     return (
-        <div className="p-4  h-[100vh] w-[100vw] bg-[url(/Annoucementsbackgroundimage.png)] flex flex-col gap-5">
+        <div className="p-4 min-h-[100vh] overflow-x-hidden bg-[url(/Annoucementsbackgroundimage.png)]  flex flex-col gap-5">
+
             <div className=' block sm:hidden relative h-[47px] w-[150px]' onClick={() => router.push(`/`)}>
                 <Image src="/Logo.png" alt='logo' fill />
             </div>
+            <div className="sm:block hidden">
+                <Header />
+            </div>
 
-            <Header />
-
-            <div className='bg-[#F9F9F9]  sm:pt-7 border flex flex-col justify-center sm:justify-start sm:flex-row gap-5 sm:gap-2 items-center border-[#EDEDED] w-[85vw] sm:w-[70vw] md:w-[50vw] lg:w-[600px] mx-auto sm:h-[10vh] p-4 sm:p-2 rounded-md'>
+            <div className='bg-[#F9F9F9]   sm:pt-7 border flex flex-col justify-center sm:justify-start sm:flex-row gap-5 sm:gap-2 items-center border-[#EDEDED] w-[85vw] sm:w-[70vw] md:w-[50vw] lg:w-[600px] mx-auto sm:h-[10vh] p-4 sm:p-5 rounded-md'>
                 <Input
                     value={searchInput}
                     onChange={(e) => setSearchInput(e.target.value)}
@@ -150,6 +146,8 @@ export default function GroupPage() {
                     {TranslateText[language].SEARCH}
                 </Button>
             </div>
+
+
 
             {isLoading && (
                 <div className="h-[40vh] w-full flex justify-center items-center">
@@ -212,6 +210,7 @@ export default function GroupPage() {
 
                 </div>
             )}
+
         </div>
     )
 }
