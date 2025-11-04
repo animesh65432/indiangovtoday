@@ -96,92 +96,90 @@ export default function GroupPage() {
     };
 
     return (
-        <div className="p-4  min-h-dvh w-[100vw] bg-[url(/Annoucementsbackgroundimage.png)] flex flex-col gap-5">
-            <div className=' block sm:hidden relative h-[47px] w-[150px]' onClick={() => router.push(`/`)}>
-                <Image src="/Logo.png" alt='logo' fill />
-            </div>
+        <div className="p-4  min-h-dvh w-[100vw] bg-[url(/Annoucementsbackgroundimage.png)] flex flex-col sm:gap-10">
+            <header className=" h-[45vh] min-h-[400px]:h-[35vh] sm:h-[25vh] flex flex-col gap-4">
 
-            <Header />
+                <Image src="/Logo.png" alt='logo' width={150} height={150} className=" block sm:hidden" />
+                <div className=" hidden sm:block">
+                    <Header />
+                </div>
 
-            <div className='bg-[#F9F9F9]  sm:pt-7 border flex flex-col justify-center sm:justify-start sm:flex-row gap-5 sm:gap-2 items-center border-[#EDEDED] w-[85vw] sm:w-[70vw] md:w-[50vw] lg:w-[600px] mx-auto sm:h-[10vh] p-4 sm:p-2 rounded-md'>
-                <Input
-                    value={searchInput}
-                    onChange={(e) => setSearchInput(e.target.value)}
-                    className="w-[90%] sm:w-[70%] lg:w-[546px] bg-[#FFFFFF] rounded-xl ml-4 text-[#2B2B2B]"
-                    placeholder={TranslateText[language].INPUT_PLACEHOLDER}
-                />
-                <div className='flex flex-col [@media(min-width:450px)]:flex-row gap-4 sm:hidden items-center'>
-                    <DateRangePicker
-                        onUpdate={onChangeDateRangePicker}
-                        initialDateFrom={startdate}
-                        initialDateTo={endDate}
-                        align="start"
-                        locale="en-GB"
-                        showCompare={false}
+                <div className='bg-[#F9F9F9]  sm:pt-7 border flex flex-col justify-center sm:justify-start sm:flex-row gap-5 sm:gap-2 items-center border-[#EDEDED] w-[85vw] sm:w-[70vw] md:w-[50vw] lg:w-[600px] mx-auto sm:h-[10vh] p-4  rounded-md'>
+                    <Input
+                        value={searchInput}
+                        onChange={(e) => setSearchInput(e.target.value)}
+                        className="w-[90%] sm:w-[70%] lg:w-[546px] bg-[#FFFFFF] rounded-xl ml-4 text-[#2B2B2B]"
+                        placeholder={TranslateText[language].INPUT_PLACEHOLDER}
                     />
+                    <div className='flex flex-col [@media(min-width:450px)]:flex-row gap-4 sm:hidden items-center'>
+                        <DateRangePicker
+                            onUpdate={onChangeDateRangePicker}
+                            initialDateFrom={startdate}
+                            initialDateTo={endDate}
+                            align="start"
+                            locale="en-GB"
+                            showCompare={false}
+                        />
 
-                    <Select
-                        onValueChange={(value) => {
-                            onSelectLanguage(value);
-                        }}
-                        value={language}
+                        <Select
+                            onValueChange={(value) => {
+                                onSelectLanguage(value);
+                            }}
+                            value={language}
+                        >
+                            <SelectTrigger className="mx-auto [@media(min-width:450px)]:mx-0 border border-[#E0614B] self-end bg-[#FFFFFF] rounded-lg font-light shadow-[4px_4px_0_0_#00000029] text-[#E0614B] data-[placeholder]:text-[#E0614B] focus:ring-0 focus:outline-none">
+                                <SelectValue className="" />
+                            </SelectTrigger>
+                            <SelectContent className="text-[#E0614B]">
+                                {optionsforLanguages.map((lan) => (
+                                    <SelectItem
+                                        key={lan.label}
+                                        value={lan.label}
+                                        className="font-medium hover:text-[#E0614B]"
+                                    >
+                                        {lan.label}
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+                    </div>
+
+                    <Button
+                        onClick={handleSearch}
+                        className='bg-[#E0614B] lg:w-[121px] hover:bg-[#dd8272] rounded-xl shadow-[4px_4px_0_0_#00000029]'
                     >
-                        <SelectTrigger className="mx-auto [@media(min-width:450px)]:mx-0 border border-[#E0614B] self-end bg-[#FFFFFF] rounded-lg font-light shadow-[4px_4px_0_0_#00000029] text-[#E0614B] data-[placeholder]:text-[#E0614B] focus:ring-0 focus:outline-none">
-                            <SelectValue className="" />
-                        </SelectTrigger>
-                        <SelectContent className="text-[#E0614B]">
-                            {optionsforLanguages.map((lan) => (
-                                <SelectItem
-                                    key={lan.label}
-                                    value={lan.label}
-                                    className="font-medium hover:text-[#E0614B]"
-                                >
-                                    {lan.label}
-                                </SelectItem>
-                            ))}
-                        </SelectContent>
-                    </Select>
+                        {TranslateText[language].SEARCH}
+                    </Button>
                 </div>
+            </header>
 
-                <Button
-                    onClick={handleSearch}
-                    className='bg-[#E0614B] lg:w-[121px] hover:bg-[#dd8272] rounded-xl shadow-[4px_4px_0_0_#00000029]'
-                >
-                    {TranslateText[language].SEARCH}
-                </Button>
-            </div>
+            <main className=" h-[49vh]  min-h-[400px]:h-[60vh] sm:h-[66vh] overflow-x-auto">
+                {isLoading && (
+                    <div className=" w-full flex justify-center items-center">
+                        <LoaderCircle className="text-[#E0614B] h-8 w-8 animate-spin" />
+                    </div>
+                )}
 
-            {isLoading && (
-                <div className="h-[40vh] w-full flex justify-center items-center">
-                    <LoaderCircle className="text-[#E0614B] h-8 w-8 animate-spin" />
-                </div>
-            )}
+                {error && !isLoading && (
+                    <div className="w-[85%] mx-auto mt-7 text-center text-red-500">
+                        {error}
+                    </div>
+                )}
 
-            {error && !isLoading && (
-                <div className="w-[85%] mx-auto mt-7 text-center text-red-500">
-                    {error}
-                </div>
-            )}
+                {!isLoading && !error && filteredAnnouncements.length === 0 && announcements.length === 0 && (
+                    <div className="w-[85%] mx-auto mt-7 text-center text-gray-500">
+                        No announcements found
+                    </div>
+                )}
 
-            {!isLoading && !error && filteredAnnouncements.length === 0 && announcements.length === 0 && (
-                <div className="w-[85%] mx-auto mt-7 text-center text-gray-500">
-                    No announcements found
-                </div>
-            )}
+                {!isLoading && !error && filteredAnnouncements.length === 0 && announcements.length > 0 && (
+                    <div className="w-[85%] mx-auto mt-7 text-center text-gray-500">
+                        No announcements match your search
+                    </div>
+                )}
 
-            {!isLoading && !error && filteredAnnouncements.length === 0 && announcements.length > 0 && (
-                <div className="w-[85%] mx-auto mt-7 text-center text-gray-500">
-                    No announcements match your search
-                </div>
-            )}
-
-            {!isLoading && !error && filteredAnnouncements.length > 0 && (
-                <div className="flex flex-col gap-8 w-[85%] mx-auto mt-7 pb-8">
-
-                    <div className="flex flex-col gap-4">
-                        <h2 className="text-[#E0614B] text-xl md:text-2xl font-semibold">
-                            {announcements[0].type} ({announcements.length})
-                        </h2>
+                {!isLoading && !error && filteredAnnouncements.length > 0 && (
+                    <div className="flex flex-col gap-8 w-[85%] mx-auto mt-7 pb-8">
                         <div className="flex flex-col gap-3">
                             {filteredAnnouncements.map((announcement) => (
                                 <div
@@ -209,9 +207,8 @@ export default function GroupPage() {
                             ))}
                         </div>
                     </div>
-
-                </div>
-            )}
+                )}
+            </main>
         </div>
     )
 }
