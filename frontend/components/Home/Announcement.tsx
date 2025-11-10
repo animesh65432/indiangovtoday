@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { GroupedAnnouncement as AnnouncementsTypes } from "@/types"
+import { Announcement as AnnouncementsTypes } from "@/types"
 import { useRouter } from 'next/router'
 import { Button } from '../ui/button'
 import { LanguageContext } from "@/context/Lan"
@@ -21,8 +21,6 @@ const Announcement: React.FC<Props> = ({ Announcement }) => {
     const redirect_to = (id: string) => {
         router.push(`/announcement?id=${id}&lan=${language}`)
     }
-
-
     return (
         <Card className=' w-[75vw] md:w-full md:flex-1 flex flex-col h-full hover:shadow-lg transition-shadow duration-300'>
             <CardHeader className='pb-2'>

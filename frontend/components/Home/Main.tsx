@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext, useCallback, useRef } from 'react';
 import { getAllAnnouncements } from "@/api/announcements";
-import { GroupedAnnouncements, GroupAnnouncementsresponse } from "@/types";
+import { Announcement as AnnouncementTypes, AnnouncementsResponse } from "@/types";
 import { UseLanguageContext } from '@/context/Lan';
 import { Currentdate } from "@/context/Currentdate";
 import Image from 'next/image';
@@ -16,14 +16,14 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 import { optionsforLanguages } from '@/lib/lan';
-import GroupofAnnouncement from './GroupofAnnouncement';
 import { useRouter } from "next/router"
 import { useWindowDimensions } from '@/hooks/useWindowDimensions';
+import ShowAnnouncements from './ShowAnnouncements';
 
 
 const Main: React.FC = () => {
     const latestrequest = useRef<symbol | null>(null);
-    const [GroupAnnouncements, SetGroupAnnouncements] = useState<GroupedAnnouncements[]>([])
+    const [Announcements, SetAnnouncements] = useState<AnnouncementTypes[]>([])
     const [IsLoading, SetIsLoading] = useState<boolean>(true);
     const [SearchInput, SetSearchInput] = useState<string>("")
     const LanguageContext = UseLanguageContext();
@@ -46,12 +46,12 @@ const Main: React.FC = () => {
         const fetchData = async () => {
             SetIsLoading(true);
             try {
-                const GroupAnnouncementsresponse = await getAllAnnouncements(language, startdate, endDate, page, limit) as GroupAnnouncementsresponse;
+                const response = await getAllAnnouncements(language, startdate, endDate, page, limit) as AnnouncementsResponse;
 
                 if (latestrequest.current === requestId) {
-                    SetGroupAnnouncements(GroupAnnouncementsresponse.data)
+                    SetAnnouncements(response.data)
                     SetSearchInput("");
-                    setPageSize(GroupAnnouncementsresponse.pagination.totalPages)
+                    setPageSize(response.pagination.totalPages)
                 }
 
             } catch (error) {
@@ -178,26 +178,7 @@ const Main: React.FC = () => {
                     {TranslateText[language].SEE_MORE}
                 </Button>
             </div>
-
-            <div className='w-[65vw] mx-auto  border rounded-lg h-[30vh] p-6  lg:hidden flex flex-col justify-between '>
-                <div className='text-lg font-semibold flex flex-col'>
-                    <span className='text-gray-600'>{TranslateText[language].DISCOVER_MORE}</span>
-                    <span className='text-[#E0614B]'>{TranslateText[language].INDIAN_ANNOUNCEMENTS}</span>
-                </div>
-                <Button onClick={() => router.push("/announcements")} className='bg-[#E0614B] lg:w-[121px] hover:bg-[#dd8272] rounded-xl shadow-[4px_4px_0_0_#00000029]'>
-                    {TranslateText[language].SEE_MORE}
-                </Button>
-            </div>
-
-            <GroupofAnnouncement
-                announcements={GroupAnnouncements}
-                onNextPage={goToNextPage}
-                onPrevPage={goToPrevPage}
-                currentPage={page}
-                totalPages={pageSize}
-                IsLoading={IsLoading}
-            />
-
+            <ShowAnnouncements Announcements={Announcements} />
         </div>
     );
 };

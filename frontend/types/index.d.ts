@@ -1,3 +1,4 @@
+import { Announcement, Announcementsresponse } from "./AnnouncementsTypes"
 export type AnnouncementsTypes = {
     _id: string,
     title: string,
@@ -21,7 +22,7 @@ export type GroupedAnnouncements = {
 };
 
 export type GroupAnnouncementsresponse = {
-    data: GroupedAnnouncements[],
+    data: Announcement[],
     languageCode: string,
     pagination: {
         page: number,
@@ -56,3 +57,5 @@ export type ShowAnnouncementsTypes = {
     content: string,
     source: string
 }
+
+export { Announcement }
