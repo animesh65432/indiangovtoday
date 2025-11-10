@@ -26,56 +26,67 @@ export const GetIndiaAnnouncements = asyncerrorhandler(async (req: Request, res:
     const redis_key = `Announcements_${lan}_${announcementsStartDate.toISOString().split('T')[0]}_${announcementsEndDate.toISOString().split('T')[0]}_page${pageNumber}_limit${pageSize}`;
 
     const cached_data = await redis.get(redis_key);
+    let indiaAnnouncements;
 
     if (typeof cached_data === "string" && cached_data.trim() !== "") {
-        res.status(200).json(JSON.parse(cached_data));
-        return;
-    }
+        indiaAnnouncements = JSON.parse(cached_data);
+    } else {
+        const db = await connectDB();
 
-    const db = await connectDB();
+        const start = new Date(announcementsStartDate);
+        start.setUTCHours(0, 0, 0, 0);
 
+        const end = new Date(announcementsEndDate);
+        end.setUTCHours(23, 59, 59, 999);
 
-    const start = new Date(announcementsStartDate);
-    start.setUTCHours(0, 0, 0, 0);
+        const filter = {
+            created_at: {
+                $gte: start,
+                $lte: end,
+            },
+        };
 
-    const end = new Date(announcementsEndDate);
-    end.setUTCHours(23, 59, 59, 999);
+        const pipeline: any[] = [{ $match: filter }];
 
-    const filter = {
-        created_at: {
-            $gte: start,
-            $lte: end,
-        },
-    };
-
-    const pipeline: any[] = [{ $match: filter }];
-
-    if (lan !== "en") {
-        pipeline.push(
-            {
-                $addFields: {
-                    translation: {
-                        $arrayElemAt: [
-                            {
-                                $filter: {
-                                    input: "$translations",
-                                    as: "trans",
-                                    cond: { $eq: ["$$trans.ln_code", lan] },
+        if (lan !== "en") {
+            pipeline.push(
+                {
+                    $addFields: {
+                        translation: {
+                            $arrayElemAt: [
+                                {
+                                    $filter: {
+                                        input: "$translations",
+                                        as: "trans",
+                                        cond: { $eq: ["$$trans.ln_code", lan] },
+                                    },
                                 },
-                            },
-                            0,
-                        ],
+                                0,
+                            ],
+                        },
                     },
                 },
-            },
-            {
-                $addFields: {
-                    original_type: "$type",
-                    title: { $ifNull: ["$translation.title", "$title"] },
-                    type: { $ifNull: ["$translation.type", "$type"] }
+                {
+                    $addFields: {
+                        original_type: "$type",
+                        title: { $ifNull: ["$translation.title", "$title"] },
+                        type: { $ifNull: ["$translation.type", "$type"] }
+                    },
                 },
-            },
-            {
+                {
+                    $unset: [
+                        "translations",
+                        "translation",
+                        "content",
+                        "source",
+                        "original_title",
+                        "summary",
+                        "language"
+                    ]
+                }
+            );
+        } else {
+            pipeline.push({
                 $unset: [
                     "translations",
                     "translation",
@@ -85,63 +96,48 @@ export const GetIndiaAnnouncements = asyncerrorhandler(async (req: Request, res:
                     "summary",
                     "language"
                 ]
+            });
+        }
+
+        pipeline.push(
+            { $sort: { created_at: -1 } },
+            {
+                $group: {
+                    _id: "$type",
+                    announcements: { $push: "$$ROOT" },
+                },
+            },
+            {
+                $project: {
+                    type: "$_id",
+                    announcements: { $slice: ["$announcements", 3] },
+                    _id: 0,
+                },
             }
         );
-    } else {
-        pipeline.push({
-            $unset: [
-                "translations",
-                "translation",
-                "content",
-                "source",
-                "original_title",
-                "summary",
-                "language"
-            ]
-        });
+
+        indiaAnnouncements = await db
+            .collection("announcements")
+            .aggregate(pipeline)
+            .toArray();
+        await redis.set(redis_key, JSON.stringify(indiaAnnouncements), { ex: 300 });
     }
 
-    pipeline.push(
-        { $sort: { created_at: -1 } },
-        {
-            $group: {
-                _id: "$type",
-                announcements: { $push: "$$ROOT" },
-            },
-        },
-        {
-            $project: {
-                type: "$_id",
-                announcements: { $slice: ["$announcements", 3] },
-                _id: 0,
-            },
-        },
-        { $skip: skip },
-        { $limit: pageSize }
-    );
+    const paginatedGroups = indiaAnnouncements.slice((pageNumber - 1) * pageSize, pageNumber * pageSize);
 
-    const indiaAnnouncements = await db
-        .collection("announcements")
-        .aggregate(pipeline)
-        .toArray();
-
-    const totalCount = await db.collection("announcements").countDocuments(filter);
+    const totalCount = indiaAnnouncements.length;
     const totalPages = Math.ceil(totalCount / pageSize);
 
-    const responseData = {
+    res.status(200).json({
         success: true,
-        data: indiaAnnouncements,
+        data: paginatedGroups,
         pagination: {
             page: pageNumber,
             totalPages,
             totalCount,
             pageSize,
         },
-    };
-
-    await redis.set(redis_key, JSON.stringify(responseData), { ex: 300 });
-
-    res.status(200).json(responseData);
+    });
     return;
 });
 export const GetGroupIndiaAnnouncements = asyncerrorhandler(async (req: Request, res: Response) => {

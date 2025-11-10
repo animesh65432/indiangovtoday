@@ -39,9 +39,6 @@ const Main: React.FC<Props> = ({ Announcements, IsLoading, QueryInput }) => {
             onChangeDate(values.range.from, values.range.to);
         }
     };
-
-    console.log(Announcements)
-
     return (
         <div className="min-h-screen   overflow-x-auto flex flex-col gap-4">
             <div className=' block sm:hidden relative h-[47px] w-[150px] ml-[5%]' onClick={() => router.push("/")} >
