@@ -4,6 +4,7 @@ import { LanguageProvider } from "@/context/Lan";
 import { CurrentdateProvider } from "@/context/Currentdate";
 import { AnnouncementsProvider } from "@/context/AnnouncementsProvider"
 import { FilterAnnouncementsProvider } from "@/context/FilterAnnoucements"
+import ScrollBackgroundEffect from "@/components/ScrollBackgroundEffect";
 import { PageNationProvider } from "@/context/PageNationProvider"
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -29,6 +30,7 @@ export default function App({ Component, pageProps }: AppProps) {
                 pauseOnHover
               />
               <Subscribe />
+              <ScrollBackgroundEffect />
             </CurrentdateProvider>
           </AnnouncementsProvider>
         </FilterAnnouncementsProvider>

@@ -1,5 +1,5 @@
 import { Request, Response } from "express"
-import { asyncerrorhandler } from "../middleware/ayncerrorhandler"
+import { asyncErrorHandler } from "../middleware/asyncErrorHandler"
 import { connectDB } from "../db/aleart"
 import nodemailer from "nodemailer"
 import config from "../config"
@@ -12,7 +12,7 @@ const transporter = nodemailer.createTransport({
     },
 });
 
-export const AddSubscribe = asyncerrorhandler(async (req: Request, res: Response) => {
+export const AddSubscribe = asyncErrorHandler(async (req: Request, res: Response) => {
     const { Email } = req.body
 
 

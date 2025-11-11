@@ -1,83 +1,62 @@
-import React, { useContext } from 'react'
-import { Announcement as AnnouncementsTypes } from "@/types"
-import { useRouter } from 'next/router'
-import { Button } from '../ui/button'
-import { LanguageContext } from "@/context/Lan"
-import { Card, CardContent, CardHeader, CardFooter } from '../ui/card'
-import { ArrowRight, Bell } from "lucide-react"
-import { TranslateText } from "@/lib/translatetext"
-import { formatDateInLanguage } from "@/lib/formatDate"
-import { LANGUAGE_CODES } from "@/lib/lan"
-
+import React, { useContext } from "react";
+import { Announcement as AnnouncementType } from "@/types";
+import { useRouter } from "next/router";
+import { Button } from "../ui/button";
+import { LanguageContext } from "@/context/Lan";
+import { Card, CardContent, CardHeader, CardFooter } from "../ui/card";
+import { ArrowRight } from "lucide-react";
+import { TranslateText } from "@/lib/translatetext";
+import { formatDateInLanguage } from "@/lib/formatDate";
+import { LANGUAGE_CODES } from "@/lib/lan";
+import { formatSummaryToMarkdown } from "@/lib/formatSummaryToMarkdown"
 
 type Props = {
-    Announcement: AnnouncementsTypes[]
-}
+    Announcement: AnnouncementType;
+};
 
 const Announcement: React.FC<Props> = ({ Announcement }) => {
-    const router = useRouter()
-    const { language } = useContext(LanguageContext)
+    const router = useRouter();
+    const { language } = useContext(LanguageContext);
 
-    const redirect_to = (id: string) => {
-        router.push(`/announcement?id=${id}&lan=${language}`)
-    }
+    const redirectTo = (id: string) => {
+        router.push(`/announcement?id=${id}&lan=${language}`);
+    };
+
     return (
-        <Card className=' w-[75vw] md:w-full md:flex-1 flex flex-col h-full hover:shadow-lg transition-shadow duration-300'>
-            <CardHeader className='pb-2'>
-                <div className='flex items-center justify-between'>
-                    <div className='flex items-center gap-1'>
-                        <div className='p-2 bg-[#E0614B]/10 rounded-lg'>
-                            <Bell className='size-5 text-[#E0614B]' />
-                        </div>
-                        <div>
-                            <p className='text-[#E0614B] text-lg font-semibold'>
-                                {Announcement[0].type}
-                            </p>
-                        </div>
-                    </div>
+        <Card className="rounded-2xl shadow-sm hover:shadow-md transition-shadow border border-slate-200 bg-white">
+            <CardHeader className="flex flex-col gap-1">
+                {/* Title */}
+                <p className="text-lg md:text-xl font-semibold text-[#E0614B] leading-snug">
+                    {Announcement.title}
+                </p>
+
+                {/* Type + Date */}
+                <div className="flex flex-col  justify-between text-sm text-gray-500">
+                    <span className="capitalize hover:underline hover:cursor-pointer">{Announcement.type}</span>
+                    <span>
+                        {formatDateInLanguage(
+                            Announcement.created_at,
+                            LANGUAGE_CODES[language]
+                        )}
+                    </span>
                 </div>
             </CardHeader>
 
-            <CardContent className='flex-1 space-y-1'>
-                {Announcement.map((ann) => {
-                    const formattedDate = formatDateInLanguage(ann.created_at, LANGUAGE_CODES[language])
-
-                    return (
-                        <div
-                            key={ann._id}
-                            onClick={() => redirect_to(ann._id)}
-                            className='p-3 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors group'
-                        >
-                            <div className='flex gap-3'>
-                                <div className='mt-1.5 size-2 rounded-full bg-[#E0614B] flex-shrink-0' />
-                                <div className='flex-1 min-w-0'>
-                                    <p className='text-sm text-gray-800 line-clamp-2 group-hover:text-[#E0614B] transition-colors'>
-                                        {ann.title}
-                                    </p>
-                                    {formattedDate && (
-                                        <span className='text-xs text-gray-500 mt-1 block'>
-                                            {formattedDate}
-                                        </span>
-                                    )}
-                                </div>
-                            </div>
-                        </div>
-                    )
-                })}
-
+            <CardContent className="text-gray-700 text-sm md:text-base leading-relaxed whitespace-pre-line">
+                {formatSummaryToMarkdown(Announcement.summary)}
             </CardContent>
 
-            <CardFooter className='pt-4 border-t'>
+            <CardFooter className="flex justify-end">
                 <Button
-                    onClick={() => router.push(`/announcements/${language === "English" ? Announcement[0].type : Announcement[0].original_type}`)}
-                    className='bg-[#E0614B] ml-auto lg:w-[121px] hover:bg-[#dd8272] rounded-xl shadow-[4px_4px_0_0_#00000029]'
+                    onClick={() => redirectTo(Announcement._id)}
+                    className="bg-[#E0614B] hover:bg-[#dd8272] hover:cursor-pointer text-white rounded-xl shadow-[4px_4px_0_0_#00000029] flex items-center gap-2"
                 >
-                    {TranslateText[language].VIEW_ALL}
-                    <ArrowRight className='size-4' />
+                    {TranslateText[language].SEE_DETAILS}
+                    <ArrowRight className="w-4 h-4" />
                 </Button>
             </CardFooter>
         </Card>
-    )
-}
+    );
+};
 
-export default Announcement
+export default Announcement;

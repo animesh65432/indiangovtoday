@@ -1,10 +1,10 @@
 import { sarvamai } from "../services/SarvamAi";
 import { Request, Response } from "express";
-import { asyncerrorhandler } from "../middleware/ayncerrorhandler";
+import { asyncErrorHandler } from "../middleware/asyncErrorHandler";
 import { LanguageSupport } from "../types";
 import { languageCodeMap } from "../utils/lan";
 
-export const translateSpeech = asyncerrorhandler(async (req: Request, res: Response) => {
+export const translateSpeech = asyncErrorHandler(async (req: Request, res: Response) => {
     const { text, target_language } = req.body;
 
     if (!text || !target_language) {

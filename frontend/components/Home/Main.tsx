@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext, useCallback, useRef } from 'react';
 import { getAllAnnouncements } from "@/api/announcements";
 import { Announcement as AnnouncementTypes, AnnouncementsResponse } from "@/types";
-import { UseLanguageContext } from '@/context/Lan';
+import { LanguageContext } from '@/context/Lan';
 import { Currentdate } from "@/context/Currentdate";
 import Image from 'next/image';
 import { Input } from '../ui/input';
@@ -17,84 +17,98 @@ import {
 } from "@/components/ui/select";
 import { optionsforLanguages } from '@/lib/lan';
 import { useRouter } from "next/router"
-import { useWindowDimensions } from '@/hooks/useWindowDimensions';
 import ShowAnnouncements from './ShowAnnouncements';
 
 
 const Main: React.FC = () => {
-    const latestrequest = useRef<symbol | null>(null);
-    const [Announcements, SetAnnouncements] = useState<AnnouncementTypes[]>([])
-    const [IsLoading, SetIsLoading] = useState<boolean>(true);
     const [SearchInput, SetSearchInput] = useState<string>("")
-    const LanguageContext = UseLanguageContext();
-    const [page, setPage] = useState<number>(1);
-    const [limit, setlimit] = useState<number>(2);
-    const [pageSize, setPageSize] = useState<number>(0)
-    const { startdate, endDate, onChangeDate } = useContext(Currentdate);
+    const [totalPages, settotalPages] = useState<number>(0)
+    const [IsLoading, SetIsLoading] = useState<boolean>(false)
+    const [IsLoadingMore, SetIsLoadingMore] = useState<boolean>(false)
+    const [Announcements, SetAnnouncements] = useState<AnnouncementTypes[]>([])
+    const { startdate, endDate, onChangeDate } = useContext(Currentdate)
+    const { language, onSelectLanguage } = useContext(LanguageContext)
+    const [page, Setpage] = useState<number>(1)
+    const [limit] = useState<number>(10)
+    const [hasMore, setHasMore] = useState<boolean>(true)
+    const requestIdRef = useRef(0)
+    const currentRequestIdRef = useRef(0)
+    const isFetchingRef = useRef(false)
+    const paramsRef = useRef({ language, startdate, endDate, limit, page })
     const router = useRouter()
-    const { width } = useWindowDimensions()
 
-    if (!LanguageContext) return null;
+    useEffect(() => {
+        paramsRef.current = { language, startdate, endDate, limit, page }
+    }, [language, startdate, endDate, limit, page])
 
-    const { language, onSelectLanguage } = LanguageContext;
+    const fetchGetIndiaAnnouncements = useCallback(async (page: number = 0, append: boolean = false) => {
+        const requestId = ++requestIdRef.current;
+        currentRequestIdRef.current = requestId;
 
-    const fetchAnnouncements = useCallback(() => {
-        let isLatest = true;
-        const requestId = Symbol();
-        latestrequest.current = requestId;
+        if (append) {
+            SetIsLoadingMore(true)
+        } else {
+            SetIsLoading(true)
+            isFetchingRef.current = true
+        }
 
-        const fetchData = async () => {
-            SetIsLoading(true);
-            try {
-                const response = await getAllAnnouncements(language, startdate, endDate, page, limit) as AnnouncementsResponse;
+        try {
+            const { language, startdate, endDate, limit } = paramsRef.current
 
-                if (latestrequest.current === requestId) {
-                    SetAnnouncements(response.data)
-                    SetSearchInput("");
-                    setPageSize(response.pagination.totalPages)
-                }
+            const IndiaAnnouncementsResponse = await getAllAnnouncements(
+                language,
+                startdate,
+                endDate,
+                page,
+                limit,
+            ) as AnnouncementsResponse
 
-            } catch (error) {
-                console.error("Error fetching announcements:", error);
-            } finally {
-                if (latestrequest.current === requestId) {
-                    SetIsLoading(false);
-                }
+
+
+            if (requestId !== currentRequestIdRef.current) {
+                console.log('Discarding outdated request', requestId, 'current is', currentRequestIdRef.current)
+                return
             }
-        };
 
-        fetchData();
+            const newAnnouncements = IndiaAnnouncementsResponse.data
 
-        return () => {
-            isLatest = false;
-        };
-    }, [language, startdate, endDate, page, limit]);
+            settotalPages(IndiaAnnouncementsResponse.pagination.totalCount)
+
+            if (append) {
+                SetAnnouncements(prev => [...prev, ...newAnnouncements])
+            } else {
+                SetAnnouncements(newAnnouncements)
+            }
+
+        } catch (error) {
+
+            if (requestId === currentRequestIdRef.current) {
+                console.error('Error fetching announcements:', error)
+            }
+        } finally {
+            if (requestId === currentRequestIdRef.current) {
+                SetIsLoading(false)
+                SetIsLoadingMore(false)
+                isFetchingRef.current = false
+            }
+        }
+    }, [])
 
 
     useEffect(() => {
-        fetchAnnouncements();
-    }, [language, startdate, endDate, page, limit]);
+        requestIdRef.current++
+        Setpage(0)
+        setHasMore(true)
+        isFetchingRef.current = false
+        SetAnnouncements([])
+        fetchGetIndiaAnnouncements(0, false)
+    }, [language, startdate, endDate])
 
-    const goToNextPage = () => {
-        if (page < pageSize) {
-            setPage(page + 1);
-        }
-    };
-
-    const goToPrevPage = () => {
+    useEffect(() => {
         if (page > 1) {
-            setPage(page - 1);
+            fetchGetIndiaAnnouncements(page, true)
         }
-    };
-
-    useEffect(() => {
-        if (width <= 768) {
-            setlimit(5)
-        }
-        else {
-            setlimit(2)
-        }
-    }, [width])
+    }, [page])
 
 
     const OnChangeDateRangePicker = (values: {
@@ -103,13 +117,20 @@ const Main: React.FC = () => {
     }) => {
         if (values.range.from && values.range.to) {
             onChangeDate(values.range.from, values.range.to);
-
             SetSearchInput("");
         }
     };
 
+    const OnLoadMoredata = () => {
+        if (page >= totalPages) {
+            return;
+        }
+        else {
+            Setpage((prev) => prev + 1)
+        }
+    }
     return (
-        <div className='pt-35 sm:pt-15 md:pt-18  [@media(min-width:900px)]:pt-16  lg:pt-14 xl:pt-7 [@media(min-width:1600px)]:pt-14 [@media(min-width:1700px)]:pt-16 [@media(min-width:1900px)]:pt-22 [@media(min-width:2000px)]:pt-22 [@media(min-width:2100px)]:pt-26 [@media(min-width:2300px)]:pt-32 [@media(min-width:2600px)]:pt-38 [@media(min-width:2800px)]:pt-44 [@media(min-width:3000px)]:pt-48 flex flex-col gap-5'>
+        <div className='pt-35 sm:pt-15 md:pt-18  [@media(min-width:900px)]:pt-16  lg:pt-14 xl:pt-7 [@media(min-width:1600px)]:pt-14 [@media(min-width:1700px)]:pt-16 [@media(min-width:1900px)]:pt-22 [@media(min-width:2000px)]:pt-22 [@media(min-width:2100px)]:pt-26 [@media(min-width:2300px)]:pt-32 [@media(min-width:2600px)]:pt-38 [@media(min-width:2800px)]:pt-44 [@media(min-width:3000px)]:pt-48 flex flex-col gap-7'>
             <div className=' block sm:hidden relative h-[47px] w-[150px] mx-auto'>
                 <Image src="/Logo.png" alt='logo' fill />
             </div>
@@ -169,16 +190,14 @@ const Main: React.FC = () => {
                     {TranslateText[language].SEARCH}
                 </Button>
             </div>
-            <div className='min-w-[250px]  border rounded-lg h-[30vh] p-6 hidden lg:hidden flex-col justify-between '>
-                <div className='text-lg font-semibold flex flex-col'>
-                    <span className='text-gray-600'>{TranslateText[language].DISCOVER_MORE}</span>
-                    <span className='text-[#E0614B]'>{TranslateText[language].INDIAN_ANNOUNCEMENTS}</span>
-                </div>
-                <Button onClick={() => router.push("/announcements")} className='bg-[#E0614B] lg:w-[121px] hover:bg-[#dd8272] rounded-xl shadow-[4px_4px_0_0_#00000029]'>
-                    {TranslateText[language].SEE_MORE}
-                </Button>
-            </div>
-            <ShowAnnouncements Announcements={Announcements} />
+            <ShowAnnouncements
+                LoadMoreData={OnLoadMoredata}
+                Announcements={Announcements}
+                IsLoading={IsLoading}
+                page={page}
+                totalpage={totalPages}
+                IsLoadingMore={IsLoadingMore}
+            />
         </div>
     );
 };

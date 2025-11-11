@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
-import { asyncerrorhandlerpayload } from '../types';
+import { asyncErrorHandlerpayload } from '../types';
 
-export const asyncerrorhandler = (func: asyncerrorhandlerpayload) => {
+export const asyncErrorHandler = (func: asyncErrorHandlerpayload) => {
     return (req: Request, res: Response, next: NextFunction) => {
         func(req, res, next).catch(err => next(err));
     }

@@ -125,6 +125,7 @@ body {
     background-size: cover;
     background-position: top;
     background-attachment: scroll;
+    background-size: 100% auto;
   }
 }
 
@@ -135,8 +136,34 @@ body {
     background-size: cover;
     background-position: top;
     background-attachment: scroll;
+    background-size: 100% auto;
   }
 }
+
+body.scrolled {
+  background-image: url("/Annoucementsbackgroundimage.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  background-attachment: scroll;
+  min-height: 100%;
+  width: 100%;
+  /* transition: background-image 0.8s ease-in-out; */
+}
+
+@media (max-width: 900px) {
+  body.scrolled {
+    background-image: url("/Annoucementsbackgroundimage.png");
+    /* transition: background-image 0.8s ease-in-out; */
+  }
+}
+
+@media (max-width: 500px) {
+  body.scrolled {
+    background-image: url("/Annoucementsbackgroundimage.png");
+  }
+}
+
 
 h1,
 h2,
