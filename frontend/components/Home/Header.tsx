@@ -15,10 +15,10 @@ import { useRouter } from "next/router";
 import useDidUserScroll from "@/hooks/useDidUserScroll";
 
 const Header: React.FC = () => {
-    const { startdate, endDate, onChangeDate } = useContext(Currentdate);
-    const { onSelectLanguage, language } = useContext(LanguageContext);
-    const { isScrolled } = useDidUserScroll();
-    const router = useRouter();
+    const { startdate, endDate, onChangeDate } = useContext(Currentdate)
+    const { onSelectLanguage, language } = useContext(LanguageContext)
+    const { isScrolled } = useDidUserScroll()
+    const router = useRouter()
 
     const OnChangeDateRangePicker = (values: {
         range: { from?: Date; to?: Date };
@@ -29,17 +29,16 @@ const Header: React.FC = () => {
         }
     };
 
+
+    console.log(isScrolled);
+
     return (
         <div
-            className={`w-[95%]  lg:w-[85%] mx-auto hidden sm:flex flex-col sm:flex-row items-center justify-between gap-6 py-4 transition-all duration-500 ease-in-out
-        ${isScrolled ? "opacity-0 -translate-y-5 scale-95 pointer-events-none" : "opacity-100 translate-y-0 scale-100"}
-      `}
+            className={`w-[95%] [@media(min-width:900px)]:w-[85vw] mx-auto pt-5 [@media(min-width:900px)]:pt-10 
+  flex items-center justify-between transition-all duration-500 ease-in-out 
+  ${isScrolled ? "opacity-0 -translate-y-10 pointer-events-none" : "opacity-100 translate-y-0"}`}
         >
-            {/* Logo */}
-            <div
-                onClick={() => router.push("/")}
-                className="relative cursor-pointer h-[50px] w-[160px] sm:h-[60px] sm:w-[200px] lg:h-[70px] lg:w-[240px]"
-            >
+            <div onClick={() => router.push("/")} className="relative  hidden sm:block h-[52px] sm:w-[168px] lg:h-[70px] lg:w-[230px] xl:h-[82px] xl:w-[265px]">
                 <Image
                     alt="logo"
                     src="/Logo.png"
