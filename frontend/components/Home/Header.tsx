@@ -12,10 +12,12 @@ import { LanguageContext } from "@/context/Lan";
 import { Currentdate } from "@/context/Currentdate"
 import { DateRangePicker } from "@/components/ui/DateRangePicker"
 import { useRouter } from "next/router"
+import useDidUserScroll from "@/hooks/useDidUserScroll"
 
 const Header: React.FC = () => {
     const { startdate, endDate, onChangeDate } = useContext(Currentdate)
     const { onSelectLanguage, language } = useContext(LanguageContext)
+    const { isScrolled } = useDidUserScroll()
     const router = useRouter()
 
     const OnChangeDateRangePicker = (values: {
@@ -26,8 +28,15 @@ const Header: React.FC = () => {
             onChangeDate(values.range.from, values.range.to);
         }
     };
+
+    console.log(isScrolled);
+
     return (
-        <div className=' w-[95%]  [@media(min-width:900px)]:w-[85vw] mx-auto  pt-5  [@media(min-width:900px)]:pt-10 flex items-center  justify-between '>
+        <div
+            className={`w-[95%] [@media(min-width:900px)]:w-[85vw] mx-auto pt-5 [@media(min-width:900px)]:pt-10 
+  flex items-center justify-between transition-all duration-500 ease-in-out 
+  ${isScrolled ? "opacity-0 -translate-y-10 pointer-events-none" : "opacity-100 translate-y-0"}`}
+        >
             <div onClick={() => router.push("/")} className="relative  hidden sm:block h-[52px] sm:w-[168px] lg:h-[70px] lg:w-[230px] xl:h-[82px] xl:w-[265px]">
                 <Image
                     alt="logo"

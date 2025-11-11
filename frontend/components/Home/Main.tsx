@@ -72,7 +72,7 @@ const Main: React.FC = () => {
 
             const newAnnouncements = IndiaAnnouncementsResponse.data
 
-            settotalPages(IndiaAnnouncementsResponse.pagination.totalCount)
+            settotalPages(IndiaAnnouncementsResponse.pagination.totalPages)
 
             if (append) {
                 SetAnnouncements(prev => [...prev, ...newAnnouncements])
