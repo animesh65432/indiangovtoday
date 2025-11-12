@@ -31,7 +31,7 @@ const Header: React.FC = () => {
 
     return (
         <div
-            className={`w-[95%] lg:w-[85%] mx-auto flex flex-col sm:flex-row items-center justify-between gap-6 py-4 transition-all duration-500 ease-in-out
+            className={`w-[95%]  lg:w-[85%] mx-auto hidden sm:flex flex-col sm:flex-row items-center justify-between gap-6 py-4 transition-all duration-500 ease-in-out
         ${isScrolled ? "opacity-0 -translate-y-5 scale-95 pointer-events-none" : "opacity-100 translate-y-0 scale-100"}
       `}
         >

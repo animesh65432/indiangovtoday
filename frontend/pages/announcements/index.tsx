@@ -15,7 +15,7 @@ const Announcementspage: React.FC = () => {
     }, [SearchInput])
 
     return (
-        <div className='flex flex-col w-[100vw] bg-[url(/Annoucementsbackgroundimage.png)]'>
+        <div className='flex flex-col min-h-dvh w-[100vw] bg-[url(/Annoucementsbackgroundimage.png)]'>
             <Announcements QueryInput={QueryInput} />
         </div>
     )
