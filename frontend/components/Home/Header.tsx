@@ -29,8 +29,6 @@ const Header: React.FC = () => {
         }
     };
 
-    console.log(isScrolled);
-
     return (
         <div
             className={`w-[95%] [@media(min-width:900px)]:w-[85vw] mx-auto pt-5 [@media(min-width:900px)]:pt-10 

@@ -21,6 +21,7 @@ import useDidUserScroll from "@/hooks/useDidUserScroll"
 import ShowAnnouncements from './ShowAnnouncements';
 import StickyHeader from './StickyHeader';
 
+
 const Main: React.FC = () => {
     const [SearchInput, SetSearchInput] = useState<string>("")
     const [totalPages, settotalPages] = useState<number>(0)

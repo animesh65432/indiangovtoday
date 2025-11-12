@@ -1,5 +1,5 @@
 "use client"
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Header from './Header'
 import Main from './Main'
 import { useSearchParams } from 'next/navigation'
@@ -7,7 +7,7 @@ import { Currentdate } from "@/context/Currentdate"
 
 
 export default function Home() {
-    const { onChangeDate } = useContext(Currentdate)
+    const { onChangeDate } = useContext(Currentdate);
     const searchParams = useSearchParams()
     const dateSearch = searchParams.get('date')
 
