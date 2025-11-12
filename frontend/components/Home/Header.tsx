@@ -35,7 +35,10 @@ const Header: React.FC = () => {
         <div
             className={`w-[95%] [@media(min-width:900px)]:w-[85vw] mx-auto pt-5 [@media(min-width:900px)]:pt-10 
   flex items-center justify-between transition-all duration-500 ease-in-out 
-  ${isScrolled ? "opacity-0 -translate-y-10 pointer-events-none" : "opacity-100 translate-y-0"}`}
+  ${isScrolled
+                    ? "opacity-0 -translate-y-10 scale-95 h-0 overflow-hidden py-0"
+                    : "opacity-100 translate-y-0 scale-100 h-auto py-5"
+                }`}
         >
             <div onClick={() => router.push("/")} className="relative  hidden sm:block h-[52px] sm:w-[168px] lg:h-[70px] lg:w-[230px] xl:h-[82px] xl:w-[265px]">
                 <Image

@@ -17,7 +17,9 @@ import {
 } from "@/components/ui/select";
 import { optionsforLanguages } from '@/lib/lan';
 import { useRouter } from "next/router"
+import useDidUserScroll from "@/hooks/useDidUserScroll"
 import ShowAnnouncements from './ShowAnnouncements';
+import StickyHeader from '../StickyHeader';
 
 
 const Main: React.FC = () => {
@@ -35,6 +37,7 @@ const Main: React.FC = () => {
     const currentRequestIdRef = useRef(0)
     const isFetchingRef = useRef(false)
     const paramsRef = useRef({ language, startdate, endDate, limit, page })
+    const { isScrolled } = useDidUserScroll()
     const router = useRouter()
 
     useEffect(() => {
@@ -131,10 +134,13 @@ const Main: React.FC = () => {
     }
     return (
         <div className='pt-35 sm:pt-15 md:pt-18  [@media(min-width:900px)]:pt-16  lg:pt-14 xl:pt-7 [@media(min-width:1600px)]:pt-14 [@media(min-width:1700px)]:pt-16 [@media(min-width:1900px)]:pt-22 [@media(min-width:2000px)]:pt-22 [@media(min-width:2100px)]:pt-26 [@media(min-width:2300px)]:pt-32 [@media(min-width:2600px)]:pt-38 [@media(min-width:2800px)]:pt-44 [@media(min-width:3000px)]:pt-48 flex flex-col gap-7'>
-            <div className=' block sm:hidden relative h-[47px] w-[150px] mx-auto'>
+            <StickyHeader isVisible={isScrolled} />
+            <div className={`block sm:hidden relative h-[47px] w-[150px] mx-auto transition-all duration-500 ease-in-out 
+  ${isScrolled ? "opacity-0 -translate-y-10 pointer-events-none" : "opacity-100 translate-y-0"}`}>
                 <Image src="/Logo.png" alt='logo' fill />
             </div>
-            <div className="flex items-start sm:items-center justify-center gap-1 sm:gap-3">
+            <div className={`flex items-start sm:items-center justify-center gap-1 sm:gap-3 transition-all duration-500 ease-in-out 
+  ${isScrolled ? "opacity-0 -translate-y-10 pointer-events-none" : "opacity-100 translate-y-0"}`}>
                 <div className="  relative w-[30px] h-[16px] sm:h-[20px] lg:h-[25px] pt-8 sm:pt-0">
                     <Image alt="logo" fill src="/indiaIcon.svg" />
                 </div>
@@ -143,7 +149,8 @@ const Main: React.FC = () => {
                 </h1>
             </div>
 
-            <div className='bg-[#F9F9F9] border flex flex-col justify-center sm:justify-start sm:flex-row gap-5 sm:gap-2 items-center border-[#EDEDED] w-[85vw]  sm:w-[70vw] md:w-[50vw] lg:w-[528px] mx-auto  sm:h-[10vh] p-4 sm:p-0 rounded-md'>
+            <div className={`bg-[#F9F9F9] border flex flex-col justify-center sm:justify-start sm:flex-row gap-5 sm:gap-2 items-center border-[#EDEDED] w-[85vw]  sm:w-[70vw] md:w-[50vw] lg:w-[528px] mx-auto  sm:h-[10vh] p-4 sm:p-0 rounded-md transition-all duration-500 ease-in-out 
+  ${isScrolled ? "opacity-0 -translate-y-10 pointer-events-none" : "opacity-100 translate-y-0"}`}>
                 <Input
                     value={SearchInput}
                     onChange={(e) => SetSearchInput(e.target.value)}
@@ -183,13 +190,16 @@ const Main: React.FC = () => {
                     </Select>
                 </div>
 
+
                 <Button
-                    onClick={() => router.push(`/announcements?SearchInput=${SearchInput}`)}
+                    onClick={() => router.push(`/ announcements ? SearchInput = ${SearchInput}`)}
                     className='bg-[#E0614B] lg:w-[121px] hover:bg-[#dd8272] rounded-xl shadow-[4px_4px_0_0_#00000029]'
                 >
                     {TranslateText[language].SEARCH}
                 </Button>
             </div>
+
+
             <ShowAnnouncements
                 LoadMoreData={OnLoadMoredata}
                 Announcements={Announcements}
