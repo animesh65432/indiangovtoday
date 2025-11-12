@@ -14,9 +14,10 @@ import Image from "next/image";
 type Props = {
     SearchInput: string,
     SetSearchInput: React.Dispatch<React.SetStateAction<string>>,
-    isVisible: boolean
+    isVisible: boolean,
+    route: "/" | "/announcements" | "/announcement"
 }
-const StickyHeader: React.FC<Props> = ({ isVisible, SearchInput, SetSearchInput }) => {
+const StickyHeader: React.FC<Props> = ({ isVisible, SearchInput, SetSearchInput, route }) => {
     const { startdate, endDate, onChangeDate } = useContext(Currentdate);
     const { language, onSelectLanguage } = useContext(LanguageContext);
     const router = useRouter()

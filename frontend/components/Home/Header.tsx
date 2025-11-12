@@ -9,16 +9,16 @@ import {
 } from "@/components/ui/select";
 import { optionsforLanguages } from "@/lib/lan";
 import { LanguageContext } from "@/context/Lan";
-import { Currentdate } from "@/context/Currentdate"
-import { DateRangePicker } from "@/components/ui/DateRangePicker"
-import { useRouter } from "next/router"
-import useDidUserScroll from "@/hooks/useDidUserScroll"
+import { Currentdate } from "@/context/Currentdate";
+import { DateRangePicker } from "@/components/ui/DateRangePicker";
+import { useRouter } from "next/router";
+import useDidUserScroll from "@/hooks/useDidUserScroll";
 
 const Header: React.FC = () => {
-    const { startdate, endDate, onChangeDate } = useContext(Currentdate)
-    const { onSelectLanguage, language } = useContext(LanguageContext)
-    const { isScrolled } = useDidUserScroll()
-    const router = useRouter()
+    const { startdate, endDate, onChangeDate } = useContext(Currentdate);
+    const { onSelectLanguage, language } = useContext(LanguageContext);
+    const { isScrolled } = useDidUserScroll();
+    const router = useRouter();
 
     const OnChangeDateRangePicker = (values: {
         range: { from?: Date; to?: Date };
@@ -31,23 +31,25 @@ const Header: React.FC = () => {
 
     return (
         <div
-            className={`w-[95%] [@media(min-width:900px)]:w-[85vw] mx-auto pt-5 [@media(min-width:900px)]:pt-10 
-  flex items-center justify-between transition-all duration-500 ease-in-out 
-  ${isScrolled
-                    ? "opacity-0 -translate-y-10 scale-95 h-0 overflow-hidden py-0"
-                    : "opacity-100 translate-y-0 scale-100 h-auto py-5"
-                }`}
+            className={`w-[95%] lg:w-[85%] mx-auto flex flex-col sm:flex-row items-center justify-between gap-6 py-4 transition-all duration-500 ease-in-out
+        ${isScrolled ? "opacity-0 -translate-y-5 scale-95 pointer-events-none" : "opacity-100 translate-y-0 scale-100"}
+      `}
         >
-            <div onClick={() => router.push("/")} className="relative  hidden sm:block h-[52px] sm:w-[168px] lg:h-[70px] lg:w-[230px] xl:h-[82px] xl:w-[265px]">
+            {/* Logo */}
+            <div
+                onClick={() => router.push("/")}
+                className="relative cursor-pointer h-[50px] w-[160px] sm:h-[60px] sm:w-[200px] lg:h-[70px] lg:w-[240px]"
+            >
                 <Image
                     alt="logo"
                     src="/Logo.png"
                     fill
-                    className=" object-fill lg:object-contain"
+                    className="object-contain"
                 />
             </div>
 
-            <div className="hidden sm:flex  flex-col  [@media(min-width:900px)]:flex-row gap-4 pt-5 [@media(min-width:900px)]:pt-0 ">
+            {/* Controls */}
+            <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 items-center">
                 <DateRangePicker
                     onUpdate={OnChangeDateRangePicker}
                     initialDateFrom={startdate}
@@ -58,21 +60,15 @@ const Header: React.FC = () => {
                 />
 
                 <Select
-                    onValueChange={(value) => {
-                        onSelectLanguage(value);
-                    }}
+                    onValueChange={onSelectLanguage}
                     value={language}
                 >
-                    <SelectTrigger className="border border-[#E0614B] self-end  bg-[#FFFFFF] rounded-lg   font-light shadow-[4px_4px_0_0_#00000029] text-[#E0614B] data-[placeholder]:text-[#E0614B] focus:ring-0 focus:outline-none">
-                        <SelectValue className="" />
+                    <SelectTrigger className="border border-[#E0614B] bg-white rounded-lg text-[#E0614B] font-medium shadow-[4px_4px_0_0_#00000029] focus:ring-0 focus:outline-none min-w-[100px]">
+                        <SelectValue placeholder="Language" />
                     </SelectTrigger>
                     <SelectContent className="text-[#E0614B]">
                         {optionsforLanguages.map((lan) => (
-                            <SelectItem
-                                key={lan.label}
-                                value={lan.label}
-                                className="font-medium hover:text-[#E0614B] "
-                            >
+                            <SelectItem key={lan.label} value={lan.label} className="hover:text-[#E0614B]">
                                 {lan.label}
                             </SelectItem>
                         ))}
@@ -80,9 +76,7 @@ const Header: React.FC = () => {
                 </Select>
             </div>
         </div>
+    );
+};
 
-
-    )
-}
-
-export default Header
+export default Header;

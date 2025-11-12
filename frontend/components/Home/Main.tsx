@@ -18,8 +18,8 @@ import {
 import { optionsforLanguages } from '@/lib/lan';
 import { useRouter } from "next/router"
 import useDidUserScroll from "@/hooks/useDidUserScroll"
-import ShowAnnouncements from './ShowAnnouncements';
-import StickyHeader from './StickyHeader';
+import ShowAnnouncements from '../ShowAnnouncements';
+import StickyHeader from '../StickyHeader';
 
 
 const Main: React.FC = () => {
@@ -138,6 +138,7 @@ const Main: React.FC = () => {
                 isVisible={isScrolled}
                 SearchInput={SearchInput}
                 SetSearchInput={SetSearchInput}
+                route='/'
             />
             <div className={`block sm:hidden relative h-[47px] w-[150px] mx-auto transition-all duration-500 ease-in-out 
   ${isScrolled ? "opacity-0 -translate-y-10 pointer-events-none" : "opacity-100 translate-y-0"}`}>

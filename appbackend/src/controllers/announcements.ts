@@ -230,7 +230,7 @@ export const GetGroupIndiaAnnouncements = asyncErrorHandler(async (req: Request,
     return
 });
 
-export const GetallGroupsIndiaAnnouncements = asyncErrorHandler(async (req: Request, res: Response) => {
+export const SerachallIndiaAnnouncements = asyncErrorHandler(async (req: Request, res: Response) => {
     const { target_lan, startdate, endDate, page, limit, SearchInput } = req.query;
 
     const announcementsStartDate = startdate
@@ -359,20 +359,7 @@ export const GetallGroupsIndiaAnnouncements = asyncErrorHandler(async (req: Requ
     }
 
     pipeline.push(
-        {
-            $group: {
-                _id: "$type",
-                announcements: { $push: "$$ROOT" },
-            }
-        },
-        {
-            $project: {
-                type: "$_id",
-                announcements: { $slice: ["$announcements", 3] },
-                _id: 0
-            }
-        },
-        { $sort: { type: 1 } },
+        { $sort: { created_at: -1 } },
         { $skip: skip },
         { $limit: pageSize },
     );

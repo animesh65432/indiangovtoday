@@ -32,7 +32,7 @@ const Announcement: React.FC<Props> = ({ Announcement }) => {
 
                 {/* Type + Date */}
                 <div className="flex flex-col  justify-between text-sm text-gray-500">
-                    <span className="capitalize hover:underline hover:cursor-pointer">{Announcement.type}</span>
+                    <span className="capitalize hover:underline hover:cursor-pointer text-[0.9rem]">{Announcement.type}</span>
                     <span>
                         {formatDateInLanguage(
                             Announcement.created_at,
