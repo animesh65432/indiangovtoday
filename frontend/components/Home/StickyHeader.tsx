@@ -8,11 +8,18 @@ import { LanguageContext } from "@/context/Lan";
 import { Currentdate } from "@/context/Currentdate";
 import { optionsforLanguages } from "@/lib/lan";
 import { TranslateText } from "@/lib/translatetext";
+import { useRouter } from "next/router"
 import Image from "next/image";
 
-const StickyHeader: React.FC<{ isVisible: boolean }> = ({ isVisible }) => {
+type Props = {
+    SearchInput: string,
+    SetSearchInput: React.Dispatch<React.SetStateAction<string>>,
+    isVisible: boolean
+}
+const StickyHeader: React.FC<Props> = ({ isVisible, SearchInput, SetSearchInput }) => {
     const { startdate, endDate, onChangeDate } = useContext(Currentdate);
     const { language, onSelectLanguage } = useContext(LanguageContext);
+    const router = useRouter()
 
     return (
         <div
@@ -60,6 +67,8 @@ const StickyHeader: React.FC<{ isVisible: boolean }> = ({ isVisible }) => {
             </div>
             <div className="mx-auto w-[100%] pb-3 md:p-4 flex flex-col items-center gap-2">
                 <Input
+                    value={SearchInput}
+                    onChange={(e) => SetSearchInput(e.target.value)}
                     placeholder={TranslateText[language].INPUT_PLACEHOLDER}
                     className=" w-[65vw] sm:w-[50vw]  bg-white rounded-lg border border-[#E0614B] text-[#2B2B2B]"
                 />
@@ -96,7 +105,7 @@ const StickyHeader: React.FC<{ isVisible: boolean }> = ({ isVisible }) => {
                     </Select>
                 </div>
 
-                <Button className="bg-[#E0614B] hover:bg-[#dd8272] w-[150px]  rounded-xl shadow-[4px_4px_0_0_#00000029]">
+                <Button onClick={() => router.push(`/announcements?SearchInput=${SearchInput}`)} className="bg-[#E0614B] hover:bg-[#dd8272] w-[150px]  rounded-xl shadow-[4px_4px_0_0_#00000029]">
                     {TranslateText[language].SEARCH}
                 </Button>
             </div>
