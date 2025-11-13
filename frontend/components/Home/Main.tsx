@@ -132,6 +132,14 @@ const Main: React.FC = () => {
             Setpage((prev) => prev + 1)
         }
     }
+
+    const handleEnterKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            router.push(`/announcements?SearchInput=${SearchInput}`);
+        }
+    };
+
     return (
         <div className='pt-35 sm:pt-15 md:pt-18  [@media(min-width:900px)]:pt-16  lg:pt-14 xl:pt-7 [@media(min-width:1600px)]:pt-14 [@media(min-width:1700px)]:pt-16 [@media(min-width:1900px)]:pt-22 [@media(min-width:2000px)]:pt-22 [@media(min-width:2100px)]:pt-26 [@media(min-width:2300px)]:pt-32 [@media(min-width:2600px)]:pt-38 [@media(min-width:2800px)]:pt-44 [@media(min-width:3000px)]:pt-48 flex flex-col gap-7'>
             <StickyHeader
@@ -161,6 +169,7 @@ const Main: React.FC = () => {
                     onChange={(e) => SetSearchInput(e.target.value)}
                     className="w-[90%] sm:w-[70%] lg:w-[346px] bg-[#FFFFFF] rounded-xl ml-4 text-[#2B2B2B]"
                     placeholder={TranslateText[language].INPUT_PLACEHOLDER}
+                    onKeyDown={handleEnterKeyPress}
                 />
                 <div className='flex flex-col [@media(min-width:450px)]:flex-row gap-4 sm:hidden items-center'>
                     <DateRangePicker

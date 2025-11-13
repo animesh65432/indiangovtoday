@@ -1,4 +1,3 @@
-import React, { useContext, useEffect, useState } from "react";
 import { Announcement as AnnouncementsTypes } from "@/types";
 import ShowAnnouncements from "../ShowAnnouncements";
 
@@ -7,19 +6,23 @@ type Props = {
     IsLoading: boolean,
     SearchInput: string,
     SetSearchInput: React.Dispatch<React.SetStateAction<string>>
+    OnLoadMoredata: () => void
+    page: number,
+    limit: number,
+    IsLoadingMore: boolean
 
 };
 
-const Main: React.FC<Props> = ({ Announcements, IsLoading, SearchInput, SetSearchInput }) => {
+const Main: React.FC<Props> = ({ IsLoadingMore, page, limit, OnLoadMoredata, Announcements, IsLoading }) => {
     return (
         <>
             <ShowAnnouncements
                 Announcements={Announcements}
                 IsLoading={IsLoading}
-                page={0}
-                totalpage={10}
-                IsLoadingMore={true}
-                LoadMoreData={() => { }}
+                page={page}
+                totalpage={limit}
+                IsLoadingMore={IsLoadingMore}
+                LoadMoreData={OnLoadMoredata}
             />
         </>
     );

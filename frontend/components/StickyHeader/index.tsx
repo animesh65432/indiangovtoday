@@ -15,12 +15,34 @@ type Props = {
     SearchInput: string,
     SetSearchInput: React.Dispatch<React.SetStateAction<string>>,
     isVisible: boolean,
-    route: "/" | "/announcements" | "/announcement"
+    route: "/" | "/announcements" | "/announcement",
+    SetIsButtomClicked?: React.Dispatch<React.SetStateAction<boolean>>
 }
-const StickyHeader: React.FC<Props> = ({ isVisible, SearchInput, SetSearchInput, route }) => {
+const StickyHeader: React.FC<Props> = ({ isVisible, SearchInput, SetSearchInput, route, SetIsButtomClicked }) => {
     const { startdate, endDate, onChangeDate } = useContext(Currentdate);
     const { language, onSelectLanguage } = useContext(LanguageContext);
     const router = useRouter()
+
+    const handleEnterKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+        if (event.key === "Enter") {
+            event.preventDefault();
+
+            if (route === "/") {
+                router.push(`/announcements?SearchInput=${SearchInput}`);
+            } else {
+                SetIsButtomClicked?.((prev) => !prev);
+            }
+        }
+    };
+
+    const handleClick = () => {
+        if (route === "/") {
+            router.push(`/announcements?SearchInput=${SearchInput}`);
+        } else {
+            SetIsButtomClicked?.((prev) => !prev);
+        }
+    }
+
 
     return (
         <div
@@ -70,6 +92,7 @@ const StickyHeader: React.FC<Props> = ({ isVisible, SearchInput, SetSearchInput,
                 <Input
                     value={SearchInput}
                     onChange={(e) => SetSearchInput(e.target.value)}
+                    onKeyDown={handleEnterKeyPress}
                     placeholder={TranslateText[language].INPUT_PLACEHOLDER}
                     className=" w-[65vw] sm:w-[50vw]  bg-white rounded-lg border border-[#E0614B] text-[#2B2B2B]"
                 />
@@ -106,7 +129,7 @@ const StickyHeader: React.FC<Props> = ({ isVisible, SearchInput, SetSearchInput,
                     </Select>
                 </div>
 
-                <Button onClick={() => router.push(`/announcements?SearchInput=${SearchInput}`)} className="bg-[#E0614B] hover:bg-[#dd8272] w-[150px]  rounded-xl shadow-[4px_4px_0_0_#00000029]">
+                <Button onClick={handleClick} className="bg-[#E0614B] hover:bg-[#dd8272] w-[150px]  rounded-xl shadow-[4px_4px_0_0_#00000029]">
                     {TranslateText[language].SEARCH}
                 </Button>
             </div>

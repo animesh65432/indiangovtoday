@@ -284,14 +284,12 @@ export const SerachallIndiaAnnouncements = asyncErrorHandler(async (req: Request
             filter.$or = [
                 { title: searchRegex },
                 { type: searchRegex },
-                { summary: searchRegex }
             ];
         } else {
             filter["translations.ln_code"] = lan;
             filter.$or = [
                 { "translations.title": searchRegex },
                 { "translations.type": searchRegex },
-                { "translations.summary": searchRegex }
             ];
         }
     }
