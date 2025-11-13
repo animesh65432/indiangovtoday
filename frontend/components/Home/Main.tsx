@@ -19,7 +19,8 @@ import { optionsforLanguages } from '@/lib/lan';
 import { useRouter } from "next/router"
 import useDidUserScroll from "@/hooks/useDidUserScroll"
 import ShowAnnouncements from '../ShowAnnouncements';
-import StickyHeader from './StickyHeader';
+import StickyHeader from '../StickyHeader';
+
 
 const Main: React.FC = () => {
     const [SearchInput, SetSearchInput] = useState<string>("")
@@ -99,18 +100,18 @@ const Main: React.FC = () => {
 
     useEffect(() => {
         requestIdRef.current++
-        Setpage(0)
+        Setpage(1)
         setHasMore(true)
         isFetchingRef.current = false
         SetAnnouncements([])
-        fetchGetIndiaAnnouncements(0, false)
-    }, [language, startdate, endDate])
+        fetchGetIndiaAnnouncements(1, false)
+    }, [language, startdate, endDate, fetchGetIndiaAnnouncements])
 
     useEffect(() => {
         if (page > 1) {
             fetchGetIndiaAnnouncements(page, true)
         }
-    }, [page])
+    }, [page, fetchGetIndiaAnnouncements])
 
 
     const OnChangeDateRangePicker = (values: {
@@ -139,12 +140,15 @@ const Main: React.FC = () => {
         }
     };
 
+    console.log(IsLoading)
+
     return (
         <div className='pt-35 sm:pt-15 md:pt-18  [@media(min-width:900px)]:pt-16  lg:pt-14 xl:pt-7 [@media(min-width:1600px)]:pt-14 [@media(min-width:1700px)]:pt-16 [@media(min-width:1900px)]:pt-22 [@media(min-width:2000px)]:pt-22 [@media(min-width:2100px)]:pt-26 [@media(min-width:2300px)]:pt-32 [@media(min-width:2600px)]:pt-38 [@media(min-width:2800px)]:pt-44 [@media(min-width:3000px)]:pt-48 flex flex-col gap-7'>
             <StickyHeader
                 isVisible={isScrolled}
                 SearchInput={SearchInput}
                 SetSearchInput={SetSearchInput}
+                route='/'
             />
             <div className={`block sm:hidden relative h-[47px] w-[150px] mx-auto transition-all duration-500 ease-in-out 
   ${isScrolled ? "opacity-0 -translate-y-10 pointer-events-none" : "opacity-100 translate-y-0"}`}>

@@ -8,7 +8,7 @@ import { LanguageContext } from "@/context/Lan";
 import { Currentdate } from "@/context/Currentdate";
 import { optionsforLanguages } from "@/lib/lan";
 import { TranslateText } from "@/lib/translatetext";
-import { useRouter } from "next/router"
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 
 type Props = {
@@ -25,8 +25,8 @@ const StickyHeader: React.FC<Props> = ({ isVisible, SearchInput, SetSearchInput,
 
     const handleEnterKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.key === "Enter") {
+            console.log("clicked")
             event.preventDefault();
-
             if (route === "/") {
                 router.push(`/announcements?SearchInput=${SearchInput}`);
             } else {
@@ -51,7 +51,7 @@ const StickyHeader: React.FC<Props> = ({ isVisible, SearchInput, SetSearchInput,
       `}
         >
             <div className="flex flex-col sm:flex-row items-center justify-start md:justify-between  py-3 px-4">
-                <div className={`relative h-[47px] w-[150px]`}>
+                <div className={`relative h-[47px] w-[150px]`} onClick={() => router.push("/")}>
                     <Image src="/Logo.png" alt='logo' fill />
                 </div>
                 <div className=" hidden md:flex items-center gap-3">
