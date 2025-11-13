@@ -1,39 +1,35 @@
 import { Request, Response } from "express"
-import { asyncerrorhandler } from "../middleware/ayncerrorhandler"
+import { asyncErrorHandler } from "../middleware/asyncErrorHandler"
 import { connectDB } from "../db"
 import { ObjectId } from "mongodb";
 import { redis } from "../services/redis"
 import { LANGUAGE_CODES } from "../utils/lan"
 
-export const GetIndiaAnnouncements = asyncerrorhandler(async (req: Request, res: Response) => {
+export const GetIndiaAnnouncements = asyncErrorHandler(async (req: Request, res: Response) => {
     const { target_lan, startdate, endDate, page, limit } = req.query;
 
     const pageNumber = parseInt(page as string) || 1;
-    const pageSize = parseInt(limit as string) || 2;
+    const pageSize = parseInt(limit as string) || 10;
     const skip = (pageNumber - 1) * pageSize;
 
     const announcementsStartDate = startdate
         ? new Date(startdate as string)
         : new Date(new Date().setDate(new Date().getDate() - 7));
 
-    const announcementsEndDate = endDate
-        ? new Date(endDate as string)
-        : new Date();
+    const announcementsEndDate = endDate ? new Date(endDate as string) : new Date();
 
     const targetLanguage = (target_lan as string) || "English";
     const lan = LANGUAGE_CODES[targetLanguage] || "en";
 
-    const redis_key = `Announcements_${lan}_${announcementsStartDate.toISOString().split('T')[0]}_${announcementsEndDate.toISOString().split('T')[0]}_page${pageNumber}_limit${pageSize}`;
-
+    const redis_key = `Announcements_${lan}_${announcementsStartDate.toISOString()}_${announcementsEndDate.toISOString()}_page${pageNumber}_limit${pageSize}`;
     const cached_data = await redis.get(redis_key);
 
-    if (typeof cached_data === "string" && cached_data.trim() !== "") {
+    if (cached_data && typeof cached_data === "string") {
         res.status(200).json(JSON.parse(cached_data));
-        return;
+        return
     }
 
     const db = await connectDB();
-
 
     const start = new Date(announcementsStartDate);
     start.setUTCHours(0, 0, 0, 0);
@@ -41,13 +37,7 @@ export const GetIndiaAnnouncements = asyncerrorhandler(async (req: Request, res:
     const end = new Date(announcementsEndDate);
     end.setUTCHours(23, 59, 59, 999);
 
-    const filter = {
-        created_at: {
-            $gte: start,
-            $lte: end,
-        },
-    };
-
+    const filter = { created_at: { $gte: start, $lte: end } };
     const pipeline: any[] = [{ $match: filter }];
 
     if (lan !== "en") {
@@ -72,58 +62,21 @@ export const GetIndiaAnnouncements = asyncerrorhandler(async (req: Request, res:
                 $addFields: {
                     original_type: "$type",
                     title: { $ifNull: ["$translation.title", "$title"] },
-                    type: { $ifNull: ["$translation.type", "$type"] }
+                    type: { $ifNull: ["$translation.type", "$type"] },
+                    summary: { $ifNull: ["$translation.summary", "summary"] }
                 },
             },
-            {
-                $unset: [
-                    "translations",
-                    "translation",
-                    "content",
-                    "source",
-                    "original_title",
-                    "summary",
-                    "language"
-                ]
-            }
+            { $unset: ["translations", "translation", "content", "source", "original_title", "language"] }
         );
     } else {
         pipeline.push({
-            $unset: [
-                "translations",
-                "translation",
-                "content",
-                "source",
-                "original_title",
-                "summary",
-                "language"
-            ]
+            $unset: ["translations", "translation", "content", "source", "original_title", "language"],
         });
     }
 
-    pipeline.push(
-        { $sort: { created_at: -1 } },
-        {
-            $group: {
-                _id: "$type",
-                announcements: { $push: "$$ROOT" },
-            },
-        },
-        {
-            $project: {
-                type: "$_id",
-                announcements: { $slice: ["$announcements", 3] },
-                _id: 0,
-            },
-        },
-        { $skip: skip },
-        { $limit: pageSize }
-    );
+    pipeline.push({ $sort: { created_at: -1 } }, { $skip: skip }, { $limit: pageSize });
 
-    const indiaAnnouncements = await db
-        .collection("announcements")
-        .aggregate(pipeline)
-        .toArray();
+    const indiaAnnouncements = await db.collection("announcements").aggregate(pipeline).toArray();
 
     const totalCount = await db.collection("announcements").countDocuments(filter);
     const totalPages = Math.ceil(totalCount / pageSize);
@@ -142,10 +95,10 @@ export const GetIndiaAnnouncements = asyncerrorhandler(async (req: Request, res:
     await redis.set(redis_key, JSON.stringify(responseData), { ex: 300 });
 
     res.status(200).json(responseData);
-    return;
+    return
 });
 
-export const GetGroupIndiaAnnouncements = asyncerrorhandler(async (req: Request, res: Response) => {
+export const GetGroupIndiaAnnouncements = asyncErrorHandler(async (req: Request, res: Response) => {
     const { target_lan, startdate, endDate, typeofGroup } = req.query;
 
     // ✅ Ensure typeofGroup exists
@@ -280,7 +233,7 @@ export const GetGroupIndiaAnnouncements = asyncerrorhandler(async (req: Request,
     res.status(200).json(responseData);
 });
 
-export const GetallGroupsIndiaAnnouncements = asyncerrorhandler(async (req: Request, res: Response) => {
+export const SerachallIndiaAnnouncements = asyncErrorHandler(async (req: Request, res: Response) => {
     const { target_lan, startdate, endDate, page, limit, SearchInput } = req.query;
 
     const announcementsStartDate = startdate
@@ -334,14 +287,12 @@ export const GetallGroupsIndiaAnnouncements = asyncerrorhandler(async (req: Requ
             filter.$or = [
                 { title: searchRegex },
                 { type: searchRegex },
-                { summary: searchRegex }
             ];
         } else {
             filter["translations.ln_code"] = lan;
             filter.$or = [
                 { "translations.title": searchRegex },
                 { "translations.type": searchRegex },
-                { "translations.summary": searchRegex }
             ];
         }
     }
@@ -409,20 +360,7 @@ export const GetallGroupsIndiaAnnouncements = asyncerrorhandler(async (req: Requ
     }
 
     pipeline.push(
-        {
-            $group: {
-                _id: "$type",
-                announcements: { $push: "$$ROOT" },
-            }
-        },
-        {
-            $project: {
-                type: "$_id",
-                announcements: { $slice: ["$announcements", 3] },
-                _id: 0
-            }
-        },
-        { $sort: { type: 1 } },
+        { $sort: { created_at: -1 } },
         { $skip: skip },
         { $limit: pageSize },
     );
@@ -452,7 +390,7 @@ export const GetallGroupsIndiaAnnouncements = asyncerrorhandler(async (req: Requ
     return
 });
 
-export const GetIndiaAnnouncement = asyncerrorhandler(async (req: Request, res: Response) => {
+export const GetIndiaAnnouncement = asyncErrorHandler(async (req: Request, res: Response) => {
     const { id, target_lan } = req.query;
 
     if (!id || typeof id !== "string") {
