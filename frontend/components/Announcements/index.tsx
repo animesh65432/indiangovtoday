@@ -98,18 +98,19 @@ const Announcements = ({ QueryInput, SetQueryInput }: Props) => {
 
     useEffect(() => {
         requestIdRef.current++
-        Setpage(0)
+        Setpage(1)
         setHasMore(true)
         isFetchingRef.current = false
         SetAnnouncements([])
-        fetchGetIndiaAnnouncements(0, false)
-    }, [language, startdate, endDate, IsButtomClicked])
+        fetchGetIndiaAnnouncements(1, false)
+    }, [language, startdate, endDate, fetchGetIndiaAnnouncements])
 
     useEffect(() => {
         if (page > 1) {
             fetchGetIndiaAnnouncements(page, true)
         }
-    }, [page])
+    }, [page, fetchGetIndiaAnnouncements])
+
 
 
     const OnChangeDateRangePicker = (values: {
