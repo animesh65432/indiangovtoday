@@ -9,6 +9,7 @@ import { TranslateText } from "@/lib/translatetext";
 import { formatDateInLanguage } from "@/lib/formatDate";
 import { LANGUAGE_CODES } from "@/lib/lan";
 import { formatSummaryToMarkdown } from "@/lib/formatSummaryToMarkdown"
+import Content from "../Announcement/Content";
 
 type Props = {
     Announcement: AnnouncementType;
@@ -43,7 +44,7 @@ const Announcement: React.FC<Props> = ({ Announcement }) => {
             </CardHeader>
 
             <CardContent className="text-gray-700 text-sm md:text-base leading-relaxed whitespace-pre-line">
-                {formatSummaryToMarkdown(Announcement.summary)}
+                <Content content={Announcement.summary} />
             </CardContent>
 
             <CardFooter className="flex justify-end">
