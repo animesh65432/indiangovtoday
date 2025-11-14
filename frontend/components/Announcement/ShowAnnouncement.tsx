@@ -56,7 +56,10 @@ const ShowAnnouncement: React.FC<Props> = ({ title, content, source, lan }) => {
             <div
                 className="whitespace-pre-line text-[#2B2B2B] h-[60vh] custom-scroll overflow-x-auto leading-8 md:leading-9 text-[0.9rem] md:text-[1rem] lg:text-[1.1rem]"
             >
-                <Content content={`${content.replace(/\\n/g, '\n')}`} />
+                <Content
+                    content={`${content.replace(/\\n/g, '\n')}`}
+                    IsAnnoucements={false}
+                />
             </div>
 
 

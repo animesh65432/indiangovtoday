@@ -4,9 +4,10 @@ import remarkGfm from 'remark-gfm';
 
 interface ContentProps {
     content: string;
+    IsAnnoucements: boolean
 }
 
-const Content: React.FC<ContentProps> = ({ content }) => {
+const Content: React.FC<ContentProps> = ({ content, IsAnnoucements }) => {
 
     /**
      * Clean and format content for better readability
@@ -86,7 +87,7 @@ const Content: React.FC<ContentProps> = ({ content }) => {
                     // Customize paragraphs - shorter line height for better density
                     p: ({ node, ...props }: any) => (
                         <p
-                            className="mb-6 text-gray-700 leading-loose text-[0.9rem] md:text-[1rem] lg:text-[1.1rem]"
+                            className={`mb-6 text-gray-700 leading-loose text-[0.9rem] md:text-[1rem] ${!IsAnnoucements ? "lg:text-[1.1rem]" : null}`}
                             {...props}
                         />
                     ),
