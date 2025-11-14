@@ -20,6 +20,7 @@ import { useRouter } from "next/router"
 import useDidUserScroll from "@/hooks/useDidUserScroll"
 import ShowAnnouncements from '../ShowAnnouncements';
 import StickyHeader from '../StickyHeader';
+import AnimatedHeading from '../AnimatedHeading';
 
 
 const Main: React.FC = () => {
@@ -159,9 +160,10 @@ const Main: React.FC = () => {
                 <div className="  relative w-[30px] h-[16px] sm:h-[20px] lg:h-[25px] pt-8 sm:pt-0">
                     <Image alt="logo" fill src="/indiaIcon.svg" />
                 </div>
-                <h1 className="text-center text-[#E0614B] text-[1.2rem] sm:text-[1.3rem] lg:text-[1.6rem] whitespace-normal break-normal max-w-[70vw] sm:max-w-none">
+                {/* <h1 className="text-center text-[#E0614B] text-[1.2rem] sm:text-[1.3rem] lg:text-[1.6rem] whitespace-normal break-normal max-w-[70vw] sm:max-w-none">
                     {TranslateText[language].ALL_GOVERNMENT_ANNOUNCEMENTS_IN_ONE_PLACE}
-                </h1>
+                </h1> */}
+                <AnimatedHeading text={TranslateText[language].ALL_GOVERNMENT_ANNOUNCEMENTS_IN_ONE_PLACE} />
             </div>
 
             <div className={`bg-[#F9F9F9] border flex flex-col justify-center sm:justify-start sm:flex-row gap-5 sm:gap-2 items-center border-[#EDEDED] w-[85vw]  sm:w-[70vw] md:w-[50vw] lg:w-[528px] mx-auto  sm:h-[10vh] p-4 sm:p-0 rounded-md transition-all duration-500 ease-in-out 

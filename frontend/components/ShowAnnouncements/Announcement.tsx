@@ -44,7 +44,10 @@ const Announcement: React.FC<Props> = ({ Announcement }) => {
             </CardHeader>
 
             <CardContent className="text-gray-700 text-sm md:text-base leading-relaxed whitespace-pre-line">
-                <Content content={Announcement.summary} />
+                <Content
+                    content={`${Announcement.summary.replace(/\\n/g, '\n')}`}
+                    IsAnnoucements={true}
+                />
             </CardContent>
 
             <CardFooter className="flex justify-end">
