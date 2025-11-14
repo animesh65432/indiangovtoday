@@ -10,6 +10,7 @@ import { formatDateInLanguage } from "@/lib/formatDate";
 import { LANGUAGE_CODES } from "@/lib/lan";
 import Content from "../Announcement/Content";
 import { Landmark, Calendar } from "lucide-react"
+import { preprocessContent } from "@/lib/preprocessContent"
 
 type Props = {
     Announcement: AnnouncementType;
@@ -47,12 +48,10 @@ const Announcement: React.FC<Props> = ({ Announcement }) => {
             </CardHeader>
 
             <CardContent className="text-gray-700 text-sm md:text-base leading-relaxed whitespace-pre-line">
-                {language === "English" ?
-                    <Content
-                        content={`${Announcement.summary.replace(/\\n/g, '\n')}`}
-                        IsAnnoucements={true}
-                    /> : Announcement.summary
-                }
+                <Content
+                    content={preprocessContent(Announcement.summary, language)}
+                    IsAnnoucements={true}
+                />
             </CardContent>
 
             <CardFooter className="flex justify-end">

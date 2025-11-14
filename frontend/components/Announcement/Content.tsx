@@ -13,7 +13,7 @@ const Content: React.FC<ContentProps> = ({ content, IsAnnoucements }) => {
 
     const { language } = useContext(LanguageContext)
 
-    const processedContent = preprocessContent(content);
+    const processedContent = preprocessContent(content, language);
 
 
     return (
