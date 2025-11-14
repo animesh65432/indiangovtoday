@@ -103,7 +103,7 @@ const Announcements = ({ QueryInput, SetQueryInput }: Props) => {
         isFetchingRef.current = false
         SetAnnouncements([])
         fetchGetIndiaAnnouncements(1, false)
-    }, [language, startdate, endDate, fetchGetIndiaAnnouncements])
+    }, [language, startdate, endDate, fetchGetIndiaAnnouncements, IsButtomClicked])
 
     useEffect(() => {
         if (page > 1) {
@@ -138,8 +138,6 @@ const Announcements = ({ QueryInput, SetQueryInput }: Props) => {
             SetIsButtomClicked((prev) => !prev)
         }
     };
-
-    console.log(QueryInput)
 
     return (
         <div className='flex flex-col gap-4 p-3 sm:p-0'>
