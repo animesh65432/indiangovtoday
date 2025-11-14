@@ -23,3 +23,16 @@ export const LANGUAGE_CODES: Record<string, string> = {
     "ಕನ್ನಡ": "kn",
     "اُردُو": "ur"
 }
+
+export const Languages = [
+    "हिन्दी",
+    "বাংলা",
+    "தமிழ்",
+    "తెలుగు",
+    "मराठी",
+    "ગુજરાતી",
+    "ಕನ್ನಡ",
+    "മലയാളം",
+    "اردو",
+    "English"
+]

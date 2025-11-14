@@ -8,8 +8,9 @@ import { ArrowRight } from "lucide-react";
 import { TranslateText } from "@/lib/translatetext";
 import { formatDateInLanguage } from "@/lib/formatDate";
 import { LANGUAGE_CODES } from "@/lib/lan";
-import { formatSummaryToMarkdown } from "@/lib/formatSummaryToMarkdown"
 import Content from "../Announcement/Content";
+import { Landmark, Calendar } from "lucide-react"
+import { preprocessContent } from "@/lib/preprocessContent"
 
 type Props = {
     Announcement: AnnouncementType;
@@ -32,9 +33,12 @@ const Announcement: React.FC<Props> = ({ Announcement }) => {
                 </p>
 
                 {/* Type + Date */}
-                <div className="flex flex-col  justify-between text-sm text-gray-500">
-                    <span className="capitalize hover:underline hover:cursor-pointer text-[0.9rem]">{Announcement.type}</span>
-                    <span>
+                <div className="flex flex-col gap-1 pt-2  justify-between  text-gray-500 text-[0.9rem]">
+                    <span className="capitalize hover:underline hover:cursor-pointer  flex items-center gap-2">
+                        <Landmark className="h-4 w-4" />{Announcement.type}
+                    </span>
+                    <span className="flex items-center gap-2">
+                        <Calendar className="h-4 w-4" />
                         {formatDateInLanguage(
                             Announcement.created_at,
                             LANGUAGE_CODES[language]
@@ -45,7 +49,7 @@ const Announcement: React.FC<Props> = ({ Announcement }) => {
 
             <CardContent className="text-gray-700 text-sm md:text-base leading-relaxed whitespace-pre-line">
                 <Content
-                    content={`${Announcement.summary.replace(/\\n/g, '\n')}`}
+                    content={preprocessContent(Announcement.summary, language)}
                     IsAnnoucements={true}
                 />
             </CardContent>
