@@ -10,15 +10,15 @@ export default function Header() {
     const router = useRouter()
     const { language, onSelectLanguage } = useContext(LanguageContext)
 
-
     return (
-        <header className="w-[85%] mx-auto pt-8 flex items-center justify-between" onClick={() => router.push("/")}>
+        <header className="w-[85%] mx-auto pt-8 flex items-center justify-between" >
             <nav className="relative h-[10vh] w-[43vw] sm:w-[32vw] lg:h-[70px] lg:w-[230px] xl:h-[82px] xl:w-[265px]">
                 <Image
                     alt="logo"
                     src="/Logo.png"
                     fill
                     className=" object-fill lg:object-contain"
+                    onClick={() => router.push("/")}
                 />
             </nav>
             <nav className="">
