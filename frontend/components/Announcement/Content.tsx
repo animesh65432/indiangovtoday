@@ -23,19 +23,19 @@ const Content: React.FC<ContentProps> = ({ content, IsAnnoucements }) => {
                 components={{
                     // Customize headings
                     h1: ({ node, ...props }: any) => (
-                        <h1
+                        <p
                             className="text-2xl md:text-3xl font-bold mt-8 mb-5 text-gray-900 border-b-2 border-gray-200 pb-3"
                             {...props}
                         />
                     ),
                     h2: ({ node, ...props }: any) => (
-                        <h2
+                        <p
                             className="text-xl md:text-2xl font-bold mt-8 mb-4 text-gray-900 border-l-4 border-blue-600 pl-4"
                             {...props}
                         />
                     ),
                     h3: ({ node, ...props }: any) => (
-                        <h3
+                        <p
                             className="text-lg md:text-xl font-bold mt-6 mb-3 text-gray-900 border-l-4 border-blue-500 pl-3"
                             {...props}
                         />
