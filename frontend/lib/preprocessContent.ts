@@ -3,10 +3,25 @@ import { PdfRegex } from "./Pdfregex"
 import { TwitterRegex } from "./TwitterRegex"
 import { UrlRegex, IsVaildUrl } from "./UrlRegex"
 import { findsperater } from "@/lib/findsperater"
+import { Languages } from "@/lib/lan"
 
 /**
  * Clean noise without breaking markdown syntax
  */
+function adjust_markdown_for_non_english(text: string, lan: string) {
+    if (lan === "বাংলা") {
+        // Keep placeholders but wrap them in a span for better visibility
+        text = text.replace(/___PHONE_(\d+)___/g, '');
+
+        // Clean up markdown formatting if needed
+        text = text.replace(/^##\s+/gm, "## ");
+        text = text.replace(/^#\s+/gm, "# ");
+    }
+
+    return text;
+}
+
+
 function cleanNoise(text: string): string {
     return text
         // Remove selected noise codes (but not markdown syntax)
@@ -18,118 +33,11 @@ function cleanNoise(text: string): string {
         .trim();
 }
 
-/**
- * Convert numbering patterns to bullets (only at line start)
- */
 function convertNumberingToBullet(text: string): string {
     return text.replace(
-        /^(\s*)([\p{L}\p{N}]+)\s*\/\s*/gmu,
+        /^(\s*)(?!_)([\p{L}\p{N}]+)\s*\/\s*/gmu,
         "$1- "
     );
-}
-
-/**
- * Check if a word is part of markdown syntax
- */
-function isMarkdownSyntax(word: string): boolean {
-    const markdownPatterns = [
-        /^\*\*.*\*\*$/,        // **bold**
-        /^\*.*\*$/,            // *italic*
-        /^__.*__$/,            // __bold__
-        /^_.*_$/,              // _italic_
-        /^~~.*~~$/,            // ~~strikethrough~~
-        /^`.*`$/,              // `code`
-        /^#+\s/,               // # headers
-        /^\[.*\]\(.*\)$/,      // [link](url)
-        /^!\[.*\]\(.*\)$/,     // ![image](url)
-        /^>\s/,                // > blockquote
-        /^-\s/,                // - list
-        /^\*\s/,               // * list
-        /^\d+\.\s/,            // 1. numbered list
-        /^```/,                // ``` code block
-        /^\|.*\|$/,            // | table |
-    ];
-
-    return markdownPatterns.some(pattern => pattern.test(word));
-}
-
-/**
- * Process a single word (convert emails, URLs, PDFs to markdown)
- */
-function processWord(word: string): string {
-    // Extract trailing punctuation
-    const trailingMatch = word.match(/[.,!?;:]+$/);
-    const trailing = trailingMatch ? trailingMatch[0] : "";
-    const cleanedWord = word.replace(/[.,!?;:]+$/, "");
-
-    // Skip if already markdown syntax
-    if (isMarkdownSyntax(cleanedWord)) {
-        return word;
-    }
-
-    // Email detection
-    if (EmailRegex.test(cleanedWord)) {
-        return `[${cleanedWord}](mailto:${cleanedWord})${trailing}`;
-    }
-
-    // PDF detection
-    if (PdfRegex.test(cleanedWord)) {
-        let url = cleanedWord;
-        if (!IsVaildUrl.test(url)) url = `https://${url}`;
-        return `<embed src="${url}" width="100%" height="500px" type="application/pdf" />`;
-    }
-
-    // Twitter/X embed detection
-    if (TwitterRegex.test(cleanedWord)) {
-        return `<iframe src="${cleanedWord}" width="100%" height="500px" style="border: none; border-radius: 8px;"></iframe>`;
-    }
-
-    // URL detection
-    if (UrlRegex.test(cleanedWord)) {
-        let url = cleanedWord;
-        if (!IsVaildUrl.test(url)) url = `https://${url}`;
-        return `[${cleanedWord}](${url})${trailing}`;
-    }
-
-    // Return cleaned word
-    return cleanNoise(cleanedWord) + trailing;
-}
-
-/**
- * Add paragraph breaks intelligently (respecting markdown structure)
- */
-function addParagraphBreaks(text: string, separator: string): string {
-    const lines = text.split('\n');
-    const result: string[] = [];
-    let sentenceCount = 0;
-
-    for (const line of lines) {
-        // Don't add breaks inside markdown blocks
-        if (line.trim().startsWith('#') ||
-            line.trim().startsWith('-') ||
-            line.trim().startsWith('*') ||
-            line.trim().startsWith('>') ||
-            line.trim().startsWith('```') ||
-            line.trim().startsWith('|')) {
-            result.push(line);
-            sentenceCount = 0;
-            continue;
-        }
-
-        // Count sentences in this line
-        const sentences = line.split(separator).length - 1;
-        sentenceCount += sentences;
-
-        result.push(line);
-
-        // Add paragraph break after 4 sentences
-        if (sentenceCount >= 4) {
-            result.push(''); // Empty line creates paragraph break in markdown
-            sentenceCount = 0;
-        }
-    }
-
-    return result.join('\n');
 }
 
 /**
@@ -138,24 +46,79 @@ function addParagraphBreaks(text: string, separator: string): string {
 export const preprocessContent = (text: string, lan: string): string => {
     if (!text) return '';
 
+    // 🔥 CRITICAL FIX: Convert escaped newlines (\\n) to actual newlines
+    text = text.replace(/\\n/g, '\n');
+
+    // Also handle other escaped characters
+    text = text.replace(/\\t/g, '\t');
+    text = text.replace(/\\"/g, '"');
+    text = text.replace(/\\'/g, "'");
+
+    // Apply language-specific adjustments
+    text = adjust_markdown_for_non_english(text, lan);
+
     // Step 1: Convert numbering patterns to bullets
     text = convertNumberingToBullet(text);
 
     // Step 2: Get sentence separator for the language
     const separator = findsperater(lan);
 
-    // Step 3: Process word by word (preserving markdown)
-    const words = text.split(/\s+/);
-    const processedWords = words.map(word => processWord(word));
+    // Step 3: Split by words while preserving newlines
+    const lines = text.split('\n');
+    const processedLines: string[] = [];
 
-    // Step 4: Rejoin text
-    let processedText = processedWords.join(' ');
+    for (const line of lines) {
+        // Skip processing for markdown syntax lines
+        if (line.trim().startsWith('#') ||
+            line.trim().startsWith('-') ||
+            line.trim().startsWith('*') ||
+            line.trim().startsWith('>') ||
+            line.trim().startsWith('```') ||
+            line.trim().startsWith('|') ||
+            line.trim() === '---' ||
+            line.trim() === '') {
+            processedLines.push(line);
+            continue;
+        }
 
-    // Step 5: Add intelligent paragraph breaks
-    processedText = addParagraphBreaks(processedText, separator);
+        // Process words in this line
+        const words = line.split(/\s+/);
+        const processedWords: string[] = [];
 
-    // Step 6: Final cleanup
-    processedText = cleanNoise(processedText);
+        for (const word of words) {
+            const trailingMatch = word.match(/[.,!?;:]+$/);
+            const trailing = trailingMatch ? trailingMatch[0] : "";
+            const cleanedWord = word.replace(/[.,!?;:]+$/, "");
 
-    return processedText;
+            // Email detection
+            if (EmailRegex.test(cleanedWord)) {
+                processedWords.push(`[${cleanedWord}](mailto:${cleanedWord})${trailing}`);
+            }
+            // PDF detection
+            else if (PdfRegex.test(cleanedWord)) {
+                let url = cleanedWord;
+                if (!IsVaildUrl.test(url)) url = `https://${url}`;
+                processedWords.push(`<embed src="${url}" width="100%" height="500px" type="application/pdf" />`);
+            }
+            // Twitter/X embed detection
+            else if (TwitterRegex.test(cleanedWord)) {
+                processedWords.push(`<iframe src="${cleanedWord}" width="100%" height="500px" style="border: none; border-radius: 8px;"></iframe>`);
+            }
+            // URL detection
+            else if (UrlRegex.test(cleanedWord)) {
+                let url = cleanedWord;
+                if (!IsVaildUrl.test(url)) url = `https://${url}`;
+                processedWords.push(`[${cleanedWord}](${url})${trailing}`);
+            }
+            // Regular word
+            else {
+                processedWords.push(word); // Keep original word with punctuation
+            }
+        }
+
+        processedLines.push(processedWords.join(' '));
+    }
+
+    // Join lines back with newlines
+    return processedLines.join('\n');
 };

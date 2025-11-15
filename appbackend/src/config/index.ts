@@ -12,7 +12,8 @@ const config = {
     PORT: 3000,
     ALERTS_DATABASE_URL: process.env.ALERTS_DATABASE_URL,
     EMAIL_USER: process.env.EMAIL_USER,
-    EMAIL_PASS: process.env.EMAIL_PASS
+    EMAIL_PASS: process.env.EMAIL_PASS,
+    GEMINI_API_KEY: process.env.GEMINI_API_KEY
 };
 
 export default config;

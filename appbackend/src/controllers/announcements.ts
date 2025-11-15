@@ -4,6 +4,7 @@ import { connectDB } from "../db"
 import { ObjectId } from "mongodb";
 import { redis } from "../services/redis"
 import { LANGUAGE_CODES } from "../utils/lan"
+import { translateContent } from "../utils/translateContent"
 
 export const GetIndiaAnnouncements = asyncErrorHandler(async (req: Request, res: Response) => {
     const { target_lan, startdate, endDate, page, limit } = req.query;
@@ -446,7 +447,7 @@ export const GetIndiaAnnouncement = asyncErrorHandler(async (req: Request, res: 
             {
                 $addFields: {
                     title: { $ifNull: ["$translation.title", "$title"] },
-                    content: { $ifNull: ["$translation.content", "$content"] }
+                    content: { $ifNull: ["$content", "$content"] }
                 }
             },
             {
@@ -476,6 +477,13 @@ export const GetIndiaAnnouncement = asyncErrorHandler(async (req: Request, res: 
     }
 
     const announcement = result[0];
+
+    if (targetLanguage !== "English") {
+        const translatedContent = await translateContent(announcement.content, targetLanguage);
+        if (translatedContent) {
+            announcement.content = translatedContent;
+        }
+    }
 
     const responseData = {
         success: true,
