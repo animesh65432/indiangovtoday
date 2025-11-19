@@ -88,7 +88,7 @@ const StickyHeader: React.FC<Props> = ({ isVisible, SearchInput, SetSearchInput,
                 </div>
 
             </div>
-            <div className="mx-auto w-[100%] pb-3 md:p-4 flex flex-col items-center gap-2">
+            <div className="mx-auto w-[80%] pb-3 md:p-4 flex flex-col md:flex-row items-center gap-2">
                 <Input
                     value={SearchInput}
                     onChange={(e) => SetSearchInput(e.target.value)}
@@ -128,8 +128,7 @@ const StickyHeader: React.FC<Props> = ({ isVisible, SearchInput, SetSearchInput,
                         </SelectContent>
                     </Select>
                 </div>
-
-                <Button onClick={handleClick} className="bg-[#E0614B] hover:bg-[#dd8272] w-[150px]  rounded-xl shadow-[4px_4px_0_0_#00000029]">
+                <Button onClick={handleClick} className="bg-[#E0614B]  sm:block hover:bg-[#dd8272] w-[150px]  rounded-xl shadow-[4px_4px_0_0_#00000029]">
                     {TranslateText[language].SEARCH}
                 </Button>
             </div>
