@@ -14,10 +14,15 @@ export const formatDate = (dateString: string | Date | undefined) => {
     return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
 }
 export const formatDateInLanguage = (
-    date: Date | string | number,
+    date: Date | string | number | undefined | null,
     languageCode: string,
     options?: Intl.DateTimeFormatOptions
 ): string => {
+    if (!date) return '';
+
+    const parsedDate = new Date(date);
+    if (isNaN(parsedDate.getTime())) return '';
+
     const defaultOptions: Intl.DateTimeFormatOptions = {
         year: 'numeric',
         month: 'short',
@@ -29,7 +34,5 @@ export const formatDateInLanguage = (
         ...options
     };
 
-    return new Intl.DateTimeFormat(languageCode, defaultOptions).format(
-        new Date(date)
-    );
+    return new Intl.DateTimeFormat(languageCode, defaultOptions).format(parsedDate);
 };

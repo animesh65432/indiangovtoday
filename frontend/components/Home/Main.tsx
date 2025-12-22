@@ -141,8 +141,6 @@ const Main: React.FC = () => {
         }
     };
 
-    console.log(IsLoading)
-
     return (
         <div className='pt-35 sm:pt-15 md:pt-18  [@media(min-width:900px)]:pt-16  lg:pt-14 xl:pt-7 [@media(min-width:1600px)]:pt-14 [@media(min-width:1700px)]:pt-16 [@media(min-width:1900px)]:pt-22 [@media(min-width:2000px)]:pt-22 [@media(min-width:2100px)]:pt-26 [@media(min-width:2300px)]:pt-32 [@media(min-width:2600px)]:pt-38 [@media(min-width:2800px)]:pt-44 [@media(min-width:3000px)]:pt-48 flex flex-col gap-7'>
             <StickyHeader

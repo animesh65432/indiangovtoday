@@ -1,10 +1,9 @@
 export type Announcement = {
-    _id: string;
-    title: string;
-    type: string;
-    created_at: string;
-    summary: string
-    original_type: string
+    announcementId: string
+    date: string
+    description: string
+    state: string
+    title: string
 };
 
 export type AnnouncementsResponse = {

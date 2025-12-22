@@ -19,7 +19,8 @@ export const GetIndiaAnnouncements = asyncErrorHandler(async (req: Request, res:
 
     const announcementsEndDate = endDate ? new Date(endDate as string) : new Date();
 
-    const targetLanguage = (target_lan as string) || "English";
+    const targetLanguage = LANGUAGE_CODES[target_lan as string] || "English";
+
 
     const redis_key = `Announcements_${targetLanguage}_${announcementsStartDate.toISOString()}_${announcementsEndDate.toISOString()}_page${pageNumber}_limit${pageSize}`;
     const cached_data = await redis.get(redis_key);
@@ -51,6 +52,7 @@ export const GetIndiaAnnouncements = asyncErrorHandler(async (req: Request, res:
                 _id: 0
             }
         })
+        .sort({ date: -1 })
         .skip(skip)
         .limit(pageSize)
         .toArray()
@@ -150,6 +152,7 @@ export const SerachallIndiaAnnouncements = asyncErrorHandler(async (req: Request
         })
         .skip(skip)
         .limit(pageSize)
+        .sort({ date: -1 })
         .toArray();
 
     const totalCount = await db.collection("Translated_Announcements").countDocuments(filter);
@@ -175,12 +178,12 @@ export const SerachallIndiaAnnouncements = asyncErrorHandler(async (req: Request
 export const GetIndiaAnnouncement = asyncErrorHandler(async (req: Request, res: Response) => {
     const { id, target_lan } = req.query;
 
-    if (!id || typeof id !== "string") {
-        res.status(400).json({ message: "Missing or invalid id" });
+    if (!id || typeof id !== "string" || !target_lan || typeof target_lan !== "string") {
+        res.status(400).json({ message: "Missing or invalid id or target_lan is bad" });
         return;
     }
 
-    const targetLanguage = (target_lan as string) || "English";
+    const targetLanguage = LANGUAGE_CODES[target_lan as string] || "English";
 
     const redis_key = `Announcement_${targetLanguage}_${id}_${target_lan}`;
     const cached_data = await redis.get(redis_key);
@@ -210,7 +213,6 @@ export const GetIndiaAnnouncement = asyncErrorHandler(async (req: Request, res: 
         }, {
             projection: {
                 description: 0,
-                title: 0,
                 language: 0,
                 date: 0,
                 _id: 0
