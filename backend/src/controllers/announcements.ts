@@ -4,7 +4,7 @@ import { connectDB } from "../db"
 import { ObjectId } from "mongodb";
 import { redis } from "../services/redis"
 import { LANGUAGE_CODES } from "../utils/lan"
-import { translateContent } from "../utils/translateContent"
+
 
 export const GetIndiaAnnouncements = asyncErrorHandler(async (req: Request, res: Response) => {
     const { target_lan, startdate, endDate, page, limit } = req.query;
@@ -20,9 +20,8 @@ export const GetIndiaAnnouncements = asyncErrorHandler(async (req: Request, res:
     const announcementsEndDate = endDate ? new Date(endDate as string) : new Date();
 
     const targetLanguage = (target_lan as string) || "English";
-    const lan = LANGUAGE_CODES[targetLanguage] || "en";
 
-    const redis_key = `Announcements_${lan}_${announcementsStartDate.toISOString()}_${announcementsEndDate.toISOString()}_page${pageNumber}_limit${pageSize}`;
+    const redis_key = `Announcements_${targetLanguage}_${announcementsStartDate.toISOString()}_${announcementsEndDate.toISOString()}_page${pageNumber}_limit${pageSize}`;
     const cached_data = await redis.get(redis_key);
 
     if (cached_data && typeof cached_data === "string") {
@@ -38,53 +37,30 @@ export const GetIndiaAnnouncements = asyncErrorHandler(async (req: Request, res:
     const end = new Date(announcementsEndDate);
     end.setUTCHours(23, 59, 59, 999);
 
-    const filter = { created_at: { $gte: start, $lte: end } };
-    const pipeline: any[] = [{ $match: filter }];
+    const filter = {
+        date: { $gte: start, $lte: end },
+        language: targetLanguage
+    };
 
-    if (lan !== "en") {
-        pipeline.push(
-            {
-                $addFields: {
-                    translation: {
-                        $arrayElemAt: [
-                            {
-                                $filter: {
-                                    input: "$translations",
-                                    as: "trans",
-                                    cond: { $eq: ["$$trans.ln_code", lan] },
-                                },
-                            },
-                            0,
-                        ],
-                    },
-                },
-            },
-            {
-                $addFields: {
-                    original_type: "$type",
-                    title: { $ifNull: ["$translation.title", "$title"] },
-                    type: { $ifNull: ["$translation.type", "$type"] },
-                    summary: { $ifNull: ["$translation.summary", "summary"] }
-                },
-            },
-            { $unset: ["translations", "translation", "content", "source", "original_title", "language"] }
-        );
-    } else {
-        pipeline.push({
-            $unset: ["translations", "translation", "content", "source", "original_title", "language"],
-        });
-    }
+    const annoucments = await db.collection("Translated_Announcements").
+        find(filter, {
+            projection: {
+                content: 0,
+                language: 0,
+                source_link: 0,
+                _id: 0
+            }
+        })
+        .skip(skip)
+        .limit(pageSize)
+        .toArray()
 
-    pipeline.push({ $sort: { created_at: -1 } }, { $skip: skip }, { $limit: pageSize });
-
-    const indiaAnnouncements = await db.collection("announcements").aggregate(pipeline).toArray();
-
-    const totalCount = await db.collection("announcements").countDocuments(filter);
+    const totalCount = await db.collection("Translated_Announcements").countDocuments(filter);
     const totalPages = Math.ceil(totalCount / pageSize);
 
     const responseData = {
         success: true,
-        data: indiaAnnouncements,
+        data: annoucments,
         pagination: {
             page: pageNumber,
             totalPages,
@@ -97,141 +73,6 @@ export const GetIndiaAnnouncements = asyncErrorHandler(async (req: Request, res:
 
     res.status(200).json(responseData);
     return
-});
-
-export const GetGroupIndiaAnnouncements = asyncErrorHandler(async (req: Request, res: Response) => {
-    const { target_lan, startdate, endDate, typeofGroup } = req.query;
-
-    // ✅ Ensure typeofGroup exists
-    if (!typeofGroup) {
-        res.status(400).json({
-            message: "typeofGroup is required",
-        });
-        return;
-    }
-
-    // ✅ Convert query dates safely
-    const announcementsStartDate = startdate
-        ? new Date(startdate as string)
-        : new Date(new Date().setDate(new Date().getDate() - 7));
-
-    const announcementsEndDate = endDate ? new Date(endDate as string) : new Date();
-
-    if (isNaN(announcementsStartDate.getTime()) || isNaN(announcementsEndDate.getTime())) {
-        res.status(400).json({ error: "Invalid date format" });
-        return;
-    }
-
-    // ✅ Resolve language code
-    const targetLanguage = (target_lan as string) || "English";
-    const lan = LANGUAGE_CODES[targetLanguage] || "en";
-
-    // ✅ Normalize typeValue
-    const typeValue = Array.isArray(typeofGroup)
-        ? String(typeofGroup[0])
-        : String(typeofGroup);
-
-    // ✅ Build Redis key
-    const redis_key = `Group_Announcements_${lan}_${announcementsStartDate
-        .toISOString()
-        .split("T")[0]}_${announcementsEndDate.toISOString().split("T")[0]}_${typeValue || "all"}`;
-
-    // ✅ Try fetching from cache
-    const cached_data = await redis.get(redis_key);
-
-    if (cached_data) {
-        const parsedData = typeof cached_data === "string" ? JSON.parse(cached_data) : cached_data;
-        res.status(200).json(parsedData);
-        return;
-    }
-
-    // ✅ Compute date range
-    const start = new Date(announcementsStartDate);
-    start.setUTCHours(0, 0, 0, 0);
-
-    const end = new Date(announcementsEndDate);
-    end.setUTCHours(23, 59, 59, 999);
-
-    const db = await connectDB();
-
-    // ✅ Filter with regex that tolerates underscores/spaces
-    const filter: any = {
-        created_at: { $gte: start, $lte: end },
-        type: { $regex: new RegExp(typeValue.replace(/[_\s]+/g, "[_\\s]?"), "i") },
-    };
-
-    const pipeline: any[] = [{ $match: filter }];
-
-    // ✅ Translation stages
-    if (lan !== "en") {
-        pipeline.push(
-            {
-                $addFields: {
-                    translation: {
-                        $arrayElemAt: [
-                            {
-                                $filter: {
-                                    input: "$translations",
-                                    as: "trans",
-                                    cond: { $eq: ["$$trans.ln_code", lan] },
-                                },
-                            },
-                            0,
-                        ],
-                    },
-                },
-            },
-            {
-                $addFields: {
-                    title: { $ifNull: ["$translation.title", "$title"] },
-                    summary: { $ifNull: ["$translation.summary", "$summary"] },
-                    type: { $ifNull: ["$translation.type", "$type"] },
-                },
-            },
-            {
-                $unset: [
-                    "language",
-                    "translation",
-                    "translations",
-                    "content",
-                    "original_title",
-                    "source",
-                ],
-            }
-        );
-    } else {
-        pipeline.push({
-            $unset: [
-                "translations",
-                "content",
-                "original_title",
-                "language",
-                "source",
-            ],
-        });
-    }
-
-    // ✅ Run aggregation
-    const indiaAnnouncements = await db
-        .collection("announcements")
-        .aggregate(pipeline)
-        .toArray();
-
-    // ✅ Prepare and cache response
-    const responseData = {
-        success: true,
-        data: indiaAnnouncements,
-        count: indiaAnnouncements.length,
-        languageCode: lan,
-        dateRange: {
-            start: start.toISOString(),
-            end: end.toISOString(),
-        },
-        group: typeValue || null,
-    };
-
-    await redis.set(redis_key, JSON.stringify(responseData), { ex: 300 });
-    res.status(200).json(responseData);
 });
 
 export const SerachallIndiaAnnouncements = asyncErrorHandler(async (req: Request, res: Response) => {
@@ -248,7 +89,11 @@ export const SerachallIndiaAnnouncements = asyncErrorHandler(async (req: Request
     const pageNumber = parseInt(page as string) || 1;
     const pageSize = parseInt(limit as string) || 10;
     const skip = (pageNumber - 1) * pageSize;
-    const searchQuery = typeof SearchInput === 'string' ? SearchInput.trim() : null;
+
+    if (!SearchInput || (typeof SearchInput === 'string' && SearchInput.trim().length < 3)) {
+        res.status(400).json({ error: "Search query must be at least 3 characters long" });
+        return;
+    }
 
     if (isNaN(announcementsStartDate.getTime()) || isNaN(announcementsEndDate.getTime())) {
         res.status(400).json({ error: "Invalid date format" });
@@ -256,10 +101,8 @@ export const SerachallIndiaAnnouncements = asyncErrorHandler(async (req: Request
     }
 
     const targetLanguage = (target_lan as string) || "English";
-    const lan = LANGUAGE_CODES[targetLanguage] || "en";
 
-
-    const redis_key = `AllGroupsIndiaAnnouncements_${lan}_${announcementsStartDate.toISOString().split('T')[0]}_${announcementsEndDate.toISOString().split('T')[0]}${page}${limit}${searchQuery}`;
+    const redis_key = `AllGroupsIndiaAnnouncements_${targetLanguage}_${announcementsStartDate.toISOString().split('T')[0]}_${announcementsEndDate.toISOString().split('T')[0]}${page}${limit}${SearchInput}`;
 
     const cached_data = await redis.get(redis_key);
 
@@ -278,100 +121,38 @@ export const SerachallIndiaAnnouncements = asyncErrorHandler(async (req: Request
     end.setUTCHours(23, 59, 59, 999);
 
     const filter: any = {
-        created_at: { $gte: start, $lte: end }
+        date: { $gte: start, $lte: end },
+        language: targetLanguage,
+
     };
 
-    if (searchQuery) {
-        const searchRegex = new RegExp(searchQuery as string, "i");
+    if (SearchInput) {
+        const searchRegex = new RegExp(SearchInput as string, "i");
+        filter["language"] = targetLanguage;
+        filter.$or = [
+            { "title": searchRegex },
+            { "description": searchRegex },
+        ];
 
-        if (lan === "en") {
-            filter.$or = [
-                { title: searchRegex },
-                { type: searchRegex },
-            ];
-        } else {
-            filter["translations.ln_code"] = lan;
-            filter.$or = [
-                { "translations.title": searchRegex },
-                { "translations.type": searchRegex },
-            ];
-        }
     }
 
     const db = await connectDB();
 
-    const pipeline: any[] = [
-        { $match: filter }
-    ];
-
-    if (lan !== "en") {
-        pipeline.push(
-            {
-                $addFields: {
-                    translation: {
-                        $arrayElemAt: [
-                            {
-                                $filter: {
-                                    input: "$translations",
-                                    as: "trans",
-                                    cond: { $eq: ["$$trans.ln_code", lan] },
-                                },
-                            },
-                            0,
-                        ],
-                    },
-                },
-            },
-            {
-                $addFields: {
-                    original_type: "$type",
-                },
-            },
-            {
-                $addFields: {
-                    title: { $ifNull: ["$translation.title", "$title"] },
-                    type: { $ifNull: ["$translation.type", "$type"] },
-                    summary: { $ifNull: ["$translation.summary", "$summary"] }
-                },
-            },
-            {
-                $unset: [
-                    "language",
-                    "translation",
-                    "translations",
-                    "content",
-                    "original_title",
-                    "source"
-                ],
-            }
-        );
-    }
-    else {
-        pipeline.push(
-            {
-                $unset: [
-                    "translations",
-                    "content",
-                    "original_title",
-                    "language",
-                    "source",
-                ],
-            }
-        );
-    }
-
-    pipeline.push(
-        { $sort: { created_at: -1 } },
-        { $skip: skip },
-        { $limit: pageSize },
-    );
 
     const indiaAnnouncements = await db
-        .collection("announcements")
-        .aggregate(pipeline)
+        .collection("Translated_Announcements")
+        .find(filter, {
+            projection: {
+                content: 0,
+                language: 0,
+                source_link: 0
+            }
+        })
+        .skip(skip)
+        .limit(pageSize)
         .toArray();
 
-    const totalCount = await db.collection("announcements").countDocuments(filter);
+    const totalCount = await db.collection("Translated_Announcements").countDocuments(filter);
     const totalPages = Math.ceil(totalCount / pageSize);
 
     const responseData = {
@@ -400,9 +181,8 @@ export const GetIndiaAnnouncement = asyncErrorHandler(async (req: Request, res: 
     }
 
     const targetLanguage = (target_lan as string) || "English";
-    const lan = LANGUAGE_CODES[targetLanguage] || "en";
 
-    const redis_key = `Announcement_${lan}_${id}_${target_lan}`;
+    const redis_key = `Announcement_${targetLanguage}_${id}_${target_lan}`;
     const cached_data = await redis.get(redis_key);
 
     if (cached_data) {
@@ -422,75 +202,32 @@ export const GetIndiaAnnouncement = asyncErrorHandler(async (req: Request, res: 
     const db = await connectDB();
 
 
-    const pipeline: any[] = [
-        { $match: { _id: objectId } }
-    ];
-
-    if (lan !== "en") {
-        pipeline.push(
-            {
-                $addFields: {
-                    translation: {
-                        $arrayElemAt: [
-                            {
-                                $filter: {
-                                    input: "$translations",
-                                    as: "trans",
-                                    cond: { $eq: ["$$trans.ln_code", lan] }
-                                }
-                            },
-                            0
-                        ]
-                    }
-                }
-            },
-            {
-                $addFields: {
-                    title: { $ifNull: ["$translation.title", "$title"] },
-                    content: { $ifNull: ["$content", "$content"] }
-                }
-            },
-            {
-                $unset: [
-                    "translation",
-                    "translations",
-                    "language",
-                    "original_title",
-                    "summary",
-                    "type"
-                ]
+    const announcement = await db
+        .collection("Translated_Announcements")
+        .find({
+            announcementId: objectId,
+            language: targetLanguage
+        }, {
+            projection: {
+                description: 0,
+                title: 0,
+                language: 0,
+                date: 0,
+                _id: 0
             }
-        );
-    } else {
-        pipeline.push({
-            $unset: ["translations", "language", "original_title", "summary", "type"]
-        });
-    }
-    const result = await db
-        .collection("announcements")
-        .aggregate(pipeline)
-        .toArray();
+        }).toArray()
 
-    if (!result.length) {
+
+    if (!announcement) {
         res.status(404).json({ error: "Announcement not found" });
         return;
     }
 
-    const announcement = result[0];
-
-    if (targetLanguage !== "English") {
-        const translatedContent = await translateContent(announcement.content, targetLanguage);
-        if (translatedContent) {
-            announcement.content = translatedContent;
-        }
-    }
-
     const responseData = {
         success: true,
-        data: announcement,
-        languageCode: lan
+        data: announcement[0],
+        languageCode: LANGUAGE_CODES[targetLanguage] || "en"
     };
-
 
     await redis.set(redis_key, JSON.stringify(responseData), { ex: 300 });
 

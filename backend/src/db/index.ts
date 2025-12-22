@@ -10,7 +10,7 @@ export async function connectDB() {
     try {
         if (!db) {
             await client.connect();
-            db = client.db("IndianGovtAnnouncements");
+            db = client.db("Indian_Govt_Announcements");
             console.log("✅ Connected to MongoDB");
         }
         return db;
