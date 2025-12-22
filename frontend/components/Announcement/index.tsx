@@ -44,7 +44,7 @@ const Announcement = ({ id, lan }: Props) => {
                     <ShowAnnouncement
                         title={announcement.title}
                         content={announcement.content}
-                        source={announcement.source}
+                        source={announcement.source_link}
                         lan={lan}
                     /> :
                     <div className='h-[70vh] flex justify-center items-center'>

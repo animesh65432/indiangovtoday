@@ -7,7 +7,7 @@ export const getAllAnnouncements = (target_lan: string, startdate: Date, endDate
 
 export const getAnnouncement = (target_lan: string, id: string) => Call({
     method: "GET",
-    path: `/GetIndiaAnnouncement?target_lan=${target_lan}&id=${id}`,
+    path: `/GetIndiaAnnnouncement?target_lan=${target_lan}&id=${id}`,
 
 })
 

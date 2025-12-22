@@ -52,10 +52,11 @@ export type GetallGroupsIndiaAnnouncementsResponse = {
 
 
 export type ShowAnnouncementsTypes = {
-    _id: string,
-    title: string,
+    announcementId: string,
     content: string,
-    source: string
+    source_link: string,
+    state: string,
+    title: string,
 }
 
 export { Announcement, AnnouncementsResponse }

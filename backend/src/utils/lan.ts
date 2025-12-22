@@ -40,14 +40,14 @@ export const languageCodeMap = {
 }
 
 export const LANGUAGE_CODES: Record<string, string> = {
-    "English": "en",
-    "Hindi": "hi",
-    "Bengali": "bn",
-    "Tamil": "ta",
-    "Telugu": "te",
-    "Marathi": "mr",
-    "Gujarati": "gu",
-    "Kannada": "kn",
-    "Malayalam": "ml",
-    "Punjabi": "pa"
-}
+    "English": "English",
+    "हिन्दी": "Hindi",
+    "বাংলা": "Bengali",
+    "தமிழ்": "Tamil",
+    "తెలుగు": "Telugu",
+    "मराठी": "Marathi",
+    "ગુજરાતી": "Gujarati",
+    "ಕನ್ನಡ": "Kannada",
+    "മലയാളം": "Malayalam",
+    "اردو": "Urdu"
+};

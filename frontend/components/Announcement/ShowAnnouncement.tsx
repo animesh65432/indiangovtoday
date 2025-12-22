@@ -40,8 +40,7 @@ const ShowAnnouncement: React.FC<Props> = ({ title, content, source, lan }) => {
 
     return (
         <div className='w-[82%] mx-auto  flex flex-col gap-6 pt-7 '>
-            <div className='flex items-center justify-between text-[1rem] sm:text-[1.3rem] lg:text-[1.6rem] text-[#1a1919]'>
-                <p className='text-[#e3543a] font-semibold'>{title}</p>
+            <div className='flex justify-end text-[1rem] sm:text-[1.3rem] lg:text-[1.6rem] text-[#1a1919]'>
                 <div>
                     <Share
                         onClick={() => setToggle(prev => !prev)}
