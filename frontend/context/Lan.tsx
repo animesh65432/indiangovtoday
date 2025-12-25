@@ -8,7 +8,6 @@ type LanguageContextType = {
 type Props = {
     children: ReactNode;
 };
-
 export const LanguageContext = createContext<LanguageContextType>({
     language: "English",
     onSelectLanguage: () => { }

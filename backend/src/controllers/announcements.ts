@@ -19,7 +19,9 @@ export const GetIndiaAnnouncements = asyncErrorHandler(async (req: Request, res:
 
     const announcementsEndDate = endDate ? new Date(endDate as string) : new Date();
 
-    const targetLanguage = LANGUAGE_CODES[target_lan as string] || "English";
+    const targetLanguage = LANGUAGE_CODES[target_lan as string] || "en";
+
+    console.log("Fetching announcements for language:", target_lan);
 
 
     const redis_key = `Announcements_${targetLanguage}_${announcementsStartDate.toISOString()}_${announcementsEndDate.toISOString()}_page${pageNumber}_limit${pageSize}`;
