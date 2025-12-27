@@ -25,17 +25,29 @@ export const optionsforLanguages = [
 
 
 export const LANGUAGE_CODES: Record<string, string> = {
-    "English": "en",
-    "हिन्दी": "hi",
-    "বাংলা": "bn",
-    "ગુજરાતી": "gu",
-    "தமிழ்": "ta",
-    "తెలుగు": "te",
-    "മലയാളം": "ml",
-    "मराठी": "mr",
-    "ಕನ್ನಡ": "kn",
-    "اُردُو": "ur"
-}
+    "অসমীয়া": "as",        // Assamese
+    "বাংলা": "bn",          // Bengali
+    "बरʼ": "brx",           // Bodo
+    "डोगरी": "doi",         // Dogri
+    "ગુજરાતી": "gu",        // Gujarati
+    "हिन्दी": "hi",         // Hindi
+    "ಕನ್ನಡ": "kn",          // Kannada
+    "कॉशुर": "ks",          // Kashmiri
+    "मैथिली": "mai",        // Maithili
+    "മലയാളം": "ml",        // Malayalam
+    "মৈতৈলোন": "mni",       // Manipuri (Meitei)
+    "मराठी": "mr",          // Marathi
+    "नेपाली": "ne",         // Nepali
+    "ଓଡ଼ିଆ": "or",          // Odia
+    "ਪੰਜਾਬੀ": "pa",         // Punjabi
+    "संस्कृतम्": "sa",      // Sanskrit
+    "ᱥᱟᱱᱛᱟᱲᱤ": "sat",       // Santali (Ol Chiki)
+    "سنڌي": "sd",           // Sindhi
+    "தமிழ்": "ta",          // Tamil
+    "తెలుగు": "te",         // Telugu
+    "اردو": "ur",           // Urdu
+};
+
 
 export const Languages = [
     "অসমীয়া",      // Assamese

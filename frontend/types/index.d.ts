@@ -50,13 +50,39 @@ export type GetallGroupsIndiaAnnouncementsResponse = {
     data: GetallGroupsIndiaAnnouncements[]
 }
 
+type SummarySection = {
+    type: "summary";
+    heading: string;
+    content: string;
+};
+
+type DetailsSection = {
+    type: "details";
+    heading: string;
+    content: string;
+};
+
+type KeyPointsSection = {
+    type: "keypoints";
+    heading: string;
+    points: string[];
+};
+
+export type SectionTypes =
+    | SummarySection
+    | DetailsSection
+    | KeyPointsSection;
 
 export type ShowAnnouncementsTypes = {
     announcementId: string,
-    content: string,
     source_link: string,
     state: string,
     title: string,
+    date: string,
+    category: string,
+    department: string,
+    sections: SectionTypes[]
+
 }
 
 export { Announcement, AnnouncementsResponse }

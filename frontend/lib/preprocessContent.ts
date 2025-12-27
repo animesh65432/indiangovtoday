@@ -1,42 +1,22 @@
-// lib/preprocessContent.ts - UPDATED VERSION
-
 import { EmailRegex } from "./EmailRegex"
 import { PdfRegex } from "./Pdfregex"
 import { TwitterRegex } from "./TwitterRegex"
 import { UrlRegex, IsVaildUrl } from "./UrlRegex"
 
 /**
- * Clean up translated content - removes artifacts from translation
+ * Fix broken markdown syntax from translation
  */
-function cleanTranslatedContent(text: string, lan: string): string {
+function fixBrokenMarkdown(text: string, lan: string): string {
     if (lan === "English") return text;
 
-    // Remove ALL hashtags (both at start and in middle of text)
-    text = text.replace(/#[^\s#]+/g, '');
+    // 1. \*  → *
+    text = text.replace("#", '#');
 
-    // Remove words that have ellipsis cutting through them (দায়িত্…য়া)
-    text = text.replace(/[\p{L}\p{N}]+…[\p{L}\p{N}]+/gu, '');
+    // 2. * *  → **
+    text = text.replace(/###/g, '\n\n###');
 
-    // Remove truncation markers with content between them (…text…)
-    text = text.replace(/…[^…\n]*…/g, '');
-
-    // Remove sentences ending with ellipsis (incomplete)
-    text = text.replace(/[^\n.।۔]*…/g, '');
-
-    // Remove isolated ellipsis
-    text = text.replace(/…+/g, '');
-
-    // Remove leftover English words that are translation artifacts
-    text = text.replace(/\b[A-Z][a-z]+\s+\d+,\s+\d{4}\b/g, ''); // dates like "January 1, 2003"
-
-    // Clean up malformed bullet points: * *- or ** - 
-    text = text.replace(/^\s*\*+\s*[-*]+\s*/gm, '- ');
-
-    // Clean up excessive spaces
-    text = text.replace(/\s{2,}/g, ' ');
-
-    // Remove empty lines with just spaces
-    text = text.replace(/^\s+$/gm, '');
+    // 3. remove lonely *
+    text = text.replace(/ \*/g, '\n\n**');
 
     return text;
 }
@@ -46,12 +26,6 @@ function cleanTranslatedContent(text: string, lan: string): string {
  */
 function normalizeMarkdownStructure(text: string, lan: string): string {
     if (lan === "English") return text;
-
-    // Ensure proper paragraph breaks before headers
-    text = text.replace(/([^\n])\n(#{1,6}\s)/g, '$1\n\n$2');
-
-    // Fix header formatting - ensure space after # symbols
-    text = text.replace(/^(#{1,6})([^\s#])/gm, '$1 $2');
 
     // Convert multiple consecutive # at line start to proper markdown
     text = text.replace(/^#{3,}(\s|$)/gm, '### ');
@@ -65,109 +39,12 @@ function normalizeMarkdownStructure(text: string, lan: string): string {
     text = text.replace(/([^\n])\n(-\s)/g, '$1\n\n$2');
     text = text.replace(/(-\s[^\n]+)\n([^\n-])/g, '$1\n\n$2');
 
-    return text;
-}
-
-/**
- * Fix language-specific punctuation and spacing
- */
-function fixPunctuation(text: string, lan: string): string {
-    // Bengali, Hindi, Marathi, Nepali use ।
-    if (['বাংলা', 'हिन्दी', 'मराठी', 'नेपाली'].includes(lan)) {
-        text = text.replace(/\s+।/g, '।');
-        text = text.replace(/।([^\s\n])/g, '। $1');
-    }
-
-    // Tamil uses .
-    if (lan === 'தமிழ்') {
-        text = text.replace(/\s+\./g, '.');
-        text = text.replace(/\.([^\s\n])/g, '. $1');
-    }
-
-    // Urdu, Kashmiri, Sindhi (RTL languages)
-    if (['اردو', 'کٲشُر', 'سنڌي'].includes(lan)) {
-        text = text.replace(/\s+([۔،؛:])/g, '$1');
-        text = text.replace(/([۔،؛:])([^\s\n])/g, '$1 $2');
-    }
-
-    // Fix English punctuation spacing for all languages
-    text = text.replace(/\s+([.,;:!?])/g, '$1');
-    text = text.replace(/([.,;:!?])([^\s\n])/g, '$1 $2');
+    // Ensure blank line after headers
+    text = text.replace(/(^#{1,6}\s[^\n]+)\n([^#\n])/gm, '$1\n\n$2');
 
     return text;
 }
 
-/**
- * Remove incomplete sentences and clean up edges
- */
-function cleanIncompleteSentences(text: string, lan: string): string {
-    if (lan === "English") return text;
-
-    // Split into lines
-    const lines = text.split('\n');
-    const cleanedLines: string[] = [];
-    const seenContent = new Set<string>(); // Track duplicate content
-
-    for (let i = 0; i < lines.length; i++) {
-        let line = lines[i].trim();
-
-        // Skip empty lines
-        if (!line) {
-            cleanedLines.push('');
-            continue;
-        }
-
-        // Skip duplicate lines (same content appearing twice)
-        const normalizedLine = line.replace(/\s+/g, ' ').toLowerCase();
-        if (seenContent.has(normalizedLine)) {
-            continue;
-        }
-        seenContent.add(normalizedLine);
-
-        // Keep markdown syntax lines as-is
-        if (line.match(/^#{1,6}\s/) || line.match(/^[-*+]\s/) || line.match(/^\d+\.\s/)) {
-            cleanedLines.push(line);
-            continue;
-        }
-
-        // Remove lines that start with ellipsis or seem truncated
-        if (line.startsWith('…') || line.endsWith('…')) {
-            continue;
-        }
-
-        // Remove lines with mid-word ellipsis (text is broken)
-        if (line.match(/[\p{L}\p{N}]…[\p{L}\p{N}]/u)) {
-            continue;
-        }
-
-        // Remove very short fragments (less than 20 chars, unless it's a header or list)
-        if (line.length < 20 && !line.match(/^#{1,6}\s/) && !line.match(/^[-*+]\s/)) {
-            continue;
-        }
-
-        cleanedLines.push(line);
-    }
-
-    return cleanedLines.join('\n');
-}
-
-/**
- * Adjust markdown for non-English languages
- */
-function adjust_markdown_for_non_english(text: string, lan: string): string {
-    if (lan === "English") return text;
-
-    // Remove phone number placeholders
-    text = text.replace(/___PHONE_(\d+)___/g, '');
-
-    // Remove any remaining English reference codes
-    text = text.replace(/\b(AB|NB|MI|ARJ|KPCS)\b/g, '');
-
-    // Remove patterns like "ABC/XYZ/123"
-    text = text.replace(/\b[A-Z]{2,}\/[A-Z0-9]{2,}\b/g, '');
-
-    return text;
-}
 
 /**
  * Final cleanup pass
@@ -252,28 +129,16 @@ export const preprocessContent = (text: string, lan: string): string => {
     // Step 2: Remove duplicate blocks (entire paragraphs repeated)
     text = removeDuplicateBlocks(text);
 
-    // Step 3: Clean translated content artifacts
-    text = cleanTranslatedContent(text, lan);
+    // Step 4: FIX BROKEN MARKDOWN (This is the key fix!)
+    text = fixBrokenMarkdown(text, lan);
 
-    // Step 3: Clean translated content artifacts
-    text = cleanTranslatedContent(text, lan);
-
-    // Step 4: Normalize markdown structure
+    // Step 5: Normalize markdown structure
     text = normalizeMarkdownStructure(text, lan);
 
-    // Step 5: Fix punctuation
-    text = fixPunctuation(text, lan);
-
-    // Step 6: Remove incomplete sentences
-    text = cleanIncompleteSentences(text, lan);
-
-    // Step 7: Apply language-specific adjustments
-    text = adjust_markdown_for_non_english(text, lan);
-
-    // Step 8: Convert numbering patterns to bullets
+    // Step 9: Convert numbering patterns to bullets
     text = convertNumberingToBullet(text);
 
-    // Step 9: Process URLs, emails, etc. (existing logic)
+    // Step 10: Process URLs, emails, etc. (existing logic)
     const lines = text.split('\n');
     const processedLines: string[] = [];
 
@@ -331,7 +196,7 @@ export const preprocessContent = (text: string, lan: string): string => {
 
     text = processedLines.join('\n');
 
-    // Step 10: Final cleanup
+    // Step 11: Final cleanup
     text = finalCleanup(text);
 
     return text;

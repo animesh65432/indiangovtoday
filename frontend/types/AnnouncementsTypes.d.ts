@@ -4,6 +4,8 @@ export type Announcement = {
     description: string
     state: string
     title: string
+    category: string
+    department: string
 };
 
 export type AnnouncementsResponse = {

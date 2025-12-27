@@ -15,6 +15,8 @@ const Content: React.FC<ContentProps> = ({ content, IsAnnoucements }) => {
 
     const processedContent = preprocessContent(content, language);
 
+    console.log(processedContent)
+
 
     return (
         <div className="text-[#2B2B2B] custom-scroll overflow-x-auto overflow-y-auto">
