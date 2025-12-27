@@ -87,7 +87,7 @@ const ShowAnnouncement: React.FC<Props> = ({ title, source, lan, date, state, se
                     {category}
                 </div>
                 <a className='text-[#2B2B2B] hover:text-[#181717] flex items-center gap-2 underline' href={source} >
-                    <Link className='w-4 h-4' /> View Official Source
+                    <Link className='w-4 h-4' /> {TranslateText[lan].SOURCE}
                 </a>
             </div>
             <div className='flex flex-col gap-4'>
