@@ -19,7 +19,7 @@ export const GetIndiaAnnouncements = asyncErrorHandler(async (req: Request, res:
 
     const announcementsEndDate = endDate ? new Date(endDate as string) : new Date();
 
-    const targetLanguage = LANGUAGE_CODES[target_lan as string] || "English";
+    const targetLanguage = LANGUAGE_CODES[target_lan as string] || "en";
 
 
     const redis_key = `Announcements_${targetLanguage}_${announcementsStartDate.toISOString()}_${announcementsEndDate.toISOString()}_page${pageNumber}_limit${pageSize}`;
@@ -46,7 +46,7 @@ export const GetIndiaAnnouncements = asyncErrorHandler(async (req: Request, res:
     const annoucments = await db.collection("Translated_Announcements").
         find(filter, {
             projection: {
-                content: 0,
+                sections: 0,
                 language: 0,
                 source_link: 0,
                 _id: 0
@@ -145,7 +145,7 @@ export const SerachallIndiaAnnouncements = asyncErrorHandler(async (req: Request
         .collection("Translated_Announcements")
         .find(filter, {
             projection: {
-                content: 0,
+                sections: 0,
                 language: 0,
                 source_link: 0
             }
@@ -214,7 +214,6 @@ export const GetIndiaAnnouncement = asyncErrorHandler(async (req: Request, res: 
             projection: {
                 description: 0,
                 language: 0,
-                date: 0,
                 _id: 0
             }
         }).toArray()

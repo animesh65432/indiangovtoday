@@ -37,15 +37,20 @@ const Announcement = ({ id, lan }: Props) => {
     }, [id, language])
 
     return (
-        <div className="bg-[#FFFFFF] flex flex-col  min-h-dvh  bg-[url(/Annoucementsbackgroundimage.png)] w-[100vw] ">
+        <div className="bg-[#FFFFFF] flex flex-col  min-h-dvh  bg-[url(/Annoucementsbackgroundimage.png)] w-[99vw] ">
             <Header />
             {!IsLoading ?
                 (announcement ?
                     <ShowAnnouncement
                         title={announcement.title}
-                        content={announcement.content}
                         source={announcement.source_link}
-                        lan={lan}
+                        lan={language}
+                        announcementId={announcement.announcementId}
+                        state={announcement.state}
+                        date={announcement.date}
+                        category={announcement.category}
+                        department={announcement.department}
+                        sections={announcement.sections}
                     /> :
                     <div className='h-[70vh] flex justify-center items-center'>
                         <div className='flex items-center gap-2'>

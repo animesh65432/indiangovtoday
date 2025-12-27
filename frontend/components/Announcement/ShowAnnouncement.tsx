@@ -1,18 +1,26 @@
 import React, { useState } from 'react'
-import { AudioLines, Pause, Play, Share, Square, Volume2 } from "lucide-react"
+import { AudioLines, Pause, Play, Share, Square, Volume2, MapPin, Calendar, LayoutGrid, Landmark, Link } from "lucide-react"
 import ShareSection from '../Share'
 import { usetexttospech } from '@/hooks/usetexttospech'
 import { TranslateText } from "@/lib/translatetext"
-import Content from './Content'
+import { SectionTypes } from '@/types'
+import { formatDateInLanguage } from '@/lib/formatDate'
+import { LANGUAGE_CODES } from "@/lib/lan"
+
 
 type Props = {
     title: string
-    content: string
     source: string
-    lan: string
+    lan: string,
+    announcementId: string,
+    state: string,
+    date: string,
+    category: string,
+    department: string,
+    sections: SectionTypes[]
 }
 
-const ShowAnnouncement: React.FC<Props> = ({ title, content, source, lan }) => {
+const ShowAnnouncement: React.FC<Props> = ({ title, source, lan, date, state, sections, department, category }) => {
     const [toggle, setToggle] = useState<boolean>(false)
     const { call, stop, togglePlayPause, IsLoading, isPlaying, isPaused } = usetexttospech()
 
@@ -22,7 +30,10 @@ const ShowAnnouncement: React.FC<Props> = ({ title, content, source, lan }) => {
         if (isPlaying || isPaused) {
             togglePlayPause()
         } else {
-            await call(content)
+            await call(sections[0].heading + ". " + ('content' in sections[0] ? sections[0].content : '') + " " +
+                sections[1].heading + ". " + ('content' in sections[1] ? sections[1].content : '') + " " +
+                sections[2].heading + ". " + (sections[2].type === "keypoints" && 'points' in sections[2] ? sections[2].points.join('. ') : '')
+            )
         }
     }
 
@@ -39,7 +50,7 @@ const ShowAnnouncement: React.FC<Props> = ({ title, content, source, lan }) => {
     }
 
     return (
-        <div className='w-[82%] mx-auto  flex flex-col gap-6 pt-7 '>
+        <div className='w-[82%] mx-auto  flex flex-col gap-6 pt-7  pb-8'>
             <div className='flex justify-end text-[1rem] sm:text-[1.3rem] lg:text-[1.6rem] text-[#1a1919]'>
                 <div>
                     <Share
@@ -53,29 +64,55 @@ const ShowAnnouncement: React.FC<Props> = ({ title, content, source, lan }) => {
             </div>
 
             <div
-                className="whitespace-pre-line text-[#2B2B2B] h-[60vh] custom-scroll overflow-x-auto leading-8 md:leading-9 text-[0.9rem] md:text-[1rem] lg:text-[1.1rem]"
+                className="whitespace-pre-line text-[#2B2B2B] custom-scroll overflow-x-auto leading-8 md:leading-9 text-[1rem] md:text-[1.2rem] lg:text-[1.4rem]"
             >
-                <Content
-                    content={`${content.replace(/\\n/g, '\n')}`}
-                    IsAnnoucements={false}
-                />
+                {title}
             </div>
 
-
-            <div className='text-[#353535]   text-[0.85rem] md:text-[1rem] lg:text-[1.1rem]'>
-                <p className="text-gray-500 italic">
-                    {TranslateText[lan].SOURCE}:{" "}
-                    <a
-                        href={`${source}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-[#E0614B] hover:underline"
-                    >
-                        {`${source}`}
-                    </a>
-                </p>
+            <div className='flex flex-col gap-2'>
+                <div className='text-[#2B2B2B] flex items-center gap-2'>
+                    <Calendar className='w-4 h-4' />
+                    {formatDateInLanguage(date, LANGUAGE_CODES[lan])}
+                </div>
+                <div className='text-[#2B2B2B] flex items-center gap-2'>
+                    <MapPin className='w-4 h-4' />
+                    {state}
+                </div>
+                <div className='text-[#2B2B2B] flex items-center gap-2'>
+                    <Landmark className='w-4 h-4' />
+                    {department}
+                </div>
+                <div className='text-[#2B2B2B] flex items-center gap-2'>
+                    <LayoutGrid className='w-4 h-4' />
+                    {category}
+                </div>
+                <a className='text-[#2B2B2B] hover:text-[#181717] flex items-center gap-2 underline' href={source} >
+                    <Link className='w-4 h-4' /> View Official Source
+                </a>
             </div>
-
+            <div className='flex flex-col gap-4'>
+                <div className='flex flex-col gap-2'>
+                    <div className='text-[#2B2B2B] text-[1.2rem]'>{sections[0].heading}</div>
+                    <div className='text-gray-700'>{'content' in sections[0] ? sections[0].content : 'Content not available'}</div>
+                </div>
+                <div className='flex flex-col gap-2'>
+                    <div className='text-[#2B2B2B] text-[1.2rem]'>{sections[1].heading}</div>
+                    <div className='text-gray-700'>{'content' in sections[1] ? sections[1].content : 'Content not available'}</div>
+                </div>
+                <div className='flex flex-col gap-2'>
+                    <div className='text-[#2B2B2B] text-[1.2rem]'>{sections[2].heading}</div>
+                    <div className='text-gray-700'>{sections[2].type === "keypoints" && 'points' in sections[2] ? (
+                        <div className='flex flex-col gap-2'>
+                            {sections[2].points.map((point, index) => (
+                                <div key={index} className='flex items-start gap-2'>
+                                    <span className='font-bold'>•</span>
+                                    <span>{point}</span>
+                                </div>
+                            ))}
+                        </div>
+                    ) : null}</div>
+                </div>
+            </div>
             <div className="fixed bottom-8 right-8 lg:bottom-12 lg:right-12 z-20">
                 <div className="flex items-center gap-3">
                     {(isPlaying || isPaused) && (

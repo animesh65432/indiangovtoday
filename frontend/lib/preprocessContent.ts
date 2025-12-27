@@ -2,37 +2,72 @@ import { EmailRegex } from "./EmailRegex"
 import { PdfRegex } from "./Pdfregex"
 import { TwitterRegex } from "./TwitterRegex"
 import { UrlRegex, IsVaildUrl } from "./UrlRegex"
-import { findsperater } from "@/lib/findsperater"
-import { Languages } from "@/lib/lan"
 
 /**
- * Clean noise without breaking markdown syntax
+ * Fix broken markdown syntax from translation
  */
-function adjust_markdown_for_non_english(text: string, lan: string) {
-    if (lan === "বাংলা") {
-        // Keep placeholders but wrap them in a span for better visibility
-        text = text.replace(/___PHONE_(\d+)___/g, '');
+function fixBrokenMarkdown(text: string, lan: string): string {
+    if (lan === "English") return text;
 
-        // Clean up markdown formatting if needed
-        text = text.replace(/^##\s+/gm, "## ");
-        text = text.replace(/^#\s+/gm, "# ");
-    }
+    // 1. \*  → *
+    text = text.replace("#", '#');
+
+    // 2. * *  → **
+    text = text.replace(/###/g, '\n\n###');
+
+    // 3. remove lonely *
+    text = text.replace(/ \*/g, '\n\n**');
+
+    return text;
+}
+
+/**
+ * Normalize text structure for better markdown rendering
+ */
+function normalizeMarkdownStructure(text: string, lan: string): string {
+    if (lan === "English") return text;
+
+    // Convert multiple consecutive # at line start to proper markdown
+    text = text.replace(/^#{3,}(\s|$)/gm, '### ');
+    text = text.replace(/^#{2}(\s|$)/gm, '## ');
+    text = text.replace(/^#{1}(\s|$)/gm, '## ');
+
+    // Fix bullet points - normalize different bullet styles
+    text = text.replace(/^[•·◦▪▫]\s*/gm, '- ');
+
+    // Ensure blank line before and after lists
+    text = text.replace(/([^\n])\n(-\s)/g, '$1\n\n$2');
+    text = text.replace(/(-\s[^\n]+)\n([^\n-])/g, '$1\n\n$2');
+
+    // Ensure blank line after headers
+    text = text.replace(/(^#{1,6}\s[^\n]+)\n([^#\n])/gm, '$1\n\n$2');
 
     return text;
 }
 
 
-function cleanNoise(text: string): string {
-    return text
-        // Remove selected noise codes (but not markdown syntax)
-        .replace(/\b(AB|NB|MI|ARJ)\b/g, "")
-        // Remove patterns like ABC/XYZ (but preserve URLs)
-        .replace(/\b[A-Z]{2,}\/[A-Z0-9]{2,}\b(?!\/)/g, "")
-        // Collapse multiple spaces (but preserve intentional line breaks)
-        .replace(/[^\S\r\n]+/g, " ")
-        .trim();
+/**
+ * Final cleanup pass
+ */
+function finalCleanup(text: string): string {
+    // Remove multiple consecutive blank lines (keep max 2)
+    text = text.replace(/\n{3,}/g, '\n\n');
+
+    // Remove trailing spaces on each line
+    text = text.replace(/[ \t]+$/gm, '');
+
+    // Remove leading spaces (except for intended indentation in lists/code)
+    text = text.replace(/^[ \t]+(?![-*+]|\d+\.)/gm, '');
+
+    // Ensure content ends with single newline
+    text = text.trim() + '\n';
+
+    return text;
 }
 
+/**
+ * Convert numbering to bullets
+ */
 function convertNumberingToBullet(text: string): string {
     return text.replace(
         /^(\s*)(?!_)([\p{L}\p{N}]+)\s*\/\s*/gmu,
@@ -41,29 +76,69 @@ function convertNumberingToBullet(text: string): string {
 }
 
 /**
+ * Remove duplicate blocks of text (common in translations)
+ */
+function removeDuplicateBlocks(text: string): string {
+    const lines = text.split('\n');
+    const blocks: string[] = [];
+    let currentBlock: string[] = [];
+
+    for (const line of lines) {
+        if (line.trim() === '') {
+            if (currentBlock.length > 0) {
+                blocks.push(currentBlock.join('\n'));
+                currentBlock = [];
+            }
+            blocks.push(''); // preserve empty line
+        } else {
+            currentBlock.push(line);
+        }
+    }
+
+    if (currentBlock.length > 0) {
+        blocks.push(currentBlock.join('\n'));
+    }
+
+    // Remove duplicate blocks (keep only first occurrence)
+    const seen = new Set<string>();
+    const uniqueBlocks = blocks.filter(block => {
+        if (block === '') return true; // keep empty lines
+        const normalized = block.replace(/\s+/g, ' ').toLowerCase();
+        if (seen.has(normalized)) {
+            return false; // duplicate
+        }
+        seen.add(normalized);
+        return true;
+    });
+
+    return uniqueBlocks.join('\n');
+}
+
+/**
  * Main preprocessing function for markdown content
  */
 export const preprocessContent = (text: string, lan: string): string => {
     if (!text) return '';
 
-    // 🔥 CRITICAL FIX: Convert escaped newlines (\\n) to actual newlines
+    // Step 1: Convert escaped characters
     text = text.replace(/\\n/g, '\n');
-
-    // Also handle other escaped characters
     text = text.replace(/\\t/g, '\t');
     text = text.replace(/\\"/g, '"');
     text = text.replace(/\\'/g, "'");
 
-    // Apply language-specific adjustments
-    text = adjust_markdown_for_non_english(text, lan);
+    // Step 2: Remove duplicate blocks (entire paragraphs repeated)
+    text = removeDuplicateBlocks(text);
 
-    // Step 1: Convert numbering patterns to bullets
+    // Step 4: FIX BROKEN MARKDOWN (This is the key fix!)
+    text = fixBrokenMarkdown(text, lan);
+
+    // Step 5: Normalize markdown structure
+    text = normalizeMarkdownStructure(text, lan);
+
+    // Step 9: Convert numbering patterns to bullets
     text = convertNumberingToBullet(text);
 
-    // Step 2: Get sentence separator for the language
-    const separator = findsperater(lan);
-
-    // Step 3: Split by words while preserving newlines
+    // Step 10: Process URLs, emails, etc. (existing logic)
     const lines = text.split('\n');
     const processedLines: string[] = [];
 
@@ -86,9 +161,9 @@ export const preprocessContent = (text: string, lan: string): string => {
         const processedWords: string[] = [];
 
         for (const word of words) {
-            const trailingMatch = word.match(/[.,!?;:]+$/);
+            const trailingMatch = word.match(/[.,!?;:।۔]+$/);
             const trailing = trailingMatch ? trailingMatch[0] : "";
-            const cleanedWord = word.replace(/[.,!?;:]+$/, "");
+            const cleanedWord = word.replace(/[.,!?;:।۔]+$/, "");
 
             // Email detection
             if (EmailRegex.test(cleanedWord)) {
@@ -112,13 +187,17 @@ export const preprocessContent = (text: string, lan: string): string => {
             }
             // Regular word
             else {
-                processedWords.push(word); // Keep original word with punctuation
+                processedWords.push(word);
             }
         }
 
         processedLines.push(processedWords.join(' '));
     }
 
-    // Join lines back with newlines
-    return processedLines.join('\n');
+    text = processedLines.join('\n');
+
+    // Step 11: Final cleanup
+    text = finalCleanup(text);
+
+    return text;
 };
