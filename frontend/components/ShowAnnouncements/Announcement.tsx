@@ -8,7 +8,6 @@ import { ArrowRight } from "lucide-react";
 import { TranslateText } from "@/lib/translatetext";
 import { formatDateInLanguage } from "@/lib/formatDate";
 import { LANGUAGE_CODES } from "@/lib/lan";
-import Content from "../Announcement/Content";
 import { LayoutGrid, Calendar, MapPin } from "lucide-react"
 
 type Props = {
@@ -38,10 +37,7 @@ const Announcement: React.FC<Props> = ({ Announcement }) => {
             </CardHeader>
 
             <CardContent className="text-gray-700 text-sm md:text-base leading-relaxed whitespace-pre-line">
-                <Content
-                    content={Announcement.description}
-                    IsAnnoucements={true}
-                />
+                {Announcement.description}
 
                 <div className="flex flex-col gap-1 pt-2  justify-between  text-gray-500 text-[0.9rem]">
                     <span className="capitalize hover:underline hover:cursor-pointer  flex items-center gap-2">
