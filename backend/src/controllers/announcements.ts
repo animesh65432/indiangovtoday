@@ -102,11 +102,19 @@ export const SerachallIndiaAnnouncements = asyncErrorHandler(async (req: Request
         return;
     }
 
-    const targetLanguage = (target_lan as string) || "English";
+    const targetLanguage = LANGUAGE_CODES[target_lan as string] || "en";
+
+    const start = new Date(announcementsStartDate);
+    start.setUTCHours(0, 0, 0, 0);
+
+    const end = new Date(announcementsEndDate);
+    end.setUTCHours(23, 59, 59, 999);
 
     const redis_key = `AllGroupsIndiaAnnouncements_${targetLanguage}_${announcementsStartDate.toISOString().split('T')[0]}_${announcementsEndDate.toISOString().split('T')[0]}${page}${limit}${SearchInput}`;
 
+
     const cached_data = await redis.get(redis_key);
+
 
     if (cached_data) {
         const parsedData = typeof cached_data === 'string'
@@ -116,49 +124,92 @@ export const SerachallIndiaAnnouncements = asyncErrorHandler(async (req: Request
         return;
     }
 
-    const start = new Date(announcementsStartDate);
-    start.setUTCHours(0, 0, 0, 0);
+    const db = await connectDB();
 
-    const end = new Date(announcementsEndDate);
-    end.setUTCHours(23, 59, 59, 999);
-
-    const filter: any = {
-        date: { $gte: start, $lte: end },
-        language: targetLanguage,
-
-    };
+    let indiaAnnouncements: any[] = [];
+    let totalCount: number = 0;
 
     if (SearchInput) {
         const searchRegex = new RegExp(SearchInput as string, "i");
-        filter["language"] = targetLanguage;
-        filter.$or = [
-            { "title": searchRegex },
-            { "description": searchRegex },
-            { "category": searchRegex },
-            { "department": searchRegex },
-            { "state": searchRegex },
+
+        const pipeline = [
+            {
+                $match: {
+                    date: { $gte: start, $lte: end },
+                    language: targetLanguage,
+                    $or: [
+                        { title: searchRegex },
+                        { state: searchRegex },
+                        { category: searchRegex },
+                        { description: searchRegex },
+                        { department: searchRegex }
+                    ]
+                }
+            },
+            {
+                $addFields: {
+                    searchScore: {
+                        $switch: {
+                            branches: [
+                                { case: { $regexMatch: { input: "$title", regex: searchRegex } }, then: 100 },
+                                { case: { $regexMatch: { input: "$state", regex: searchRegex } }, then: 50 },
+                                { case: { $regexMatch: { input: "$category", regex: searchRegex } }, then: 30 },
+                                { case: { $regexMatch: { input: "$description", regex: searchRegex } }, then: 20 }
+                            ],
+                            default: 10
+                        }
+                    }
+                }
+            },
+            { $sort: { searchScore: -1, date: -1 } },
+            { $skip: skip },
+            { $limit: pageSize },
+            {
+                $project: {
+                    searchScore: 0,
+                    sections: 0,
+                    language: 0,
+                    source_link: 0
+                }
+            }
         ];
 
+        indiaAnnouncements = await db.collection("Translated_Announcements").aggregate(pipeline).toArray();
+
+        // Count total matching documents for pagination
+        const countFilter = {
+            date: { $gte: start, $lte: end },
+            language: targetLanguage,
+            $or: [
+                { title: searchRegex },
+                { state: searchRegex },
+                { category: searchRegex },
+                { description: searchRegex },
+                { department: searchRegex }
+            ]
+        };
+        totalCount = await db.collection("Translated_Announcements").countDocuments(countFilter);
+
+    } else {
+        // NO SEARCH - Just date/language filter
+        const filter = {
+            date: { $gte: start, $lte: end },
+            language: targetLanguage
+        };
+
+        indiaAnnouncements = await db
+            .collection("Translated_Announcements")
+            .find(filter, {
+                projection: { sections: 0, language: 0, source_link: 0 }
+            })
+            .sort({ date: -1 })
+            .skip(skip)
+            .limit(pageSize)
+            .toArray();
+
+        totalCount = await db.collection("Translated_Announcements").countDocuments(filter);
     }
 
-    const db = await connectDB();
-
-
-    const indiaAnnouncements = await db
-        .collection("Translated_Announcements")
-        .find(filter, {
-            projection: {
-                sections: 0,
-                language: 0,
-                source_link: 0
-            }
-        })
-        .skip(skip)
-        .limit(pageSize)
-        .sort({ date: -1 })
-        .toArray();
-
-    const totalCount = await db.collection("Translated_Announcements").countDocuments(filter);
     const totalPages = Math.ceil(totalCount / pageSize);
 
     const responseData = {
@@ -173,10 +224,10 @@ export const SerachallIndiaAnnouncements = asyncErrorHandler(async (req: Request
     };
 
     await redis.set(redis_key, JSON.stringify(responseData), { ex: 300 });
-
     res.status(200).json(responseData);
-    return
+    return;
 });
+
 
 export const GetIndiaAnnouncement = asyncErrorHandler(async (req: Request, res: Response) => {
     const { id, target_lan } = req.query;
