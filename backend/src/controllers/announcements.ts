@@ -134,6 +134,9 @@ export const SerachallIndiaAnnouncements = asyncErrorHandler(async (req: Request
         filter.$or = [
             { "title": searchRegex },
             { "description": searchRegex },
+            { "category": searchRegex },
+            { "department": searchRegex },
+            { "state": searchRegex },
         ];
 
     }
