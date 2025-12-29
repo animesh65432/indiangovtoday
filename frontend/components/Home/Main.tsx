@@ -68,7 +68,6 @@ const Main: React.FC = () => {
             ) as AnnouncementsResponse
 
 
-
             if (requestId !== currentRequestIdRef.current) {
                 console.log('Discarding outdated request', requestId, 'current is', currentRequestIdRef.current)
                 return
