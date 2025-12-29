@@ -17,7 +17,7 @@ export default function Header() {
             className={`
                 flex items-center justify-between transition-all duration-300
                 ${isScrolled
-                    ? 'fixed top-4 left-0 right-0 z-50 bg-white shadow-md py-4 px-[7.5%] w-[90%] rounded-md mx-auto'
+                    ? 'fixed top-4 left-0 right-0 z-50 bg-white shadow-md py-4 px-[3%] w-[90%] rounded-md mx-auto'
                     : 'w-[85%] mx-auto pt-8'
                 }
             `}
@@ -26,7 +26,7 @@ export default function Header() {
                 className={`
                     relative transition-all duration-300
                     ${isScrolled
-                        ? 'h-[60px] w-[180px]'
+                        ? ' h-[7vh] w-[32vw] sm:h-[60px] sm:w-[180px]'
                         : 'h-[10vh] w-[43vw] sm:w-[32vw] lg:h-[70px] lg:w-[230px] xl:h-[82px] xl:w-[265px]'
                     }
                 `}

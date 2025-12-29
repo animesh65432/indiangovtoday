@@ -6,6 +6,7 @@ import { TranslateText } from "@/lib/translatetext"
 import { SectionTypes } from '@/types'
 import { formatDateInLanguage } from '@/lib/formatDate'
 import { LANGUAGE_CODES } from "@/lib/lan"
+import useDidUserScroll from '@/hooks/useDidUserScroll'
 
 
 type Props = {
@@ -23,6 +24,7 @@ type Props = {
 const ShowAnnouncement: React.FC<Props> = ({ title, source, lan, date, state, sections, department, category }) => {
     const [toggle, setToggle] = useState<boolean>(false)
     const { call, stop, togglePlayPause, IsLoading, isPlaying, isPaused } = usetexttospech()
+    const { isScrolled } = useDidUserScroll()
 
 
     const handleAudioAction = async () => {
@@ -113,7 +115,7 @@ const ShowAnnouncement: React.FC<Props> = ({ title, source, lan, date, state, se
                     ) : null}</div>
                 </div>
             </div>
-            <div className="fixed bottom-8 right-8 lg:bottom-12 lg:right-12 z-20">
+            <div className={`bottom-12 right-12 z-50 p-4 transition-all duration-300 ${isScrolled ? "sticky ml-[98%] " : 'absolute left-'}`}>
                 <div className="flex items-center gap-3">
                     {(isPlaying || isPaused) && (
                         <button
