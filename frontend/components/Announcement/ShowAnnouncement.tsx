@@ -27,7 +27,6 @@ const ShowAnnouncement: React.FC<Props> = ({ title, source, lan, date, state, se
     const { call, stop, togglePlayPause, IsLoading, isPlaying, isPaused } = usetexttospech()
     const { isScrolled } = useDidUserScroll()
 
-
     const handleAudioAction = async () => {
         if (IsLoading) return
         if (isPlaying || isPaused) {
@@ -46,16 +45,16 @@ const ShowAnnouncement: React.FC<Props> = ({ title, source, lan, date, state, se
 
 
     const getAudioIcon = () => {
-        if (IsLoading) return <AudioLines className="animate-spin text-[#757575] w-5 h-5" />
-        if (isPlaying) return <Pause className="text-[#757575] w-5 h-5" />
-        if (isPaused) return <Play className="text-[#757575] w-5 h-5" />
-        return <Volume2 className="text-[#757575] w-5 h-5" />
+        if (IsLoading) return <AudioLines className="animate-spin text-black w-5 h-5" />
+        if (isPlaying) return <Pause className="text-black w-5 h-5" />
+        if (isPaused) return <Play className="text-black w-5 h-5" />
+        return <Volume2 className="text-black w-5 h-5" />
     }
 
     return (
         <div className='w-[82%] mx-auto  flex flex-col gap-6 pt-7  pb-8'>
             <Subscribe />
-            <div className='flex justify-end text-[#1a1919]'>
+            <div className='flex items-center gap-6 justify-end text-[#1a1919]'>
                 <div>
                     <Share
                         onClick={() => setToggle(prev => !prev)}
@@ -66,6 +65,39 @@ const ShowAnnouncement: React.FC<Props> = ({ title, source, lan, date, state, se
                     />
                     {toggle && <ShareSection Announcement={title} setisShareOPen={setToggle} />}
                 </div>
+
+                <div className="flex items-center gap-3">
+                    {(isPlaying || isPaused) && (
+                        <button
+                            className="group relative bg-white/90 backdrop-blur-sm p-3.5 rounded-full shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-110 active:scale-95"
+                            onClick={handleStopAudio}
+                            aria-label="Stop audio"
+                            style={{ border: 0 }}
+                        >
+                            <Square className="text-red-500  h-10 w-10" />
+                            <div className="absolute inset-0 rounded-full bg-gray-100/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                        </button>
+                    )}
+                    <button
+                        className={`group relative bg-white/90 backdrop-blur-sm p-4 rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 ${IsLoading
+                            ? 'cursor-not-allowed opacity-60'
+                            : 'hover:scale-110 active:scale-95'
+                            }`}
+                        onClick={IsLoading ? undefined : handleAudioAction}
+                        disabled={IsLoading}
+                        aria-label={isPlaying ? "Pause audio" : "Play audio"}
+                        style={{ border: 0 }}
+                    >
+                        {getAudioIcon()}
+                        <div className="absolute inset-0 rounded-full bg-gray-100/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
+                        {IsLoading && (
+                            <div className="absolute inset-0 rounded-full border-2 border-gray-300/50 border-t-gray-600 animate-spin" />
+                        )}
+                    </button>
+                </div>
+
+
             </div>
 
             <div
@@ -129,36 +161,6 @@ const ShowAnnouncement: React.FC<Props> = ({ title, source, lan, date, state, se
                             ))}
                         </div>
                     ) : null}</div>
-                </div>
-            </div>
-            <div className={`bottom-12 right-12 z-20 p-4 transition-all duration-300 ${isScrolled ? "sticky ml-[98%] " : 'absolute left-'}`}>
-                <div className="flex items-center gap-3">
-                    {(isPlaying || isPaused) && (
-                        <button
-                            className="group relative bg-white/90 backdrop-blur-sm p-3.5 rounded-full shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-110 active:scale-95"
-                            onClick={handleStopAudio}
-                            aria-label="Stop audio"
-                        >
-                            <Square className="text-red-500  h-10 w-10" />
-                            <div className="absolute inset-0 rounded-full bg-gray-100/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                        </button>
-                    )}
-                    <button
-                        className={`group relative bg-white/90 backdrop-blur-sm p-4 rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 ${IsLoading
-                            ? 'cursor-not-allowed opacity-60'
-                            : 'hover:scale-110 active:scale-95'
-                            }`}
-                        onClick={IsLoading ? undefined : handleAudioAction}
-                        disabled={IsLoading}
-                        aria-label={isPlaying ? "Pause audio" : "Play audio"}
-                    >
-                        {getAudioIcon()}
-                        <div className="absolute inset-0 rounded-full bg-gray-100/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-
-                        {IsLoading && (
-                            <div className="absolute inset-0 rounded-full border-2 border-gray-300/50 border-t-gray-600 animate-spin" />
-                        )}
-                    </button>
                 </div>
             </div>
 
