@@ -102,9 +102,9 @@ const ShowAnnouncement: React.FC<Props> = ({ title, source, lan, date, state, se
 
             <div
                 className="whitespace-pre-line  overflow-x-auto"
-            >  <h2 className='text-black'>
+            >  <h4 className='text-black'>
                     {title}
-                </h2>
+                </h4>
             </div>
 
             <div className='flex flex-col gap-2'>
