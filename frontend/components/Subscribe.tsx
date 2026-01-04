@@ -63,7 +63,7 @@ const Subscribe: React.FC = () => {
                     Subscribe to Alerts
                 </h5>
                 <p className="text-gray-600 mb-4">
-                    Never miss an update — get daily announcement alerts.
+                    Never miss an update — get weekly announcement alerts.
                 </p>
                 <form className="flex flex-col gap-3">
                     <input

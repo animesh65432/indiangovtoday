@@ -7,22 +7,24 @@ import HeroSection from './HeroSection'
 
 
 export default function Home() {
-    const { onChangeDate } = useContext(Currentdate);
+    const { onChangeDate, startdate: start, endDate: end } = useContext(Currentdate);
     const searchParams = useSearchParams()
-    const dateSearch = searchParams.get('date')
+    const startdate = searchParams.get('startdate')
+    const enddate = searchParams.get('enddate')
 
     useEffect(() => {
-        if (dateSearch) {
-            const [year, month, day] = dateSearch.split('-').map(Number);
-            const selectedDate = new Date(year, month - 1, day);
+        if (startdate && enddate) {
+            const StartDate = new Date(startdate + 'T00:00:00');
+            const EndDate = new Date(enddate + 'T23:59:59');
 
-            if (!isNaN(selectedDate.getTime())) {
-                onChangeDate(selectedDate, selectedDate);
+            if (!isNaN(StartDate.getTime()) && !isNaN(EndDate.getTime())) {
+                onChangeDate(StartDate, EndDate);
             } else {
-                console.log("Invalid Date:", dateSearch);
+                console.log("Invalid Date:", startdate, enddate);
             }
         }
-    }, [dateSearch]);
+    }, [startdate, enddate]);
+
 
     return (
         <div className="flex flex-col min-h-dvh ">

@@ -12,16 +12,15 @@ import { LanguageContext } from "@/context/Lan";
 import { Currentdate } from "@/context/Currentdate";
 import { DateRangePicker } from "@/components/ui/DateRangePicker";
 import { useRouter } from "next/router";
-import useDidUserScroll from "@/hooks/useDidUserScroll";
 
 type Props = {
     IsHeroSection?: boolean
+    isScrolled: boolean
 }
 
-const Header: React.FC<Props> = ({ IsHeroSection = false }) => {
+const Header: React.FC<Props> = ({ IsHeroSection = false, isScrolled }) => {
     const { startdate, endDate, onChangeDate } = useContext(Currentdate)
     const { onSelectLanguage, language } = useContext(LanguageContext)
-    const { isScrolled } = useDidUserScroll()
     const router = useRouter()
 
     const OnChangeDateRangePicker = (values: {

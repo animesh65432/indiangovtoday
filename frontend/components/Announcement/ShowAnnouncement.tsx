@@ -6,7 +6,6 @@ import { TranslateText } from "@/lib/translatetext"
 import { SectionTypes } from '@/types'
 import { formatDateInLanguage } from '@/lib/formatDate'
 import { LANGUAGE_CODES } from "@/lib/lan"
-import useDidUserScroll from '@/hooks/useDidUserScroll'
 import Subscribe from '../Subscribe'
 
 
@@ -25,8 +24,6 @@ type Props = {
 const ShowAnnouncement: React.FC<Props> = ({ title, source, lan, date, state, sections, department, category }) => {
     const [toggle, setToggle] = useState<boolean>(false)
     const { call, stop, togglePlayPause, IsLoading, isPlaying, isPaused } = usetexttospech()
-    const { isScrolled } = useDidUserScroll()
-
     const handleAudioAction = async () => {
         if (IsLoading) return
         if (isPlaying || isPaused) {
@@ -42,7 +39,6 @@ const ShowAnnouncement: React.FC<Props> = ({ title, source, lan, date, state, se
     const handleStopAudio = () => {
         stop()
     }
-
 
     const getAudioIcon = () => {
         if (IsLoading) return <AudioLines className="animate-spin text-black w-5 h-5" />

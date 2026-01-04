@@ -23,7 +23,6 @@ export const CurrentdateProvider: React.FC<{ children: ReactNode }> = ({ childre
     const [endDate, setEndDate] = useState<Date>(today);
 
     const onChangeDate = (newStartDate: Date, newEndDate: Date) => {
-        console.log("currentdate context")
         setStartDate(newStartDate);
         setEndDate(newEndDate);
     };
