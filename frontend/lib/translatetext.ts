@@ -12,7 +12,9 @@ type TranslationKeys = {
     SEE_MORE: string;
     VIEW_ALL: string;
     VIEW_DETAILS: string;
-    No_announcements_found: string
+    No_announcements_found: string;
+    Description: string;
+    See_Announcements: string;
 };
 
 export const TranslateText: Record<string, TranslationKeys> = {
@@ -30,7 +32,9 @@ export const TranslateText: Record<string, TranslationKeys> = {
         SEE_MORE: "See More",
         VIEW_ALL: "View All",
         VIEW_DETAILS: "View Details",
-        No_announcements_found: "No announcements found"
+        No_announcements_found: "No announcements found",
+        Description: "Automatically collects government announcements from across India and translates them from complex bureaucratic language into simple, easy-to-understand text in any Indian language. Makes critical government information accessible to every citizen, regardless of language or literacy level.",
+        See_Announcements: "See Announcements"
     },
     हिन्दी: {
         ALL_GOVERNMENT_ANNOUNCEMENTS_IN_ONE_PLACE: "सभी सरकारी घोषणाएँ, एक ही स्थान पर",
@@ -46,7 +50,9 @@ export const TranslateText: Record<string, TranslationKeys> = {
         SEE_MORE: "और देखें",
         VIEW_ALL: "सभी देखें",
         VIEW_DETAILS: "विवरण देखें",
-        No_announcements_found: "कोई घोषणा नहीं मिली"
+        No_announcements_found: "कोई घोषणा नहीं मिली",
+        Description: "यह पूरे भारत से सरकारी घोषणाओं को स्वचालित रूप से एकत्रित करता है और उन्हें जटिल नौकरशाही भाषा से सरल, आसानी से समझ में आने वाले पाठ में किसी भी भारतीय भाषा में अनुवादित करता है। यह महत्वपूर्ण सरकारी जानकारी को भाषा या साक्षरता स्तर की परवाह किए बिना प्रत्येक नागरिक के लिए सुलभ बनाता है।",
+        See_Announcements: "घोषणाएँ देखें"
     },
     বাংলা: {
         ALL_GOVERNMENT_ANNOUNCEMENTS_IN_ONE_PLACE: "সকল সরকারি ঘোষণা, এক জায়গায়",
@@ -62,7 +68,9 @@ export const TranslateText: Record<string, TranslationKeys> = {
         SEE_MORE: "আরও দেখুন",
         VIEW_ALL: "সব দেখুন",
         VIEW_DETAILS: "বিস্তারিত দেখুন",
-        No_announcements_found: "কোনো ঘোষণা পাওয়া যায়নি"
+        No_announcements_found: "কোনো ঘোষণা পাওয়া যায়নি",
+        Description: "ভারত জুড়ে সরকারি ঘোষণাগুলি স্বয়ংক্রিয়ভাবে সংগ্রহ করে এবং জটিল আমলাতান্ত্রিক ভাষা থেকে যেকোনো ভারতীয় ভাষায় সহজ, সহজে বোধগম্য পাঠ্যে অনুবাদ করে। ভাষা বা সাক্ষরতার স্তর নির্বিশেষে প্রতিটি নাগরিকের কাছে গুরুত্বপূর্ণ সরকারি তথ্য অ্যাক্সেসযোগ্য করে তোলে।",
+        See_Announcements: "ঘোষণা দেখুন"
     },
     தமிழ்: {
         ALL_GOVERNMENT_ANNOUNCEMENTS_IN_ONE_PLACE: "அனைத்து அரசு அறிவிப்புகளும் ஒரே இடத்தில்",
@@ -78,7 +86,9 @@ export const TranslateText: Record<string, TranslationKeys> = {
         SEE_MORE: "மேலும் பார்க்கவும்",
         VIEW_ALL: "அனைத்தையும் காண்க",
         VIEW_DETAILS: "விவரங்களைப் பார்க்கவும்",
-        No_announcements_found: "எந்த அறிவிப்புகளும் கிடைக்கவில்லை"
+        No_announcements_found: "எந்த அறிவிப்புகளும் கிடைக்கவில்லை",
+        Description: "இந்தியா முழுவதிலுமிருந்து அரசாங்க அறிவிப்புகளை தானாகவே சேகரித்து, சிக்கலான அதிகாரத்துவ மொழியிலிருந்து எந்தவொரு இந்திய மொழியிலும் எளிமையான, எளிதில் புரிந்துகொள்ளக்கூடிய உரையாக மொழிபெயர்க்கிறது. மொழி அல்லது எழுத்தறிவு அளவைப் பொருட்படுத்தாமல், ஒவ்வொரு குடிமகனுக்கும் முக்கியமான அரசாங்கத் தகவல்களை அணுகக்கூடியதாக மாற்றுகிறது.",
+        See_Announcements: "அறிவிப்புகளைப் பார்க்கவும்"
     },
     తెలుగు: {
         ALL_GOVERNMENT_ANNOUNCEMENTS_IN_ONE_PLACE: "అన్ని ప్రభుత్వ ప్రకటనలు ఒకే చోట",
@@ -94,7 +104,9 @@ export const TranslateText: Record<string, TranslationKeys> = {
         SEE_MORE: "మరిన్ని చూడండి",
         VIEW_ALL: "అన్నీ చూడండి",
         VIEW_DETAILS: "వివరాలు చూడండి",
-        No_announcements_found: "ప్రకటనలు కనుగొనబడలేదు"
+        No_announcements_found: "ప్రకటనలు కనుగొనబడలేదు",
+        Description: "భారతదేశం అంతటా ప్రభుత్వ ప్రకటనలను స్వయంచాలకంగా సేకరించి, సంక్లిష్టమైన అధికారిక భాష నుండి ఏ భారతీయ భాషలోనైనా సరళమైన, సులభంగా అర్థం చేసుకోగల వచనంలోకి అనువదిస్తుంది. భాష లేదా అక్షరాస్యత స్థాయితో సంబంధం లేకుండా ప్రతి పౌరుడికి కీలకమైన ప్రభుత్వ సమాచారాన్ని అందుబాటులో ఉంచుతుంది.",
+        See_Announcements: "ప్రకటనలను చూడండి"
     },
     मराठी: {
         ALL_GOVERNMENT_ANNOUNCEMENTS_IN_ONE_PLACE: "सर्व सरकारी घोषणा, एकाच ठिकाणी",
@@ -110,7 +122,9 @@ export const TranslateText: Record<string, TranslationKeys> = {
         SEE_MORE: "अधिक पहा",
         VIEW_ALL: "सर्व पहा",
         VIEW_DETAILS: "तपशील पहा",
-        No_announcements_found: "कोणतीही घोषणा आढळली नाही"
+        No_announcements_found: "कोणतीही घोषणा आढळली नाही",
+        Description: "संपूर्ण भारतातील सरकारी घोषणा स्वयंचलितपणे गोळा करते आणि त्यांचे जटिल नोकरशाही भाषेतून कोणत्याही भारतीय भाषेतील सोप्या, समजण्यास सोप्या मजकुरात भाषांतर करते. भाषा किंवा साक्षरता पातळी काहीही असो, प्रत्येक नागरिकासाठी महत्त्वाची सरकारी माहिती उपलब्ध करून देते.",
+        See_Announcements: "घोषणा पहा"
     },
     ગુજરાતી: {
         ALL_GOVERNMENT_ANNOUNCEMENTS_IN_ONE_PLACE: "બધી સરકારી જાહેરાતો, એક જ જગ્યાએ",
@@ -126,7 +140,9 @@ export const TranslateText: Record<string, TranslationKeys> = {
         SEE_MORE: "વધુ જુઓ",
         VIEW_ALL: "બધું જુઓ",
         VIEW_DETAILS: "વિગતો જુઓ",
-        No_announcements_found: "કોઈ જાહેરાતો મળી નથી"
+        No_announcements_found: "કોઈ જાહેરાતો મળી નથી",
+        Description: "સમગ્ર ભારતમાંથી સરકારી જાહેરાતો આપમેળે એકત્રિત કરે છે અને તેમને જટિલ અમલદારશાહી ભાષામાંથી કોઈપણ ભારતીય ભાષામાં સરળ, સમજવામાં સરળ ટેક્સ્ટમાં અનુવાદિત કરે છે. ભાષા કે સાક્ષરતા સ્તરને ધ્યાનમાં લીધા વિના, દરેક નાગરિક માટે મહત્વપૂર્ણ સરકારી માહિતી સુલભ બનાવે છે.",
+        See_Announcements: "જાહેરાતો જુઓ"
     },
     ಕನ್ನಡ: {
         ALL_GOVERNMENT_ANNOUNCEMENTS_IN_ONE_PLACE: "ಎಲ್ಲಾ ಸರ್ಕಾರಿ ಘೋಷಣೆಗಳು, ಒಂದೇ ಸ್ಥಳದಲ್ಲಿ",
@@ -142,7 +158,9 @@ export const TranslateText: Record<string, TranslationKeys> = {
         SEE_MORE: "ಇನ್ನಷ್ಟು ನೋಡಿ",
         VIEW_ALL: "ಎಲ್ಲವನ್ನೂ ನೋಡಿ",
         VIEW_DETAILS: "ವಿವರಗಳನ್ನು ನೋಡಿ",
-        No_announcements_found: "ಯಾವುದೇ ಘೋಷಣೆಗಳು ಕಂಡುಬಂದಿಲ್ಲ"
+        No_announcements_found: "ಯಾವುದೇ ಘೋಷಣೆಗಳು ಕಂಡುಬಂದಿಲ್ಲ",
+        Description: "ಭಾರತದಾದ್ಯಂತ ಸರ್ಕಾರಿ ಪ್ರಕಟಣೆಗಳನ್ನು ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಸಂಗ್ರಹಿಸುತ್ತದೆ ಮತ್ತು ಅವುಗಳನ್ನು ಸಂಕೀರ್ಣವಾದ ಅಧಿಕಾರಶಾಹಿ ಭಾಷೆಯಿಂದ ಯಾವುದೇ ಭಾರತೀಯ ಭಾಷೆಯಲ್ಲಿ ಸರಳ, ಅರ್ಥಮಾಡಿಕೊಳ್ಳಲು ಸುಲಭವಾದ ಪಠ್ಯಕ್ಕೆ ಅನುವಾದಿಸುತ್ತದೆ. ಭಾಷೆ ಅಥವಾ ಸಾಕ್ಷರತೆಯ ಮಟ್ಟವನ್ನು ಲೆಕ್ಕಿಸದೆ, ಪ್ರತಿಯೊಬ್ಬ ನಾಗರಿಕರಿಗೂ ನಿರ್ಣಾಯಕ ಸರ್ಕಾರಿ ಮಾಹಿತಿಯನ್ನು ಪ್ರವೇಶಿಸುವಂತೆ ಮಾಡುತ್ತದೆ.",
+        See_Announcements: "ಘೋಷಣೆಗಳನ್ನು ನೋಡಿ"
     },
     മലയാളം: {
         ALL_GOVERNMENT_ANNOUNCEMENTS_IN_ONE_PLACE: "എല്ലാ സർക്കാർ അറിയിപ്പുകളും ഒരിടത്ത്",
@@ -158,7 +176,9 @@ export const TranslateText: Record<string, TranslationKeys> = {
         SEE_MORE: "കൂടുതൽ കാണുക",
         VIEW_ALL: "എല്ലാം കാണുക",
         VIEW_DETAILS: "വിശദാംശങ്ങൾ കാണുക",
-        No_announcements_found: "അറിയിപ്പുകളൊന്നും കണ്ടെത്തിയില്ല"
+        No_announcements_found: "അറിയിപ്പുകളൊന്നും കണ്ടെത്തിയില്ല",
+        Description: "ഇന്ത്യയിലുടനീളമുള്ള സർക്കാർ അറിയിപ്പുകൾ യാന്ത്രികമായി ശേഖരിക്കുകയും സങ്കീർണ്ണമായ ഉദ്യോഗസ്ഥ ഭാഷയിൽ നിന്ന് ലളിതവും എളുപ്പത്തിൽ മനസ്സിലാക്കാവുന്നതുമായ ഏത് ഇന്ത്യൻ ഭാഷയിലേക്കും വിവർത്തനം ചെയ്യുകയും ചെയ്യുന്നു. ഭാഷയോ സാക്ഷരതാ നിലവാരമോ പരിഗണിക്കാതെ, നിർണായക സർക്കാർ വിവരങ്ങൾ എല്ലാ പൗരന്മാർക്കും ആക്‌സസ് ചെയ്യാൻ കഴിയുന്നതാക്കുന്നു.",
+        See_Announcements: "അറിയിപ്പുകൾ കാണുക"
     },
     اردو: {
         ALL_GOVERNMENT_ANNOUNCEMENTS_IN_ONE_PLACE: "تمام سرکاری اعلانات، ایک ہی جگہ",
@@ -174,7 +194,9 @@ export const TranslateText: Record<string, TranslationKeys> = {
         SEE_MORE: "مزید دیکھیں",
         VIEW_ALL: "سب دیکھیں",
         VIEW_DETAILS: "تفصیلات دیکھیں",
-        No_announcements_found: "کوئی اعلان نہیں ملا"
+        No_announcements_found: "کوئی اعلان نہیں ملا",
+        Description: "ہندوستان بھر سے سرکاری اعلانات کو خودکار طور پر اکٹھا کرتا ہے اور انہیں پیچیدہ بیوروکریٹک زبان سے کسی بھی ہندوستانی زبان میں آسان، سمجھنے میں آسان متن میں ترجمہ کرتا ہے۔ زبان یا خواندگی کی سطح سے قطع نظر حکومت کی اہم معلومات کو ہر شہری کے لیے قابل رسائی بناتا ہے۔",
+        See_Announcements: "اعلانات دیکھیں"
     },
     অসমীয়া: {
         ALL_GOVERNMENT_ANNOUNCEMENTS_IN_ONE_PLACE: "সকলো চৰকাৰী ঘোষণা, এটা ঠাইত",
@@ -190,7 +212,9 @@ export const TranslateText: Record<string, TranslationKeys> = {
         SEE_MORE: "অধিক চাওক",
         VIEW_ALL: "সকলো চাওক",
         VIEW_DETAILS: "বিৱৰণ চাওক",
-        No_announcements_found: "কোনো ঘোষণা পোৱা নগ'ল"
+        No_announcements_found: "কোনো ঘোষণা পোৱা নগ'ল",
+        Description: "সমগ্ৰ ভাৰতৰ পৰা চৰকাৰী ঘোষণাসমূহ স্বয়ংক্ৰিয়ভাৱে সংগ্ৰহ কৰি জটিল আমোলাতন্ত্ৰিক ভাষাৰ পৰা যিকোনো ভাৰতীয় ভাষাৰ সহজ, সহজে বুজিব পৰা পাঠ্যলৈ অনুবাদ কৰে। ভাষা বা সাক্ষৰতাৰ স্তৰ নিৰ্বিশেষে প্ৰতিজন নাগৰিকৰ বাবে জটিল চৰকাৰী তথ্য সুলভ কৰি তোলে।",
+        See_Announcements: "ঘোষণাসমূহ চাওক"
     },
     "बरʼ": {
         ALL_GOVERNMENT_ANNOUNCEMENTS_IN_ONE_PLACE: "गासै सरकारी थोंनाय, खौ जायगाआव",
@@ -206,7 +230,9 @@ export const TranslateText: Record<string, TranslationKeys> = {
         SEE_MORE: "गोबां नाय",
         VIEW_ALL: "गासै नाय",
         VIEW_DETAILS: "गेलेबाव नाय",
-        No_announcements_found: "जायाखै थोंनाय मोनाखै"
+        No_announcements_found: "जायाखै थोंनाय मोनाखै",
+        Description: "भारतनि गासैआव सालायनाय सरकारी थोंनायफोरखौ स्वफोंथिनै रोखान्थि होनना गोजौ बिसायाव भाखाआव गोदो गोरोबफोरा बुझिनो हागौ सोलोंनायाव बिबुंथि खालाम होनो। भासा एबा फराय होनानि थाखाय रोखानै गासै नागरिखौ थाखाय मानोना सरकारी फोरमायथि होनना थुलुंगै।",
+        See_Announcements: "थोंनायफोरखौ नाय"
     },
     डोगरी: {
         ALL_GOVERNMENT_ANNOUNCEMENTS_IN_ONE_PLACE: "सारे सरकारी ऐलान, इक्की जगह",
@@ -222,7 +248,9 @@ export const TranslateText: Record<string, TranslationKeys> = {
         SEE_MORE: "होर दिक्खो",
         VIEW_ALL: "सारे दिक्खो",
         VIEW_DETAILS: "ब्यौरा दिक्खो",
-        No_announcements_found: "कोई ऐलान नेईं मिल्ले"
+        No_announcements_found: "कोई ऐलान नेईं मिल्ले",
+        Description: "पूरे भारत च सरकारी ऐलानें गी अपने आप इकट्ठा करदा ऐ ते उनेंगी पेचीदा नौकरशाही भाशा थमां कुसै बी भारतीय भाशा च सादा, समझने च आसान पाठ च अनुवाद करदा ऐ। भाशा जां साक्षरता दे स्तर दी परवाह कीते बगैर, हर नागरिक आस्तै जरूरी सरकारी जानकारी उपलब्ध करदा ऐ।",
+        See_Announcements: "ऐलान दिक्खो"
     },
     कॉशुर: {
         ALL_GOVERNMENT_ANNOUNCEMENTS_IN_ONE_PLACE: "تمام سرکاری اعلان، اکہ جاے",
@@ -238,7 +266,9 @@ export const TranslateText: Record<string, TranslationKeys> = {
         SEE_MORE: "مزید وچھو",
         VIEW_ALL: "سارے وچھو",
         VIEW_DETAILS: "تفصیل وچھو",
-        No_announcements_found: "کانہہ اعلان نہ ملیو"
+        No_announcements_found: "کانہہ اعلان نہ ملیو",
+        Description: "پورے ہندوستان منز سرکاری اعلانن خودکار طریقن جمع کران چھ تہ تمن پیچیدہ بیوروکریٹک زبانہ پیٹھہ کنہہ تہ ہندوستانی زبانہ منز آسان، سمجنہ آسان متنس منز ترجمہ کران چھ۔ زبان یا خواندگی کس سطحس لحاظ کرتھ، پرتھ شہری باپت اہم سرکاری معلومات دستیاب بناوان چھ",
+        See_Announcements: "اعلان وچھو"
     },
     मैथिली: {
         ALL_GOVERNMENT_ANNOUNCEMENTS_IN_ONE_PLACE: "सब सरकारी घोषणा, एके ठाम",
@@ -254,9 +284,11 @@ export const TranslateText: Record<string, TranslationKeys> = {
         SEE_MORE: "आओर देखू",
         VIEW_ALL: "सब देखू",
         VIEW_DETAILS: "विवरण देखू",
-        No_announcements_found: "कोनो घोषणा नहि भेटल"
+        No_announcements_found: "कोनो घोषणा नहि भेटल",
+        Description: "पूरा भारत सँ सरकारी घोषणा सभ के स्वचालित रूप सँ एकत्रित करैत अछि आ ओकरा जटिल नौकरशाही भाषा सँ कोनो भारतीय भाषा मे सरल, बुझबा मे आसान पाठ मे अनुवाद करैत अछि। भाषा वा साक्षरता स्तर के परवाह केने बिना, हर नागरिक लेल महत्वपूर्ण सरकारी जानकारी उपलब्ध करैत अछि।",
+        See_Announcements: "घोषणा देखू"
     },
-    মৈতৈলোন: {
+    मৈতৈলোন: {
         ALL_GOVERNMENT_ANNOUNCEMENTS_IN_ONE_PLACE: "সরকারগী ৱাফম পুম্নমক্, অমত্তা মফম",
         INPUT_PLACEHOLDER: "থিজিন্নবা মখল নত্ত্রগা মীংথোন....",
         SEARCH: "থিবা",
@@ -270,7 +302,9 @@ export const TranslateText: Record<string, TranslationKeys> = {
         SEE_MORE: "অমুক উবা",
         VIEW_ALL: "পুম্নমক্ উবা",
         VIEW_DETAILS: "মখা তাক্না উবা",
-        No_announcements_found: "ৱাফম অমত্তা ফংদ্রে"
+        No_announcements_found: "ৱাফম অমত্তা ফংদ্রে",
+        Description: "ভারত পুম্বদগী সরকারগী ৱাফমশীং অটোমেটিক ওইনা খোমগতলি অদুগা মখোয়বু কোম্প্লেক্স ওইবা বিউরোক্রেটিক লোনদগী করিগুম্বা ভারতকী লোনদা লায়না খংবা ঙম্বা লোল অমদা অসুম্নবা তৌই। লোন নত্ত্রগা পড়বা ফংবগী লেভেল করিগুম্বা ওইরব্দা মীয়াম খুদিংমক্কী মরুওইবা সরকারগী ইনফোর্মেসন শীজিন্নবা ঙম্বা ওইহল্লি।",
+        See_Announcements: "ৱাফমশীং উবা"
     },
     नेपाली: {
         ALL_GOVERNMENT_ANNOUNCEMENTS_IN_ONE_PLACE: "सबै सरकारी घोषणाहरू, एउटै ठाउँमा",
@@ -286,7 +320,9 @@ export const TranslateText: Record<string, TranslationKeys> = {
         SEE_MORE: "थप हेर्नुहोस्",
         VIEW_ALL: "सबै हेर्नुहोस्",
         VIEW_DETAILS: "विवरण हेर्नुहोस्",
-        No_announcements_found: "कुनै घोषणा फेला परेन"
+        No_announcements_found: "कुनै घोषणा फेला परेन",
+        Description: "सम्पूर्ण भारतबाट सरकारी घोषणाहरू स्वचालित रूपमा सङ्कलन गर्दछ र तिनीहरूलाई जटिल नोकरशाही भाषाबाट कुनै पनि भारतीय भाषामा सरल, बुझ्न सजिलो पाठमा अनुवाद गर्दछ। भाषा वा साक्षरता स्तरको परवाह नगरी, प्रत्येक नागरिकका लागि महत्त्वपूर्ण सरकारी जानकारी पहुँचयोग्य बनाउँदछ।",
+        See_Announcements: "घोषणाहरू हेर्नुहोस्"
     },
     ଓଡ଼ିଆ: {
         ALL_GOVERNMENT_ANNOUNCEMENTS_IN_ONE_PLACE: "ସମସ୍ତ ସରକାରୀ ଘୋଷଣା, ଗୋଟିଏ ସ୍ଥାନରେ",
@@ -302,7 +338,9 @@ export const TranslateText: Record<string, TranslationKeys> = {
         SEE_MORE: "ଅଧିକ ଦେଖନ୍ତୁ",
         VIEW_ALL: "ସବୁ ଦେଖନ୍ତୁ",
         VIEW_DETAILS: "ବିବରଣୀ ଦେଖନ୍ତୁ",
-        No_announcements_found: "କୌଣସି ଘୋଷଣା ମିଳିଲା ନାହିଁ"
+        No_announcements_found: "କୌଣସି ଘୋଷଣା ମିଳିଲା ନାହିଁ",
+        Description: "ସମଗ୍ର ଭାରତରୁ ସରକାରୀ ଘୋଷଣାଗୁଡ଼ିକୁ ସ୍ୱୟଂଚାଳିତ ଭାବରେ ସଂଗ୍ରହ କରେ ଏବଂ ସେଗୁଡ଼ିକୁ ଜଟିଳ ଅମଲାତାନ୍ତ୍ରିକ ଭାଷାରୁ କୌଣସି ଭାରତୀୟ ଭାଷାରେ ସରଳ, ସହଜରେ ବୁଝିବା ପାଠ୍ୟରେ ଅନୁବାଦ କରେ। ଭାଷା କିମ୍ବା ସାକ୍ଷରତା ସ୍ତରର ପରିଚୟ ବିନା, ପ୍ରତ୍ୟେକ ନାଗରିକଙ୍କ ପାଇଁ ଗୁରୁତ୍ୱପୂର୍ଣ୍ଣ ସରକାରୀ ସୂଚନା ଉପଲବ୍ଧ କରାଏ।",
+        See_Announcements: "ଘୋଷଣା ଦେଖନ୍ତୁ"
     },
     ਪੰਜਾਬੀ: {
         ALL_GOVERNMENT_ANNOUNCEMENTS_IN_ONE_PLACE: "ਸਾਰੀਆਂ ਸਰਕਾਰੀ ਘੋਸ਼ਣਾਵਾਂ, ਇੱਕ ਥਾਂ 'ਤੇ",
@@ -318,7 +356,9 @@ export const TranslateText: Record<string, TranslationKeys> = {
         SEE_MORE: "ਹੋਰ ਦੇਖੋ",
         VIEW_ALL: "ਸਾਰੇ ਦੇਖੋ",
         VIEW_DETAILS: "ਵੇਰਵੇ ਦੇਖੋ",
-        No_announcements_found: "ਕੋਈ ਘੋਸ਼ਣਾ ਨਹੀਂ ਮਿਲੀ"
+        No_announcements_found: "ਕੋਈ ਘੋਸ਼ਣਾ ਨਹੀਂ ਮਿਲੀ",
+        Description: "ਇਹ ਪੂਰੇ ਭਾਰਤ ਤੋਂ ਸਰਕਾਰੀ ਘੋਸ਼ਣਾਵਾਂ ਨੂੰ ਆਪਣੇ ਆਪ ਇਕੱਠਾ ਕਰਦਾ ਹੈ ਅਤੇ ਉਹਨਾਂ ਨੂੰ ਗੁੰਝਲਦਾਰ ਨੌਕਰਸ਼ਾਹੀ ਭਾਸ਼ਾ ਤੋਂ ਕਿਸੇ ਵੀ ਭਾਰਤੀ ਭਾਸ਼ਾ ਵਿੱਚ ਸਰਲ, ਸਮਝਣ ਵਿੱਚ ਆਸਾਨ ਪਾਠ ਵਿੱਚ ਅਨੁਵਾਦ ਕਰਦਾ ਹੈ। ਭਾਸ਼ਾ ਜਾਂ ਸਾਖਰਤਾ ਪੱਧਰ ਦੀ ਪਰਵਾਹ ਕੀਤੇ ਬਿਨਾਂ, ਹਰ ਨਾਗਰਿਕ ਲਈ ਮਹੱਤਵਪੂਰਨ ਸਰਕਾਰੀ ਜਾਣਕਾਰੀ ਪਹੁੰਚਯੋਗ ਬਣਾਉਂਦਾ ਹੈ।",
+        See_Announcements: "ਘੋਸ਼ਣਾਵਾਂ ਦੇਖੋ"
     },
     "संस्कृतम्": {
         ALL_GOVERNMENT_ANNOUNCEMENTS_IN_ONE_PLACE: "सर्वे सरकारीयाः घोषणाः, एकस्मिन् स्थाने",
@@ -334,7 +374,9 @@ export const TranslateText: Record<string, TranslationKeys> = {
         SEE_MORE: "अधिकं पश्यतु",
         VIEW_ALL: "सर्वं पश्यतु",
         VIEW_DETAILS: "विवरणं पश्यतु",
-        No_announcements_found: "कोऽपि घोषणा न प्राप्ता"
+        No_announcements_found: "कोऽपि घोषणा न प्राप्ता",
+        Description: "संपूर्णभारतात् सर्वकारीयघोषणाः स्वयमेव सङ्गृह्णाति तथा च ताः जटिलप्रशासनिकभाषायाः कस्यामपि भारतीयभाषायां सरले, सुबोधे पाठे अनुवादं करोति। भाषां साक्षरतास्तरं वा विहाय, प्रत्येकं नागरिकं प्रति महत्त्वपूर्णानि सर्वकारीयसूचनानि सुलभानि करोति।",
+        See_Announcements: "घोषणाः पश्यतु"
     },
     "ᱥᱟᱱᱛᱟᱲᱤ": {
         ALL_GOVERNMENT_ANNOUNCEMENTS_IN_ONE_PLACE: "ᱡᱷᱚᱛᱚ ᱥᱚᱨᱠᱟᱨᱤ ᱮᱱᱟᱶᱱᱥᱢᱮᱱᱴ, ᱢᱤᱫ ᱡᱟᱭᱜᱟ ᱨᱮ",
@@ -350,7 +392,9 @@ export const TranslateText: Record<string, TranslationKeys> = {
         SEE_MORE: "ᱰᱷᱮᱨ ᱧᱮᱞ ᱢᱮ",
         VIEW_ALL: "ᱡᱷᱚᱛᱚ ᱧᱮᱞ ᱢᱮ",
         VIEW_DETAILS: "ᱵᱤᱵᱨᱚᱬ ᱧᱮᱞ ᱢᱮ",
-        No_announcements_found: "ᱡᱟᱦᱟᱸᱱ ᱮᱱᱟᱶᱱᱥᱢᱮᱱᱴ ᱵᱟᱝ ᱧᱟᱢ ᱞᱮᱱᱟ"
+        No_announcements_found: "ᱡᱟᱦᱟᱸᱱ ᱮᱱᱟᱶᱱᱥᱢᱮᱱᱴ ᱵᱟᱝ ᱧᱟᱢ ᱞᱮᱱᱟ",
+        Description: "ᱱᱚᱣᱟ ᱫᱚ ᱵᱷᱟᱨᱚᱛ ᱡᱟᱠᱟᱛ ᱨᱮᱱᱟᱜ ᱥᱚᱨᱠᱟᱨᱤ ᱮᱱᱟᱶᱱᱥᱢᱮᱱᱴ ᱠᱚ ᱢᱤᱫ ᱴᱷᱮᱱ ᱮ ᱟᱹᱜᱩᱭᱟ ᱟᱨ ᱡᱟᱦᱟᱸ ᱛᱤᱱᱟᱹᱜ ᱟᱱᱟᱴ ᱯᱟᱹᱨᱥᱤ ᱠᱷᱚᱱ ᱟᱞᱜᱟ ᱛᱮ ᱵᱩᱡᱷᱟᱹᱣᱜ ᱞᱮᱠᱟᱱ ᱥᱟᱱᱛᱟᱲᱤ ᱥᱮ ᱮᱴᱟᱜ ᱯᱟᱹᱨᱥᱤ ᱛᱮ ᱵᱚᱫᱚᱞᱟ ᱾",
+        See_Announcements: "ᱮᱱᱟᱶᱱᱥᱢᱮᱱᱴᱠᱚ ᱧᱮᱞ ᱢᱮ"
     },
     سنڌي: {
         ALL_GOVERNMENT_ANNOUNCEMENTS_IN_ONE_PLACE: "سڀ سرڪاري اعلان، ھڪڙي جاءِ تي",
@@ -366,6 +410,8 @@ export const TranslateText: Record<string, TranslationKeys> = {
         SEE_MORE: "وڌيڪ ڏسو",
         VIEW_ALL: "سڀ ڏسو",
         VIEW_DETAILS: "تفصيل ڏسو",
-        No_announcements_found: "ڪو به اعلان نه مليو"
+        No_announcements_found: "ڪو به اعلان نه مليو",
+        Description: "سڄي هندستان مان سرڪاري اعلانن کي پاڻمرادو گڏ ڪري ٿو ۽ انهن کي پيچيده بيوروڪريٽڪ ٻولي مان ڪنهن به هندستاني ٻولي ۾ سادي، سمجهڻ آسان متن ۾ ترجمو ڪري ٿو. ٻولي يا خواندگي جي سطح جي پرواهه کان سواء، هر شهري لاء اهم سرڪاري معلومات تائين رسائي ممڪن بڻائي ٿو.",
+        See_Announcements: "اعلان ڏسو"
     }
 };

@@ -17,7 +17,7 @@ export default function Header() {
             className={`
                 flex items-center justify-between transition-all duration-300
                 ${isScrolled
-                    ? 'fixed top-4 left-0 right-0 z-50 bg-white shadow-md py-4 px-[3%] w-[90%] rounded-md mx-auto'
+                    ? 'fixed top-4 left-0 right-0 z-50 bg-white shadow-md pl-4 pr-4 w-[90%] rounded-md mx-auto'
                     : 'w-[85%] mx-auto pt-8'
                 }
             `}
@@ -26,8 +26,8 @@ export default function Header() {
                 className={`
                     relative transition-all duration-300
                     ${isScrolled
-                        ? ' h-[7vh] w-[32vw] sm:h-[60px] sm:w-[180px]'
-                        : 'h-[10vh] w-[43vw] sm:w-[32vw] lg:h-[70px] lg:w-[230px] xl:h-[82px] xl:w-[265px]'
+                        ? 'h-[50px] w-[180px] p-10 '
+                        : 'h-[50px] w-[180px]'
                     }
                 `}
             >
@@ -35,7 +35,7 @@ export default function Header() {
                     alt="logo"
                     src="/Logo.png"
                     fill
-                    className="object-fill lg:object-contain cursor-pointer"
+                    className="cursor-pointer absolute object-contain"
                     onClick={() => router.push("/")}
                 />
             </nav>
@@ -47,15 +47,15 @@ export default function Header() {
                     }}
                     value={language}
                 >
-                    <SelectTrigger className="border border-[#E0614B] self-end bg-[#FFFFFF] rounded-lg font-light shadow-[4px_4px_0_0_#00000029] text-[#E0614B] data-[placeholder]:text-[#E0614B] focus:ring-0 focus:outline-none">
+                    <SelectTrigger className="border  self-end bg-[#FFFFFF] rounded-lg font-light shadow-[4px_4px_0_0_#00000029] text-[#E0614B] data-[placeholder]:text-[#E0614B] focus:ring-0 focus:outline-none">
                         <SelectValue />
                     </SelectTrigger>
-                    <SelectContent className="text-[#E0614B]">
+                    <SelectContent >
                         {optionsforLanguages.map((lan) => (
                             <SelectItem
                                 key={lan.label}
                                 value={lan.label}
-                                className="font-medium hover:text-[#E0614B]"
+                                className="font-medium "
                             >
                                 {lan.label}
                             </SelectItem>

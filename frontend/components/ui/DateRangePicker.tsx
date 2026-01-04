@@ -549,7 +549,7 @@ export const DateRangePicker: FC<DateRangePickerProps> & {
                 }}
             >
                 <PopoverTrigger asChild>
-                    <Button size={'lg'} variant="outline" className='text-[#E0614B] hover:text-[#E0614B] md:shadow-[4px_4px_0_0_#00000029] bg-[#FFFFFF] mx-auto md:mx-0 rounded-lg justify-start text-left font-normal border border-[#E0614B] group-hover:text-[#E0614B] w-auto min-w-[240px] max-w-fit px-4' >
+                    <Button size={'lg'} variant="outline" className='md:shadow-[4px_4px_0_0_#00000029] bg-[#FFFFFF] mx-auto md:mx-0 rounded-lg justify-start text-left font-normal border border-[#272626] group-hover:text-[#1a1a1a] w-auto min-w-[240px] max-w-fit px-4' >
                         <div className="text-left">
                             <div className="py-1 flex items-center gap-2 whitespace-nowrap">
                                 <Image alt='logo' width={14} height={14} src="/calender.svg" />
@@ -569,7 +569,7 @@ export const DateRangePicker: FC<DateRangePickerProps> & {
                         </div>
                     </Button>
                 </PopoverTrigger>
-                <PopoverContent align={align} className="w-auto text-[#E0614B]">
+                <PopoverContent align={align} className="w-auto ">
                     <div className="flex py-2">
                         <div className="flex">
                             <div className="flex flex-col">
@@ -698,7 +698,7 @@ export const DateRangePicker: FC<DateRangePickerProps> & {
                                         </SelectContent>
                                     </Select>
                                 )}
-                                <div>
+                                <div className='text-black'>
                                     <Calendar
                                         mode="range"
                                         onSelect={(value: { from?: Date, to?: Date } | undefined) => {
@@ -755,7 +755,6 @@ export const DateRangePicker: FC<DateRangePickerProps> & {
                                     onUpdate?.({ range, rangeCompare })
                                 }
                             }}
-                            className='bg-[#ffff] text-[#E0614B] hover:text-[#E0614B] border border-[#E0614B] hover:bg-[#ece1e1]'
                         >
                             {getTranslation('update', language)}
                         </Button>
