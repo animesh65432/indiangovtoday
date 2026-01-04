@@ -25,7 +25,6 @@ const StickyHeader: React.FC<Props> = ({ isVisible, SearchInput, SetSearchInput,
 
     const handleEnterKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.key === "Enter") {
-            console.log("clicked")
             event.preventDefault();
             if (route === "/") {
                 router.push(`/announcements?SearchInput=${SearchInput}`);

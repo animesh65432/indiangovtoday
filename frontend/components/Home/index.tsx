@@ -1,9 +1,10 @@
 "use client"
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect } from 'react'
 import Header from './Header'
 import Main from './Main'
 import { useSearchParams } from 'next/navigation'
 import { Currentdate } from "@/context/Currentdate"
+import HeroSection from './HeroSection'
 
 
 export default function Home() {
@@ -25,9 +26,8 @@ export default function Home() {
     }, [dateSearch]);
 
     return (
-        <div className=" w-[100vw] flex flex-col ">
-            <Header />
-            <Main />
+        <div className="w-[100vw] flex flex-col min-h-dvh ">
+            <HeroSection />
         </div>
     )
 }
