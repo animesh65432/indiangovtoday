@@ -93,7 +93,7 @@ const StickyHeader: React.FC<Props> = ({ isVisible, SearchInput, SetSearchInput,
                     onChange={(e) => SetSearchInput(e.target.value)}
                     onKeyDown={handleEnterKeyPress}
                     placeholder={TranslateText[language].INPUT_PLACEHOLDER}
-                    className=" w-[65vw] sm:w-[50vw]  bg-white rounded-lg border border-[#E0614B] text-[#2B2B2B]"
+                    className=" w-[65vw] sm:w-[50vw]  bg-white rounded-lg border border-black text-black placeholder:text-black"
                 />
                 <div className="hidden sm:flex sm:flex-row md:hidden items-center gap-3">
                     <DateRangePicker

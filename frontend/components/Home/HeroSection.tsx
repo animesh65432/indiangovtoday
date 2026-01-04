@@ -26,10 +26,12 @@ const HeroSection: React.FC = () => {
                         </p>
                     </div>
                 </div>
-                <Button className='pb-5 pt-5  flex items-center'>
-                    <Cannabis className='' />
-                    {TranslateText[language as keyof typeof TranslateText].See_Announcements}
-                </Button>
+                <a href='#announcements'>
+                    <Button className='pb-5 pt-5  flex items-center' >
+                        <Cannabis />
+                        {TranslateText[language as keyof typeof TranslateText].See_Announcements}
+                    </Button>
+                </a>
             </div>
         </div>
     )

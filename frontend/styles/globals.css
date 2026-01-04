@@ -121,6 +121,38 @@ h1 {
 
 }
 
+h2 {
+  font-family: "Domine", serif;
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  h2 {
+    font-size: 1.9rem;
+  }
+
+}
+
+@media (max-width: 480px) {
+  h2 {
+    font-size: 1.5rem;
+  }
+
+}
+
+h3 {
+  font-family: 'Crimson Pro', serif;
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  h3 {
+    font-size: 1.2rem;
+  }
+}
+
 p {
   font-family: "Poppins", serif;
   font-size: 1rem;
@@ -165,6 +197,10 @@ svg {
     height: 1rem;
   }
 
+}
+
+input {
+  background-color: white;
 }
 
 

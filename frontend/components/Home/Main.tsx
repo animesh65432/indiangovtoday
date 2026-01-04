@@ -21,6 +21,7 @@ import { useRouter } from "next/router"
 import useDidUserScroll from "@/hooks/useDidUserScroll"
 import ShowAnnouncements from '../ShowAnnouncements';
 import StickyHeader from '../StickyHeader';
+import AnnoucementsHeader from './AnnoucementsHeader';
 import AnimatedHeading from '../AnimatedHeading';
 
 
@@ -39,7 +40,7 @@ const Main: React.FC = () => {
     const currentRequestIdRef = useRef(0)
     const isFetchingRef = useRef(false)
     const paramsRef = useRef({ language, startdate, endDate, limit, page })
-    const { isScrolled } = useDidUserScroll()
+    const { isScrolled } = useDidUserScroll(900)
     const router = useRouter()
 
     useEffect(() => {
@@ -142,23 +143,25 @@ const Main: React.FC = () => {
     };
 
     return (
-        <div className='flex flex-col'>
+        <section id='announcements' className='flex flex-col p-4'>
             <StickyHeader
                 isVisible={isScrolled}
                 SearchInput={SearchInput}
                 SetSearchInput={SetSearchInput}
                 route='/'
             />
-            <HeroSection />
-            <ShowAnnouncements
-                LoadMoreData={OnLoadMoredata}
-                Announcements={Announcements}
-                IsLoading={IsLoading}
-                page={page}
-                totalpage={totalPages}
-                IsLoadingMore={IsLoadingMore}
-            />
-        </div>
+            <div className='flex flex-col gap-14 md:gap-20'>
+                <AnnoucementsHeader />
+                <ShowAnnouncements
+                    LoadMoreData={OnLoadMoredata}
+                    Announcements={Announcements}
+                    IsLoading={IsLoading}
+                    page={page}
+                    totalpage={totalPages}
+                    IsLoadingMore={IsLoadingMore}
+                />
+            </div>
+        </section>
     );
 };
 
