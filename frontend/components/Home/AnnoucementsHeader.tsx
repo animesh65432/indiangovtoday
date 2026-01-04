@@ -5,10 +5,18 @@ import { Input } from "@/components/ui/input"
 import { TranslateText } from "@/lib/translatetext"
 import { Button } from "@/components/ui/button"
 import { LanguageContext } from "@/context/Lan";
+import { useRouter } from 'next/router';
 
-const AnnoucementsHeader = () => {
+type Props = {
+    handleEnterKeyPress: (event: React.KeyboardEvent<HTMLInputElement>) => void;
+    SearchInput: string,
+    SetSearchInput: React.Dispatch<React.SetStateAction<string>>,
+}
+
+const AnnoucementsHeader: React.FC<Props> = ({ handleEnterKeyPress, SearchInput, SetSearchInput }) => {
     const { startdate, endDate, onChangeDate } = useContext(Currentdate)
     const { language } = useContext(LanguageContext)
+    const router = useRouter()
 
     const OnChangeDateRangePicker = (values: {
         range: { from?: Date; to?: Date };
@@ -18,6 +26,11 @@ const AnnoucementsHeader = () => {
             onChangeDate(values.range.from, values.range.to);
         }
     };
+
+    const handleClick = () => {
+        router.push(`/announcements?SearchInput=${SearchInput}`);
+
+    }
 
     return (
         <header className='pt-10  w-[85%] mx-auto flex flex-col gap-6'>
@@ -39,6 +52,9 @@ const AnnoucementsHeader = () => {
             <nav className='flex flex-col md:flex-row  items-center gap-4'>
                 <Input
                     type="text"
+                    value={SearchInput}
+                    onChange={(e) => SetSearchInput(e.target.value)}
+                    onKeyDown={handleEnterKeyPress}
                     placeholder={TranslateText[language].INPUT_PLACEHOLDER}
                     className="w-full md:w-1/3  bg-white dark:bg-gray-800 text-[#272626]  placeholder:text-[#272626] border border-[#272626] dark:border-gray-600  rounded-md  py-2 px-4  "
                 />
@@ -54,7 +70,7 @@ const AnnoucementsHeader = () => {
                         />
                     </li>
 
-                    <Button className='whitespace-nowrap'>{TranslateText[language].SEARCH}</Button>
+                    <Button onClick={handleClick} className='whitespace-nowrap'>{TranslateText[language].SEARCH}</Button>
                 </ul>
             </nav>
         </header>

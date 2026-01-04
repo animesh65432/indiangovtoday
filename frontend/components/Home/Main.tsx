@@ -3,26 +3,11 @@ import { getAllAnnouncements } from "@/api/announcements";
 import { Announcement as AnnouncementTypes, AnnouncementsResponse } from "@/types";
 import { LanguageContext } from '@/context/Lan';
 import { Currentdate } from "@/context/Currentdate";
-import HeroSection from './HeroSection';
-import Image from 'next/image';
-import { Input } from '../ui/input';
-import { Button } from '../ui/button';
-import { TranslateText } from "@/lib/translatetext"
-import { DateRangePicker } from "@/components/ui/DateRangePicker"
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select";
-import { optionsforLanguages } from '@/lib/lan';
 import { useRouter } from "next/router"
 import useDidUserScroll from "@/hooks/useDidUserScroll"
 import ShowAnnouncements from '../ShowAnnouncements';
 import StickyHeader from '../StickyHeader';
 import AnnoucementsHeader from './AnnoucementsHeader';
-import AnimatedHeading from '../AnimatedHeading';
 
 
 const Main: React.FC = () => {
@@ -116,16 +101,6 @@ const Main: React.FC = () => {
     }, [page, fetchGetIndiaAnnouncements])
 
 
-    const OnChangeDateRangePicker = (values: {
-        range: { from?: Date; to?: Date };
-        rangeCompare?: { from?: Date; to?: Date };
-    }) => {
-        if (values.range.from && values.range.to) {
-            onChangeDate(values.range.from, values.range.to);
-            SetSearchInput("");
-        }
-    };
-
     const OnLoadMoredata = () => {
         if (page >= totalPages) {
             return;
@@ -151,7 +126,11 @@ const Main: React.FC = () => {
                 route='/'
             />
             <div className='flex flex-col gap-14 md:gap-20'>
-                <AnnoucementsHeader />
+                <AnnoucementsHeader
+                    SearchInput={SearchInput}
+                    SetSearchInput={SetSearchInput}
+                    handleEnterKeyPress={handleEnterKeyPress}
+                />
                 <ShowAnnouncements
                     LoadMoreData={OnLoadMoredata}
                     Announcements={Announcements}

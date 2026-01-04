@@ -37,7 +37,7 @@ const Announcement = ({ id, lan }: Props) => {
     }, [id, language])
 
     return (
-        <div className="bg-[#FFFFFF] flex flex-col  min-h-dvh  bg-[url(/Annoucementsbackgroundimage.png)] w-[99vw] ">
+        <div className=" flex flex-col  min-h-dvh  bg-[url(/Annoucementsbackgroundimage.png)] w-[99vw] ">
             <Header />
             {!IsLoading ?
                 (announcement ?

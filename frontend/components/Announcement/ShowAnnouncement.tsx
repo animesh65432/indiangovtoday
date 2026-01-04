@@ -7,6 +7,7 @@ import { SectionTypes } from '@/types'
 import { formatDateInLanguage } from '@/lib/formatDate'
 import { LANGUAGE_CODES } from "@/lib/lan"
 import useDidUserScroll from '@/hooks/useDidUserScroll'
+import Subscribe from '../Subscribe'
 
 
 type Props = {
@@ -53,69 +54,84 @@ const ShowAnnouncement: React.FC<Props> = ({ title, source, lan, date, state, se
 
     return (
         <div className='w-[82%] mx-auto  flex flex-col gap-6 pt-7  pb-8'>
-            <div className='flex justify-end text-[1rem] sm:text-[1.3rem] lg:text-[1.6rem] text-[#1a1919]'>
+            <Subscribe />
+            <div className='flex justify-end text-[#1a1919]'>
                 <div>
                     <Share
                         onClick={() => setToggle(prev => !prev)}
                         role="button"
                         aria-label="Share announcement"
-                        className='text-[#E0614B]'
+                        className='text-black'
+                        id='sharebutton'
                     />
                     {toggle && <ShareSection Announcement={title} setisShareOPen={setToggle} />}
                 </div>
             </div>
 
             <div
-                className="whitespace-pre-line text-[#2B2B2B] custom-scroll overflow-x-auto leading-8 md:leading-9 text-[1rem] md:text-[1.2rem] lg:text-[1.4rem]"
-            >
-                {title}
+                className="whitespace-pre-line  overflow-x-auto"
+            >  <h2 className='text-black'>
+                    {title}
+                </h2>
             </div>
 
             <div className='flex flex-col gap-2'>
-                <div className='text-[#2B2B2B] flex items-center gap-2'>
+                <div className='text-slate-800 flex items-center gap-2'>
                     <Calendar className='w-4 h-4' />
                     {formatDateInLanguage(date, LANGUAGE_CODES[lan])}
                 </div>
-                <div className='text-[#2B2B2B] flex items-center gap-2'>
+                <div className='text-slate-800  flex items-center gap-2'>
                     <MapPin className='w-4 h-4' />
                     {state}
                 </div>
-                <div className='text-[#2B2B2B] flex items-center gap-2'>
+                <div className='text-slate-800  flex items-center gap-2'>
                     <Landmark className='w-4 h-4' />
                     {department}
                 </div>
-                <div className='text-[#2B2B2B] flex items-center gap-2'>
+                <div className='text-slate-800  flex items-center gap-2'>
                     <LayoutGrid className='w-4 h-4' />
                     {category}
                 </div>
-                <a className='text-[#2B2B2B] hover:text-[#181717] flex items-center gap-2 underline' href={source} >
+                <a className='text-slate-800  hover:text-[#181717] flex items-center gap-2 underline' href={source} >
                     <Link className='w-4 h-4' /> {TranslateText[lan].SOURCE}
                 </a>
             </div>
             <div className='flex flex-col gap-4'>
                 <div className='flex flex-col gap-2'>
-                    <div className='text-[#2B2B2B] text-[1.2rem]'>{sections[0].heading}</div>
-                    <div className='text-gray-700'>{'content' in sections[0] ? sections[0].content : 'Content not available'}</div>
+                    <div>
+                        <h4>
+                            {sections[0].heading}
+                        </h4>
+                    </div>
+                    <p className='text-gray-900 leading-6 md:leading-7 lg:leading-8'>{'content' in sections[0] ? sections[0].content : 'Content not available'}</p>
                 </div>
                 <div className='flex flex-col gap-2'>
-                    <div className='text-[#2B2B2B] text-[1.2rem]'>{sections[1].heading}</div>
-                    <div className='text-gray-700'>{'content' in sections[1] ? sections[1].content : 'Content not available'}</div>
+                    <div >
+                        <h4>
+                            {sections[1].heading}
+                        </h4>
+                    </div>
+                    <p className='text-gray-900 leading-6 md:leading-7 lg:leading-8'>{'content' in sections[1] ? sections[1].content : 'Content not available'}</p>
                 </div>
                 <div className='flex flex-col gap-2'>
-                    <div className='text-[#2B2B2B] text-[1.2rem]'>{sections[2].heading}</div>
+                    <div>
+                        <h4>
+                            {sections[2].heading}
+                        </h4>
+                    </div>
                     <div className='text-gray-700'>{sections[2].type === "keypoints" && 'points' in sections[2] ? (
                         <div className='flex flex-col gap-2'>
                             {sections[2].points.map((point, index) => (
                                 <div key={index} className='flex items-start gap-2'>
                                     <span className='font-bold'>•</span>
-                                    <span>{point}</span>
+                                    <p className='text-gray-900 leading-6 md:leading-7 lg:leading-8'>{point}</p>
                                 </div>
                             ))}
                         </div>
                     ) : null}</div>
                 </div>
             </div>
-            <div className={`bottom-12 right-12 z-50 p-4 transition-all duration-300 ${isScrolled ? "sticky ml-[98%] " : 'absolute left-'}`}>
+            <div className={`bottom-12 right-12 z-20 p-4 transition-all duration-300 ${isScrolled ? "sticky ml-[98%] " : 'absolute left-'}`}>
                 <div className="flex items-center gap-3">
                     {(isPlaying || isPaused) && (
                         <button
@@ -123,7 +139,7 @@ const ShowAnnouncement: React.FC<Props> = ({ title, source, lan, date, state, se
                             onClick={handleStopAudio}
                             aria-label="Stop audio"
                         >
-                            <Square className="text-red-500 w-5 h-5" />
+                            <Square className="text-red-500  h-10 w-10" />
                             <div className="absolute inset-0 rounded-full bg-gray-100/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                         </button>
                     )}

@@ -30,7 +30,7 @@ const Announcement: React.FC<Props> = ({ Announcement }) => {
             </div>
 
             <div className="text-gray-900 text-sm md:text-base leading-relaxed whitespace-pre-line">
-                <p>
+                <p className="leading-6 md:leading-7 lg:leading-8">
                     {Announcement.description}
                 </p>
 
