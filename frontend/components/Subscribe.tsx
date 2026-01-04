@@ -55,10 +55,13 @@ const Subscribe: React.FC = () => {
         <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
             <div className="bg-white p-6 rounded-2xl shadow-lg max-w-sm w-full text-center">
                 <div className="flex w-full  justify-end">
-                    <X className="text-[#E0614B] " size={28} onClick={() => setMounted(false)} />
+                    <X className="text-black " size={28} onClick={() => setMounted(false)} />
                 </div>
-                <p className="text-xl font-semibold mb-2 text-[#E0614B] ">Subscribe to Alerts
-                </p>
+                <h5
+                    className="text-xl md:text-2xl font-semibold mb-2 text-black"
+                >
+                    Subscribe to Alerts
+                </h5>
                 <p className="text-gray-600 mb-4">
                     Never miss an update — get daily announcement alerts.
                 </p>

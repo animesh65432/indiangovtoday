@@ -29,8 +29,8 @@ const Announcement: React.FC<Props> = ({ Announcement }) => {
                 </h3>
             </div>
 
-            <div className="text-gray-900 text-sm md:text-base leading-relaxed whitespace-pre-line">
-                <p className="leading-6 md:leading-7 lg:leading-8">
+            <div className="text-gray-900 text-sm md:text-base leading-relaxed whitespace-pre-line flex flex-col gap-2">
+                <p className="leading-7 lg:leading-8">
                     {Announcement.description}
                 </p>
 

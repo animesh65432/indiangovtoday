@@ -167,6 +167,11 @@ h4 {
 
 }
 
+#closeShareModal {
+  height: 3vh;
+  width: 3vh;
+}
+
 p {
   font-family: "Poppins", serif;
   font-size: 1rem;

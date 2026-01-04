@@ -135,7 +135,7 @@ const ShowAnnouncement: React.FC<Props> = ({ title, source, lan, date, state, se
                             {sections[0].heading}
                         </h4>
                     </div>
-                    <p className='text-gray-900 leading-6 md:leading-7 lg:leading-8'>{'content' in sections[0] ? sections[0].content : 'Content not available'}</p>
+                    <p className='text-gray-900 leading-7 lg:leading-8'>{'content' in sections[0] ? sections[0].content : 'Content not available'}</p>
                 </div>
                 <div className='flex flex-col gap-2'>
                     <div >
@@ -143,7 +143,7 @@ const ShowAnnouncement: React.FC<Props> = ({ title, source, lan, date, state, se
                             {sections[1].heading}
                         </h4>
                     </div>
-                    <p className='text-gray-900 leading-6 md:leading-7 lg:leading-8'>{'content' in sections[1] ? sections[1].content : 'Content not available'}</p>
+                    <p className='text-gray-900 leading-7 lg:leading-8'>{'content' in sections[1] ? sections[1].content : 'Content not available'}</p>
                 </div>
                 <div className='flex flex-col gap-2'>
                     <div>
@@ -156,7 +156,7 @@ const ShowAnnouncement: React.FC<Props> = ({ title, source, lan, date, state, se
                             {sections[2].points.map((point, index) => (
                                 <div key={index} className='flex items-start gap-2'>
                                     <span className='font-bold'>•</span>
-                                    <p className='text-gray-900 leading-6 md:leading-7 lg:leading-8'>{point}</p>
+                                    <p className='text-gray-900 leading-7 lg:leading-8'>{point}</p>
                                 </div>
                             ))}
                         </div>

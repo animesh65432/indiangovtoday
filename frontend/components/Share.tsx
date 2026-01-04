@@ -76,17 +76,21 @@ export default function ShareSection({ Announcement, setisShareOPen }: Props) {
                         onClick={handleClose}
                         className="absolute top-3 right-3 sm:top-4 sm:right-4 p-2 rounded-full hover:bg-gray-100 transition-colors duration-200"
                         aria-label="Close modal"
+                        style={{ border: 0 }}
                     >
-                        <X className="text-gray-500 w-5 h-5 sm:w-6 sm:h-6" />
+                        <X
+                            className="text-black w-5 h-5 sm:w-6 sm:h-6"
+                            id="closeShareModal"
+                        />
                     </button>
 
                     <div className="flex items-center gap-3 mb-2">
-                        <div className="p-2 bg-[#E0614B] rounded-full">
-                            <Share2 className="w-5 h-5 sm:w-6 sm:h-6 text-[#ffff]" />
+                        <div >
+                            <Share2 className="w-5 h-5 sm:w-6 sm:h-6 text-black" />
                         </div>
-                        <p className="text-lg sm:text-xl font-semibold text-[#E0614B]">Share Announcement</p>
+                        <h3 className="text-lg sm:text-xl font-semibold text-black">Share Announcement</h3>
                     </div>
-                    <p className="text-gray-600 text-sm sm:text-base">Help others discover this Announcement!</p>
+                    <p className="text-gray-800 text-sm sm:text-base">Help others discover this Announcement!</p>
                 </div>
 
                 {/* Share Preview */}
@@ -95,7 +99,7 @@ export default function ShareSection({ Announcement, setisShareOPen }: Props) {
                         <p className="text-sm sm:text-base font-medium text-gray-900 mb-2 leading-relaxed">
                             {shareMessage}
                         </p>
-                        <p className="text-xs sm:text-sm text-[#E0614B] truncate font-mono  px-2 py-1 rounded">
+                        <p className="text-xs sm:text-sm text-gray-800 underline truncate font-mono  px-2 py-1 rounded">
                             {shareUrl}
                         </p>
                     </div>
@@ -130,7 +134,7 @@ export default function ShareSection({ Announcement, setisShareOPen }: Props) {
                 {/* Footer */}
                 <div className="px-4 sm:px-6 pb-4 sm:pb-6">
                     <div className="rounded-lg p-3 text-center">
-                        <p className="text-xs sm:text-sm text-[#E0614B] leading-relaxed">
+                        <p className="text-xs  text-black leading-relaxed">
                             💡 Click any option above to share with your network
                         </p>
                     </div>
