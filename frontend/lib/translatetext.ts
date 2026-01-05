@@ -29,6 +29,7 @@ export type TranslationKeys = {
     CHECK_OUT_THIS_AMAZING: string;
     SHARE_ON: string;
     CLICK_OPTION_TO_SHARE: string;
+    TITLE?: string;
 };
 
 export const TranslateText: Record<string, TranslationKeys> = {
@@ -46,7 +47,7 @@ export const TranslateText: Record<string, TranslationKeys> = {
         SEE_MORE: "See More Updates",
         VIEW_ALL: "View All Notifications",
         VIEW_DETAILS: "Detailed Information",
-        DESCRIPTION: "Our platform intelligently aggregates and synchronizes official government notifications from across all Indian states and central departments, providing high-quality translations into your preferred local language for better accessibility and clarity.",
+        DESCRIPTION: "reaks down complex government circulars into simple language. Access announcements from all ministries in your preferred language—text or audio. No bureaucratic jargon, just clarity.",
         SEE_ANNOUNCEMENTS: "Browse All Announcements",
         LOAD_MORE: "LOAD MORE UPDATES",
         SOMETHING_WENT_WRONG: "An unexpected error occurred while fetching the data. Please try again later.",
@@ -62,7 +63,8 @@ export const TranslateText: Record<string, TranslationKeys> = {
         HELP_OTHERS_DISCOVER: "Spread the word and help your community stay updated with official government news.",
         CHECK_OUT_THIS_AMAZING: "I thought you might find this official government announcement useful:",
         SHARE_ON: "Share via",
-        CLICK_OPTION_TO_SHARE: "Choose an option above to share this information with your professional network."
+        CLICK_OPTION_TO_SHARE: "Choose an option above to share this information with your professional network.",
+        TITLE: "Complex Government Circulars Made Simple for All Indians"
     },
     हिन्दी: {
         ALL_GOVERNMENT_ANNOUNCEMENTS_IN_ONE_PLACE: "सभी आधिकारिक सरकारी घोषणाएँ अब एक ही पोर्टल पर उपलब्ध",
