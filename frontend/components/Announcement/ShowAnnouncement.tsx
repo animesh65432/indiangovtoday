@@ -48,7 +48,7 @@ const ShowAnnouncement: React.FC<Props> = ({ title, source, lan, date, state, se
     }
 
     return (
-        <div className='w-[82%] mx-auto  flex flex-col gap-6 pt-7  pb-8'>
+        <div className='w-[82%] mx-auto  flex flex-col gap-10 pt-7  pb-8'>
             <Subscribe />
             <div className='flex items-center gap-6 justify-end text-[#1a1919]'>
                 <div>
