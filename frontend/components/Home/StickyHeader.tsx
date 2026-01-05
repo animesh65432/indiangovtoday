@@ -51,12 +51,12 @@ const StickyHeader: React.FC<Props> = ({ isVisible, SearchInput, SetSearchInput 
                         }}
                         value={language}
                     >
-                        <SelectTrigger className="border border-[#E0614B] bg-[#FFFFFF] rounded-lg font-light shadow-[4px_4px_0_0_#00000029] text-[#E0614B] focus:ring-0 focus:outline-none w-[150px]">
+                        <SelectTrigger className="border  bg-[#FFFFFF] rounded-lg font-light shadow-[4px_4px_0_0_#00000029]  focus:ring-0 focus:outline-none w-[150px]">
                             <SelectValue />
                         </SelectTrigger>
-                        <SelectContent className="text-[#E0614B]">
+                        <SelectContent>
                             {optionsforLanguages.map((lan) => (
-                                <SelectItem key={lan.label} value={lan.label} className="font-medium hover:text-[#E0614B]">
+                                <SelectItem key={lan.label} value={lan.label} className="font-medium">
                                     {lan.label}
                                 </SelectItem>
                             ))}

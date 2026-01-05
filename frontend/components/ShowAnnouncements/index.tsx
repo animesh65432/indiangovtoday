@@ -55,11 +55,11 @@ const ShowAnnouncements: React.FC<Props> = ({
             </div>
             {page < totalpage - 1 && (
                 <Button
-                    className='w-[150px] mx-auto  lg:w-[121px] rounded-xl shadow-[4px_4px_0_0_#00000029]'
+                    className='mx-auto  rounded-xl shadow-[4px_4px_0_0_#00000029]'
                     disabled={IsLoadingMore}
                     onClick={LoadMoreData}
                 >
-                    {IsLoadingMore ? <LoaderCircle className='h-5 w-5 animate-spin' /> : `${TranslateText[language].LOAD_MORE}`}
+                    {IsLoadingMore ? <LoaderCircle className='h-5 animate-spin' /> : `${TranslateText[language].LOAD_MORE}`}
                 </Button>
             )}
         </div>
