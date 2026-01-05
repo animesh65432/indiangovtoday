@@ -4,9 +4,7 @@ import { Announcement as AnnouncementTypes, AnnouncementsResponse } from "@/type
 import { LanguageContext } from '@/context/Lan';
 import { Currentdate } from "@/context/Currentdate";
 import { useRouter } from "next/router"
-import useDidUserScroll from "@/hooks/useDidUserScroll"
 import ShowAnnouncements from '../ShowAnnouncements';
-import StickyHeader from '../StickyHeader';
 import AnnoucementsHeader from './AnnoucementsHeader';
 
 
@@ -25,7 +23,6 @@ const Main: React.FC = () => {
     const currentRequestIdRef = useRef(0)
     const isFetchingRef = useRef(false)
     const paramsRef = useRef({ language, startdate, endDate, limit, page })
-    const { isScrolled } = useDidUserScroll(900)
     const router = useRouter()
 
     useEffect(() => {
@@ -118,14 +115,8 @@ const Main: React.FC = () => {
     };
 
     return (
-        <section id='announcements' className='flex flex-col p-4'>
-            <StickyHeader
-                isVisible={isScrolled}
-                SearchInput={SearchInput}
-                SetSearchInput={SetSearchInput}
-                route='/'
-            />
-            <div className='flex flex-col gap-14 md:gap-20'>
+        <section id='announcements' className='flex flex-col h-[100vh] overflow-x-hidden'>
+            <div className='flex flex-col '>
                 <AnnoucementsHeader
                     SearchInput={SearchInput}
                     SetSearchInput={SetSearchInput}

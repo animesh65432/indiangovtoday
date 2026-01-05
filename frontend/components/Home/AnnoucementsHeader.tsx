@@ -33,33 +33,22 @@ const AnnoucementsHeader: React.FC<Props> = ({ handleEnterKeyPress, SearchInput,
     }
 
     return (
-        <header className='pt-10  w-[85%] mx-auto flex flex-col gap-6'>
-            <nav className='flex justify-between items-center'>
-                <ul>
-                    <h2 className='text-[#272626]'>Latest Announcements </h2>
-                </ul>
-                <ul className=' hidden md:block'>
-                    <DateRangePicker
-                        onUpdate={OnChangeDateRangePicker}
-                        initialDateFrom={startdate}
-                        initialDateTo={endDate}
-                        align="start"
-                        locale="en-GB"
-                        showCompare={false}
-                    />
-                </ul>
+        <header className=' h-[40vh] lg:h-[25vh] p-5 flex flex-col gap-6 bg-[#F8F8F8]'>
+            <nav className='flex justify-between items-center w-[90%] sm:w-[80%] mx-auto'>
+                <h2 className='text-[#272626] mx-auto lg:mx-0'>Latest Announcements </h2>
             </nav>
-            <nav className='flex flex-col md:flex-row  items-center gap-4'>
-                <Input
-                    type="text"
-                    value={SearchInput}
-                    onChange={(e) => SetSearchInput(e.target.value)}
-                    onKeyDown={handleEnterKeyPress}
-                    placeholder={TranslateText[language].INPUT_PLACEHOLDER}
-                    className="w-full md:w-1/3  bg-white dark:bg-gray-800 text-[#272626]  placeholder:text-[#272626] border border-[#272626] dark:border-gray-600  rounded-md  py-2 px-4  "
-                />
-                <ul className='flex flex-col sm:flex-row items-center gap-4'>
-                    <li className='block md:hidden'>
+            <nav>
+                <ul className='flex flex-col lg:flex-row  items-center gap-4 w-[80%] mx-auto'>
+                    <Input
+                        type="text"
+                        value={SearchInput}
+                        onChange={(e) => SetSearchInput(e.target.value)}
+                        onKeyDown={handleEnterKeyPress}
+                        placeholder={TranslateText[language].INPUT_PLACEHOLDER}
+                        className=" w-full md:w-2/3 lg:w-1/3  rounded-none border border-[#D9D9D9] placeholder:text-[#868686] p-5"
+                    />
+                    <Button onClick={handleClick} className='whitespace-nowrap p-5 bg-[#E04B4D] rounded-none text-[#FFFFFF]'>SEARCH</Button>
+                    <li className='lg:ml-auto'>
                         <DateRangePicker
                             onUpdate={OnChangeDateRangePicker}
                             initialDateFrom={startdate}
@@ -69,8 +58,6 @@ const AnnoucementsHeader: React.FC<Props> = ({ handleEnterKeyPress, SearchInput,
                             showCompare={false}
                         />
                     </li>
-
-                    <Button onClick={handleClick} className='whitespace-nowrap'>{TranslateText[language].SEARCH}</Button>
                 </ul>
             </nav>
         </header>

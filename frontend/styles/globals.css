@@ -110,6 +110,7 @@ body {
 
 h1 {
   font-size: 2.2rem;
+  font-family: var(--font-crimson);
   font-weight: 700;
 }
 
@@ -129,14 +130,15 @@ h1 {
 
 @media (max-width: 400px) {
   h1 {
-    font-size: 1.4rem;
+    font-size: 1.5rem;
   }
 
 }
 
 h2 {
   font-size: 2rem;
-  font-weight: 600;
+  font-weight: 700;
+  font-family: var(--font-crimson);
 }
 
 @media (max-width: 768px) {

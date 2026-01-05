@@ -15,8 +15,8 @@ import { optionsforLanguages } from '@/lib/lan';
 const HeroSection: React.FC = () => {
     const { onSelectLanguage, language } = useContext(LanguageContext)
     return (
-        <div className="hero-bg h-[100vh] bg-cover bg-center ">
-            <div className='w-[65%] mx-auto flex flex-col items-center mt-[25%] sm:mt-[20%] md:mt-[10%] lg:mt-[13%]  gap-6 '>
+        <div className="hero-bg h-[100vh] bg-cover bg-center flex flex-col justify-center items-center ">
+            <div className=' w-[90%] sm:w-[65%] mx-auto flex flex-col gap-5 items-center text-center'>
                 <div className='relative w-[250px] sm:w-[302px] h-[64px] mx-auto'>
                     <Image
                         src="/Icon.png"
@@ -25,36 +25,35 @@ const HeroSection: React.FC = () => {
                         className='absolute object-fill'
                     />
                 </div>
-                <div className='flex gap-4 '>
-                    <div>
-                        <h1 className='text-white '>
-                            {TranslateText[language as keyof typeof TranslateText]?.TITLE}
-                        </h1>
-                        <p className='text-[#e2dbdb]'>
-                            {TranslateText[language as keyof typeof TranslateText].DESCRIPTION}
-                        </p>
-                    </div>
+
+                <h1 className='text-white '>
+                    {TranslateText[language as keyof typeof TranslateText]?.TITLE}
+                </h1>
+                <p className='text-[#e2dbdb]'>
+                    {TranslateText[language as keyof typeof TranslateText].DESCRIPTION}
+                </p>
+                <div className='flex flex-col gap-4 items-center'>
+                    <a href='#announcements'>
+                        <Button className='pb-5 pt-5 border border-transparent hover:border-white uppercase shadow-[4px_4px_8px_0px_#FFFFFF40] rounded-none text-[#FFFFFF] flex items-center bg-[#E04B4D] hover:bg-[#E04B4D] transition-all duration-200'>
+                            Explore Announcements
+                        </Button>
+                    </a>
+                    <Select
+                        onValueChange={onSelectLanguage}
+                        value={language}
+                    >
+                        <SelectTrigger className="border font-poppins border-[#ffff] text-[#ffff] bg-transparent rounded-none font-medium shadow-[4px_4px_0_0_#00000029] focus:ring-0 focus:outline-none min-w-[100px]">
+                            <SelectValue placeholder="Language" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            {optionsforLanguages.map((lan) => (
+                                <SelectItem key={lan.label} value={lan.label} className='font-medium'>
+                                    {lan.label}
+                                </SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
                 </div>
-                <a href='#announcements'>
-                    <Button className='pb-5 pt-5 uppercase shadow-[4px_4px_8px_0px_#FFFFFF40] rounded-none text-[#FFFFFF] flex items-center bg-[#E04B4D] hover:bg-[#E04B4D] '>
-                        Explore Announcements
-                    </Button>
-                </a>
-                <Select
-                    onValueChange={onSelectLanguage}
-                    value={language}
-                >
-                    <SelectTrigger className="border font-poppins border-[#ffff] text-[#ffff] bg-transparent rounded-none font-medium shadow-[4px_4px_0_0_#00000029] focus:ring-0 focus:outline-none min-w-[100px]">
-                        <SelectValue placeholder="Language" />
-                    </SelectTrigger>
-                    <SelectContent>
-                        {optionsforLanguages.map((lan) => (
-                            <SelectItem key={lan.label} value={lan.label}>
-                                {lan.label}
-                            </SelectItem>
-                        ))}
-                    </SelectContent>
-                </Select>
             </div>
         </div >
     )

@@ -47,7 +47,7 @@ export const TranslateText: Record<string, TranslationKeys> = {
         SEE_MORE: "See More Updates",
         VIEW_ALL: "View All Notifications",
         VIEW_DETAILS: "Detailed Information",
-        DESCRIPTION: "reaks down complex government circulars into simple language. Access announcements from all ministries in your preferred language—text or audio. No bureaucratic jargon, just clarity.",
+        DESCRIPTION: "Breaks down complex government circulars into simple language. Access announcements from all ministries in your preferred language—text or audio. No bureaucratic jargon, just clarity.",
         SEE_ANNOUNCEMENTS: "Browse All Announcements",
         LOAD_MORE: "LOAD MORE UPDATES",
         SOMETHING_WENT_WRONG: "An unexpected error occurred while fetching the data. Please try again later.",
