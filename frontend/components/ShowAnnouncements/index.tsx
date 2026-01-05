@@ -1,9 +1,11 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Announcement as AnnouncementTypes } from "@/types/index"
 import Announcement from './Announcement'
 import { Button } from '../ui/button'
 import AnnouncementSkeleton from './AnnouncementSkeleton'
 import { LoaderCircle } from "lucide-react"
+import { LanguageContext } from "@/context/Lan"
+import { TranslateText } from "@/lib/translatetext"
 
 type Props = {
     Announcements: AnnouncementTypes[],
@@ -22,6 +24,9 @@ const ShowAnnouncements: React.FC<Props> = ({
     IsLoading,
     IsLoadingMore
 }) => {
+
+    const { language } = useContext(LanguageContext)
+
     if (IsLoading && Announcements.length === 0) {
         return (
             <div className='w-[85%] mx-auto flex flex-col gap-8 '>
@@ -36,7 +41,7 @@ const ShowAnnouncements: React.FC<Props> = ({
     if (!IsLoading && Announcements.length === 0) {
         return (
             <div className=' h-[56vh] sm:h-[67vh] md:h-[70vh] flex justify-center '>
-                <h3 className='text-black mt-30 text-xl  text-center'>No announcements found</h3>
+                <h3 className='text-black mt-30 text-xl  text-center'>{TranslateText[language].NO_ANNOUNCEMENTS_FOUND}</h3>
             </div>
         )
     }
@@ -50,11 +55,11 @@ const ShowAnnouncements: React.FC<Props> = ({
             </div>
             {page < totalpage - 1 && (
                 <Button
-                    className='w-[150px] mx-auto bg-[#E0614B] lg:w-[121px] hover:bg-[#dd8272] rounded-xl shadow-[4px_4px_0_0_#00000029]'
+                    className='w-[150px] mx-auto  lg:w-[121px] rounded-xl shadow-[4px_4px_0_0_#00000029]'
                     disabled={IsLoadingMore}
                     onClick={LoadMoreData}
                 >
-                    {IsLoadingMore ? <LoaderCircle className='h-5 w-5 animate-spin' /> : 'LOAD MORE'}
+                    {IsLoadingMore ? <LoaderCircle className='h-5 w-5 animate-spin' /> : `${TranslateText[language].LOAD_MORE}`}
                 </Button>
             )}
         </div>

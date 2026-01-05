@@ -1,12 +1,15 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { createPortal } from "react-dom";
 import { X, LoaderCircle } from "lucide-react"
 import { addthesubscribe } from "../api/aleart"
 import { toast } from "react-toastify";
+import { LanguageContext } from "@/context/Lan"
+import { TranslateText } from "@/lib/translatetext";
 
 const Subscribe: React.FC = () => {
     const [mounted, setMounted] = useState(false);
+    const { language } = useContext(LanguageContext);
     const [showPopup, setShowPopup] = useState(false);
     const [Email, setEmail] = useState<string>("");
     const [IsLoading, SetIsLoading] = useState<boolean>(false);
@@ -28,13 +31,13 @@ const Subscribe: React.FC = () => {
 
     const handlesubscribe = async () => {
         if (!Email) {
-            toast.error("Please enter your email");
+            toast.error(`${TranslateText[language].PLEASE_ENTER_YOUR_EMAIL}`);
             return;
         }
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
         if (!emailRegex.test(Email)) {
-            toast.error("Please enter a valid email address");
+            toast.error(`${TranslateText[language].PLEASE_ENTER_A_VALID_EMAIL}`);
             return;
         }
 
@@ -43,9 +46,9 @@ const Subscribe: React.FC = () => {
             await addthesubscribe(Email);
             setShowPopup(false);
             localStorage.setItem("Email", JSON.stringify(Email));
-            toast.success("Successfully subscribed");
+            toast.success(`${TranslateText[language].SUCCESSFULLY_SUBSCRIBED}`);
         } catch (err) {
-            toast.error("Failed to subscribe");
+            toast.error(`${TranslateText[language].FAILED_TO_SUBSCRIBE}`);
         } finally {
             SetIsLoading(false);
         }
@@ -60,25 +63,25 @@ const Subscribe: React.FC = () => {
                 <h5
                     className="text-xl md:text-2xl font-semibold mb-2 text-black"
                 >
-                    Subscribe to Alerts
+                    {TranslateText[language].SUBSCRIBE_TO_ALERTS}
                 </h5>
                 <p className="text-gray-600 mb-4">
-                    Never miss an update — get weekly announcement alerts.
+                    {TranslateText[language].NEVER_MISS_AN_UPDATE}
                 </p>
                 <form className="flex flex-col gap-3">
                     <input
                         value={Email}
                         onChange={(e) => setEmail(e.target.value)}
                         type="text"
-                        placeholder="Enter your Email"
-                        className="border rounded-md p-2 text-gray-600 w-full placeholder:text-gray-600 "
+                        placeholder={`${TranslateText[language].ENTER_YOUR_EMAIL}`}
+                        className="border rounded-md p-2 text-black w-full placeholder:text-black   border-black"
                     />
                     <button
                         type="button"
                         onClick={handlesubscribe}
-                        className="bg-[#E0614B] text-white py-2 rounded-md hover:bg-[#dd8272] transition"
+                        className="p-2 rounded-md"
                     >
-                        {IsLoading ? <LoaderCircle className="text-white mx-auto animate-spin h-6 w-6" /> : " Subscribe"}
+                        {IsLoading ? <LoaderCircle className="text-black P-4 mx-auto animate-spin h-6 w-6" /> : `${TranslateText[language].SUBSCRIBE}`}
                     </button>
                 </form>
             </div>
