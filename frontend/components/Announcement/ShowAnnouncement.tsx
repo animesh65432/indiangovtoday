@@ -6,7 +6,6 @@ import { TranslateText } from "@/lib/translatetext"
 import { SectionTypes } from '@/types'
 import { formatDateInLanguage } from '@/lib/formatDate'
 import { LANGUAGE_CODES } from "@/lib/lan"
-import useDidUserScroll from '@/hooks/useDidUserScroll'
 import Subscribe from '../Subscribe'
 
 
@@ -25,8 +24,6 @@ type Props = {
 const ShowAnnouncement: React.FC<Props> = ({ title, source, lan, date, state, sections, department, category }) => {
     const [toggle, setToggle] = useState<boolean>(false)
     const { call, stop, togglePlayPause, IsLoading, isPlaying, isPaused } = usetexttospech()
-    const { isScrolled } = useDidUserScroll()
-
     const handleAudioAction = async () => {
         if (IsLoading) return
         if (isPlaying || isPaused) {
@@ -43,7 +40,6 @@ const ShowAnnouncement: React.FC<Props> = ({ title, source, lan, date, state, se
         stop()
     }
 
-
     const getAudioIcon = () => {
         if (IsLoading) return <AudioLines className="animate-spin text-black w-5 h-5" />
         if (isPlaying) return <Pause className="text-black w-5 h-5" />
@@ -52,7 +48,7 @@ const ShowAnnouncement: React.FC<Props> = ({ title, source, lan, date, state, se
     }
 
     return (
-        <div className='w-[82%] mx-auto  flex flex-col gap-6 pt-7  pb-8'>
+        <div className='w-[82%] mx-auto  flex flex-col gap-10 pt-7  pb-8'>
             <Subscribe />
             <div className='flex items-center gap-6 justify-end text-[#1a1919]'>
                 <div>
@@ -102,9 +98,9 @@ const ShowAnnouncement: React.FC<Props> = ({ title, source, lan, date, state, se
 
             <div
                 className="whitespace-pre-line  overflow-x-auto"
-            >  <h2 className='text-black'>
+            >  <h4 className='text-black'>
                     {title}
-                </h2>
+                </h4>
             </div>
 
             <div className='flex flex-col gap-2'>

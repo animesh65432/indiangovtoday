@@ -149,7 +149,9 @@ const Announcements = ({ QueryInput, SetQueryInput }: Props) => {
                 SetIsButtomClicked={SetIsButtomClicked}
             />
 
-            <Header />
+            <Header
+                isScrolled={isScrolled}
+            />
             <div className='flex flex-col bg-white w-[80%] rounded-md mx-auto sm:mx-0 sm:w-[100%] sm:bg-transparent'>
                 <div className='block sm:hidden w-[85%] mx-auto p-4'>
                     <div className={`relative h-[47px] w-[150px] mx-auto`} onClick={() => router.push("/")}>

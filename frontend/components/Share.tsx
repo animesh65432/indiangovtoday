@@ -2,6 +2,9 @@ import type React from "react"
 import { MessageCircle, Twitter, Mail, X, Share2 } from "lucide-react"
 import { useRef } from "react"
 import { useClickOutside } from "@/hooks/useClickoutside"
+import { useContext } from "react"
+import { LanguageContext } from "@/context/Lan"
+import { TranslateText } from "@/lib/translatetext"
 
 interface ShareOption {
     name: string
@@ -19,8 +22,9 @@ type Props = {
 
 export default function ShareSection({ Announcement, setisShareOPen }: Props) {
     const modalRef = useRef<HTMLDivElement>(null);
+    const { language } = useContext(LanguageContext);
     const shareUrl = window.location.href
-    const shareMessage = `📢 Check out this amazing Announcement: ${Announcement} 🚀`
+    const shareMessage = `📢 ${TranslateText[language].CHECK_OUT_THIS_AMAZING}: ${Announcement} 🚀`
     const encodedMessage = encodeURIComponent(shareMessage)
     const encodedUrl = encodeURIComponent(shareUrl)
     const encodedMessageWithUrl = encodeURIComponent(`${shareMessage} ${shareUrl}`)
@@ -88,9 +92,9 @@ export default function ShareSection({ Announcement, setisShareOPen }: Props) {
                         <div >
                             <Share2 className="w-5 h-5 sm:w-6 sm:h-6 text-black" />
                         </div>
-                        <h3 className="text-lg sm:text-xl font-semibold text-black">Share Announcement</h3>
+                        <h3 className="text-lg sm:text-xl font-semibold text-black">{TranslateText[language].SHARE_ANNOUNCEMENT}</h3>
                     </div>
-                    <p className="text-gray-800 text-sm sm:text-base">Help others discover this Announcement!</p>
+                    <p className="text-gray-800 text-sm sm:text-base">{TranslateText[language].HELP_OTHERS_DISCOVER}</p>
                 </div>
 
                 {/* Share Preview */}
@@ -120,7 +124,7 @@ export default function ShareSection({ Announcement, setisShareOPen }: Props) {
                                 </div>
                                 <div className="flex-1 text-left">
                                     <span className="font-medium sm:font-semibold text-sm sm:text-base">
-                                        Share on {option.name}
+                                        {TranslateText[language].SHARE_ON} {option.name}
                                     </span>
                                 </div>
                                 <div className="flex-shrink-0">
@@ -135,7 +139,7 @@ export default function ShareSection({ Announcement, setisShareOPen }: Props) {
                 <div className="px-4 sm:px-6 pb-4 sm:pb-6">
                     <div className="rounded-lg p-3 text-center">
                         <p className="text-xs  text-black leading-relaxed">
-                            💡 Click any option above to share with your network
+                            💡 {TranslateText[language].CLICK_OPTION_TO_SHARE}
                         </p>
                     </div>
                 </div>

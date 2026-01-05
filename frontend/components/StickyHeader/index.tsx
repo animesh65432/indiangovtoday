@@ -73,10 +73,10 @@ const StickyHeader: React.FC<Props> = ({ isVisible, SearchInput, SetSearchInput,
                         }}
                         value={language}
                     >
-                        <SelectTrigger className="border border-[#E0614B] bg-[#FFFFFF] rounded-lg font-light shadow-[4px_4px_0_0_#00000029] text-[#E0614B] focus:ring-0 focus:outline-none w-[150px]">
+                        <SelectTrigger className=" bg-[#FFFFFF] rounded-lg font-light shadow-[4px_4px_0_0_#00000029] text-[#E0614B] focus:ring-0 focus:outline-none w-[150px]">
                             <SelectValue />
                         </SelectTrigger>
-                        <SelectContent className="text-[#E0614B]">
+                        <SelectContent>
                             {optionsforLanguages.map((lan) => (
                                 <SelectItem key={lan.label} value={lan.label} className="font-medium hover:text-[#E0614B]">
                                     {lan.label}
@@ -115,10 +115,10 @@ const StickyHeader: React.FC<Props> = ({ isVisible, SearchInput, SetSearchInput,
                         }}
                         value={language}
                     >
-                        <SelectTrigger className="border border-[#E0614B] bg-[#FFFFFF] rounded-lg font-light shadow-[4px_4px_0_0_#00000029] text-[#E0614B] focus:ring-0 focus:outline-none w-[150px]">
+                        <SelectTrigger className=" bg-[#FFFFFF] rounded-lg font-light shadow-[4px_4px_0_0_#00000029] text-[#E0614B] focus:ring-0 focus:outline-none w-[150px]">
                             <SelectValue />
                         </SelectTrigger>
-                        <SelectContent className="text-[#E0614B]">
+                        <SelectContent>
                             {optionsforLanguages.map((lan) => (
                                 <SelectItem key={lan.label} value={lan.label} className="font-medium hover:text-[#E0614B]">
                                     {lan.label}
@@ -127,7 +127,7 @@ const StickyHeader: React.FC<Props> = ({ isVisible, SearchInput, SetSearchInput,
                         </SelectContent>
                     </Select>
                 </div>
-                <Button onClick={handleClick} className="bg-[#E0614B]  sm:block hover:bg-[#dd8272] w-[150px]  rounded-xl shadow-[4px_4px_0_0_#00000029]">
+                <Button onClick={handleClick} className=" sm:block w-[150px]  rounded-xl shadow-[4px_4px_0_0_#00000029]">
                     {TranslateText[language].SEARCH}
                 </Button>
             </div>

@@ -2,7 +2,7 @@ import { Call } from "@/service/call"
 
 export const getAllAnnouncements = (target_lan: string, startdate: Date, endDate: Date, page: number, limit: number) => Call({
     method: "GET",
-    path: `/GetIndiaAnnnouncements?target_lan=${target_lan}&startdate=${startdate}&endDate=${endDate}&page=${page}&limit=${limit}`
+    path: `/GetIndiaAnnnouncements?target_lan=${target_lan}&startDate=${startdate.toString()}&endDate=${endDate.toString()}&page=${page}&limit=${limit}`
 })
 
 export const getAnnouncement = (target_lan: string, id: string) => Call({

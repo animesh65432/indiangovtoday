@@ -7,14 +7,16 @@ import { LANGUAGE_CODES } from "../utils/lan"
 
 
 export const GetIndiaAnnouncements = asyncErrorHandler(async (req: Request, res: Response) => {
-    const { target_lan, startdate, endDate, page, limit } = req.query;
+    const { target_lan, startDate, endDate, page, limit } = req.query;
 
     const pageNumber = parseInt(page as string) || 1;
     const pageSize = parseInt(limit as string) || 10;
     const skip = (pageNumber - 1) * pageSize;
 
-    const announcementsStartDate = startdate
-        ? new Date(startdate as string)
+    console.log("Received Query Params:", { startDate, endDate });
+
+    const announcementsStartDate = startDate
+        ? new Date(startDate as string)
         : new Date(new Date().setDate(new Date().getDate() - 7));
 
     const announcementsEndDate = endDate ? new Date(endDate as string) : new Date();

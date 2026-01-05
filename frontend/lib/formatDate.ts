@@ -34,7 +34,5 @@ export const formatDateInLanguage = (
         ...options
     };
 
-    console.log('Formatting date:', parsedDate, 'with language code:', languageCode, 'and options:', defaultOptions);
-
     return new Intl.DateTimeFormat(languageCode, defaultOptions).format(parsedDate);
 };

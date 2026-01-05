@@ -22,7 +22,7 @@ const useDidUserScroll = (defaultPostion: number = 100) => {
         return () => {
             window.removeEventListener('scroll', handleScroll);
         };
-    }, []);
+    }, [defaultPostion]);
 
     return { isScrolled };
 };
