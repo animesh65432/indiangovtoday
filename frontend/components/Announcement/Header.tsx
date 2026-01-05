@@ -5,6 +5,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from ".
 import { optionsforLanguages } from "@/lib/lan";
 import { LanguageContext } from "@/context/Lan"
 import useDidUserScroll from "@/hooks/useDidUserScroll"
+import Link from "next/link";
 
 
 export default function Header() {
@@ -22,7 +23,8 @@ export default function Header() {
                 }
             `}
         >
-            <nav
+            <Link
+                href="/#announcements"
                 className={`
                     relative transition-all duration-300
                     ${isScrolled
@@ -36,9 +38,8 @@ export default function Header() {
                     src="/Logo.png"
                     fill
                     className="cursor-pointer absolute object-contain"
-                    onClick={() => router.push("/")}
                 />
-            </nav>
+            </Link>
 
             <nav>
                 <Select
