@@ -13,8 +13,6 @@ export const GetIndiaAnnouncements = asyncErrorHandler(async (req: Request, res:
     const pageSize = parseInt(limit as string) || 10;
     const skip = (pageNumber - 1) * pageSize;
 
-    console.log("Received Query Params:", { startDate, endDate });
-
     const announcementsStartDate = startDate
         ? new Date(startDate as string)
         : new Date(new Date().setDate(new Date().getDate() - 7));

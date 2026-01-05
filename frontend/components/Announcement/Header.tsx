@@ -1,5 +1,4 @@
 import React, { useContext } from "react";
-import { useRouter } from "next/router";
 import Image from "next/image";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 import { optionsforLanguages } from "@/lib/lan";
@@ -9,7 +8,6 @@ import Link from "next/link";
 
 
 export default function Header() {
-    const router = useRouter()
     const { isScrolled } = useDidUserScroll()
     const { language, onSelectLanguage } = useContext(LanguageContext)
 

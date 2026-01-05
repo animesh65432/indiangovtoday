@@ -11,7 +11,7 @@ const HeroSection: React.FC = () => {
     const { language } = useContext(LanguageContext)
     const { isScrolled } = useDidUserScroll()
     return (
-        <div className="relative bg-[url('/IndiaGovt.jpg')] h-[100vh] bg-cover bg-center flex flex-col gap-10">
+        <div className="relative bg-[url('/IndiaGovt.jpg')] h-[100vh] bg-cover bg-center flex flex-col gap-5 sm:gap-10">
             <div className="absolute inset-0 bg-black/35"></div>
             <div className="relative z-10 ">
                 <Header

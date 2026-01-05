@@ -14,14 +14,31 @@ const Announcement: React.FC<Props> = ({ Announcement }) => {
     const router = useRouter();
     const { language } = useContext(LanguageContext);
 
-    const redirectTo = (id: string) => {
-        router.push(`/announcement?id=${id}&lan=${language}`);
+    const redirectTo = (e: React.MouseEvent<HTMLDivElement>) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        // Add safety check
+        if (!Announcement?.announcementId) {
+            console.error('No announcement ID found');
+            return;
+        }
+
+        router.push(`/announcement?id=${Announcement.announcementId}&lan=${language}`);
     };
 
     return (
         <div
-            onClick={() => redirectTo(Announcement.announcementId)}
-            className="bg-transparent flex flex-col gap-4 w-[95%] sm:w-[85%] md:w-[65%] md:ml-[5%] hover:cursor-pointer hover:scale-105  transition-all duration-300 ease-in-out p-4 rounded-lg"
+            onClick={redirectTo}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    redirectTo(e as any);
+                }
+            }}
+            className="bg-transparent flex flex-col gap-4 w-[95%] sm:w-[85%] md:w-[65%] md:ml-[5%] hover:cursor-pointer hover:scale-105 transition-all duration-300 ease-in-out p-4 rounded-lg"
         >
             <div>
                 <h3 className="text-[#2d2c2c]">
