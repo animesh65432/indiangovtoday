@@ -12,7 +12,7 @@ const Discover: React.FC = () => {
                 <span className='text-gray-600'>{TranslateText[language].DISCOVER_MORE}</span>
                 <span className='text-[#E0614B]'>{TranslateText[language].INDIAN_ANNOUNCEMENTS}</span>
             </div>
-            <Button onClick={() => router.push("/announcements")} className='bg-[#E0614B] lg:w-[121px] hover:bg-[#dd8272] rounded-xl shadow-[4px_4px_0_0_#00000029]'>
+            <Button onClick={() => router.push("/announcements")} className='bg-[#E0614B] lg:w-[121px]  rounded-xl shadow-[4px_4px_0_0_#00000029]'>
                 {TranslateText[language].SEE_MORE}
             </Button>
         </div>

@@ -78,7 +78,7 @@ const StickyHeader: React.FC<Props> = ({ isVisible, SearchInput, SetSearchInput,
                         </SelectTrigger>
                         <SelectContent>
                             {optionsforLanguages.map((lan) => (
-                                <SelectItem key={lan.label} value={lan.label} className="font-medium hover:text-[#E0614B]">
+                                <SelectItem key={lan.label} value={lan.label} className="font-medium ">
                                     {lan.label}
                                 </SelectItem>
                             ))}
@@ -115,19 +115,19 @@ const StickyHeader: React.FC<Props> = ({ isVisible, SearchInput, SetSearchInput,
                         }}
                         value={language}
                     >
-                        <SelectTrigger className=" bg-[#FFFFFF] rounded-lg font-light shadow-[4px_4px_0_0_#00000029] text-[#E0614B] focus:ring-0 focus:outline-none w-[150px]">
+                        <SelectTrigger className=" bg-[#FFFFFF] rounded-lg font-light shadow-[4px_4px_0_0_#00000029] focus:ring-0 focus:outline-none">
                             <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
                             {optionsforLanguages.map((lan) => (
-                                <SelectItem key={lan.label} value={lan.label} className="font-medium hover:text-[#E0614B]">
+                                <SelectItem key={lan.label} value={lan.label} >
                                     {lan.label}
                                 </SelectItem>
                             ))}
                         </SelectContent>
                     </Select>
                 </div>
-                <Button onClick={handleClick} className=" sm:block w-[150px]  rounded-xl shadow-[4px_4px_0_0_#00000029]">
+                <Button onClick={handleClick} className=" sm:block   rounded-xl shadow-[4px_4px_0_0_#00000029]">
                     {TranslateText[language].SEARCH}
                 </Button>
             </div>
