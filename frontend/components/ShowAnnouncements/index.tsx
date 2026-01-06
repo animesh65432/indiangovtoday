@@ -47,7 +47,7 @@ const ShowAnnouncements: React.FC<Props> = ({
     }
 
     return (
-        <div className='flex flex-col gap-6  overflow-y-scroll pb-20'>
+        <div className='flex flex-col gap-6 pb-80 sm:pb-20'>
 
             <div className='w-[95%] sm:w-[85%] flex flex-col gap-6 pt-10 mx-auto '>
                 {Announcements.map((ann) => (
