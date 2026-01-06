@@ -29,7 +29,7 @@ const ShowAnnouncements: React.FC<Props> = ({
 
     if (IsLoading) {
         return (
-            <div className='flex flex-col p-8 gap-8 h-[55vh] lg:h-[70vh] overflow-y-scroll'>
+            <div className='flex flex-col p-8 gap-8 overflow-y-scroll'>
                 <AnnouncementSkeleton />
                 <AnnouncementSkeleton />
                 <AnnouncementSkeleton />
@@ -40,14 +40,14 @@ const ShowAnnouncements: React.FC<Props> = ({
 
     if (!IsLoading && Announcements.length === 0) {
         return (
-            <div className='h-[60vh] lg:h-[75vh] flex justify-center items-center '>
+            <div className='min-h-[60vh] flex justify-center items-center '>
                 <h3 className='text-black  text-xl  text-center'>No Announcements Found</h3>
             </div>
         )
     }
 
     return (
-        <div className='flex flex-col gap-6  h-[55vh] lg:h-[70vh] overflow-y-scroll'>
+        <div className='flex flex-col gap-6  overflow-y-scroll pb-20'>
             <div className='w-[95%] sm:w-[85%] flex flex-col gap-6 pt-10 mx-auto '>
                 {Announcements.map((ann) => (
                     <Announcement Announcement={ann} key={ann.title} />
