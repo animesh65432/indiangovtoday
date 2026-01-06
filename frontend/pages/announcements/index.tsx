@@ -21,14 +21,14 @@ const Announcementspage: React.FC = () => {
 
     if (!isReady) {
         return (
-            <div className='flex flex-col items-center justify-center min-h-dvh w-[100vw] bg-[url(/Annoucementsbackgroundimage.png)]'>
+            <div className='flex flex-col items-center justify-center min-h-dvh w-[100vw] '>
                 <LoaderCircle className='animate-spin h-8 w-8 text-black' />
             </div>
         )
     }
 
     return (
-        <div className='flex flex-col min-h-dvh w-[100vw] bg-[url(/Annoucementsbackgroundimage.png)]'>
+        <div className='flex flex-col min-h-dvh w-[100vw] '>
             <Announcements
                 QueryInput={QueryInput}
                 SetQueryInput={SetQueryInput}

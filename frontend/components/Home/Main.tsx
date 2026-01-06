@@ -115,7 +115,7 @@ const Main: React.FC = () => {
     };
 
     return (
-        <section id='announcements' className='flex flex-col h-[100vh] overflow-x-hidden'>
+        <section id='announcements' className='flex bg-[#E6E6E6] flex-col h-[100vh] overflow-x-hidden'>
             <div className='flex flex-col '>
                 <AnnoucementsHeader
                     SearchInput={SearchInput}

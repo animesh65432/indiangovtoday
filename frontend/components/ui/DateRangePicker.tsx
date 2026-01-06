@@ -737,6 +737,7 @@ export const DateRangePicker: FC<DateRangePickerProps> & {
                     </div>
                     <div className="flex justify-end gap-2 py-2 pr-4">
                         <Button
+                            className='text-black rounded-none border border-black'
                             onClick={() => {
                                 setIsOpen(false)
                                 resetValues()
@@ -746,6 +747,7 @@ export const DateRangePicker: FC<DateRangePickerProps> & {
                             {getTranslation('cancel', language)}
                         </Button>
                         <Button
+                            className='text-black rounded-none border border-black'
                             onClick={() => {
                                 setIsOpen(false)
                                 if (

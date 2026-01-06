@@ -1,16 +1,15 @@
 import React from "react";
 import { Skeleton } from "../ui/skeleton";
 
+
 const AnnouncementSkeleton: React.FC = () => {
     return (
-        <div className="p-4 rounded-2xl ">
-            <div className="space-y-4">
-                <Skeleton className="h-6 w-3/4 rounded-md bg-white" />
-                <Skeleton className="h-4 w-1/2 rounded-md bg-white" />
-                <Skeleton className="h-4 w-1/3 rounded-md bg-white" />
-                <Skeleton className="h-4 w-2/3 rounded-md bg-white" />
+        <div className="flex flex-col space-y-3 w-[65%] mx-auto">
+            <Skeleton className="h-[20vh] w-full rounded-xl mx-auto" />
+            <div className="space-y-2">
+                <Skeleton className="h-4 w-[200px] sm:w-[250px] mr-auto" />
+                <Skeleton className="h-4 w-[150px] sm:w-[200px] mr-auto" />
             </div>
-            <Skeleton className="h-10 w-1/2 rounded-md mt-4 bg-white" />
         </div>
     );
 };

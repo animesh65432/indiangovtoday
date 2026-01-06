@@ -157,7 +157,8 @@ h2 {
 
 h3 {
   font-size: 1.3rem;
-  font-weight: 600;
+  font-weight: 700;
+  font-family: var(--font-crimson);
 }
 
 @media (max-width: 768px) {
@@ -185,8 +186,9 @@ h4 {
 }
 
 p {
-  font-size: 1.2rem;
-  font-weight: 400;
+  font-size: 1.1rem;
+  font-weight: 500;
+  font-family: var(--font-manrope);
 }
 
 @media (max-width: 768px) {
@@ -197,9 +199,8 @@ p {
 }
 
 button {
-  font-family: var(--font-manrope);
+  font-family: var(--font-poppins);
   font-size: 1rem;
-  font-weight: 500;
 }
 
 select {
@@ -215,8 +216,9 @@ select {
 }
 
 svg {
-  width: 1.2rem;
-  height: 1.2rem;
+  width: 2vw;
+  height: 2vh;
+
 }
 
 @media (max-width: 768px) {
