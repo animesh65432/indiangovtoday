@@ -23,6 +23,17 @@ export default function Document() {
         <meta property="og:image" content="https://indiangovtoday.app/og-image.png" />
         <meta property="og:url" content="https://indiangovtoday.app/" />
         <meta property="og:title" content="Indian Announcements" />
+        <link
+          rel="preload"
+          as="image"
+          href="https://indgov.s3.ap-south-1.amazonaws.com/DesktopBackGroundPhoto.webp"
+        />
+        <link
+          rel="preload"
+          as="image"
+          href="https://indgov.s3.ap-south-1.amazonaws.com/MobileBackGroundImage.webp"
+          media="(max-width: 640px)"
+        />
       </Head>
       <body className="antialiased">
         <Main />

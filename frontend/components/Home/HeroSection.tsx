@@ -11,6 +11,8 @@ import {
 } from "@/components/ui/select";
 import Image from 'next/image'
 import { optionsforLanguages } from '@/lib/lan';
+import { TextGenerateEffect } from "../ui/text-generate-effect"
+
 
 const HeroSection: React.FC = () => {
     const { onSelectLanguage, language } = useContext(LanguageContext)
@@ -26,8 +28,8 @@ const HeroSection: React.FC = () => {
                     />
                 </div>
 
-                <h1 className='text-white '>
-                    {TranslateText[language as keyof typeof TranslateText]?.TITLE}
+                <h1 className='text-white'>
+                    <TextGenerateEffect words={TranslateText[language as keyof typeof TranslateText]?.TITLE || ""} />
                 </h1>
                 <p className='text-[#e2dbdb]'>
                     {TranslateText[language as keyof typeof TranslateText].DESCRIPTION}
