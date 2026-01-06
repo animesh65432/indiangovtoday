@@ -36,10 +36,9 @@ const AnnoucementsHeader: React.FC<Props> = ({ handleEnterKeyPress, SearchInput,
             return;
         }
         if (dontRedirect) {
-            console.log(dontRedirect)
             if (SetIsButtomClicked) {
                 console.log("Button Clicked")
-                SetIsButtomClicked(true)
+                SetIsButtomClicked((prev) => !prev);
             }
             return;
         }

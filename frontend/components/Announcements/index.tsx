@@ -24,40 +24,21 @@ const Announcements = ({ QueryInput, SetQueryInput, previousSearchInput, SetPrev
     const [page, Setpage] = useState<number>(1)
     const [limit] = useState<number>(10)
     const [IsButtomClicked, SetIsButtomClicked] = useState<boolean>(false)
-    const requestIdRef = useRef(0)
-    const currentRequestIdRef = useRef(0)
-    const isFetchingRef = useRef(false)
-    const paramsRef = useRef({ language, startdate, endDate, limit, page })
 
-
-    useEffect(() => {
-        paramsRef.current = { language, startdate, endDate, limit, page }
-    }, [language, startdate, endDate, limit, page])
-
-    const fetchGetIndiaAnnouncements = useCallback(async (page: number = 0, append: boolean = false) => {
-        const requestId = ++requestIdRef.current;
-        currentRequestIdRef.current = requestId;
-
+    const fetchGetIndiaAnnouncements = useCallback(async (page: number = 0, append: boolean = false, query: string) => {
         if (append) {
             SetIsLoadingMore(true)
         } else {
             SetIsLoading(true)
-            isFetchingRef.current = true
         }
 
         try {
-
-            if (!QueryInput || QueryInput.trim() === "") {
+            if (!query || query.trim() === "") {
                 SetAnnouncements([])
                 settotalPages(0)
+                SetPreviousSearchInput("")
                 return
             }
-
-            if (QueryInput === previousSearchInput) {
-                return
-            }
-
-            const { language, startdate, endDate, limit } = paramsRef.current
 
             const IndiaAnnouncementsResponse = await SerachallIndiaAnnouncements(
                 language,
@@ -65,18 +46,10 @@ const Announcements = ({ QueryInput, SetQueryInput, previousSearchInput, SetPrev
                 endDate,
                 page,
                 limit,
-                QueryInput
+                query
             ) as AnnouncementsResponse
 
-            console.log(IndiaAnnouncementsResponse)
-
-            if (requestId !== currentRequestIdRef.current) {
-                console.log('Discarding outdated request', requestId, 'current is', currentRequestIdRef.current)
-                return
-            }
-
             const newAnnouncements = IndiaAnnouncementsResponse.data
-
             settotalPages(IndiaAnnouncementsResponse.pagination.totalPages)
 
             if (append) {
@@ -85,41 +58,32 @@ const Announcements = ({ QueryInput, SetQueryInput, previousSearchInput, SetPrev
                 SetAnnouncements(newAnnouncements)
             }
 
+            SetPreviousSearchInput(query)
         } catch (error) {
-            if (requestId === currentRequestIdRef.current) {
-                console.error('Error fetching announcements:', error)
-            }
+            console.error("Error fetching announcements:", error)
         } finally {
-            if (requestId === currentRequestIdRef.current) {
-                SetIsLoading(false)
-                SetIsLoadingMore(false)
-                SetPreviousSearchInput(QueryInput)
-                isFetchingRef.current = false
-            }
+            SetIsLoading(false)
+            SetIsLoadingMore(false)
         }
-    }, [])
+    }, [language, startdate, endDate, limit])
 
 
     useEffect(() => {
-        requestIdRef.current++
-        Setpage(1)
-        isFetchingRef.current = false
-        SetAnnouncements([])
-        fetchGetIndiaAnnouncements(1, false)
-    }, [language, startdate, endDate, fetchGetIndiaAnnouncements, IsButtomClicked])
+        if (QueryInput !== previousSearchInput || IsButtomClicked) {
+            Setpage(1)
+            SetAnnouncements([])
+            fetchGetIndiaAnnouncements(1, false, QueryInput)
+        }
+    }, [language, startdate, endDate, IsButtomClicked])
 
     useEffect(() => {
-        if (page > 1) {
-            fetchGetIndiaAnnouncements(page, true)
+        if (page > 1 && QueryInput) {
+            fetchGetIndiaAnnouncements(page, true, QueryInput)
         }
-    }, [page, fetchGetIndiaAnnouncements])
-
+    }, [page])
 
     const OnLoadMoredata = () => {
-        if (page >= totalPages) {
-            return;
-        }
-        else {
+        if (page < totalPages) {
             Setpage((prev) => prev + 1)
         }
     }
@@ -153,5 +117,4 @@ const Announcements = ({ QueryInput, SetQueryInput, previousSearchInput, SetPrev
         </div>
     )
 }
-
 export default Announcements
