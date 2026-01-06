@@ -14,7 +14,6 @@ const Announcementspage: React.FC = () => {
     useEffect(() => {
         if (router.isReady) {
             if (SearchInput) {
-                SetPreviousSearchInput(SearchInput)
                 SetQueryInput(SearchInput)
             }
             setIsReady(true)

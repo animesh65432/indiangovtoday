@@ -23,7 +23,6 @@ const Announcements = ({ QueryInput, SetQueryInput, previousSearchInput, SetPrev
     const { language } = useContext(LanguageContext)
     const [page, Setpage] = useState<number>(1)
     const [limit] = useState<number>(10)
-    const [hasMore, setHasMore] = useState<boolean>(true)
     const [IsButtomClicked, SetIsButtomClicked] = useState<boolean>(false)
     const requestIdRef = useRef(0)
     const currentRequestIdRef = useRef(0)
@@ -54,11 +53,8 @@ const Announcements = ({ QueryInput, SetQueryInput, previousSearchInput, SetPrev
                 return
             }
 
-            if (previousSearchInput !== QueryInput) {
-                page = 1
-                SetAnnouncements([])
-                setHasMore(true)
-                isFetchingRef.current = false
+            if (QueryInput === previousSearchInput) {
+                return
             }
 
             const { language, startdate, endDate, limit } = paramsRef.current
@@ -107,11 +103,10 @@ const Announcements = ({ QueryInput, SetQueryInput, previousSearchInput, SetPrev
     useEffect(() => {
         requestIdRef.current++
         Setpage(1)
-        setHasMore(true)
         isFetchingRef.current = false
         SetAnnouncements([])
         fetchGetIndiaAnnouncements(1, false)
-    }, [language, startdate, endDate, fetchGetIndiaAnnouncements, IsButtomClicked, QueryInput])
+    }, [language, startdate, endDate, fetchGetIndiaAnnouncements, IsButtomClicked])
 
     useEffect(() => {
         if (page > 1) {
@@ -142,6 +137,8 @@ const Announcements = ({ QueryInput, SetQueryInput, previousSearchInput, SetPrev
                 handleEnterKeyPress={handleEnterKeyPress}
                 SearchInput={QueryInput}
                 SetSearchInput={SetQueryInput}
+                dontRedirect={true}
+                SetIsButtomClicked={SetIsButtomClicked}
             />
             <Main
                 Announcements={Announcements}

@@ -12,9 +12,11 @@ type Props = {
     handleEnterKeyPress: (event: React.KeyboardEvent<HTMLInputElement>) => void;
     SearchInput: string,
     SetSearchInput: React.Dispatch<React.SetStateAction<string>>,
+    dontRedirect: boolean
+    SetIsButtomClicked?: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const AnnoucementsHeader: React.FC<Props> = ({ handleEnterKeyPress, SearchInput, SetSearchInput }) => {
+const AnnoucementsHeader: React.FC<Props> = ({ handleEnterKeyPress, SearchInput, SetSearchInput, dontRedirect, SetIsButtomClicked }) => {
     const { startdate, endDate, onChangeDate } = useContext(Currentdate)
     const { language } = useContext(LanguageContext)
     const router = useRouter()
@@ -33,7 +35,17 @@ const AnnoucementsHeader: React.FC<Props> = ({ handleEnterKeyPress, SearchInput,
             toast.info("Please enter at least 3 characters to search announcements.");
             return;
         }
-        router.push(`/announcements?SearchInput=${SearchInput}`);
+        if (dontRedirect) {
+            console.log(dontRedirect)
+            if (SetIsButtomClicked) {
+                console.log("Button Clicked")
+                SetIsButtomClicked(true)
+            }
+            return;
+        }
+        else {
+            router.push(`/announcements?SearchInput=${SearchInput}`);
+        }
 
     }
 

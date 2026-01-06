@@ -103,6 +103,7 @@ const Main: React.FC = () => {
                     SearchInput={SearchInput}
                     SetSearchInput={SetSearchInput}
                     handleEnterKeyPress={handleEnterKeyPress}
+                    dontRedirect={false}
                 />
                 <ShowAnnouncements
                     LoadMoreData={OnLoadMoredata}
