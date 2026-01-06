@@ -48,6 +48,7 @@ const ShowAnnouncements: React.FC<Props> = ({
 
     return (
         <div className='flex flex-col gap-6  overflow-y-scroll pb-20'>
+
             <div className='w-[95%] sm:w-[85%] flex flex-col gap-6 pt-10 mx-auto '>
                 {Announcements.map((ann) => (
                     <Announcement Announcement={ann} key={ann.title} />
@@ -55,7 +56,7 @@ const ShowAnnouncements: React.FC<Props> = ({
             </div>
             {page < totalpage && (
                 <Button
-                    className='mx-auto rounded-none border border-black text-black'
+                    className='mx-auto hover:bg-gray-100 rounded-none border border-black text-black'
                     disabled={IsLoadingMore}
                     onClick={LoadMoreData}
                 >

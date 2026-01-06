@@ -7,6 +7,8 @@ import { Button } from "@/components/ui/button"
 import { LanguageContext } from "@/context/Lan";
 import { useRouter } from 'next/router';
 import { toast } from 'react-toastify';
+import { motion } from "framer-motion"
+import { fadeInUp } from "@/lib/animations";
 
 type Props = {
     handleEnterKeyPress: (event: React.KeyboardEvent<HTMLInputElement>) => void;
@@ -49,7 +51,13 @@ const AnnoucementsHeader: React.FC<Props> = ({ handleEnterKeyPress, SearchInput,
     }
 
     return (
-        <header className=' sticky top-0 h-[40vh] lg:h-[25vh] p-5 flex flex-col gap-6 bg-[#F8F8F8]'>
+        <motion.header
+            className=' sticky top-0 h-[40vh] lg:h-[25vh] p-5 flex flex-col gap-6 bg-[#F8F8F8]'
+            variants={fadeInUp}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, margin: "-100px" }}
+        >
             <nav className='flex justify-between items-center w-[90%] sm:w-[80%] mx-auto'>
                 <h2 className='text-[#272626] mx-auto lg:mx-0'>Latest Announcements </h2>
             </nav>
@@ -76,7 +84,7 @@ const AnnoucementsHeader: React.FC<Props> = ({ handleEnterKeyPress, SearchInput,
                     </li>
                 </ul>
             </nav>
-        </header>
+        </motion.header>
     )
 }
 

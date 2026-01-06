@@ -7,6 +7,8 @@ import { useRouter } from "next/router"
 import ShowAnnouncements from '../ShowAnnouncements';
 import AnnoucementsHeader from '@/components/AnnoucementsHeader';
 import { toast } from 'react-toastify';
+import { motion } from "framer-motion"
+import { fadeInContainer } from "@/lib/animations";
 
 
 const Main: React.FC = () => {
@@ -97,7 +99,14 @@ const Main: React.FC = () => {
     };
 
     return (
-        <section id='announcements' className='flex bg-[#E6E6E6] flex-col h-[100vh] overflow-x-hidden'>
+        <motion.section
+            id='announcements'
+            className='flex bg-[#E6E6E6] flex-col h-screen overflow-x-hidden'
+            variants={fadeInContainer}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, margin: "-100px" }}
+        >
             <div className='flex flex-col '>
                 <AnnoucementsHeader
                     SearchInput={SearchInput}
@@ -114,7 +123,7 @@ const Main: React.FC = () => {
                     IsLoadingMore={IsLoadingMore}
                 />
             </div>
-        </section>
+        </motion.section>
     );
 };
 
