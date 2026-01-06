@@ -235,14 +235,13 @@ input {
 }
 
 .hero-bg {
-  background-image: url('/MobileBackGroundImage.png');
-  background-size: cover;
+  background-image: url('https://indgov.s3.ap-south-1.amazonaws.com/DesktopBackGroundPhoto.png');
   background-position: center;
 }
 
-@media (min-width: 640px) {
+@media (max-width: 640px) {
   .hero-bg {
-    background-image: url('/DesktopBackGroundPhoto.png');
+    background-image: url('https://indgov.s3.ap-south-1.amazonaws.com/MobileBackGroundImage.png');
   }
 }
 
