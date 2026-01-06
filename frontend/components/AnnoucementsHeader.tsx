@@ -52,7 +52,7 @@ const AnnoucementsHeader: React.FC<Props> = ({ handleEnterKeyPress, SearchInput,
 
     return (
         <motion.header
-            className=' sticky top-0 h-[40vh] lg:h-[25vh] p-5 flex flex-col gap-6 bg-[#F8F8F8]'
+            className=' sticky top-0 p-5 flex flex-col gap-6 bg-[#F8F8F8] pb-10'
             variants={fadeInUp}
             initial="hidden"
             whileInView="show"
