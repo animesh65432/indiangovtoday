@@ -549,10 +549,10 @@ export const DateRangePicker: FC<DateRangePickerProps> & {
                 }}
             >
                 <PopoverTrigger asChild>
-                    <Button size={'lg'} variant="outline" className='md:shadow-[4px_4px_0_0_#00000029] bg-[#FFFFFF] mx-auto md:mx-0 rounded-lg justify-start text-left font-normal border border-[#272626] group-hover:text-[#1a1a1a] w-auto min-w-[240px] max-w-fit px-4' >
+                    <Button size={'lg'} className='border border-[#000000] text-[#000000] rounded-none' >
                         <div className="text-left">
                             <div className="py-1 flex items-center gap-2 whitespace-nowrap">
-                                <Image alt='logo' width={14} height={14} src="/calender.svg" />
+                                <Image alt='logo' width={18} height={18} src="/Calendar.svg" className='text-black' />
                                 <div>{`${formatDate(range.from, currentLocale)}${range.to != null ? ' - ' + formatDate(range.to, currentLocale) : ''
                                     }`}</div>
                             </div>
@@ -737,6 +737,7 @@ export const DateRangePicker: FC<DateRangePickerProps> & {
                     </div>
                     <div className="flex justify-end gap-2 py-2 pr-4">
                         <Button
+                            className='text-black rounded-none border border-black'
                             onClick={() => {
                                 setIsOpen(false)
                                 resetValues()
@@ -746,6 +747,7 @@ export const DateRangePicker: FC<DateRangePickerProps> & {
                             {getTranslation('cancel', language)}
                         </Button>
                         <Button
+                            className='text-black rounded-none border border-black'
                             onClick={() => {
                                 setIsOpen(false)
                                 if (

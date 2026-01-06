@@ -1,8 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Domine:wght@400;500;600;700&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Anton&display=swap");
-@import url('https://fonts.googleapis.com/css2?family=Anton&family=Crimson+Pro:ital,wght@0,400;0,600;0,700;1,400&family=Domine:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=Libertinus+Mono&family=Philosopher:ital,wght@0,400;0,700;1,400&family=Poppins:wght@400;500;600;700&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Crimson+Pro:ital,wght@0,200..900;1,200..900&family=Domine:wght@400..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Libertinus+Mono&family=Manrope:wght@200..800&family=Philosopher:ital,wght@0,400;0,700;1,400;1,700&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 @import "tailwindcss";
 @import "tw-animate-css";
 
@@ -41,6 +37,16 @@
   --sidebar-accent-foreground: oklch(0.208 0.042 265.755);
   --sidebar-border: oklch(0.929 0.013 255.508);
   --sidebar-ring: oklch(0.704 0.04 256.788);
+  --font-poppins: 'Poppins', sans-serif;
+  --font-inter: 'Inter', sans-serif;
+  --font-manrope: 'Manrope', sans-serif;
+  --font-anton: 'Anton', sans-serif;
+
+  --font-crimson: 'Crimson Pro', serif;
+  --font-domine: 'Domine', serif;
+  --font-philosopher: 'Philosopher', serif;
+
+  --font-mono: 'Libertinus Mono', monospace;
 }
 
 @theme inline {
@@ -98,13 +104,14 @@ body {
   width: 100vw;
   overflow-x: hidden;
   color: #565656;
+  font-family: var(--font-manrope);
   background-image: url('/bg.png');
 }
 
 h1 {
-  font-family: 'Crimson Pro', serif;
-  font-size: 2.4rem;
-  font-weight: 600;
+  font-size: 2.2rem;
+  font-family: var(--font-crimson);
+  font-weight: 700;
 }
 
 @media (max-width: 768px) {
@@ -114,17 +121,24 @@ h1 {
 
 }
 
-@media (max-width: 480px) {
+@media (max-width: 550px) {
   h1 {
-    font-size: 1.8rem;
+    font-size: 1.6rem;
+  }
+
+}
+
+@media (max-width: 400px) {
+  h1 {
+    font-size: 1.5rem;
   }
 
 }
 
 h2 {
-  font-family: "Domine", serif;
   font-size: 2rem;
-  font-weight: 600;
+  font-weight: 700;
+  font-family: var(--font-crimson);
 }
 
 @media (max-width: 768px) {
@@ -142,9 +156,9 @@ h2 {
 }
 
 h3 {
-  font-family: 'Crimson Pro', serif;
   font-size: 1.3rem;
-  font-weight: 600;
+  font-weight: 700;
+  font-family: var(--font-crimson);
 }
 
 @media (max-width: 768px) {
@@ -154,7 +168,6 @@ h3 {
 }
 
 h4 {
-  font-family: "Domine", serif;
   font-size: 1.4rem;
   font-weight: 600;
   color: black;
@@ -173,26 +186,27 @@ h4 {
 }
 
 p {
-  font-family: "Poppins", serif;
-  font-size: 1rem;
-  font-weight: 400;
+  font-size: 1.1rem;
+  font-weight: 500;
+  font-family: var(--font-manrope);
 }
 
 @media (max-width: 768px) {
   p {
-    font-size: 0.9rem;
+    font-size: 1rem;
   }
 
 }
 
 button {
-  font-family: "Poppins", serif;
+  font-family: var(--font-poppins);
   font-size: 1rem;
-  font-weight: 500;
-  background-color: white;
-  color: #272626;
-  border: 1px solid #272626;
 }
+
+select {
+  font-family: var(--font-poppins);
+}
+
 
 @media (max-width: 768px) {
   button {
@@ -201,13 +215,11 @@ button {
 
 }
 
-button:hover {
-  background-color: #dcd9d9;
-}
-
+/* 
 svg {
-  width: 1.2rem;
-  height: 1.2rem;
+  width: 2vw;
+  height: 2vh;
+
 }
 
 @media (max-width: 768px) {
@@ -216,11 +228,24 @@ svg {
     height: 1rem;
   }
 
-}
+} */
 
 input {
   background-color: white;
 }
+
+.hero-bg {
+  background-image: url('/MobileBackGroundImage.png');
+  background-size: cover;
+  background-position: center;
+}
+
+@media (min-width: 640px) {
+  .hero-bg {
+    background-image: url('/DesktopBackGroundPhoto.png');
+  }
+}
+
 
 #sharebutton {
   height: 3vh;

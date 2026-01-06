@@ -4,7 +4,8 @@ import { useRouter } from "next/router";
 import { LanguageContext } from "@/context/Lan";
 import { formatDateInLanguage } from "@/lib/formatDate";
 import { LANGUAGE_CODES } from "@/lib/lan";
-import { Calendar, MapPin, Landmark } from "lucide-react"
+import Image from "next/image";
+import { Button } from "../ui/button";
 
 type Props = {
     Announcement: AnnouncementType;
@@ -14,59 +15,58 @@ const Announcement: React.FC<Props> = ({ Announcement }) => {
     const router = useRouter();
     const { language } = useContext(LanguageContext);
 
-    const redirectTo = (e: React.MouseEvent<HTMLDivElement>) => {
+    const redirectTo = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         e.stopPropagation();
 
-        // Add safety check
         if (!Announcement?.announcementId) {
-            console.error('No announcement ID found');
+            console.error("No announcement ID found");
             return;
         }
 
-        router.push(`/announcement?id=${Announcement.announcementId}&lan=${language}`);
+        router.push(
+            `/announcement?id=${Announcement.announcementId}&lan=${language}`
+        );
     };
+
 
     return (
         <div
-            onClick={redirectTo}
-            role="button"
-            tabIndex={0}
-            onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    redirectTo(e as any);
-                }
-            }}
-            className="bg-transparent flex flex-col gap-4 w-[95%] sm:w-[85%] md:w-[65%] md:ml-[5%] hover:cursor-pointer hover:scale-105 transition-all duration-300 ease-in-out p-4 rounded-lg"
+            className="bg-[#FFFFFF] flex flex-col gap-4 w-[85%] mx-auto  p-4 "
         >
+            <div className="text-[#E04B4D] text-xl font-normal">{Announcement.state}</div>
             <div>
-                <h3 className="text-[#2d2c2c]">
+                <h3 className="text-black font-bold">
                     {Announcement.title}
                 </h3>
             </div>
 
-            <div className="text-gray-900 text-sm md:text-base leading-relaxed whitespace-pre-line flex flex-col gap-2">
+            <div className="text-[#4B4B4B] text-sm md:text-base leading-relaxed whitespace-pre-line flex flex-col gap-2">
                 <p className="leading-7 lg:leading-8">
                     {Announcement.description}
                 </p>
+            </div>
 
-                <div className="flex flex-col gap-2 pt-2 justify-between text-gray-800 text-[0.9rem]">
-                    <span className="flex items-center gap-2">
-                        <MapPin className="w-4 h-4" />{Announcement.state}
-                    </span>
-                    <span className="flex items-center gap-2">
-                        <Landmark className="w-4 h-4" />
-                        {Announcement.department}
-                    </span>
-                    <span className="flex items-center gap-2">
-                        <Calendar className="w-4 h-4" />
-                        {formatDateInLanguage(
-                            Announcement.date,
-                            LANGUAGE_CODES[language]
-                        )}
-                    </span>
-                </div>
+            <div className="flex flex-col gap-3 sm:gap-0 sm:flex-row sm:justify-between text-[#777777]">
+                <span className="flex items-center gap-1">
+                    <div>
+                        <Image
+                            src="/TimeCircle.svg"
+                            alt="source icon"
+                            width={20}
+                            height={20}
+                        />
+                    </div>
+                    {formatDateInLanguage(
+                        Announcement.date,
+                        LANGUAGE_CODES[language]
+                    )}
+                </span>
+                <Button
+                    onClick={redirectTo}
+                    className="text-black border w-fit  border-black rounded-none  hover:cursor-pointer">
+                    See Details
+                </Button>
             </div>
         </div>
     );

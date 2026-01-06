@@ -4,10 +4,9 @@ import { Announcement as AnnouncementTypes, AnnouncementsResponse } from "@/type
 import { LanguageContext } from '@/context/Lan';
 import { Currentdate } from "@/context/Currentdate";
 import { useRouter } from "next/router"
-import useDidUserScroll from "@/hooks/useDidUserScroll"
 import ShowAnnouncements from '../ShowAnnouncements';
-import StickyHeader from '../StickyHeader';
-import AnnoucementsHeader from './AnnoucementsHeader';
+import AnnoucementsHeader from '@/components/AnnoucementsHeader';
+import { toast } from 'react-toastify';
 
 
 const Main: React.FC = () => {
@@ -16,16 +15,11 @@ const Main: React.FC = () => {
     const [IsLoading, SetIsLoading] = useState<boolean>(false)
     const [IsLoadingMore, SetIsLoadingMore] = useState<boolean>(false)
     const [Announcements, SetAnnouncements] = useState<AnnouncementTypes[]>([])
-    const { startdate, endDate, onChangeDate } = useContext(Currentdate)
-    const { language, onSelectLanguage } = useContext(LanguageContext)
+    const { startdate, endDate } = useContext(Currentdate)
+    const { language } = useContext(LanguageContext)
     const [page, Setpage] = useState<number>(1)
     const [limit] = useState<number>(10)
-    const [hasMore, setHasMore] = useState<boolean>(true)
-    const requestIdRef = useRef(0)
-    const currentRequestIdRef = useRef(0)
-    const isFetchingRef = useRef(false)
     const paramsRef = useRef({ language, startdate, endDate, limit, page })
-    const { isScrolled } = useDidUserScroll(900)
     const router = useRouter()
 
     useEffect(() => {
@@ -33,14 +27,11 @@ const Main: React.FC = () => {
     }, [language, startdate, endDate, limit, page])
 
     const fetchGetIndiaAnnouncements = useCallback(async (page: number = 0, append: boolean = false) => {
-        const requestId = ++requestIdRef.current;
-        currentRequestIdRef.current = requestId;
 
         if (append) {
             SetIsLoadingMore(true)
         } else {
             SetIsLoading(true)
-            isFetchingRef.current = true
         }
 
         try {
@@ -55,11 +46,6 @@ const Main: React.FC = () => {
             ) as AnnouncementsResponse
 
 
-            if (requestId !== currentRequestIdRef.current) {
-                console.log('Discarding outdated request', requestId, 'current is', currentRequestIdRef.current)
-                return
-            }
-
             const newAnnouncements = IndiaAnnouncementsResponse.data
 
             settotalPages(IndiaAnnouncementsResponse.pagination.totalPages)
@@ -70,26 +56,15 @@ const Main: React.FC = () => {
                 SetAnnouncements(newAnnouncements)
             }
 
-        } catch (error) {
-
-            if (requestId === currentRequestIdRef.current) {
-                console.error('Error fetching announcements:', error)
-            }
         } finally {
-            if (requestId === currentRequestIdRef.current) {
-                SetIsLoading(false)
-                SetIsLoadingMore(false)
-                isFetchingRef.current = false
-            }
+            SetIsLoading(false)
+            SetIsLoadingMore(false)
         }
     }, [])
 
 
     useEffect(() => {
-        requestIdRef.current++
         Setpage(1)
-        setHasMore(true)
-        isFetchingRef.current = false
         SetAnnouncements([])
         fetchGetIndiaAnnouncements(1, false)
     }, [language, startdate, endDate, fetchGetIndiaAnnouncements])
@@ -113,23 +88,22 @@ const Main: React.FC = () => {
     const handleEnterKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.key === 'Enter') {
             event.preventDefault();
+            if (SearchInput.trim() === "" || SearchInput.length < 3) {
+                toast.info("Please enter at least 3 characters to search.");
+                return;
+            }
             router.push(`/announcements?SearchInput=${SearchInput}`);
         }
     };
 
     return (
-        <section id='announcements' className='flex flex-col p-4'>
-            <StickyHeader
-                isVisible={isScrolled}
-                SearchInput={SearchInput}
-                SetSearchInput={SetSearchInput}
-                route='/'
-            />
-            <div className='flex flex-col gap-14 md:gap-20'>
+        <section id='announcements' className='flex bg-[#E6E6E6] flex-col h-[100vh] overflow-x-hidden'>
+            <div className='flex flex-col '>
                 <AnnoucementsHeader
                     SearchInput={SearchInput}
                     SetSearchInput={SetSearchInput}
                     handleEnterKeyPress={handleEnterKeyPress}
+                    dontRedirect={false}
                 />
                 <ShowAnnouncements
                     LoadMoreData={OnLoadMoredata}
