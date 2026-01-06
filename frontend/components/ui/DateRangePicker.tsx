@@ -553,7 +553,7 @@ export const DateRangePicker: FC<DateRangePickerProps> & {
                         <div className="text-left">
                             <div className="py-1 flex items-center gap-2 whitespace-nowrap">
                                 <Image alt='logo' width={18} height={18} src="/Calendar.svg" className='text-black' />
-                                <div>{`${formatDate(range.from, currentLocale)}${range.to != null ? ' - ' + formatDate(range.to, currentLocale) : ''
+                                <div className='font-semibold text-[#000000]'>{`${formatDate(range.from, currentLocale)}${range.to != null ? ' - ' + formatDate(range.to, currentLocale) : ''
                                     }`}</div>
                             </div>
                             {rangeCompare != null && (
