@@ -29,7 +29,7 @@ const ShowAnnouncements: React.FC<Props> = ({
 
     if (IsLoading) {
         return (
-            <div className='flex flex-col p-8 gap-8 overflow-y-scroll'>
+            <div className='flex flex-col p-8 gap-8 '>
                 <AnnouncementSkeleton />
                 <AnnouncementSkeleton />
                 <AnnouncementSkeleton />

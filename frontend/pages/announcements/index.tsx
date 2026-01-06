@@ -29,14 +29,12 @@ const Announcementspage: React.FC = () => {
     }
 
     return (
-        <div className='flex flex-col min-h-dvh w-[100vw] bg-[#E6E6E6]'>
-            <Announcements
-                QueryInput={QueryInput}
-                SetQueryInput={SetQueryInput}
-                previousSearchInput={previousSearchInput}
-                SetPreviousSearchInput={SetPreviousSearchInput}
-            />
-        </div>
+        <Announcements
+            QueryInput={QueryInput}
+            SetQueryInput={SetQueryInput}
+            previousSearchInput={previousSearchInput}
+            SetPreviousSearchInput={SetPreviousSearchInput}
+        />
     )
 }
 

@@ -96,7 +96,7 @@ const Announcements = ({ QueryInput, SetQueryInput, previousSearchInput, SetPrev
     };
 
     return (
-        <div className='flex flex-col gap-4 p-3 sm:p-0'>
+        <div className='flex flex-col  h-[100vh] overflow-y-auto bg-[#E6E6E6]'>
             <AnnoucementsHeader
                 handleEnterKeyPress={handleEnterKeyPress}
                 SearchInput={QueryInput}
