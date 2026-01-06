@@ -7,7 +7,7 @@ import HeroSection from './HeroSection'
 
 
 export default function Home() {
-    const { onChangeDate, startdate: start, endDate: end } = useContext(Currentdate);
+    const { onChangeDate } = useContext(Currentdate);
     const searchParams = useSearchParams()
     const startdate = searchParams.get('startdate')
     const enddate = searchParams.get('enddate')
