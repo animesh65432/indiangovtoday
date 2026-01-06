@@ -6,6 +6,7 @@ import { TranslateText } from "@/lib/translatetext"
 import { Button } from "@/components/ui/button"
 import { LanguageContext } from "@/context/Lan";
 import { useRouter } from 'next/router';
+import { toast } from 'react-toastify';
 
 type Props = {
     handleEnterKeyPress: (event: React.KeyboardEvent<HTMLInputElement>) => void;
@@ -28,6 +29,10 @@ const AnnoucementsHeader: React.FC<Props> = ({ handleEnterKeyPress, SearchInput,
     };
 
     const handleClick = () => {
+        if (!SearchInput || SearchInput.trim() === "" || SearchInput.length < 3) {
+            toast.info("Please enter at least 3 characters to search announcements.");
+            return;
+        }
         router.push(`/announcements?SearchInput=${SearchInput}`);
 
     }

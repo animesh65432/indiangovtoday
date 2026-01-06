@@ -215,6 +215,7 @@ select {
 
 }
 
+/* 
 svg {
   width: 2vw;
   height: 2vh;
@@ -227,7 +228,7 @@ svg {
     height: 1rem;
   }
 
-}
+} */
 
 input {
   background-color: white;

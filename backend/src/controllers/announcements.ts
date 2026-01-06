@@ -13,6 +13,7 @@ export const GetIndiaAnnouncements = asyncErrorHandler(async (req: Request, res:
     const pageSize = parseInt(limit as string) || 10;
     const skip = (pageNumber - 1) * pageSize;
 
+
     const announcementsStartDate = startDate
         ? new Date(startDate as string)
         : new Date(new Date().setDate(new Date().getDate() - 7));
@@ -52,7 +53,7 @@ export const GetIndiaAnnouncements = asyncErrorHandler(async (req: Request, res:
                 _id: 0
             }
         })
-        .sort({ date: -1 })
+        .sort({ date: -1, _id: -1 })
         .skip(skip)
         .limit(pageSize)
         .toArray()
@@ -202,7 +203,7 @@ export const SerachallIndiaAnnouncements = asyncErrorHandler(async (req: Request
             .find(filter, {
                 projection: { sections: 0, language: 0, source_link: 0 }
             })
-            .sort({ date: -1 })
+            .sort({ date: -1, _id: -1 })
             .skip(skip)
             .limit(pageSize)
             .toArray();

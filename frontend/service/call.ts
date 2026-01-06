@@ -57,8 +57,12 @@ export async function Call<T, ResponseType>({
 
         if (axios.isAxiosError(error)) {
             if (error.response) {
-                console.error("Error Response:", error.response.data);
-                toast.error(`${error.response.data.message}`);
+                if (error.response.data.error) {
+                    toast.error(`${error.response.data.error}`);
+                }
+                else {
+                    toast.error(`${error.response.data.message}`);
+                }
             } else if (error.request) {
                 console.error("Error Request:", error.request);
             } else {

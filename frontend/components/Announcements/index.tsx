@@ -1,34 +1,26 @@
 "use client"
 import React, { useEffect, useState, useContext, useRef, useCallback } from 'react'
-import Header from '@/components/Home/Header'
 import { SerachallIndiaAnnouncements } from "@/api/announcements"
 import { Currentdate } from "@/context/Currentdate"
 import { LanguageContext } from "@/context/Lan"
 import { Announcement as AnnouncementTypes, AnnouncementsResponse } from "@/types"
-import StickyHeader from '../StickyHeader'
 import Main from './Main'
-import useDidUserScroll from "@/hooks/useDidUserScroll"
-import { Input } from '../ui/input'
-import { Button } from '../ui/button'
-import { TranslateText } from "@/lib/translatetext"
-import Image from 'next/image'
-import { DateRangePicker } from '../ui/DateRangePicker'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select'
-import { optionsforLanguages } from '@/lib/lan'
-import { useRouter } from "next/router"
+import AnnoucementsHeader from '../AnnoucementsHeader'
 
 type Props = {
     QueryInput: string,
     SetQueryInput: React.Dispatch<React.SetStateAction<string>>
+    previousSearchInput: string,
+    SetPreviousSearchInput: React.Dispatch<React.SetStateAction<string>>
 }
 
-const Announcements = ({ QueryInput, SetQueryInput }: Props) => {
+const Announcements = ({ QueryInput, SetQueryInput, previousSearchInput, SetPreviousSearchInput }: Props) => {
     const [totalPages, settotalPages] = useState<number>(0)
     const [IsLoading, SetIsLoading] = useState<boolean>(false)
     const [IsLoadingMore, SetIsLoadingMore] = useState<boolean>(false)
     const [Announcements, SetAnnouncements] = useState<AnnouncementTypes[]>([])
-    const { startdate, endDate, onChangeDate } = useContext(Currentdate)
-    const { language, onSelectLanguage } = useContext(LanguageContext)
+    const { startdate, endDate } = useContext(Currentdate)
+    const { language } = useContext(LanguageContext)
     const [page, Setpage] = useState<number>(1)
     const [limit] = useState<number>(10)
     const [hasMore, setHasMore] = useState<boolean>(true)
@@ -37,8 +29,7 @@ const Announcements = ({ QueryInput, SetQueryInput }: Props) => {
     const currentRequestIdRef = useRef(0)
     const isFetchingRef = useRef(false)
     const paramsRef = useRef({ language, startdate, endDate, limit, page })
-    const { isScrolled } = useDidUserScroll()
-    const router = useRouter()
+
 
     useEffect(() => {
         paramsRef.current = { language, startdate, endDate, limit, page }
@@ -56,6 +47,20 @@ const Announcements = ({ QueryInput, SetQueryInput }: Props) => {
         }
 
         try {
+
+            if (!QueryInput || QueryInput.trim() === "") {
+                SetAnnouncements([])
+                settotalPages(0)
+                return
+            }
+
+            if (previousSearchInput !== QueryInput) {
+                page = 1
+                SetAnnouncements([])
+                setHasMore(true)
+                isFetchingRef.current = false
+            }
+
             const { language, startdate, endDate, limit } = paramsRef.current
 
             const IndiaAnnouncementsResponse = await SerachallIndiaAnnouncements(
@@ -66,6 +71,8 @@ const Announcements = ({ QueryInput, SetQueryInput }: Props) => {
                 limit,
                 QueryInput
             ) as AnnouncementsResponse
+
+            console.log(IndiaAnnouncementsResponse)
 
             if (requestId !== currentRequestIdRef.current) {
                 console.log('Discarding outdated request', requestId, 'current is', currentRequestIdRef.current)
@@ -90,6 +97,7 @@ const Announcements = ({ QueryInput, SetQueryInput }: Props) => {
             if (requestId === currentRequestIdRef.current) {
                 SetIsLoading(false)
                 SetIsLoadingMore(false)
+                SetPreviousSearchInput(QueryInput)
                 isFetchingRef.current = false
             }
         }
@@ -103,7 +111,7 @@ const Announcements = ({ QueryInput, SetQueryInput }: Props) => {
         isFetchingRef.current = false
         SetAnnouncements([])
         fetchGetIndiaAnnouncements(1, false)
-    }, [language, startdate, endDate, fetchGetIndiaAnnouncements, IsButtomClicked])
+    }, [language, startdate, endDate, fetchGetIndiaAnnouncements, IsButtomClicked, QueryInput])
 
     useEffect(() => {
         if (page > 1) {
@@ -111,17 +119,6 @@ const Announcements = ({ QueryInput, SetQueryInput }: Props) => {
         }
     }, [page, fetchGetIndiaAnnouncements])
 
-
-
-    const OnChangeDateRangePicker = (values: {
-        range: { from?: Date; to?: Date };
-        rangeCompare?: { from?: Date; to?: Date };
-    }) => {
-        if (values.range.from && values.range.to) {
-            onChangeDate(values.range.from, values.range.to);
-            SetQueryInput("");
-        }
-    };
 
     const OnLoadMoredata = () => {
         if (page >= totalPages) {
@@ -141,67 +138,11 @@ const Announcements = ({ QueryInput, SetQueryInput }: Props) => {
 
     return (
         <div className='flex flex-col gap-4 p-3 sm:p-0'>
-            <StickyHeader
-                route="/announcements"
-                isVisible={isScrolled}
+            <AnnoucementsHeader
+                handleEnterKeyPress={handleEnterKeyPress}
                 SearchInput={QueryInput}
                 SetSearchInput={SetQueryInput}
-                SetIsButtomClicked={SetIsButtomClicked}
             />
-
-            <Header
-                isScrolled={isScrolled}
-            />
-            <div className='flex flex-col bg-white w-[80%] rounded-md mx-auto sm:mx-0 sm:w-[100%] sm:bg-transparent'>
-                <div className='block sm:hidden w-[85%] mx-auto p-4'>
-                    <div className={`relative h-[47px] w-[150px] mx-auto`} onClick={() => router.push("/")}>
-                        <Image src="/Logo.png" alt='logo' fill />
-                    </div>
-                </div>
-                <div className='flex gap-2 flex-col sm:flex-row items-center sm:items-start pb-3 sm:p-0'>
-                    <Input
-                        className=' w-[80%] sm:w-[50%]  bg-white sm:ml-[20%] text-black'
-                        placeholder={TranslateText[language].INPUT_PLACEHOLDER}
-                        onKeyDown={handleEnterKeyPress}
-                        value={QueryInput}
-                        onChange={(e) => SetQueryInput(e.target.value)}
-                    />
-                    <div className=' block mx-auto sm:hidden'>
-                        <DateRangePicker
-                            onUpdate={OnChangeDateRangePicker}
-                            initialDateFrom={startdate}
-                            initialDateTo={endDate}
-                            align="start"
-                            locale="en-GB"
-                            showCompare={false}
-                        />
-                    </div>
-                    <div className=' block sm:hidden'>
-                        <Select
-                            onValueChange={(value) => {
-                                onSelectLanguage(value);
-                            }}
-                            value={language}
-                        >
-                            <SelectTrigger className="[@media(min-width:450px)]:mx-0  border border-[#E0614B] self-end  bg-[#FFFFFF] rounded-lg   font-light shadow-[4px_4px_0_0_#00000029] text-[#E0614B] data-[placeholder]:text-[#E0614B] focus:ring-0 focus:outline-none">
-                                <SelectValue className="" />
-                            </SelectTrigger>
-                            <SelectContent className="text-[#E0614B]">
-                                {optionsforLanguages.map((lan) => (
-                                    <SelectItem
-                                        key={lan.label}
-                                        value={lan.label}
-                                        className="font-medium hover:text-[#E0614B] "
-                                    >
-                                        {lan.label}
-                                    </SelectItem>
-                                ))}
-                            </SelectContent>
-                        </Select>
-                    </div>
-                    <Button onClick={() => SetIsButtomClicked((prev) => !prev)} className='bg-[#E0614B] w-[121px] hover:bg-[#dd8272] rounded-xl shadow-[4px_4px_0_0_#00000029]'>{TranslateText[language].SEARCH}</Button>
-                </div>
-            </div>
             <Main
                 Announcements={Announcements}
                 IsLoading={IsLoading}
