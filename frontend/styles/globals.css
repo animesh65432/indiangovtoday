@@ -235,17 +235,31 @@ input {
 }
 
 .hero-bg {
-  background-image: url('https://indgov.s3.ap-south-1.amazonaws.com/DesktopBackGroundPhoto.png');
+  background-image: url('/BackGroundPhoto.jpg');
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
   min-height: 100vh;
+  position: relative;
+  /* Required for pseudo-element positioning */
 }
 
-@media (max-width: 640px) {
-  .hero-bg {
-    background-image: url('https://indgov.s3.ap-south-1.amazonaws.com/MobileBackGroundImage.png');
-  }
+.hero-bg::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  /* Adjust 0.5 for more/less darkness (0.3 lighter, 0.7 darker) */
+  z-index: 1;
+}
+
+/* Content inside .hero-bg should have higher z-index if needed */
+.hero-bg>* {
+  position: relative;
+  z-index: 2;
 }
 
 
