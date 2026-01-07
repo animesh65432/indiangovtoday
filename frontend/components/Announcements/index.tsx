@@ -6,6 +6,7 @@ import { LanguageContext } from "@/context/Lan"
 import { Announcement as AnnouncementTypes, AnnouncementsResponse } from "@/types"
 import Main from './Main'
 import AnnoucementsHeader from '../AnnoucementsHeader'
+import { Button } from '../ui/button'
 
 type Props = {
     QueryInput: string,
@@ -103,6 +104,7 @@ const Announcements = ({ QueryInput, SetQueryInput, previousSearchInput, SetPrev
                 SetSearchInput={SetQueryInput}
                 dontRedirect={true}
                 SetIsButtomClicked={SetIsButtomClicked}
+                ShowBackButton={true}
             />
             <Main
                 Announcements={Announcements}

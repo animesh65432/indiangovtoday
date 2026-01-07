@@ -22,6 +22,8 @@ const Main: React.FC<Props> = ({ IsLoadingMore, page, limit, OnLoadMoredata, Ann
             totalpage={limit}
             IsLoadingMore={IsLoadingMore}
             LoadMoreData={OnLoadMoredata}
+            ShowBackButtom={true}
+
         />
     );
 };

@@ -113,6 +113,7 @@ const Main: React.FC = () => {
                     SetSearchInput={SetSearchInput}
                     handleEnterKeyPress={handleEnterKeyPress}
                     dontRedirect={false}
+                    ShowBackButton={false}
                 />
                 <ShowAnnouncements
                     LoadMoreData={OnLoadMoredata}
@@ -121,6 +122,7 @@ const Main: React.FC = () => {
                     page={page}
                     totalpage={totalPages}
                     IsLoadingMore={IsLoadingMore}
+                    ShowBackButtom={false}
                 />
             </div>
         </motion.section>
