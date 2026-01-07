@@ -8,6 +8,7 @@ import { TranslateText } from "@/lib/translatetext"
 import { Inbox } from 'lucide-react'
 import { LanguageContext } from "@/context/Lan"
 import Explore from './Explore'
+import Subscribe from '@/components/Subscribe'
 
 type Props = {
     id: string
@@ -17,6 +18,7 @@ type Props = {
 const Announcement = ({ id, lan }: Props) => {
     const [announcement, setannouncement] = useState<ShowAnnouncementsTypes | null>(null)
     const [IsLoading, SetIsLoading] = useState<boolean>(false)
+    const [toggle, setToggle] = useState<boolean>(false)
     const { language } = useContext(LanguageContext)
 
     async function fetch() {
@@ -38,6 +40,9 @@ const Announcement = ({ id, lan }: Props) => {
 
     return (
         <main className=" flex flex-col  min-h-dvh bg-[#F8F8F8]">
+            {!toggle &&
+                <Subscribe />
+            }
             {!IsLoading ?
                 (announcement ?
                     <ShowAnnouncement
@@ -50,6 +55,8 @@ const Announcement = ({ id, lan }: Props) => {
                         category={announcement.category}
                         department={announcement.department}
                         sections={announcement.sections}
+                        toggle={toggle}
+                        setToggle={setToggle}
                     /> :
                     <main className='h-[70vh] flex justify-center items-center'>
                         <div className='flex items-center gap-2'>

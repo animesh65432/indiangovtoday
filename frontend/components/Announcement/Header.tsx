@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import Image from "next/image";
 import { SectionTypes } from "@/types";
 import { useRouter } from "next/navigation";
@@ -10,11 +10,12 @@ import { usetexttospech } from "@/hooks/usetexttospech";
 type Props = {
     title: string
     sections: SectionTypes[]
+    toggle: boolean,
+    setToggle: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-export default function Header({ sections, title }: Props) {
+export default function Header({ sections, title, toggle, setToggle }: Props) {
     const router = useRouter();
-    const [toggle, setToggle] = useState<boolean>(false)
     const { call, stop, togglePlayPause, IsLoading, isPlaying, isPaused } = usetexttospech()
     const handleAudioAction = async () => {
         if (IsLoading) return

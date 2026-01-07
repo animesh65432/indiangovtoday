@@ -16,15 +16,18 @@ type Props = {
     category: string,
     department: string,
     sections: SectionTypes[]
+    toggle: boolean,
+    setToggle: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const ShowAnnouncement: React.FC<Props> = ({ title, source, lan, date, state, sections, department, category }) => {
-
+const ShowAnnouncement: React.FC<Props> = ({ toggle, setToggle, title, source, lan, date, state, sections, department, category }) => {
     return (
         <section className='w-[82%] mx-auto  flex flex-col gap-10 pt-7  pb-8'>
             <Header
                 title={title}
                 sections={sections}
+                toggle={toggle}
+                setToggle={setToggle}
             />
             <Title
                 title={title}

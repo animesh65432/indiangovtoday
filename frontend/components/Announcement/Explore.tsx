@@ -31,8 +31,6 @@ const Explore: React.FC = () => {
         fetchExploreAnnouncements()
     }, [])
 
-    console.log(Announcements)
-
     return (
         <div className='bg-[#E6E6E6] p-10 flex flex-col gap-6'>
             <ShowAnnouncements
