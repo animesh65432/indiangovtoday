@@ -6,7 +6,6 @@ import { LanguageContext } from "@/context/Lan"
 import { Announcement as AnnouncementTypes, AnnouncementsResponse } from "@/types"
 import Main from './Main'
 import AnnoucementsHeader from '../AnnoucementsHeader'
-import { Button } from '../ui/button'
 
 type Props = {
     QueryInput: string,

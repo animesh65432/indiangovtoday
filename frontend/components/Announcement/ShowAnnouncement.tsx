@@ -6,8 +6,6 @@ import Details from './Details'
 import TextDiv from "./TextDiv"
 import KeyInforMation from './KeyInforMation'
 
-
-
 type Props = {
     title: string
     source: string
@@ -60,6 +58,9 @@ const ShowAnnouncement: React.FC<Props> = ({ title, source, lan, date, state, se
             <KeyInforMation
                 heading={sections[2].heading}
                 points={'points' in sections[2] ? sections[2].points : []}
+            />
+            <Title
+                title='More Like this'
             />
         </section>
     )

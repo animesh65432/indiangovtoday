@@ -52,8 +52,6 @@ const ShowAnnouncements: React.FC<Props> = ({
         )
     }
 
-    console.log(ShowBackButtom)
-
     return (
         <div className='flex flex-col gap-6 pb-80 sm:pb-20'>
             {ShowBackButtom && (
