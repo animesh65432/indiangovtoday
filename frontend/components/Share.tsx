@@ -69,24 +69,24 @@ export default function ShareSection({ Announcement, setisShareOPen }: Props) {
     }
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-opacity-50 backdrop-blur-sm p-4 animate-in fade-in duration-300">
+        <div className="fixed h-screen inset-0 z-50 flex items-center justify-center bg-opacity-50 backdrop-blur-sm p-4 animate-in fade-in duration-300">
             <div
                 ref={modalRef}
                 className="bg-white rounded-2xl shadow-2xl max-w-md w-full mx-4 transform animate-in slide-in-from-bottom-4 duration-300"
             >
+                <button
+                    onClick={handleClose}
+                    className="ml-auto pt-3 pr-3  block"
+                    aria-label="Close modal"
+                    style={{ border: 0 }}
+                >
+                    <X
+                        className="text-black w-5 h-5 sm:w-6 sm:h-6"
+                        id="closeShareModal"
+                    />
+                </button>
                 {/* Header */}
                 <div className="relative p-4 sm:p-6 pb-3 sm:pb-4 border-b border-gray-100">
-                    <button
-                        onClick={handleClose}
-                        className="absolute top-3 right-3 sm:top-4 sm:right-4 p-2 rounded-full hover:bg-gray-100 transition-colors duration-200"
-                        aria-label="Close modal"
-                        style={{ border: 0 }}
-                    >
-                        <X
-                            className="text-black w-5 h-5 sm:w-6 sm:h-6"
-                            id="closeShareModal"
-                        />
-                    </button>
 
                     <div className="flex items-center gap-3 mb-2">
                         <div >

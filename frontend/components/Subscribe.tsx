@@ -54,32 +54,38 @@ const Subscribe: React.FC = () => {
         }
     };
 
+    const handleClose = () => {
+        setShowPopup(false);
+        setMounted(false)
+        localStorage.setItem("Email", "subscribed");
+    }
+
     const popup = (
         <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
-            <div className="bg-white p-6 rounded-2xl shadow-lg max-w-sm w-full text-center">
+            <div className="bg-white p-6 rounded-2xl shadow-lg max-w-sm w-full text-center flex flex-col gap-2">
                 <div className="flex w-full  justify-end">
-                    <X className="text-black " size={28} onClick={() => setMounted(false)} />
+                    <X className="text-black " size={28} onClick={handleClose} />
                 </div>
-                <h5
-                    className="text-xl md:text-2xl font-semibold mb-2 text-black"
+                <h6
+                    className="text-xl md:text-2xl font-semibold mb-2 text-[#E0614B]"
                 >
                     {TranslateText[language].SUBSCRIBE_TO_ALERTS}
-                </h5>
-                <p className="text-gray-600 mb-4">
+                </h6>
+                <span className="text-black mb-4">
                     {TranslateText[language].NEVER_MISS_AN_UPDATE}
-                </p>
+                </span>
                 <form className="flex flex-col gap-3">
                     <input
                         value={Email}
                         onChange={(e) => setEmail(e.target.value)}
                         type="text"
                         placeholder={`${TranslateText[language].ENTER_YOUR_EMAIL}`}
-                        className="border rounded-md p-2 text-black w-full placeholder:text-black   border-black"
+                        className="border rounded-none p-2 text-black w-full placeholder:text-black   border-black"
                     />
                     <button
                         type="button"
                         onClick={handlesubscribe}
-                        className="p-2 rounded-md"
+                        className="p-2 border border-black rounded-none text-black"
                     >
                         {IsLoading ? <LoaderCircle className="text-black P-4 mx-auto animate-spin h-6 w-6" /> : `${TranslateText[language].SUBSCRIBE}`}
                     </button>

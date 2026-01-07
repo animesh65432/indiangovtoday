@@ -22,8 +22,7 @@ export const GetIndiaAnnouncements = asyncErrorHandler(async (req: Request, res:
 
     const targetLanguage = LANGUAGE_CODES[target_lan as string] || "en";
 
-
-    const redis_key = `Announcements_${targetLanguage}_${announcementsStartDate.toISOString()}_${announcementsEndDate.toISOString()}_page${pageNumber}_limit${pageSize}`;
+    const redis_key = `Announcements_${targetLanguage}_${announcementsStartDate.toISOString().split('T')[0]}_${announcementsEndDate.toISOString().split('T')[0]}_page${page}_limit${limit}`;
     const cached_data = await redis.get(redis_key);
 
     if (cached_data && typeof cached_data === "string") {
@@ -111,7 +110,7 @@ export const SerachallIndiaAnnouncements = asyncErrorHandler(async (req: Request
     const end = new Date(announcementsEndDate);
     end.setUTCHours(23, 59, 59, 999);
 
-    const redis_key = `AllGroupsIndiaAnnouncements_${targetLanguage}_${announcementsStartDate.toISOString().split('T')[0]}_${announcementsEndDate.toISOString().split('T')[0]}${page}${limit}${SearchInput}`;
+    const redis_key = `AllGroupsIndiaAnnouncements_${targetLanguage}_${announcementsStartDate.toISOString().split('T')[0]}_${announcementsEndDate.toISOString().split('T')[0]}_page${page}_limit${limit}_search${SearchInput}`;
 
 
     const cached_data = await redis.get(redis_key);
@@ -162,7 +161,7 @@ export const SerachallIndiaAnnouncements = asyncErrorHandler(async (req: Request
                     }
                 }
             },
-            { $sort: { searchScore: -1, date: -1 } },
+            { $sort: { searchScore: -1, date: -1, _id: -1 } },
             { $skip: skip },
             { $limit: pageSize },
             {

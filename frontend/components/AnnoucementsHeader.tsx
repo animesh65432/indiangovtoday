@@ -9,6 +9,7 @@ import { useRouter } from 'next/router';
 import { toast } from 'react-toastify';
 import { motion } from "framer-motion"
 import { fadeInUp } from "@/lib/animations";
+import Image from 'next/image';
 
 type Props = {
     handleEnterKeyPress: (event: React.KeyboardEvent<HTMLInputElement>) => void;
@@ -16,9 +17,10 @@ type Props = {
     SetSearchInput: React.Dispatch<React.SetStateAction<string>>,
     dontRedirect: boolean
     SetIsButtomClicked?: React.Dispatch<React.SetStateAction<boolean>>
+    ShowBackButton: boolean
 }
 
-const AnnoucementsHeader: React.FC<Props> = ({ handleEnterKeyPress, SearchInput, SetSearchInput, dontRedirect, SetIsButtomClicked }) => {
+const AnnoucementsHeader: React.FC<Props> = ({ ShowBackButton, handleEnterKeyPress, SearchInput, SetSearchInput, dontRedirect, SetIsButtomClicked }) => {
     const { startdate, endDate, onChangeDate } = useContext(Currentdate)
     const { language } = useContext(LanguageContext)
     const router = useRouter()
@@ -52,12 +54,22 @@ const AnnoucementsHeader: React.FC<Props> = ({ handleEnterKeyPress, SearchInput,
 
     return (
         <motion.header
-            className=' sticky top-0 p-5 flex flex-col gap-6 bg-[#F8F8F8] pb-10'
+            className=' sticky top-0 p-5 z-50 flex flex-col shadow-md gap-6 bg-[#F8F8F8] pb-10'
             variants={fadeInUp}
             initial="hidden"
             whileInView="show"
             viewport={{ once: true, margin: "-100px" }}
-        >
+        >   {ShowBackButton &&
+            <nav className='w-[90%] sm:w-[80%] mx-auto block sm:hidden'>
+                <Button
+                    onClick={() => router.push("/#announcements")}
+                    className='text-[#2C3143] border border-[#000000] rounded-none font-poppins'
+                >
+                    <Image src="/Left.svg" alt='arrow' width={14} height={14} />
+                    Back
+                </Button>
+            </nav>
+            }
             <nav className='flex justify-between items-center w-[90%] sm:w-[80%] mx-auto'>
                 <h2 className='text-[#272626] mx-auto lg:mx-0'>Latest Announcements </h2>
             </nav>

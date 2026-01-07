@@ -6,6 +6,8 @@ import AnnouncementSkeleton from './AnnouncementSkeleton'
 import { LoaderCircle } from "lucide-react"
 import { LanguageContext } from "@/context/Lan"
 import { TranslateText } from "@/lib/translatetext"
+import Image from 'next/image'
+import { useRouter } from "next/navigation"
 
 type Props = {
     Announcements: AnnouncementTypes[],
@@ -13,7 +15,9 @@ type Props = {
     page: number,
     totalpage: number,
     IsLoading: boolean,
-    IsLoadingMore: boolean
+    IsLoadingMore: boolean,
+    ShowBackButtom: boolean
+
 }
 
 const ShowAnnouncements: React.FC<Props> = ({
@@ -22,14 +26,16 @@ const ShowAnnouncements: React.FC<Props> = ({
     page,
     totalpage,
     IsLoading,
-    IsLoadingMore
+    IsLoadingMore,
+    ShowBackButtom
 }) => {
 
     const { language } = useContext(LanguageContext)
+    const router = useRouter()
 
     if (IsLoading) {
         return (
-            <div className='flex flex-col p-8 gap-8 overflow-y-scroll'>
+            <div className='flex flex-col p-8 gap-8 '>
                 <AnnouncementSkeleton />
                 <AnnouncementSkeleton />
                 <AnnouncementSkeleton />
@@ -48,8 +54,19 @@ const ShowAnnouncements: React.FC<Props> = ({
 
     return (
         <div className='flex flex-col gap-6 pb-80 sm:pb-20'>
+            {ShowBackButtom && (
+                <nav className='w-[90%] sm:w-[90%] mx-auto hidden sm:block sticky top-50  z-50 py-4'>
+                    <Button
+                        onClick={() => router.push("/#announcements")}
+                        className='text-[#2C3143] border border-[#000000] rounded-none font-poppins'
+                    >
+                        <Image src="/Left.svg" alt='arrow' width={14} height={14} />
+                        Back
+                    </Button>
+                </nav>
+            )}
 
-            <div className='w-[95%] sm:w-[85%] flex flex-col gap-6 pt-10 mx-auto '>
+            <div className='w-[95%] sm:w-[85%] flex flex-col gap-6 pt-2 mx-auto '>
                 {Announcements.map((ann) => (
                     <Announcement Announcement={ann} key={ann.title} />
                 ))}

@@ -15,16 +15,16 @@ type Props = {
 
 const Main: React.FC<Props> = ({ IsLoadingMore, page, limit, OnLoadMoredata, Announcements, IsLoading }) => {
     return (
-        <>
-            <ShowAnnouncements
-                Announcements={Announcements}
-                IsLoading={IsLoading}
-                page={page}
-                totalpage={limit}
-                IsLoadingMore={IsLoadingMore}
-                LoadMoreData={OnLoadMoredata}
-            />
-        </>
+        <ShowAnnouncements
+            Announcements={Announcements}
+            IsLoading={IsLoading}
+            page={page}
+            totalpage={limit}
+            IsLoadingMore={IsLoadingMore}
+            LoadMoreData={OnLoadMoredata}
+            ShowBackButtom={true}
+
+        />
     );
 };
 
