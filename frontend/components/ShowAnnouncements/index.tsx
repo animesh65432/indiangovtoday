@@ -53,7 +53,7 @@ const ShowAnnouncements: React.FC<Props> = ({
     }
 
     return (
-        <div className='flex flex-col gap-6 pb-80 sm:pb-20'>
+        <div className='flex flex-col gap-6 pb-20'>
             {ShowBackButtom && (
                 <nav className='w-[90%] sm:w-[90%] mx-auto hidden sm:block sticky top-50  z-50 py-4'>
                     <Button
