@@ -61,7 +61,7 @@ const Subscribe: React.FC = () => {
     }
 
     const popup = (
-        <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
+        <div className="fixed inset-0 flex items-center justify-center  z-50">
             <div className="bg-white p-6 rounded-2xl shadow-lg max-w-sm w-full text-center flex flex-col gap-2">
                 <div className="flex w-full  justify-end">
                     <X className="text-black " size={28} onClick={handleClose} />
@@ -79,7 +79,7 @@ const Subscribe: React.FC = () => {
                         value={Email}
                         onChange={(e) => setEmail(e.target.value)}
                         type="text"
-                        placeholder={`${TranslateText[language].ENTER_YOUR_EMAIL}`}
+                        placeholder={`${TranslateText[language].PLEASE_ENTER_A_VALID_EMAIL}`}
                         className="border rounded-none p-2 text-black w-full placeholder:text-black   border-black"
                     />
                     <button

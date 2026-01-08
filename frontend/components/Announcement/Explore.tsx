@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import { getAllAnnouncements } from "@/api/announcements"
 import { useContext } from 'react'
+import { TranslateText } from "@/lib/translatetext"
 import { LanguageContext } from "@/context/Lan"
 import { Announcement as AnnouncementTypes, AnnouncementsResponse } from "@/types"
 import ShowAnnouncements from '../ShowAnnouncements'
 import { Button } from '../ui/button'
 import { useRouter } from "next/navigation"
+
 
 
 const Explore: React.FC = () => {
@@ -46,7 +48,7 @@ const Explore: React.FC = () => {
                 onClick={() => router.push("/#announcements")}
                 className='bg-white border border-black rounded-none w-fit mx-auto'
             >
-                View More Announcements
+                {TranslateText[language].VIEW_MORE_ANNOUNCEMENTS}
             </Button>
         </div>
     )

@@ -6,6 +6,7 @@ import { formatDateInLanguage } from "@/lib/formatDate";
 import { LANGUAGE_CODES } from "@/lib/lan";
 import Image from "next/image";
 import { Button } from "../ui/button";
+import { TranslateText } from "@/lib/translatetext"
 
 type Props = {
     Announcement: AnnouncementType;
@@ -65,7 +66,7 @@ const Announcement: React.FC<Props> = ({ Announcement }) => {
                 <Button
                     onClick={redirectTo}
                     className="text-black border w-fit  border-black rounded-none  hover:cursor-pointer">
-                    See Details
+                    {TranslateText[language].SEE_DETAILS}
                 </Button>
             </div>
         </div>

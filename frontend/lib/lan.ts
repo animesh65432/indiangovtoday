@@ -2,7 +2,7 @@ export const optionsforLanguages = [
     { label: "English", value: "en" },
     { label: "অসমীয়া", value: "as" },     // Assamese
     { label: "বাংলা", value: "bn" },       // Bengali
-    { label: "बरʼ", value: "brx" },        // Bodo
+    { label: "बर", value: "brx" },        // Bodo
     { label: "डोगरी", value: "doi" },      // Dogri
     { label: "ગુજરાતી", value: "gu" },     // Gujarati
     { label: "हिन्दी", value: "hi" },      // Hindi

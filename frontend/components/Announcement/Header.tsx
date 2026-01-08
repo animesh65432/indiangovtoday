@@ -1,11 +1,13 @@
-import React from "react";
+import React, { useContext } from "react";
 import Image from "next/image";
 import { SectionTypes } from "@/types";
 import { useRouter } from "next/navigation";
 import { Button } from "../ui/button";
 import { Share2, Play, Pause, Square, AudioLines, Volume2 } from "lucide-react";
 import ShareSection from "../Share";
+import { LanguageContext } from "@/context/Lan"
 import { usetexttospech } from "@/hooks/usetexttospech";
+import { TranslateText } from "@/lib/translatetext";
 
 type Props = {
     title: string
@@ -16,6 +18,7 @@ type Props = {
 
 export default function Header({ sections, title, toggle, setToggle }: Props) {
     const router = useRouter();
+    const { language } = useContext(LanguageContext);
     const { call, stop, togglePlayPause, IsLoading, isPlaying, isPaused } = usetexttospech()
     const handleAudioAction = async () => {
         if (IsLoading) return
@@ -47,7 +50,7 @@ export default function Header({ sections, title, toggle, setToggle }: Props) {
                 className='text-[#2C3143] border border-[#000000] rounded-none font-poppins'
             >
                 <Image src="/Left.svg" alt='arrow' width={14} height={14} />
-                Back
+                {TranslateText[language].BACK}
             </Button>
             <nav className='flex items-center gap-6 '>
                 <ul>

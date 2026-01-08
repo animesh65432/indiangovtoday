@@ -14,6 +14,7 @@ export async function Call<T, ResponseType>({
     method,
     formDataRequest = false,
     responseType,
+    signal
 }: {
     path: string;
     request?: T;
@@ -22,6 +23,7 @@ export async function Call<T, ResponseType>({
     headers?: Record<string, string>;
     formDataRequest?: boolean;
     responseType?: "json" | "blob";
+    signal?: AbortSignal;
 }): Promise<ResponseType> {
     const mergedPath = path.startsWith("https://") ? path : `${API_URL}${path}`;
 
@@ -31,6 +33,7 @@ export async function Call<T, ResponseType>({
         headers: headers || {},
         withCredentials: true,
         responseType: responseType || "json",
+        signal: signal
     };
 
     if (formDataRequest && request instanceof FormData) {
@@ -53,6 +56,10 @@ export async function Call<T, ResponseType>({
         const errMsg = "Something went wrong.";
         if (!suppressError) {
             console.error(error);
+        }
+
+        if (axios.isAxiosError(error) && error.code === 'ERR_CANCELED') {
+            throw error;
         }
 
         if (axios.isAxiosError(error)) {
