@@ -16,23 +16,36 @@ const Explore: React.FC = () => {
     const router = useRouter()
     const [Announcements, SetAnnouncements] = useState<AnnouncementTypes[]>([])
 
-    async function fetchExploreAnnouncements() {
-        SetIsLoading(true)
-        try {
-            const end = new Date()
-            const start = new Date()
-            start.setDate(end.getDate() - 7)
-            const response = await getAllAnnouncements(language, start, end, 1, 5) as AnnouncementsResponse
-            SetAnnouncements(response.data)
-        } finally {
-            SetIsLoading(false)
-        }
-    }
 
     useEffect(() => {
-        fetchExploreAnnouncements()
-    }, [])
+        let isCancelled = false;
 
+        async function fetchExploreAnnouncements() {
+            SetIsLoading(true)
+            try {
+                const end = new Date()
+                const start = new Date()
+                start.setDate(end.getDate() - 7)
+
+                const response = await getAllAnnouncements(language, start, end, 1, 5) as AnnouncementsResponse
+
+
+                if (!isCancelled) {
+                    SetAnnouncements(response.data)
+                }
+            } finally {
+                if (!isCancelled) {
+                    SetIsLoading(false)
+                }
+            }
+        }
+
+        fetchExploreAnnouncements()
+
+        return () => {
+            isCancelled = true
+        }
+    }, [language])
     return (
         <div className='bg-[#E6E6E6] p-10 flex flex-col gap-6'>
             <ShowAnnouncements

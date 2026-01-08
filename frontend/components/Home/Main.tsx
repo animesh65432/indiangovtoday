@@ -33,40 +33,42 @@ const Main: React.FC = () => {
         append: boolean,
         signal: AbortSignal
     ) => {
+
         if (append) SetIsLoadingMore(true);
         else SetIsLoading(true);
 
         try {
-            const { language, startdate, endDate, limit } = paramsRef.current;
             const response = await getAllAnnouncements(
                 language, startdate, endDate, pageNumber, limit, signal
             ) as AnnouncementsResponse;
 
-            const newAnnouncements = response.data;
-            settotalPages(response.pagination.totalPages);
 
-            if (append) {
-                SetAnnouncements(prev => [...prev, ...newAnnouncements]);
-            } else {
-                SetAnnouncements(newAnnouncements);
+            if (!signal.aborted) {
+                settotalPages(response.pagination.totalPages);
+                if (append) {
+                    SetAnnouncements(prev => [...prev, ...response.data]);
+                } else {
+                    SetAnnouncements(response.data);
+                }
             }
         } catch (error: any) {
-            if (error.name === 'AbortError') return;
-            console.error(error);
+            if (error.code === 'ERR_CANCELED' || error.name === 'AbortError') return;
+            console.error("Fetch Error:", error);
         } finally {
-            SetIsLoading(false);
-            SetIsLoadingMore(false);
+            if (!signal.aborted) {
+                SetIsLoading(false);
+                SetIsLoadingMore(false);
+            }
         }
-    }, []);
-
+    }, [language, startdate, endDate, limit]);
     useEffect(() => {
         const controller = new AbortController();
-
         Setpage(1);
         fetchGetIndiaAnnouncements(1, false, controller.signal);
 
         return () => controller.abort();
     }, [language, startdate, endDate, fetchGetIndiaAnnouncements]);
+
 
     useEffect(() => {
         if (page > 1) {
