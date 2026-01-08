@@ -51,10 +51,16 @@ const Main: React.FC = () => {
                     SetAnnouncements(response.data);
                 }
             }
-        } catch (error: any) {
-            if (error.code === 'ERR_CANCELED' || error.name === 'AbortError') return;
-            console.error("Fetch Error:", error);
-        } finally {
+        } catch (error: unknown) {
+            if (
+                error instanceof Error &&
+                (error.name === 'AbortError' ||
+                    (error as { code?: string }).code === 'ERR_CANCELED')
+            ) {
+                return;
+            }
+        }
+        finally {
             if (!signal.aborted) {
                 SetIsLoading(false);
                 SetIsLoadingMore(false);

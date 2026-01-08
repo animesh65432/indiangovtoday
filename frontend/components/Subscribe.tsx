@@ -79,7 +79,7 @@ const Subscribe: React.FC = () => {
                         value={Email}
                         onChange={(e) => setEmail(e.target.value)}
                         type="text"
-                        placeholder={`${TranslateText[language].PLEASE_ENTER_A_VALID_EMAIL}`}
+                        placeholder={`${TranslateText[language].PLEASE_ENTER_YOUR_EMAIL}`}
                         className="border rounded-none p-2 text-black w-full placeholder:text-black   border-black"
                     />
                     <button
