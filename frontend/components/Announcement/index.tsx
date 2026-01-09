@@ -60,7 +60,7 @@ const Announcement = ({ id, lan }: Props) => {
                         <div className='flex items-center gap-2'>
                             <Inbox className="w-10 h-10 mb-2 text-[#E0614B]" />
                             <p className="text-[1rem] sm:text-lg text-[#E0614B]">
-                                {TranslateText[lan].N0_ANNOUNCEMENTS_FOUND}
+                                {TranslateText[lan].NO_ANNOUNCEMENTS_FOUND}
                             </p>
                         </div>
                     </main>) :

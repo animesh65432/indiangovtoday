@@ -10,7 +10,7 @@ export const optionsforLanguages = [
     { label: "कॉशुर", value: "ks" },       // Kashmiri
     { label: "मैथिली", value: "mai" },     // Maithili
     { label: "മലയാളം", value: "ml" },     // Malayalam
-    { label: "মৈতৈলোন", value: "mni" },    // Manipuri (Meitei)
+    { label: "ꯃꯩꯇꯩꯂꯣꯟ", value: "mni" },    // Manipuri (Meitei)
     { label: "मराठी", value: "mr" },       // Marathi
     { label: "नेपाली", value: "ne" },      // Nepali
     { label: "ଓଡ଼ିଆ", value: "or" },       // Odia

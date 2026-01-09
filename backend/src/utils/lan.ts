@@ -51,7 +51,7 @@ export const LANGUAGE_CODES: Record<string, string> = {
     "कॉशुर": "ks",
     "मैथिली": "mai",
     "മലയാളം": "ml",
-    "মৈতৈলোন": "mni",
+    "ꯃꯩꯇꯩꯂꯣꯟ": "mni",
     "मराठी": "mr",
     "नेपाली": "ne",
     "ଓଡ଼ିଆ": "or",

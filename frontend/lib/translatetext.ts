@@ -21,7 +21,7 @@ export type TranslationKeys = {
     PLEASE_ENTER_A_VALID_EMAIL: string,
     SUCCESSFULLY_SUBSCRIBED: string,
     FAILED_TO_SUBSCRIBE: string,
-    N0_ANNOUNCEMENTS_FOUND: string,
+    NO_ANNOUNCEMENTS_FOUND: string,
     VIEW_OFFICIAL_SOURCE: string,
     MORE_LIKE_THIS: string
 };
@@ -51,7 +51,7 @@ export const TranslateText: Record<string, TranslationKeys> = {
         PLEASE_ENTER_A_VALID_EMAIL: "The email format is incorrect.",
         SUCCESSFULLY_SUBSCRIBED: "You have successfully subscribed .",
         FAILED_TO_SUBSCRIBE: "Failed to subscribe.",
-        N0_ANNOUNCEMENTS_FOUND: "No Announcements Found",
+        NO_ANNOUNCEMENTS_FOUND: "No Announcements Found",
         VIEW_OFFICIAL_SOURCE: "View Official Source",
         MORE_LIKE_THIS: "More Like This"
     },
@@ -78,7 +78,7 @@ export const TranslateText: Record<string, TranslationKeys> = {
         PLEASE_ENTER_A_VALID_EMAIL: "ईमेल का प्रारूप गलत है।",
         SUCCESSFULLY_SUBSCRIBED: "आपने सफलतापूर्वक सदस्यता ले ली है।",
         FAILED_TO_SUBSCRIBE: "सदस्यता लेने में विफल।",
-        N0_ANNOUNCEMENTS_FOUND: "कोई घोषणा नहीं मिली",
+        NO_ANNOUNCEMENTS_FOUND: "कोई घोषणा नहीं मिली",
         VIEW_OFFICIAL_SOURCE: "आधिकारिक स्रोत देखें",
         MORE_LIKE_THIS: "इसी तरह के अन्य"
     },
@@ -105,7 +105,7 @@ export const TranslateText: Record<string, TranslationKeys> = {
         PLEASE_ENTER_A_VALID_EMAIL: "ইমেইলের বিন্যাস ভুল।",
         SUCCESSFULLY_SUBSCRIBED: "আপনি সফলভাবে সদস্যতা নিয়েছেন।",
         FAILED_TO_SUBSCRIBE: "সদস্যতা নিতে ব্যর্থ।",
-        N0_ANNOUNCEMENTS_FOUND: "কোনো ঘোষণা পাওয়া যায়নি",
+        NO_ANNOUNCEMENTS_FOUND: "কোনো ঘোষণা পাওয়া যায়নি",
         VIEW_OFFICIAL_SOURCE: "অফিসিয়াল সোর্স দেখুন",
         MORE_LIKE_THIS: "এরকম আরও"
     },
@@ -132,7 +132,7 @@ export const TranslateText: Record<string, TranslationKeys> = {
         PLEASE_ENTER_A_VALID_EMAIL: "மின்னஞ்சல் வடிவம் தவறானது.",
         SUCCESSFULLY_SUBSCRIBED: "நீங்கள் வெற்றிகரமாக குழுசேர்ந்துள்ளீர்கள்.",
         FAILED_TO_SUBSCRIBE: "குழுசேர தோல்வியடைந்தது.",
-        N0_ANNOUNCEMENTS_FOUND: "அறிவிப்புகள் எதுவும் கிடைக்கவில்லை",
+        NO_ANNOUNCEMENTS_FOUND: "அறிவிப்புகள் எதுவும் கிடைக்கவில்லை",
         VIEW_OFFICIAL_SOURCE: "அதிகாரப்பூர்வ ஆதாரத்தைக் காண்க",
         MORE_LIKE_THIS: "இது போன்ற மேலும்"
     },
@@ -159,7 +159,7 @@ export const TranslateText: Record<string, TranslationKeys> = {
         PLEASE_ENTER_A_VALID_EMAIL: "ఇమెయిల్ ఫార్మాట్ తప్పు.",
         SUCCESSFULLY_SUBSCRIBED: "మీరు విజయవంతంగా సబ్‌స్క్రైబ్ చేశారు.",
         FAILED_TO_SUBSCRIBE: "సబ్‌స్క్రైబ్ చేయడంలో విफल అయ్యారు.",
-        N0_ANNOUNCEMENTS_FOUND: "ప్రకటనలు కనుగొనబడలేదు",
+        NO_ANNOUNCEMENTS_FOUND: "ప్రకటనలు కనుగొనబడలేదు",
         VIEW_OFFICIAL_SOURCE: "అధికారిక మూలాన్ని చూడండి",
         MORE_LIKE_THIS: "ఇలాంటివి మరిన్ని"
     },
@@ -186,7 +186,7 @@ export const TranslateText: Record<string, TranslationKeys> = {
         PLEASE_ENTER_A_VALID_EMAIL: "ഇമെയിൽ ഫോർമാറ്റ് തെറ്റാണ്.",
         SUCCESSFULLY_SUBSCRIBED: "നിങ്ങൾ വിജയകരമായി സബ്സ്ക്രൈബ് ചെയ്തു.",
         FAILED_TO_SUBSCRIBE: "സബ്സ്ക്രൈബ് ചെയ്യുന്നതിൽ പരാജയപ്പെട്ടു.",
-        N0_ANNOUNCEMENTS_FOUND: "അറിയിപ്പുകളൊന്നും കണ്ടെത്തിയില്ല",
+        NO_ANNOUNCEMENTS_FOUND: "അറിയിപ്പുകളൊന്നും കണ്ടെത്തിയില്ല",
         VIEW_OFFICIAL_SOURCE: "ഔദ്യോഗിക ഉറവിടം കാണുക",
         MORE_LIKE_THIS: "ഇതുപോലെ കൂടുതൽ"
     },
@@ -213,7 +213,7 @@ export const TranslateText: Record<string, TranslationKeys> = {
         PLEASE_ENTER_A_VALID_EMAIL: "ईमेल स्वरूप चुकीचे आहे.",
         SUCCESSFULLY_SUBSCRIBED: "आपण यशस्वीरित्या सदस्यता घेतली आहे.",
         FAILED_TO_SUBSCRIBE: "सदस्यता घेण्यात अयशस्वी.",
-        N0_ANNOUNCEMENTS_FOUND: "कोणतीही घोषणा सापडली नाही",
+        NO_ANNOUNCEMENTS_FOUND: "कोणतीही घोषणा सापडली नाही",
         VIEW_OFFICIAL_SOURCE: "अधिकृत स्रोत पहा",
         MORE_LIKE_THIS: "यासारखे अधिक"
     },
@@ -240,7 +240,7 @@ export const TranslateText: Record<string, TranslationKeys> = {
         PLEASE_ENTER_A_VALID_EMAIL: "ઇમેઇલ ફોર્મેટ ખોટું છે.",
         SUCCESSFULLY_SUBSCRIBED: "તમે સફળતાપૂર્વક સબ્સ્ક્રાઇબ કર્યું છે.",
         FAILED_TO_SUBSCRIBE: "સબ્સ્ક્રાઇબ કરવામાં નિષ્ફળ.",
-        N0_ANNOUNCEMENTS_FOUND: "કોઈ જાહેરાત મળી નથી",
+        NO_ANNOUNCEMENTS_FOUND: "કોઈ જાહેરાત મળી નથી",
         VIEW_OFFICIAL_SOURCE: "અધિકૃત સ્રોત જુઓ",
         MORE_LIKE_THIS: "આવા વધુ"
     },
@@ -267,7 +267,7 @@ export const TranslateText: Record<string, TranslationKeys> = {
         PLEASE_ENTER_A_VALID_EMAIL: "ಇಮೇಲ್ ಸ್ವರೂಪ ತಪ್ಪಾಗಿದೆ.",
         SUCCESSFULLY_SUBSCRIBED: "ನೀವು ಯಶಸ್ವಿಯಾಗಿ ಚಂದಾದಾರರಾಗಿದ್ದೀರಿ.",
         FAILED_TO_SUBSCRIBE: "ಚಂದಾದಾರರಾಗಲು ವಿಫಲವಾಗಿದೆ.",
-        N0_ANNOUNCEMENTS_FOUND: "ಯಾವುದೇ ಪ್ರಕಟಣೆಗಳು ಕಂಡುಬಂದಿಲ್ಲ",
+        NO_ANNOUNCEMENTS_FOUND: "ಯಾವುದೇ ಪ್ರಕಟಣೆಗಳು ಕಂಡುಬಂದಿಲ್ಲ",
         VIEW_OFFICIAL_SOURCE: "ಅಧಿಕೃತ ಮೂಲವನ್ನು ನೋಡಿ",
         MORE_LIKE_THIS: "ಈ ರೀತಿಯ ಇನ್ನಷ್ಟು"
     },
@@ -294,7 +294,7 @@ export const TranslateText: Record<string, TranslationKeys> = {
         PLEASE_ENTER_A_VALID_EMAIL: "ای میل کی شکل غلط ہے۔",
         SUCCESSFULLY_SUBSCRIBED: "آپ نے کامیابی سے رکنیت لے لی ہے۔",
         FAILED_TO_SUBSCRIBE: "رکنیت لینے میں ناکام۔",
-        N0_ANNOUNCEMENTS_FOUND: "کوئی اعلان نہیں ملا",
+        NO_ANNOUNCEMENTS_FOUND: "کوئی اعلان نہیں ملا",
         VIEW_OFFICIAL_SOURCE: "سرکاری ذریعہ دیکھیں",
         MORE_LIKE_THIS: "اس طرح کے مزید"
     },
@@ -321,7 +321,7 @@ export const TranslateText: Record<string, TranslationKeys> = {
         PLEASE_ENTER_A_VALID_EMAIL: "ইমেইলৰ বিন্যাস ভুল।",
         SUCCESSFULLY_SUBSCRIBED: "আপুনি সফলতাৰে চাবস্ক্ৰাইব কৰিছে।",
         FAILED_TO_SUBSCRIBE: "চাবস্ক্ৰাইব কৰাত ব্যৰ্থ।",
-        N0_ANNOUNCEMENTS_FOUND: "কোনো ঘোষণা পোৱা নগ'ল",
+        NO_ANNOUNCEMENTS_FOUND: "কোনো ঘোষণা পোৱা নগ'ল",
         VIEW_OFFICIAL_SOURCE: "চৰকাৰী উৎস চাওক",
         MORE_LIKE_THIS: "এনেকুৱা অধিক"
     },
@@ -348,7 +348,7 @@ export const TranslateText: Record<string, TranslationKeys> = {
         PLEASE_ENTER_A_VALID_EMAIL: "ईमेलनि फरमेट गोरोन्थि जादों।",
         SUCCESSFULLY_SUBSCRIBED: "नों सफलताजों सबस्क्राइब खालामबाय।",
         FAILED_TO_SUBSCRIBE: "सबस्क्राइब खालामनाय जायाखै।",
-        N0_ANNOUNCEMENTS_FOUND: "जेबो फोसावनाय मोनखायेनाय",
+        NO_ANNOUNCEMENTS_FOUND: "जेबो फोसावनाय मोनखायेनाय",
         VIEW_OFFICIAL_SOURCE: "सरकारी जायगा नाय",
         MORE_LIKE_THIS: "बेनि जाथाव गोबां"
     },
@@ -375,7 +375,7 @@ export const TranslateText: Record<string, TranslationKeys> = {
         PLEASE_ENTER_A_VALID_EMAIL: "ईमेल फॉर्मेट गलत ऐ।",
         SUCCESSFULLY_SUBSCRIBED: "तुसें सफलतापूर्वक सदस्यता लैई लई ऐ।",
         FAILED_TO_SUBSCRIBE: "सदस्यता लैने च असफल।",
-        N0_ANNOUNCEMENTS_FOUND: "कोई घोषणा नेईं मिल्ली",
+        NO_ANNOUNCEMENTS_FOUND: "कोई घोषणा नेईं मिल्ली",
         VIEW_OFFICIAL_SOURCE: "सरकारी स्रोत देखो",
         MORE_LIKE_THIS: "इस चाल्ली दे होर"
     },
@@ -402,7 +402,7 @@ export const TranslateText: Record<string, TranslationKeys> = {
         PLEASE_ENTER_A_VALID_EMAIL: "ای میلُک فارمیٹ غلط چھُ۔",
         SUCCESSFULLY_SUBSCRIBED: "تۄہہ کأمیأبی سٕتۍ رکنیت حأصل کٔر۔",
         FAILED_TO_SUBSCRIBE: "رکنیت حأصل کرنس منز ناکام۔",
-        N0_ANNOUNCEMENTS_FOUND: "کانٛہہ اعلان میلہٕ نہٕ",
+        NO_ANNOUNCEMENTS_FOUND: "کانٛہہ اعلان میلہٕ نہٕ",
         VIEW_OFFICIAL_SOURCE: "سرکأری ذٔریعہٕ وُچھِو",
         MORE_LIKE_THIS: "اتھ پٮٚٹھۍ مزید"
     },
@@ -429,36 +429,36 @@ export const TranslateText: Record<string, TranslationKeys> = {
         PLEASE_ENTER_A_VALID_EMAIL: "ईमेल फॉर्मेट गलत अछि।",
         SUCCESSFULLY_SUBSCRIBED: "अहाँ सफलतापूर्वक सब्सक्राइब कऽ लेलहुँ अछि।",
         FAILED_TO_SUBSCRIBE: "सब्सक्राइब करबा मे विफल।",
-        N0_ANNOUNCEMENTS_FOUND: "कोनो घोषणा नहि भेटल",
+        NO_ANNOUNCEMENTS_FOUND: "कोनो घोषणा नहि भेटल",
         VIEW_OFFICIAL_SOURCE: "आधिकारिक स्रोत देखू",
         MORE_LIKE_THIS: "एहि जकाँ आओर"
     },
-    মৈতৈলোন: {
-        TITLE: "অমত্তা ইন্তেগ্রেতেদ পোর্তেলদা গবর্মেন্ত অনাউন্সমেন্ত পুম্নমক এক্সেস তৌবা।",
-        DESCRIPTION: "কোম্প্লেক্স অসুম্বা গবর্মেন্তকী সর্কুলরশীং অদু অসেংবা লোনদা খাইদোক্লি। নখোয়গী পাম্বা লোনদা মিনিস্ত্রী পুম্নমকী অনাউন্সমেন্তশীং এক্সেস তৌ—তেক্সত নত্রগা অডিও। বিউরোক্রেতিক ওইবা ওয়াশীং লৈতে, ক্লেরিতি খক্তনি।",
-        EXPLORE_ANNOUNCEMENTS: "অনাউন্সমেন্তশীং উবা",
-        LATEST_ANNOUNCEMENTS: "অহান্বা অনাউন্সমেন্তশীং",
-        INPUT_PLACEHOLDER: "কীওয়র্দ, দিপার্তমেন্ত নত্রগা অনাউন্সমেন্তকী হেদিংনা থীবিয়ু...",
-        SEARCH: "থীবা",
-        SEE_DETAILS: "দিতেইলশীং উবা",
-        LOAD_MORE: "অমুক উবা",
-        BACK: "হন্না",
-        VIEW_MORE_ANNOUNCEMENTS: "অনাউন্সমেন্ত অমুক উবা",
-        SHARE_ANNOUNCEMENT: "মরুওইবা অনাউন্সমেন্ত অসি শেয়র তৌবা",
-        HELP_OTHERS_DISCOVER: "ইনফোর্মেসন খাইদোকপা অমসুং নখোয়গী কম্যুনিতিদা গবর্মেন্তকী অনাউন্সমেন্তশীংগা লোয়ননা অপদেত লৈবদা মতেং পাংবিয়ু।",
-        CHECK_OUT_THIS_AMAZING: "মফম শীজিন্নরিবা গবর্মেন্তকী অনাউন্সমেন্ত অসি য়েংবিয়ু:",
-        SHARE_ON: "মসিনা শেয়র তৌবা",
-        SUBSCRIBE_TO_ALERTS: "নোতিফিকেসনশীংদা সবস্ক্রাইব তৌবা",
-        NEVER_MISS_AN_UPDATE: "অহান্বা পোলিসী চেঞ্জশীং অমসুং অনাউন্সমেন্তশীংগা লোয়ননা ইনফোর্ম লৈয়ু। চাউখত্তা অনাউন্সমেন্তশীং নখোয়গী মেইলদা থৌগৎপা ফংবা।",
-        PLEASE_ENTER_YOUR_EMAIL: "চানবিদুনা নখোয়গী ইমেইল হাল্লু।",
-        SUBSCRIBE: "সবস্ক্রাইব তৌবা",
-        SOMETHING_WENT_WRONG: "অমুক অরান্বা থোক্লক্লে।",
-        PLEASE_ENTER_A_VALID_EMAIL: "ইমেইল ফোর্মেত অদু অরান্বনি।",
-        SUCCESSFULLY_SUBSCRIBED: "নখোয়না মফম ফবা ওইনা সবস্ক্রাইব তৌখ্রে।",
-        FAILED_TO_SUBSCRIBE: "সবস্ক্রাইব তৌবদা ফেইল তৌখ্রে।",
-        N0_ANNOUNCEMENTS_FOUND: "অনাউন্সমেন্ত অমত্তা ফংখিদে",
-        VIEW_OFFICIAL_SOURCE: "অফিসিয়েল সোর্স উবা",
-        MORE_LIKE_THIS: "মসিগুম্বা অমুক"
+    ꯃꯩꯇꯩꯂꯣꯟ: {
+        TITLE: "ꯑꯃꯇ꯭ꯇꯥ ꯏꯟꯇꯦꯒ꯭ꯔꯦꯇꯦꯗ ꯄꯣꯔꯇꯦꯜꯗꯥ ꯁꯔꯀꯥꯔꯅ ꯑꯅꯥꯎꯟꯁꯃꯦꯟꯇꯁꯤꯡ ꯄꯨꯝꯅꯃꯛ ꯑꯦꯛꯁꯦꯁ ꯇꯧꯕꯥ꯫",
+        DESCRIPTION: "ꯀꯝꯄ꯭ꯂꯦꯛꯁ ꯑꯁꯨꯝꯕꯥ ꯁꯔꯀꯥꯔꯀꯤ ꯁꯔꯀꯨꯂꯔꯁꯤꯡ ꯑꯗꯨ ꯑꯁꯦꯡꯕꯥ ꯂꯣꯟꯗꯥ ꯈꯥꯏꯗꯣꯛꯂꯤ꯫ ꯅꯈꯣꯌꯒꯤ ꯄꯥꯝꯕꯥ ꯂꯣꯟꯗꯥ ꯃꯤꯅꯤꯁꯇ꯭ꯔꯤ ꯄꯨꯝꯅꯃꯛꯀꯤ ꯑꯅꯥꯎꯟꯁꯃꯦꯟꯇꯁꯤꯡ ꯑꯦꯛꯁꯦꯁ ꯇꯧ—ꯇꯦꯛꯁꯇ ꯅꯇ꯭ꯔꯒꯥ ꯑꯣꯗꯤꯑꯣ꯫ ꯕ꯭ꯌꯨꯔꯣꯀ꯭ꯔꯦꯇꯤꯛ ꯑꯣꯏꯕꯥ ꯋꯥꯁꯤꯡ ꯂꯩꯇꯦ, ꯀ꯭ꯂꯦꯔꯤꯇꯤ ꯈꯛꯇꯅꯤ꯫",
+        EXPLORE_ANNOUNCEMENTS: "ꯑꯅꯥꯎꯟꯁꯃꯦꯟꯇꯁꯤꯡ ꯎꯕꯥ",
+        LATEST_ANNOUNCEMENTS: "ꯑꯍꯥꯟꯕꯥ ꯑꯅꯥꯎꯟꯁꯃꯦꯟꯇꯁꯤꯡ",
+        INPUT_PLACEHOLDER: "ꯀꯤꯑꯣꯋꯔꯗ, ꯗꯤꯄꯥꯔꯇꯃꯦꯟꯇ ꯅꯇ꯭ꯔꯒꯥ ꯑꯅꯥꯎꯟꯁꯃꯦꯟꯇꯀꯤ ꯍꯦꯗꯤꯡꯅꯥ ꯊꯤꯕꯤꯌꯨ...",
+        SEARCH: "ꯊꯤꯕꯥ",
+        SEE_DETAILS: "ꯗꯤꯇꯦꯜꯁꯤꯡ ꯎꯕꯥ",
+        LOAD_MORE: "ꯑꯃꯨꯛ ꯎꯕꯥ",
+        BACK: "ꯍꯟꯅꯥ",
+        VIEW_MORE_ANNOUNCEMENTS: "ꯑꯅꯥꯎꯟꯁꯃꯦꯟꯇ ꯑꯃꯨꯛ ꯎꯕꯥ",
+        SHARE_ANNOUNCEMENT: "ꯃꯔꯨꯑꯣꯏꯕꯥ ꯑꯅꯥꯎꯟꯁꯃꯦꯟꯇ ꯑꯁꯤ ꯁꯦꯌꯔ ꯇꯧꯕꯥ",
+        HELP_OTHERS_DISCOVER: "ꯏꯟꯐꯣꯔꯃꯦꯁꯅ ꯈꯥꯏꯗꯣꯛꯄꯥ ꯑꯃꯁꯨꯡ ꯅꯈꯣꯌꯒꯤ ꯀꯃ꯭ꯌꯨꯅꯤꯇꯤꯗꯥ ꯁꯔꯀꯥꯔꯀꯤ ꯑꯅꯥꯎꯟꯁꯃꯦꯟꯇꯁꯤꯡꯒꯥ ꯂꯣꯏꯅꯅꯥ ꯑꯄꯗꯦꯇ ꯂꯩꯕꯗꯥ ꯃꯇꯦꯡ ꯄꯥꯡꯕꯤꯌꯨ꯫",
+        CHECK_OUT_THIS_AMAZING: "ꯃꯐꯝ ꯁꯤꯖꯤꯟꯅꯔꯤꯕꯥ ꯁꯔꯀꯥꯔꯀꯤ ꯑꯅꯥꯎꯟꯁꯃꯦꯟꯇ ꯑꯁꯤ ꯌꯦꯡꯕꯤꯌꯨ:",
+        SHARE_ON: "ꯃꯁꯤꯅꯥ ꯁꯦꯌꯔ ꯇꯧꯕꯥ",
+        SUBSCRIBE_TO_ALERTS: "ꯅꯣꯇꯤꯐꯤꯀꯦꯁꯅꯁꯤꯡꯗꯥ ꯁꯕꯁꯀ꯭ꯔꯥꯏꯕ ꯇꯧꯕꯥ",
+        NEVER_MISS_AN_UPDATE: "ꯑꯍꯥꯟꯕꯥ ꯄꯣꯂꯤꯁꯤ ꯆꯦꯟꯖꯁꯤꯡ ꯑꯃꯁꯨꯡ ꯑꯅꯥꯎꯟꯁꯃꯦꯟꯇꯁꯤꯡꯒꯥ ꯂꯣꯏꯅꯅꯥ ꯏꯟꯐꯣꯔꯃ ꯂꯩꯌꯨ꯫ ꯆꯥꯎꯈꯠꯇꯥ ꯑꯅꯥꯎꯟꯁꯃꯦꯟꯇꯁꯤꯡ ꯅꯈꯣꯌꯒꯤ ꯃꯦꯏꯜꯗꯥ ꯊꯧꯒꯠꯄꯥ ꯐꯪꯕꯥ꯫",
+        PLEASE_ENTER_YOUR_EMAIL: "ꯆꯥꯟꯕꯤꯗꯨꯅꯥ ꯅꯈꯣꯌꯒꯤ ꯏꯃꯦꯏꯜ ꯍꯜꯂꯨ꯫",
+        SUBSCRIBE: "ꯁꯕꯁꯀ꯭ꯔꯥꯏꯕ ꯇꯧꯕꯥ",
+        SOMETHING_WENT_WRONG: "ꯑꯃꯨꯛ ꯑꯔꯥꯟꯕꯥ ꯊꯣꯛꯂꯛꯂꯦ꯫",
+        PLEASE_ENTER_A_VALID_EMAIL: "ꯏꯃꯦꯏꯜ ꯐꯣꯔꯃꯦꯇ ꯑꯗꯨ ꯑꯔꯥꯟꯕꯅꯤ꯫",
+        SUCCESSFULLY_SUBSCRIBED: "ꯅꯈꯣꯌꯅꯥ ꯃꯐꯝ ꯐꯕꯥ ꯑꯣꯏꯅꯥ ꯁꯕꯁꯀ꯭ꯔꯥꯏꯕ ꯇꯧꯈ꯭ꯔꯦ꯫",
+        FAILED_TO_SUBSCRIBE: "ꯁꯕꯁꯀ꯭ꯔꯥꯏꯕ ꯇꯧꯕꯗꯥ ꯐꯦꯏꯜ ꯇꯧꯈ꯭ꯔꯦ꯫",
+        NO_ANNOUNCEMENTS_FOUND: "ꯑꯅꯥꯎꯟꯁꯃꯦꯟꯇ ꯑꯃꯇ꯭ꯇꯥ ꯐꯪꯈꯤꯗꯦ",
+        VIEW_OFFICIAL_SOURCE: "ꯑꯣꯐꯤꯁꯤꯌꯦꯜ ꯁꯣꯔꯁ ꯎꯕꯥ",
+        MORE_LIKE_THIS: "ꯃꯁꯤꯒꯨꯝꯕꯥ ꯑꯃꯨꯛ"
     },
     नेपाली: {
         TITLE: "एउटै एकीकृत पोर्टलमा सबै आधिकारिक सरकारी घोषणाहरू पहुँच गर्नुहोस्।",
@@ -483,7 +483,7 @@ export const TranslateText: Record<string, TranslationKeys> = {
         PLEASE_ENTER_A_VALID_EMAIL: "इमेल ढाँचा गलत छ।",
         SUCCESSFULLY_SUBSCRIBED: "तपाईंले सफलतापूर्वक सदस्यता लिनुभयो।",
         FAILED_TO_SUBSCRIBE: "सदस्यता लिन असफल।",
-        N0_ANNOUNCEMENTS_FOUND: "कुनै घोषणा भेटिएन",
+        NO_ANNOUNCEMENTS_FOUND: "कुनै घोषणा भेटिएन",
         VIEW_OFFICIAL_SOURCE: "आधिकारिक स्रोत हेर्नुहोस्",
         MORE_LIKE_THIS: "यस्तै अरू"
     },
@@ -510,7 +510,7 @@ export const TranslateText: Record<string, TranslationKeys> = {
         PLEASE_ENTER_A_VALID_EMAIL: "ଇମେଲ ଫର୍ମାଟ ଭୁଲ ଅଛି।",
         SUCCESSFULLY_SUBSCRIBED: "ଆପଣ ସଫଳତାର ସହ ସବସ୍କ୍ରାଇବ କରିଛନ୍ତି।",
         FAILED_TO_SUBSCRIBE: "ସବସ୍କ୍ରାଇବ କରିବାରେ ବିଫଳ।",
-        N0_ANNOUNCEMENTS_FOUND: "କୌଣସି ଘୋଷଣା ମିଳିଲା ନାହିଁ",
+        NO_ANNOUNCEMENTS_FOUND: "କୌଣସି ଘୋଷଣା ମିଳିଲା ନାହିଁ",
         VIEW_OFFICIAL_SOURCE: "ସରକାରୀ ଉତ୍ସ ଦେଖନ୍ତୁ",
         MORE_LIKE_THIS: "ଏହିଭଳି ଅଧିକ"
     },
@@ -537,7 +537,7 @@ export const TranslateText: Record<string, TranslationKeys> = {
         PLEASE_ENTER_A_VALID_EMAIL: "ਈਮੇਲ ਫਾਰਮੈਟ ਗਲਤ ਹੈ।",
         SUCCESSFULLY_SUBSCRIBED: "ਤੁਸੀਂ ਸਫਲਤਾਪੂਰਵਕ ਗਾਹਕੀ ਲੈ ਲਈ ਹੈ।",
         FAILED_TO_SUBSCRIBE: "ਗਾਹਕੀ ਲੈਣ ਵਿੱਚ ਅਸਫਲ।",
-        N0_ANNOUNCEMENTS_FOUND: "ਕੋਈ ਐਲਾਨ ਨਹੀਂ ਮਿਲਿਆ",
+        NO_ANNOUNCEMENTS_FOUND: "ਕੋਈ ਐਲਾਨ ਨਹੀਂ ਮਿਲਿਆ",
         VIEW_OFFICIAL_SOURCE: "ਅਧਿਕਾਰਕ ਸਰੋਤ ਦੇਖੋ",
         MORE_LIKE_THIS: "ਇਸ ਤਰ੍ਹਾਂ ਦੇ ਹੋਰ"
     },
@@ -564,7 +564,7 @@ export const TranslateText: Record<string, TranslationKeys> = {
         PLEASE_ENTER_A_VALID_EMAIL: "विद्युत्पत्रस्य प्रारूपं न्यूनम् अस्ति।",
         SUCCESSFULLY_SUBSCRIBED: "भवन्तः सफलतया अभिदानं स्वीकृतवन्तः।",
         FAILED_TO_SUBSCRIBE: "अभिदानस्वीकारे असफलता।",
-        N0_ANNOUNCEMENTS_FOUND: "किमपि घोषणा न प्राप्तम्",
+        NO_ANNOUNCEMENTS_FOUND: "किमपि घोषणा न प्राप्तम्",
         VIEW_OFFICIAL_SOURCE: "आधिकारिकस्रोतं पश्यन्तु",
         MORE_LIKE_THIS: "एवमेव अधिकानि"
     },
@@ -591,7 +591,7 @@ export const TranslateText: Record<string, TranslationKeys> = {
         PLEASE_ENTER_A_VALID_EMAIL: "ᱤᱢᱮᱞ ᱯᱷᱚᱨᱢᱮᱴ ᱵᱷᱩᱞ ᱜᱮᱭᱟ᱾",
         SUCCESSFULLY_SUBSCRIBED: "ᱟᱢ ᱵᱮᱥ ᱛᱮ ᱚᱝᱜᱚ ᱫᱚᱦᱚ ᱠᱮᱫᱟᱢ᱾",
         FAILED_TO_SUBSCRIBE: "ᱚᱝᱜᱚ ᱫᱚᱦᱚ ᱨᱮ ᱵᱟᱹᱲᱤᱡ᱾",
-        N0_ANNOUNCEMENTS_FOUND: "ᱡᱟᱦᱟᱸ ᱠᱷᱚᱵᱚᱨ ᱵᱟᱹᱱᱩᱜ-ᱟ",
+        NO_ANNOUNCEMENTS_FOUND: "ᱡᱟᱦᱟᱸ ᱠᱷᱚᱵᱚᱨ ᱵᱟᱹᱱᱩᱜ-ᱟ",
         VIEW_OFFICIAL_SOURCE: "ᱥᱚᱨᱠᱟᱨᱤ ᱡᱟᱜᱟ ᱧᱮᱞ ᱢᱮ",
         MORE_LIKE_THIS: "ᱱᱚᱝᱠᱟ ᱜᱮ ᱰᱷᱮᱨ"
     },
@@ -618,7 +618,7 @@ export const TranslateText: Record<string, TranslationKeys> = {
         PLEASE_ENTER_A_VALID_EMAIL: "اي ميل جو فارميٽ غلط آهي.",
         SUCCESSFULLY_SUBSCRIBED: "توهان ڪاميابي سان رڪنيت حاصل ڪري ورتي آهي.",
         FAILED_TO_SUBSCRIBE: "رڪنيت حاصل ڪرڻ ۾ ناڪام.",
-        N0_ANNOUNCEMENTS_FOUND: "ڪا به اعلان نه مليو",
+        NO_ANNOUNCEMENTS_FOUND: "ڪا به اعلان نه مليو",
         VIEW_OFFICIAL_SOURCE: "سرڪاري ذريعو ڏسو",
         MORE_LIKE_THIS: "اهڙا وڌيڪ"
     }
