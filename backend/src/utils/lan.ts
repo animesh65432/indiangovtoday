@@ -43,7 +43,7 @@ export const LANGUAGE_CODES: Record<string, string> = {
     "English": "en",
     "অসমীয়া": "as",
     "বাংলা": "bn",
-    "बरʼ": "brx",
+    "बर": "brx",
     "डोगरी": "doi",
     "ગુજરાતી": "gu",
     "हिन्दी": "hi",
