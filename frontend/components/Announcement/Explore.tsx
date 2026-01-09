@@ -1,19 +1,17 @@
 import React, { useState, useEffect } from 'react'
 import { getAllAnnouncements } from "@/api/announcements"
 import { useContext } from 'react'
-import { TranslateText } from "@/lib/translatetext"
 import { LanguageContext } from "@/context/Lan"
 import { Announcement as AnnouncementTypes, AnnouncementsResponse } from "@/types"
 import ShowAnnouncements from '../ShowAnnouncements'
-import { Button } from '../ui/button'
-import { useRouter } from "next/navigation"
 
+type Props = {
+    id: string
+}
 
-
-const Explore: React.FC = () => {
+const Explore: React.FC<Props> = ({ id }) => {
     const [IsLoading, SetIsLoading] = useState<boolean>(false)
     const { language } = useContext(LanguageContext)
-    const router = useRouter()
     const [Announcements, SetAnnouncements] = useState<AnnouncementTypes[]>([])
 
 
@@ -31,7 +29,8 @@ const Explore: React.FC = () => {
 
 
                 if (!isCancelled) {
-                    SetAnnouncements(response.data)
+                    const filteredAnnouncements = response.data.filter(announcement => announcement.announcementId !== id);
+                    SetAnnouncements(filteredAnnouncements)
                 }
             } finally {
                 if (!isCancelled) {

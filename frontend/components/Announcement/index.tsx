@@ -68,7 +68,9 @@ const Announcement = ({ id, lan }: Props) => {
                     <AnnouncementSkeleton />
                 </div>
             }
-            <Explore />
+            <Explore
+                id={id}
+            />
         </main>
     )
 }
