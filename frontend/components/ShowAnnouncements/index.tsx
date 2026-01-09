@@ -16,7 +16,8 @@ type Props = {
     totalpage: number,
     IsLoading: boolean,
     IsLoadingMore: boolean,
-    ShowBackButtom: boolean
+    ShowBackButtom: boolean,
+    IsItExplore?: boolean
 
 }
 
@@ -27,7 +28,8 @@ const ShowAnnouncements: React.FC<Props> = ({
     totalpage,
     IsLoading,
     IsLoadingMore,
-    ShowBackButtom
+    ShowBackButtom,
+    IsItExplore = false
 }) => {
 
     const { language } = useContext(LanguageContext)
@@ -80,6 +82,12 @@ const ShowAnnouncements: React.FC<Props> = ({
                     {IsLoadingMore ? <LoaderCircle className='h-5 animate-spin text-black' /> : `${TranslateText[language].LOAD_MORE}`}
                 </Button>
             )}
+            {IsItExplore && <Button
+                onClick={() => router.back()}
+                className='mx-auto hover:bg-gray-100 rounded-none border border-black text-black'
+            >
+                {IsLoadingMore ? <LoaderCircle className='h-5 animate-spin text-black' /> : `${TranslateText[language].VIEW_MORE_ANNOUNCEMENTS}`}
+            </Button>}
         </div>
     )
 }

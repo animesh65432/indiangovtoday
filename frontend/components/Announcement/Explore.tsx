@@ -47,23 +47,16 @@ const Explore: React.FC = () => {
         }
     }, [language])
     return (
-        <div className='bg-[#E6E6E6] p-10 flex flex-col gap-6'>
-            <ShowAnnouncements
-                Announcements={Announcements}
-                IsLoading={IsLoading}
-                page={1}
-                totalpage={1}
-                IsLoadingMore={false}
-                LoadMoreData={() => { }}
-                ShowBackButtom={false}
-            />
-            <Button
-                onClick={() => router.push("/#announcements")}
-                className='bg-white border border-black rounded-none w-fit mx-auto'
-            >
-                {TranslateText[language].VIEW_MORE_ANNOUNCEMENTS}
-            </Button>
-        </div>
+        <ShowAnnouncements
+            Announcements={Announcements}
+            IsLoading={IsLoading}
+            page={1}
+            totalpage={1}
+            IsLoadingMore={false}
+            LoadMoreData={() => { }}
+            ShowBackButtom={false}
+            IsItExplore={true}
+        />
     )
 }
 
