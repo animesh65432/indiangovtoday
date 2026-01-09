@@ -28,58 +28,61 @@ const Main: React.FC = () => {
         paramsRef.current = { language, startdate, endDate, limit, page }
     }, [language, startdate, endDate, limit, page])
 
-    const fetchGetIndiaAnnouncements = useCallback(async (page: number = 0, append: boolean = false) => {
+    const fetchGetIndiaAnnouncements = useCallback(async (
+        pageNumber: number,
+        append: boolean,
+        signal: AbortSignal
+    ) => {
 
-        if (append) {
-            SetIsLoadingMore(true)
-        } else {
-            SetIsLoading(true)
-        }
+        if (append) SetIsLoadingMore(true);
+        else SetIsLoading(true);
 
         try {
-            const { language, startdate, endDate, limit } = paramsRef.current
-
-            const IndiaAnnouncementsResponse = await getAllAnnouncements(
-                language,
-                startdate,
-                endDate,
-                page,
-                limit,
-            ) as AnnouncementsResponse
+            const response = await getAllAnnouncements(
+                language, startdate, endDate, pageNumber, limit, signal
+            ) as AnnouncementsResponse;
 
 
-            console.log(startdate, endDate)
-
-
-            const newAnnouncements = IndiaAnnouncementsResponse.data
-
-            settotalPages(IndiaAnnouncementsResponse.pagination.totalPages)
-
-            if (append) {
-                SetAnnouncements(prev => [...prev, ...newAnnouncements])
-            } else {
-                SetAnnouncements(newAnnouncements)
+            if (!signal.aborted) {
+                settotalPages(response.pagination.totalPages);
+                if (append) {
+                    SetAnnouncements(prev => [...prev, ...response.data]);
+                } else {
+                    SetAnnouncements(response.data);
+                }
             }
-
-        } finally {
-            SetIsLoading(false)
-            SetIsLoadingMore(false)
+        } catch (error: unknown) {
+            if (
+                error instanceof Error &&
+                (error.name === 'AbortError' ||
+                    (error as { code?: string }).code === 'ERR_CANCELED')
+            ) {
+                return;
+            }
         }
-    }, [])
-
-
+        finally {
+            if (!signal.aborted) {
+                SetIsLoading(false);
+                SetIsLoadingMore(false);
+            }
+        }
+    }, [language, startdate, endDate, limit]);
     useEffect(() => {
-        Setpage(1)
-        SetAnnouncements([])
-        fetchGetIndiaAnnouncements(1, false)
-    }, [language, startdate, endDate, fetchGetIndiaAnnouncements])
+        const controller = new AbortController();
+        Setpage(1);
+        fetchGetIndiaAnnouncements(1, false, controller.signal);
+
+        return () => controller.abort();
+    }, [language, startdate, endDate, fetchGetIndiaAnnouncements]);
+
 
     useEffect(() => {
         if (page > 1) {
-            fetchGetIndiaAnnouncements(page, true)
+            const controller = new AbortController();
+            fetchGetIndiaAnnouncements(page, true, controller.signal);
+            return () => controller.abort();
         }
-    }, [page, fetchGetIndiaAnnouncements])
-
+    }, [page, fetchGetIndiaAnnouncements]);
 
     const OnLoadMoredata = () => {
         if (page >= totalPages) {

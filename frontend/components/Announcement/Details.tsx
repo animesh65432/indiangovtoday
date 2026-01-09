@@ -33,7 +33,7 @@ const Details: React.FC<Props> = ({ lan, date, source, state, department, catego
                 {category}
             </div>
             <a className='text-slate-800  hover:text-[#181717] flex items-center gap-2 underline' href={source} >
-                <Link className='w-4 h-4' /> {TranslateText[lan].SOURCE}
+                <Link className='w-4 h-4' /> {TranslateText[lan].VIEW_OFFICIAL_SOURCE}
             </a>
         </div>
     )

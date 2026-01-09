@@ -1,10 +1,12 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { SectionTypes } from '@/types'
 import Header from './Header'
 import Title from './Title'
 import Details from './Details'
 import TextDiv from "./TextDiv"
 import KeyInforMation from './KeyInforMation'
+import { TranslateText } from '@/lib/translatetext'
+import { LanguageContext } from '@/context/Lan'
 
 type Props = {
     title: string
@@ -21,6 +23,7 @@ type Props = {
 }
 
 const ShowAnnouncement: React.FC<Props> = ({ toggle, setToggle, title, source, lan, date, state, sections, department, category }) => {
+    const { language } = useContext(LanguageContext);
     return (
         <section className='w-[82%] mx-auto  flex flex-col gap-10 pt-7  pb-8'>
             <Header
@@ -63,7 +66,7 @@ const ShowAnnouncement: React.FC<Props> = ({ toggle, setToggle, title, source, l
                 points={'points' in sections[2] ? sections[2].points : []}
             />
             <Title
-                title='More Like this'
+                title={TranslateText[language].MORE_LIKE_THIS}
             />
         </section>
     )

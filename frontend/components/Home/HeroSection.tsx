@@ -29,15 +29,15 @@ const HeroSection: React.FC = () => {
                 </div>
 
                 <h1 className='text-white'>
-                    <TextGenerateEffect words={TranslateText[language as keyof typeof TranslateText]?.TITLE || ""} />
+                    <TextGenerateEffect words={TranslateText[language].TITLE} />
                 </h1>
                 <p className='text-[#e2dbdb]'>
-                    {TranslateText[language as keyof typeof TranslateText].DESCRIPTION}
+                    {TranslateText[language].DESCRIPTION}
                 </p>
                 <div className='flex flex-col gap-4 items-center'>
                     <a href='#announcements'>
                         <Button className='pb-5 pt-5 border border-transparent hover:border-white uppercase shadow-[4px_4px_8px_0px_#FFFFFF40] rounded-none text-[#FFFFFF] flex items-center bg-[#E04B4D] hover:bg-[#E04B4D] transition-all duration-200'>
-                            Explore Announcements
+                            {TranslateText[language].EXPLORE_ANNOUNCEMENTS}
                         </Button>
                     </a>
                     <Select

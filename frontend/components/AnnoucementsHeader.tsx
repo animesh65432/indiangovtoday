@@ -66,12 +66,12 @@ const AnnoucementsHeader: React.FC<Props> = ({ ShowBackButton, handleEnterKeyPre
                     className='text-[#2C3143] border border-[#000000] rounded-none font-poppins'
                 >
                     <Image src="/Left.svg" alt='arrow' width={14} height={14} />
-                    Back
+                    {TranslateText[language].BACK}
                 </Button>
             </nav>
             }
             <nav className='flex justify-between items-center w-[90%] sm:w-[80%] mx-auto'>
-                <h2 className='text-[#272626] mx-auto lg:mx-0'>Latest Announcements </h2>
+                <h2 className='text-[#272626] mx-auto lg:mx-0'>{TranslateText[language].LATEST_ANNOUNCEMENTS}</h2>
             </nav>
             <nav>
                 <ul className='flex flex-col lg:flex-row  items-center gap-4 w-[80%] mx-auto'>
@@ -83,7 +83,7 @@ const AnnoucementsHeader: React.FC<Props> = ({ ShowBackButton, handleEnterKeyPre
                         placeholder={TranslateText[language].INPUT_PLACEHOLDER}
                         className=" w-full md:w-2/3 lg:w-1/3  rounded-none border border-[#D9D9D9] placeholder:text-[#868686] p-5"
                     />
-                    <Button onClick={handleClick} className='whitespace-nowrap p-5 bg-[#E04B4D] rounded-none text-[#FFFFFF]'>SEARCH</Button>
+                    <Button onClick={handleClick} className='whitespace-nowrap p-5 bg-[#E04B4D] rounded-none text-[#FFFFFF]'>{TranslateText[language].SEARCH}</Button>
                     <li className='lg:ml-auto'>
                         <DateRangePicker
                             onUpdate={OnChangeDateRangePicker}

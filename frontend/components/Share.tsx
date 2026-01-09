@@ -69,7 +69,7 @@ export default function ShareSection({ Announcement, setisShareOPen }: Props) {
     }
 
     return (
-        <div className="fixed h-screen inset-0 z-50 flex items-center justify-center bg-opacity-50 backdrop-blur-sm p-4 animate-in fade-in duration-300">
+        <div className="fixed h-screen inset-0 z-50 flex items-center justify-center  p-4 animate-in fade-in duration-300">
             <div
                 ref={modalRef}
                 className="bg-white rounded-2xl shadow-2xl max-w-md w-full mx-4 transform animate-in slide-in-from-bottom-4 duration-300"
@@ -132,15 +132,6 @@ export default function ShareSection({ Announcement, setisShareOPen }: Props) {
                                 </div>
                             </button>
                         ))}
-                    </div>
-                </div>
-
-                {/* Footer */}
-                <div className="px-4 sm:px-6 pb-4 sm:pb-6">
-                    <div className="rounded-lg p-3 text-center">
-                        <p className="text-xs  text-black leading-relaxed">
-                            💡 {TranslateText[language].CLICK_OPTION_TO_SHARE}
-                        </p>
                     </div>
                 </div>
             </div>

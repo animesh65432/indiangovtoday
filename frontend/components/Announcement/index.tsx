@@ -40,9 +40,7 @@ const Announcement = ({ id, lan }: Props) => {
 
     return (
         <main className=" flex flex-col  min-h-dvh bg-[#F8F8F8]">
-            {!toggle &&
-                <Subscribe />
-            }
+            <Subscribe />
             {!IsLoading ?
                 (announcement ?
                     <ShowAnnouncement
@@ -58,7 +56,7 @@ const Announcement = ({ id, lan }: Props) => {
                         toggle={toggle}
                         setToggle={setToggle}
                     /> :
-                    <main className='h-[70vh] flex justify-center items-center'>
+                    <main className='h-[100vh] flex justify-center items-center'>
                         <div className='flex items-center gap-2'>
                             <Inbox className="w-10 h-10 mb-2 text-[#E0614B]" />
                             <p className="text-[1rem] sm:text-lg text-[#E0614B]">
@@ -66,7 +64,9 @@ const Announcement = ({ id, lan }: Props) => {
                             </p>
                         </div>
                     </main>) :
-                <AnnouncementSkeleton />
+                <div className='h-screen'>
+                    <AnnouncementSkeleton />
+                </div>
             }
             <Explore />
         </main>

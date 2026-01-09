@@ -47,13 +47,13 @@ const ShowAnnouncements: React.FC<Props> = ({
     if (!IsLoading && Announcements.length === 0) {
         return (
             <div className='min-h-[60vh] flex justify-center items-center '>
-                <h3 className='text-black  text-xl  text-center'>No Announcements Found</h3>
+                <h3 className='text-black  text-xl  text-center'>{TranslateText[language].NO_ANNOUNCEMENTS_FOUND}</h3>
             </div>
         )
     }
 
     return (
-        <div className='flex flex-col gap-6 pb-80 sm:pb-20'>
+        <div className='flex flex-col gap-6 pb-20'>
             {ShowBackButtom && (
                 <nav className='w-[90%] sm:w-[90%] mx-auto hidden sm:block sticky top-50  z-50 py-4'>
                     <Button
@@ -61,7 +61,7 @@ const ShowAnnouncements: React.FC<Props> = ({
                         className='text-[#2C3143] border border-[#000000] rounded-none font-poppins'
                     >
                         <Image src="/Left.svg" alt='arrow' width={14} height={14} />
-                        Back
+                        {TranslateText[language].BACK}
                     </Button>
                 </nav>
             )}
