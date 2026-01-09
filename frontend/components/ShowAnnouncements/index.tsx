@@ -83,6 +83,7 @@ const ShowAnnouncements: React.FC<Props> = ({
                 </Button>
             )}
             {IsItExplore && <Button
+                onClick={() => router.back()}
                 className='mx-auto hover:bg-gray-100 rounded-none border border-black text-black'
             >
                 {IsLoadingMore ? <LoaderCircle className='h-5 animate-spin text-black' /> : `${TranslateText[language].VIEW_MORE_ANNOUNCEMENTS}`}
