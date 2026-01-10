@@ -107,30 +107,30 @@ const Main: React.FC = () => {
     return (
         <motion.section
             id='announcements'
-            className='flex bg-[#E6E6E6] flex-col h-screen overflow-x-hidden'
+            className='flex bg-[#E6E6E6] flex-col'
             variants={fadeInContainer}
             initial="hidden"
             whileInView="show"
             viewport={{ once: true, margin: "-100px" }}
         >
-            <div className='flex flex-col '>
-                <AnnoucementsHeader
-                    SearchInput={SearchInput}
-                    SetSearchInput={SetSearchInput}
-                    handleEnterKeyPress={handleEnterKeyPress}
-                    dontRedirect={false}
-                    ShowBackButton={false}
-                />
-                <ShowAnnouncements
-                    LoadMoreData={OnLoadMoredata}
-                    Announcements={Announcements}
-                    IsLoading={IsLoading}
-                    page={page}
-                    totalpage={totalPages}
-                    IsLoadingMore={IsLoadingMore}
-                    ShowBackButtom={false}
-                />
-            </div>
+
+            <AnnoucementsHeader
+                SearchInput={SearchInput}
+                SetSearchInput={SetSearchInput}
+                handleEnterKeyPress={handleEnterKeyPress}
+                dontRedirect={false}
+                ShowBackButton={false}
+            />
+            <ShowAnnouncements
+                LoadMoreData={OnLoadMoredata}
+                Announcements={Announcements}
+                IsLoading={IsLoading}
+                page={page}
+                totalpage={totalPages}
+                IsLoadingMore={IsLoadingMore}
+                ShowBackButtom={false}
+            />
+
         </motion.section>
     );
 };
