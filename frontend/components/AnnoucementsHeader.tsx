@@ -54,7 +54,7 @@ const AnnoucementsHeader: React.FC<Props> = ({ ShowBackButton, handleEnterKeyPre
 
     return (
         <motion.header
-            className=' sticky top-0 p-5 z-50 flex flex-col shadow-md gap-6 bg-[#F8F8F8] pb-10'
+            className='sticky top-0 p-5 z-50 flex flex-col shadow-md gap-6 bg-[#F8F8F8] pb-10'
             variants={fadeInUp}
             initial="hidden"
             whileInView="show"

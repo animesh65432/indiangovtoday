@@ -17,7 +17,7 @@ import { TextGenerateEffect } from "../ui/text-generate-effect"
 const HeroSection: React.FC = () => {
     const { onSelectLanguage, language } = useContext(LanguageContext)
     return (
-        <div className="hero-bg h-screen bg-cover bg-center flex flex-col justify-center items-center ">
+        <div className="hero-bg h-[100vh] bg-cover bg-center flex flex-col justify-center items-center ">
             <div className=' w-[90%] sm:w-[65%] mx-auto flex flex-col gap-5 items-center text-center'>
                 <div className='relative w-[250px] sm:w-[302px] h-[64px] mx-auto'>
                     <Image
