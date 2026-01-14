@@ -4,15 +4,16 @@ import { connectDB } from "../db"
 import { ObjectId } from "mongodb";
 import { redis } from "../services/redis"
 import { LANGUAGE_CODES } from "../utils/lan"
-
+import { PrasePayloadAnnouncements } from "../utils/translatePayloadAnnoucements"
 
 export const GetIndiaAnnouncements = asyncErrorHandler(async (req: Request, res: Response) => {
-    const { target_lan, startDate, endDate, page, limit } = req.query;
+    const { target_lan, startDate, endDate, page, limit, states } = req.query;
 
     const pageNumber = parseInt(page as string) || 1;
     const pageSize = parseInt(limit as string) || 10;
     const skip = (pageNumber - 1) * pageSize;
 
+    const selectedStates = PrasePayloadAnnouncements(states as string);
 
     const announcementsStartDate = startDate
         ? new Date(startDate as string)
@@ -22,7 +23,9 @@ export const GetIndiaAnnouncements = asyncErrorHandler(async (req: Request, res:
 
     const targetLanguage = LANGUAGE_CODES[target_lan as string] || "en";
 
-    const redis_key = `Announcements_${targetLanguage}_${announcementsStartDate.toISOString().split('T')[0]}_${announcementsEndDate.toISOString().split('T')[0]}_page${page}_limit${limit}`;
+    const StateCachePart = selectedStates.sort().join(",");
+
+    const redis_key = `Announcements_${targetLanguage}_${announcementsStartDate.toISOString().split('T')[0]}_${announcementsEndDate.toISOString().split('T')[0]}_page${page}_limit${limit}_${StateCachePart}`;
     const cached_data = await redis.get(redis_key);
 
     if (cached_data && typeof cached_data === "string") {
@@ -40,24 +43,30 @@ export const GetIndiaAnnouncements = asyncErrorHandler(async (req: Request, res:
 
     const filter = {
         date: { $gte: start, $lte: end },
-        language: targetLanguage
+        language: targetLanguage,
+        state: selectedStates.length > 0 ? { $in: selectedStates } : { $exists: true }
     };
 
-    const annoucments = await db.collection("Translated_Announcements").
-        find(filter, {
+    const collationOptions = { collation: { locale: 'simple', strength: 1 } };
+
+    const annoucments = await db.collection("Translated_Announcements")
+        .find(filter, {
             projection: {
                 sections: 0,
                 language: 0,
                 source_link: 0,
                 _id: 0
-            }
+            },
+            ...collationOptions
         })
         .sort({ date: -1, _id: -1 })
         .skip(skip)
         .limit(pageSize)
         .toArray()
 
-    const totalCount = await db.collection("Translated_Announcements").countDocuments(filter);
+    const totalCount = await db.collection("Translated_Announcements")
+        .countDocuments(filter, collationOptions);
+
     const totalPages = Math.ceil(totalCount / pageSize);
 
     const responseData = {

@@ -7,8 +7,12 @@ export async function getUserIndiaLocation(): Promise<{
 } | null> {
 
     const cached = localStorage.getItem('userIndiaLocation');
+
     if (cached) {
         const { data, timestamp } = JSON.parse(cached);
+
+        console.log(data, timestamp);
+
         if (Date.now() - timestamp < 30 * 864e5) {
             return data;
         }

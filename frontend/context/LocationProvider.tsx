@@ -53,6 +53,8 @@ const LocationProvider: React.FC<LocationProviderProps> = ({ children }) => {
         fetchLocation();
     }, []);
 
+    console.log("User Location:", location);
+
 
     return (
         <LocationContext.Provider value={location}>

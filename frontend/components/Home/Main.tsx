@@ -9,6 +9,9 @@ import AnnoucementsHeader from '@/components/AnnoucementsHeader';
 import { toast } from 'react-toastify';
 import { motion } from "framer-motion"
 import { fadeInContainer } from "@/lib/animations";
+import { STATES_CODES } from "@/lib/lan"
+import { useStateCode } from "@/lib/useStateCode"
+import { LocationContext } from "@/context/LocationProvider"
 
 
 const Main: React.FC = () => {
@@ -19,6 +22,7 @@ const Main: React.FC = () => {
     const [Announcements, SetAnnouncements] = useState<AnnouncementTypes[]>([])
     const { startdate, endDate } = useContext(Currentdate)
     const { language } = useContext(LanguageContext)
+    const { state_ut } = useContext(LocationContext)
     const [page, Setpage] = useState<number>(1)
     const [limit] = useState<number>(10)
     const paramsRef = useRef({ language, startdate, endDate, limit, page })
@@ -38,8 +42,9 @@ const Main: React.FC = () => {
         else SetIsLoading(true);
 
         try {
+
             const response = await getAllAnnouncements(
-                language, startdate, endDate, pageNumber, limit, signal
+                language, startdate, endDate, pageNumber, limit, [useStateCode(state_ut, language), useStateCode("Rajasthan", language)], signal
             ) as AnnouncementsResponse;
 
 
@@ -66,7 +71,9 @@ const Main: React.FC = () => {
                 SetIsLoadingMore(false);
             }
         }
-    }, [language, startdate, endDate, limit]);
+    }, [language, startdate, endDate, limit, state_ut]);
+
+
     useEffect(() => {
         const controller = new AbortController();
         Setpage(1);

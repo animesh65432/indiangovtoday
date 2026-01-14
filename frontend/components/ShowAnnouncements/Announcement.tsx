@@ -38,7 +38,7 @@ const Announcement: React.FC<Props> = ({ Announcement }) => {
             <div className="text-[#E04B4D] text-xl font-normal">{Announcement.department}</div>
             <div>
                 <h3 className="text-black font-bold">
-                    {Announcement.title}
+                    {Announcement.state}
                 </h3>
             </div>
 
