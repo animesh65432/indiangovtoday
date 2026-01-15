@@ -7,12 +7,9 @@ import { useRouter } from "next/router"
 import ShowAnnouncements from '../ShowAnnouncements';
 import AnnoucementsHeader from '@/components/AnnoucementsHeader';
 import { toast } from 'react-toastify';
-import { motion } from "framer-motion"
-import { fadeInContainer } from "@/lib/animations";
-import { STATES_CODES } from "@/lib/lan"
 import { useStateCode } from "@/lib/useStateCode"
 import { LocationContext } from "@/context/LocationProvider"
-
+import SerchInputbox from './SearchInputbox';
 
 const Main: React.FC = () => {
     const [SearchInput, SetSearchInput] = useState<string>("")
@@ -44,7 +41,7 @@ const Main: React.FC = () => {
         try {
 
             const response = await getAllAnnouncements(
-                language, startdate, endDate, pageNumber, limit, [useStateCode(state_ut, language), useStateCode("Rajasthan", language)], signal
+                language, startdate, endDate, pageNumber, limit, [useStateCode(state_ut, language), useStateCode("IndianGovt", language)], signal
             ) as AnnouncementsResponse;
 
 
@@ -112,22 +109,11 @@ const Main: React.FC = () => {
     };
 
     return (
-        <motion.section
-            id='announcements'
+        <section
             className='flex bg-[#E6E6E6] flex-col'
-            variants={fadeInContainer}
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: true, margin: "-100px" }}
         >
-
-            <AnnoucementsHeader
-                SearchInput={SearchInput}
-                SetSearchInput={SetSearchInput}
-                handleEnterKeyPress={handleEnterKeyPress}
-                dontRedirect={false}
-                ShowBackButton={false}
-            />
+            <AnnoucementsHeader />
+            <SerchInputbox />
             <ShowAnnouncements
                 LoadMoreData={OnLoadMoredata}
                 Announcements={Announcements}
@@ -138,7 +124,7 @@ const Main: React.FC = () => {
                 ShowBackButtom={false}
             />
 
-        </motion.section>
+        </section>
     );
 };
 
