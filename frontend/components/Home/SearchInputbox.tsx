@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { ChevronDownIcon, Search } from "lucide-react"
 import { LanguageContext } from "@/context/Lan"
 import { Input } from "@/components/ui/input"
@@ -16,11 +16,13 @@ import {
 } from "@/components/ui/popover"
 import { Currentdate } from '@/context/Currentdate'
 import { Button } from '../ui/button'
+import { MultiSelect } from "@/components/ui/multi-select"
 
 const SerchInputbox: React.FC = () => {
     const [startopen, setstartOpen] = React.useState(false);
     const { language } = useContext(LanguageContext)
     const { onChangeDate, startdate, endDate } = useContext(Currentdate);
+    const [selectedValues, setSelectedValues] = useState<string[]>([]);
 
     const OnChangeDateRangePicker = (values: {
         range: { from?: Date; to?: Date };
@@ -47,14 +49,17 @@ const SerchInputbox: React.FC = () => {
                         />
                     </li>
                 </ul>
-                <ul className='flex gap-4'>
+                <ul className='flex gap-4 items-center'>
+                    <li>
+                        <MultiSelect
+                            options={TranslateText[language].MULTISELECT_OPTIONS}
+                            onValueChange={setSelectedValues}
+                            defaultValue={selectedValues}
+                            className='rounded-none'
+                        />
+                    </li>
                     <Select>
-                        <SelectTrigger className="w-full rounded-none bg-slate-100 focus-visible:ring-0">
-                            <SelectValue placeholder="" />
-                        </SelectTrigger>
-                    </Select>
-                    <Select>
-                        <SelectTrigger className="w-full rounded-none bg-slate-100 focus-visible:ring-0">
+                        <SelectTrigger className="w-fit rounded-none bg-slate-100 focus-visible:ring-0">
                             <SelectValue placeholder="" />
                         </SelectTrigger>
                     </Select>
