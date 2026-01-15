@@ -10,6 +10,7 @@ import { toast } from 'react-toastify';
 import { useStateCode } from "@/lib/useStateCode"
 import { LocationContext } from "@/context/LocationProvider"
 import SerchInputbox from './SearchInputbox';
+import { TranslateText } from "@/lib/translatetext"
 
 const Main: React.FC = () => {
     const [SearchInput, SetSearchInput] = useState<string>("")
@@ -20,7 +21,10 @@ const Main: React.FC = () => {
     const { startdate, endDate } = useContext(Currentdate)
     const { language } = useContext(LanguageContext)
     const { state_ut } = useContext(LocationContext)
+    const [DeparmentsSelected, SetDeparmentsSelected] = useState<string[]>([]);
+    const [StatesSelected, SetStatesSelected] = useState<string[]>([]);
     const [page, Setpage] = useState<number>(1)
+    const defaultsApplied = useRef(false);
     const [limit] = useState<number>(10)
     const paramsRef = useRef({ language, startdate, endDate, limit, page })
     const router = useRouter()
@@ -35,13 +39,15 @@ const Main: React.FC = () => {
         signal: AbortSignal
     ) => {
 
-        if (append) SetIsLoadingMore(true);
-        else SetIsLoading(true);
+        console.log(StatesSelected)
 
+        if (append) SetIsLoadingMore(true);
+        if (StatesSelected.length === 0) return;
+        else SetIsLoading(true);
         try {
 
             const response = await getAllAnnouncements(
-                language, startdate, endDate, pageNumber, limit, [useStateCode(state_ut, language), useStateCode("IndianGovt", language)], signal
+                language, startdate, endDate, pageNumber, limit, StatesSelected, signal
             ) as AnnouncementsResponse;
 
 
@@ -68,7 +74,7 @@ const Main: React.FC = () => {
                 SetIsLoadingMore(false);
             }
         }
-    }, [language, startdate, endDate, limit, state_ut]);
+    }, [language, startdate, endDate, limit, StatesSelected]);
 
 
     useEffect(() => {
@@ -77,7 +83,27 @@ const Main: React.FC = () => {
         fetchGetIndiaAnnouncements(1, false, controller.signal);
 
         return () => controller.abort();
-    }, [language, startdate, endDate, fetchGetIndiaAnnouncements]);
+    }, [language, startdate, endDate, fetchGetIndiaAnnouncements, state_ut]);
+
+
+    useEffect(() => {
+        if (!state_ut || defaultsApplied.current) return;
+
+        const userStateCode = useStateCode(state_ut, language);
+        const INDIA_GOVT_CODE = TranslateText[language]["MULTISELECT_OPTIONS"][TranslateText[language]["MULTISELECT_OPTIONS"].length - 1].value;
+
+
+        console.log("Applying default state selections:", INDIA_GOVT_CODE);
+
+        console.log(TranslateText[language]["MULTISELECT_OPTIONS"])
+
+        SetStatesSelected([
+            INDIA_GOVT_CODE,
+            userStateCode,
+        ]);
+
+        defaultsApplied.current = true;
+    }, [state_ut, language]);
 
 
     useEffect(() => {
@@ -86,7 +112,7 @@ const Main: React.FC = () => {
             fetchGetIndiaAnnouncements(page, true, controller.signal);
             return () => controller.abort();
         }
-    }, [page, fetchGetIndiaAnnouncements]);
+    }, [page, fetchGetIndiaAnnouncements, state_ut]);
 
     const OnLoadMoredata = () => {
         if (page >= totalPages) {
@@ -113,7 +139,12 @@ const Main: React.FC = () => {
             className='flex bg-[#E6E6E6] flex-col'
         >
             <AnnoucementsHeader />
-            <SerchInputbox />
+            <SerchInputbox
+                SetStatesSelected={SetStatesSelected}
+                StatesSelected={StatesSelected}
+                DeparmentsSelected={DeparmentsSelected}
+                SetDeparmentsSelected={SetDeparmentsSelected}
+            />
             <ShowAnnouncements
                 LoadMoreData={OnLoadMoredata}
                 Announcements={Announcements}

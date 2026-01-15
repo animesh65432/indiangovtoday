@@ -35,3 +35,20 @@ export const GetGroupIndiaAnnouncements = (target_lan: string, startdate: Date, 
     method: "GET",
     path: `/GetGroupIndiaAnnouncements?target_lan=${target_lan}&startdate=${startdate}&endDate=${endDate}&typeofGroup=${typeofGroup}`
 })
+
+export const GetallAnnoucementsDepartments = (target_lan: string, startdate: Date, endDate: Date, states: string[], signal?: AbortSignal) => {
+
+    const params = new URLSearchParams({
+        target_lan,
+        startDate: startdate.toISOString().split('T')[0],
+        endDate: endDate.toISOString().split('T')[0],
+    });
+
+    states.forEach(state => params.append('states', state));
+
+    return Call({
+        method: "GET",
+        path: `/GetallAnnoucementsDepartments?${params.toString()}`,
+        signal
+    });
+}

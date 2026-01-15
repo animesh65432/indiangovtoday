@@ -802,7 +802,7 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                             aria-label={`Multi-select: ${selectedValues.length} of ${getAllOptions().length
                                 } options selected. ${placeholder}`}
                             className={cn(
-                                "flex p-1 rounded-md border min-h-10 h-auto items-center justify-between bg-inherit hover:bg-inherit [&_svg]:pointer-events-auto",
+                                "flex p-1 rounded-md  border min-h-10 h-auto items-center justify-between bg-inherit hover:bg-inherit [&_svg]:pointer-events-auto",
                                 autoSize ? "w-auto" : "w-full",
                                 responsiveSettings.compactMode && "min-h-8 text-sm",
                                 screenSize === "mobile" && "min-h-12 text-base",
@@ -996,7 +996,7 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                         aria-multiselectable="true"
                         aria-label="Available options"
                         className={cn(
-                            "w-auto p-0",
+                            "w-auto p-0 [&_*]:text-black",
                             getPopoverAnimationClass(),
                             screenSize === "mobile" && "w-[85vw] max-w-[280px]",
                             screenSize === "tablet" && "w-[70vw] max-w-md",
@@ -1137,7 +1137,7 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                                                         className={cn(
                                                             "mr-2 flex h-4 w-4 items-center justify-center rounded-sm border border-primary",
                                                             isSelected
-                                                                ? "bg-primary text-primary-foreground"
+                                                                ? "bg-white text-primary-foreground"
                                                                 : "opacity-50 [&_svg]:invisible"
                                                         )}
                                                         aria-hidden="true">

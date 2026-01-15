@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import { ChevronDownIcon, Search } from "lucide-react"
 import { LanguageContext } from "@/context/Lan"
 import { Input } from "@/components/ui/input"
@@ -17,12 +17,22 @@ import {
 import { Currentdate } from '@/context/Currentdate'
 import { Button } from '../ui/button'
 import { MultiSelect } from "@/components/ui/multi-select"
+import { GetallAnnoucementsDepartments } from "@/api/announcements"
 
-const SerchInputbox: React.FC = () => {
-    const [startopen, setstartOpen] = React.useState(false);
+type Props = {
+    StatesSelected: string[],
+    SetStatesSelected: React.Dispatch<React.SetStateAction<string[]>>,
+    DeparmentsSelected: string[],
+    SetDeparmentsSelected: React.Dispatch<React.SetStateAction<string[]>>
+}
+
+
+const SerchInputbox: React.FC<Props> = ({ SetStatesSelected, StatesSelected, DeparmentsSelected, SetDeparmentsSelected }) => {
+    const [startopen, setstartOpen] = useState(false);
+    const [endopen, setendOpen] = useState(false);
+    const [DeparmentsOptions, setDeparmentsOptions] = useState<string[]>([])
     const { language } = useContext(LanguageContext)
     const { onChangeDate, startdate, endDate } = useContext(Currentdate);
-    const [selectedValues, setSelectedValues] = useState<string[]>([]);
 
     const OnChangeDateRangePicker = (values: {
         range: { from?: Date; to?: Date };
@@ -32,6 +42,26 @@ const SerchInputbox: React.FC = () => {
             onChangeDate(values.range.from, values.range.to);
         }
     };
+
+    const fetchDeparmentsOptions = async () => {
+        try {
+            const response = await GetallAnnoucementsDepartments(
+                language,
+                startdate,
+                endDate,
+                StatesSelected
+            ) as { data: string[] };
+
+            setDeparmentsOptions(response.data);
+
+        } finally {
+            setDeparmentsOptions([]);
+        }
+    }
+
+    useEffect(() => {
+        fetchDeparmentsOptions();
+    }, [language, StatesSelected])
 
     return (
         <nav className='p-5 flex flex-col gap-5 bg-white'>
@@ -53,9 +83,10 @@ const SerchInputbox: React.FC = () => {
                     <li>
                         <MultiSelect
                             options={TranslateText[language].MULTISELECT_OPTIONS}
-                            onValueChange={setSelectedValues}
-                            defaultValue={selectedValues}
-                            className='rounded-none'
+                            onValueChange={SetStatesSelected}
+                            defaultValue={StatesSelected}
+                            className='rounded-none uppercase  text-black [&_*]:text-black [&_*]:font-semibold'
+                            placeholder='Select Regions'
                         />
                     </li>
                     <Select>
