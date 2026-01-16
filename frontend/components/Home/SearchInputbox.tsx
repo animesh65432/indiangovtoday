@@ -49,7 +49,7 @@ const SerchInputbox: React.FC<Props> = ({
     }, [language, StatesSelected])
 
     return (
-        <nav className='p-5 flex flex-col gap-5 bg-white'>
+        <nav className='p-5 flex flex-col gap-5 bg-white  '>
             <ul className='flex flex-col gap-1'>
                 <h2 className='uppercase'>public notification</h2>
                 <span className='uppercase text-[0.9rem]'>Direct Access to Verified Government Circulars</span>
@@ -74,72 +74,84 @@ const SerchInputbox: React.FC<Props> = ({
                         {TranslateText[language].SEARCH}
                     </Button>
                 </ul>
-                <ul className='flex gap-4 items-center'>
-                    <li>
-                        <MultiSelect
-                            options={TranslateText[language].MULTISELECT_OPTIONS}
-                            onValueChange={SetStatesSelected}
-                            defaultValue={StatesSelected}
-                            className='rounded-none uppercase text-black [&_*]:text-black [&_*]:font-semibold'
-                            placeholder='Select Regions'
-                        />
+                <ul className='hidden lg:flex gap-4 items-center '>
+                    <li className='flex flex-col xl:flex-row xl:items-center gap-2 xl:gap-5 '>
+                        <span className='uppercase text-slate-500 font-semibold'>region :</span>
+                        <ol>
+                            <MultiSelect
+                                options={TranslateText[language].MULTISELECT_OPTIONS}
+                                onValueChange={SetStatesSelected}
+                                defaultValue={StatesSelected}
+                                className='rounded-none uppercase text-black [&_*]:text-black [&_*]:font-semibold'
+                                placeholder='Select Regions'
+                            />
+                        </ol>
                     </li>
-                    <Select value={DeparmentsSelected} onValueChange={SetDeparmentsSelected}>
-                        <SelectTrigger className="w-fit p-5 rounded-none bg-transparent placeholder:text-black">
-                            <SelectValue className='uppercase text-black placeholder:text-black font-semibold' placeholder="SELECT DEPARMENTS" />
-                        </SelectTrigger>
-                        <SelectContent>
-                            <SelectGroup>
-                                {DeparmentsOptions.map((deparment) => (
-                                    <SelectItem
-                                        key={deparment}
-                                        value={deparment}
-                                        className={`hover:bg-slate-200 ${DeparmentsSelected.includes(deparment) ? 'bg-slate-200' : ''}`}
-                                    >
-                                        {deparment}
-                                    </SelectItem>
-                                ))}
-                            </SelectGroup>
-                        </SelectContent>
-                    </Select>
-                    <Popover open={startDateOpen} onOpenChange={setStartDateOpen}>
-                        <PopoverTrigger asChild>
-                            <Button id="date" className="w-fit justify-between p-5 text-black font-semibold rounded-none border border-slate-200">
-                                {startdate ? startdate.toLocaleDateString() : "Select date"}
-                                <ChevronDownIcon />
-                            </Button>
-                        </PopoverTrigger>
-                        <PopoverContent className="w-auto overflow-hidden p-0" align="start">
-                            <Calendar
-                                mode="single"
-                                selected={startdate}
-                                captionLayout="dropdown"
-                                onSelect={(date) => {
-                                    onChangeStartDate(date!)
-                                    setStartDateOpen(false)
-                                }}
-                            />
-                        </PopoverContent>
-                    </Popover>
-                    <Popover open={EndDateOpen} onOpenChange={setEndDateOpen}>
-                        <PopoverTrigger asChild>
-                            <Button id="date" className="w-fit p-5 justify-between text-black font-semibold rounded-none border border-slate-200">
-                                {endDate ? endDate.toLocaleDateString() : "Select date"}
-                                <ChevronDownIcon />
-                            </Button>
-                        </PopoverTrigger>
-                        <PopoverContent className="w-auto overflow-hidden p-0" align="start">
-                            <Calendar
-                                mode="single"
-                                selected={endDate}
-                                captionLayout="dropdown"
-                                onSelect={(date) => {
-                                    onChangeEndDate(date!)
-                                    setEndDateOpen(false)
-                                }}
-                            />
-                        </PopoverContent>
-                    </Popover>
+                    <li className='flex flex-col xl:flex-row xl:items-center gap-2 xl:gap-5'>
+                        <span className='uppercase text-slate-500 font-semibold'>dept :</span>
+                        <Select value={DeparmentsSelected} onValueChange={SetDeparmentsSelected}>
+                            <SelectTrigger className="w-fit p-5 rounded-none bg-transparent data-[placeholder]:text-black uppercase">
+                                <SelectValue placeholder="ALL DEPARMENTS" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectGroup>
+                                    {DeparmentsOptions.map((deparment) => (
+                                        <SelectItem
+                                            key={deparment}
+                                            value={deparment}
+                                            className={`hover:bg-slate-200 ${DeparmentsSelected.includes(deparment) ? 'bg-slate-200' : ''}`}
+                                        >
+                                            {deparment}
+                                        </SelectItem>
+                                    ))}
+                                </SelectGroup>
+                            </SelectContent>
+                        </Select>
+                    </li>
+                    <li className='flex flex-col xl:flex-row xl:items-center gap-2 xl:gap-5'>
+                        <span className='uppercase text-slate-500 font-semibold'>Range :</span>
+                        <Popover open={startDateOpen} onOpenChange={setStartDateOpen}>
+                            <PopoverTrigger asChild>
+                                <Button id="date" className="w-fit justify-between p-5 text-black font-semibold rounded-none border border-slate-200">
+                                    {startdate ? startdate.toLocaleDateString() : "Select date"}
+                                    <ChevronDownIcon />
+                                </Button>
+                            </PopoverTrigger>
+                            <PopoverContent className="w-auto overflow-hidden p-0" align="start">
+                                <Calendar
+                                    mode="single"
+                                    selected={startdate}
+                                    captionLayout="dropdown"
+                                    onSelect={(date) => {
+                                        onChangeStartDate(date!)
+                                        setStartDateOpen(false)
+                                    }}
+                                />
+                            </PopoverContent>
+                        </Popover>
+                    </li>
+                    <li className='flex flex-col xl:flex-row xl:items-center gap-2 xl:gap-5'>
+                        <span className='uppercase text-slate-500 font-semibold'>to</span>
+                        <Popover open={EndDateOpen} onOpenChange={setEndDateOpen}>
+                            <PopoverTrigger asChild>
+                                <Button id="date" className="w-fit p-5 justify-between text-black font-semibold rounded-none border border-slate-200">
+                                    {endDate ? endDate.toLocaleDateString() : "Select date"}
+                                    <ChevronDownIcon />
+                                </Button>
+                            </PopoverTrigger>
+                            <PopoverContent className="w-auto overflow-hidden p-0" align="start">
+                                <Calendar
+                                    mode="single"
+                                    selected={endDate}
+                                    captionLayout="dropdown"
+                                    onSelect={(date) => {
+                                        onChangeEndDate(date!)
+                                        setEndDateOpen(false)
+                                    }}
+                                />
+                            </PopoverContent>
+                        </Popover>
+                    </li>
                 </ul>
             </ul>
         </nav>

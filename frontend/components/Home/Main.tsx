@@ -36,9 +36,8 @@ const Main: React.FC = () => {
         signal: AbortSignal
     ) => {
 
-        console.log("Fetching announcements with states:", StatesSelected);
-
         if (append) SetIsLoadingMore(true);
+
         else SetIsLoading(true);
 
         if (StatesSelected.length === 0) {

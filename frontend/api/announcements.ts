@@ -13,7 +13,6 @@ export const getAllAnnouncements = (target_lan: string, startdate: Date, endDate
 
     states.forEach(state => params.append('states', state));
 
-    console.log(params.toString())
 
     return Call({
         method: "GET",
