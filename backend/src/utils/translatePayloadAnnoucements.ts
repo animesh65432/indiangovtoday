@@ -1,4 +1,4 @@
-export function PrasePayloadAnnouncements(states: string) {
+export function PrasePayloadArray(states: string) {
     let selectedStates: string[] = [];
 
     if (typeof states === 'string') {

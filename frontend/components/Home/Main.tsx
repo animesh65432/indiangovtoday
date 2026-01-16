@@ -1,12 +1,10 @@
-import React, { useEffect, useState, useContext, useCallback, useRef } from 'react';
+import React, { useEffect, useState, useContext, useRef } from 'react';
 import { getAllAnnouncements } from "@/api/announcements";
 import { Announcement as AnnouncementTypes, AnnouncementsResponse } from "@/types";
 import { LanguageContext } from '@/context/Lan';
 import { Currentdate } from "@/context/Currentdate";
-import { useRouter } from "next/router"
 import ShowAnnouncements from '../ShowAnnouncements';
 import AnnoucementsHeader from '@/components/AnnoucementsHeader';
-import { toast } from 'react-toastify';
 import { useStateCode } from "@/lib/useStateCode"
 import { LocationContext } from "@/context/LocationProvider"
 import SerchInputbox from './SearchInputbox';
@@ -14,97 +12,85 @@ import { TranslateText } from "@/lib/translatetext"
 
 const Main: React.FC = () => {
     const [SearchInput, SetSearchInput] = useState<string>("")
+    const [StatesSelected, SetStatesSelected] = useState<string[]>([]);
+    const [DeparmentsSelected, SetDeparmentsSelected] = useState<string>("");
+
     const [totalPages, settotalPages] = useState<number>(0)
     const [IsLoading, SetIsLoading] = useState<boolean>(false)
     const [IsLoadingMore, SetIsLoadingMore] = useState<boolean>(false)
     const [Announcements, SetAnnouncements] = useState<AnnouncementTypes[]>([])
+    const [page, Setpage] = useState<number>(1)
+    const [limit] = useState<number>(10)
+
     const { startdate, endDate } = useContext(Currentdate)
     const { language } = useContext(LanguageContext)
     const { state_ut } = useContext(LocationContext)
-    const [DeparmentsSelected, SetDeparmentsSelected] = useState<string[]>([]);
-    const [StatesSelected, SetStatesSelected] = useState<string[]>([]);
-    const [page, Setpage] = useState<number>(1)
-    const defaultsApplied = useRef(false);
-    const [limit] = useState<number>(10)
-    const paramsRef = useRef({ language, startdate, endDate, limit, page })
-    const router = useRouter()
 
-    useEffect(() => {
-        paramsRef.current = { language, startdate, endDate, limit, page }
-    }, [language, startdate, endDate, limit, page])
+    const [DefaultsStatesApplied, SetDefaultsStatesApplied] = useState<string[]>([])
 
-    const fetchGetIndiaAnnouncements = useCallback(async (
+    const [trigger, setTrigger] = useState(0);
+
+    const fetchGetIndiaAnnouncements = async (
         pageNumber: number,
         append: boolean,
         signal: AbortSignal
     ) => {
 
-        console.log(StatesSelected)
+        console.log("Fetching announcements with states:", StatesSelected);
 
         if (append) SetIsLoadingMore(true);
-        if (StatesSelected.length === 0) return;
         else SetIsLoading(true);
+
+        if (StatesSelected.length === 0) {
+            SetIsLoading(false);
+            return;
+        }
+
         try {
-
             const response = await getAllAnnouncements(
-                language, startdate, endDate, pageNumber, limit, StatesSelected, signal
+                language, startdate, endDate, pageNumber, limit,
+                StatesSelected, DeparmentsSelected, SearchInput, signal
             ) as AnnouncementsResponse;
-
 
             if (!signal.aborted) {
                 settotalPages(response.pagination.totalPages);
-                if (append) {
-                    SetAnnouncements(prev => [...prev, ...response.data]);
-                } else {
-                    SetAnnouncements(response.data);
-                }
+                SetAnnouncements(prev => append ? [...prev, ...response.data] : response.data);
             }
         } catch (error: unknown) {
-            if (
-                error instanceof Error &&
-                (error.name === 'AbortError' ||
-                    (error as { code?: string }).code === 'ERR_CANCELED')
-            ) {
+            if (error instanceof Error &&
+                (error.name === 'AbortError' || (error as { code?: string }).code === 'ERR_CANCELED')) {
                 return;
             }
-        }
-        finally {
+        } finally {
             if (!signal.aborted) {
                 SetIsLoading(false);
                 SetIsLoadingMore(false);
             }
         }
-    }, [language, startdate, endDate, limit, StatesSelected]);
+    }
 
 
     useEffect(() => {
         const controller = new AbortController();
         Setpage(1);
         fetchGetIndiaAnnouncements(1, false, controller.signal);
-
         return () => controller.abort();
-    }, [language, startdate, endDate, fetchGetIndiaAnnouncements, state_ut]);
+    }, [language, state_ut, trigger, DefaultsStatesApplied]);
 
 
     useEffect(() => {
-        if (!state_ut || defaultsApplied.current) return;
-
-        const userStateCode = useStateCode(state_ut, language);
-        const INDIA_GOVT_CODE = TranslateText[language]["MULTISELECT_OPTIONS"][TranslateText[language]["MULTISELECT_OPTIONS"].length - 1].value;
-
-
-        console.log("Applying default state selections:", INDIA_GOVT_CODE);
-
-        console.log(TranslateText[language]["MULTISELECT_OPTIONS"])
-
-        SetStatesSelected([
-            INDIA_GOVT_CODE,
-            userStateCode,
-        ]);
-
-        defaultsApplied.current = true;
+        if (state_ut) {
+            const userStateCode = useStateCode(state_ut, language);
+            const INDIA_GOVT_CODE = TranslateText[language]["MULTISELECT_OPTIONS"][TranslateText[language]["MULTISELECT_OPTIONS"].length - 1].value;
+            SetStatesSelected([INDIA_GOVT_CODE, userStateCode]);
+            SetDefaultsStatesApplied([INDIA_GOVT_CODE, userStateCode]);
+        }
+        else {
+            const INDIA_GOVT_CODE = TranslateText[language]["MULTISELECT_OPTIONS"][TranslateText[language]["MULTISELECT_OPTIONS"].length - 1].value;
+            SetStatesSelected([INDIA_GOVT_CODE]);
+            SetDefaultsStatesApplied([INDIA_GOVT_CODE]);
+        }
     }, [state_ut, language]);
-
 
     useEffect(() => {
         if (page > 1) {
@@ -112,38 +98,30 @@ const Main: React.FC = () => {
             fetchGetIndiaAnnouncements(page, true, controller.signal);
             return () => controller.abort();
         }
-    }, [page, fetchGetIndiaAnnouncements, state_ut]);
+    }, [page]);
+
+    const handleSearch = () => {
+        Setpage(1);
+        setTrigger(prev => prev + 1);
+    };
 
     const OnLoadMoredata = () => {
-        if (page >= totalPages) {
-            return;
-        }
-        else {
-            Setpage((prev) => prev + 1)
+        if (page < totalPages) {
+            Setpage(prev => prev + 1);
         }
     }
 
-    const handleEnterKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
-        if (event.key === 'Enter') {
-            event.preventDefault();
-            if (SearchInput.trim() === "" || SearchInput.length < 3) {
-                toast.info("Please enter at least 3 characters to search.");
-                return;
-            }
-            router.push(`/announcements?SearchInput=${SearchInput}`);
-        }
-    };
-
     return (
-        <section
-            className='flex bg-[#E6E6E6] flex-col'
-        >
+        <section className='flex bg-[#E6E6E6] flex-col'>
             <AnnoucementsHeader />
             <SerchInputbox
-                SetStatesSelected={SetStatesSelected}
                 StatesSelected={StatesSelected}
+                SetStatesSelected={SetStatesSelected}
                 DeparmentsSelected={DeparmentsSelected}
                 SetDeparmentsSelected={SetDeparmentsSelected}
+                SearchInput={SearchInput}
+                SetSearchInput={SetSearchInput}
+                onSearch={handleSearch}
             />
             <ShowAnnouncements
                 LoadMoreData={OnLoadMoredata}
@@ -154,7 +132,6 @@ const Main: React.FC = () => {
                 IsLoadingMore={IsLoadingMore}
                 ShowBackButtom={false}
             />
-
         </section>
     );
 };

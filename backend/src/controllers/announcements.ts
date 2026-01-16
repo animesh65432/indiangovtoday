@@ -4,17 +4,19 @@ import { connectDB } from "../db"
 import { ObjectId } from "mongodb";
 import { redis } from "../services/redis"
 import { LANGUAGE_CODES } from "../utils/lan"
-import { PrasePayloadAnnouncements } from "../utils/translatePayloadAnnoucements"
+import { PrasePayloadArray } from "../utils/translatePayloadAnnoucements"
 
 export const GetIndiaAnnouncements = asyncErrorHandler(async (req: Request, res: Response) => {
 
-    const { target_lan, startDate, endDate, page, limit, states } = req.query;
+    const { target_lan, startDate, endDate, page, limit, states, department, SearchInput } = req.query;
 
     const pageNumber = parseInt(page as string) || 1;
     const pageSize = parseInt(limit as string) || 10;
     const skip = (pageNumber - 1) * pageSize;
 
-    const selectedStates = PrasePayloadAnnouncements(states as string);
+    const selectedStates = PrasePayloadArray(states as string);
+
+    const Department = department ? department.toString().trim() : "";
 
     const announcementsStartDate = startDate
         ? new Date(startDate as string)
@@ -25,8 +27,10 @@ export const GetIndiaAnnouncements = asyncErrorHandler(async (req: Request, res:
     const targetLanguage = LANGUAGE_CODES[target_lan as string] || "en";
 
     const StateCachePart = selectedStates.sort().join(",");
+    const SearchCachePart = SearchInput ? `_search${SearchInput}` : "";
 
-    const redis_key = `Announcements_${targetLanguage}_${announcementsStartDate.toISOString().split('T')[0]}_${announcementsEndDate.toISOString().split('T')[0]}_page${page}_limit${limit}_${StateCachePart}`;
+    const redis_key = `Announcements_${targetLanguage}_${announcementsStartDate.toISOString().split('T')[0]}_${announcementsEndDate.toISOString().split('T')[0]}_page${page}_limit${limit}_${StateCachePart}_${Department}${SearchCachePart}`;
+
     const cached_data = await redis.get(redis_key);
 
     if (cached_data && typeof cached_data === "string") {
@@ -42,37 +46,105 @@ export const GetIndiaAnnouncements = asyncErrorHandler(async (req: Request, res:
     const end = new Date(announcementsEndDate);
     end.setUTCHours(23, 59, 59, 999);
 
-    const filter = {
-        date: { $gte: start, $lte: end },
-        language: targetLanguage,
-        state: selectedStates.length > 0 ? { $in: selectedStates } : { $exists: true }
-    };
+    let announcements: any[] = [];
+    let totalCount: number = 0;
 
-    const collationOptions = { collation: { locale: 'simple', strength: 1 } };
 
-    const annoucments = await db.collection("Translated_Announcements")
-        .find(filter, {
-            projection: {
-                sections: 0,
-                language: 0,
-                source_link: 0,
-                _id: 0
+    if (SearchInput && typeof SearchInput === 'string' && SearchInput.trim().length >= 3) {
+        const searchRegex = new RegExp(SearchInput.trim(), "i");
+
+        const baseMatch: any = {
+            date: { $gte: start, $lte: end },
+            language: targetLanguage,
+            $or: [
+                { title: searchRegex },
+                { state: searchRegex },
+                { category: searchRegex },
+                { description: searchRegex },
+                { department: searchRegex }
+            ]
+        };
+
+
+        if (selectedStates.length > 0) {
+            baseMatch.state = { $in: selectedStates };
+        }
+
+
+        baseMatch.department = Department ? Department : { $exists: true };
+
+
+        const pipeline = [
+            { $match: baseMatch },
+            {
+                $addFields: {
+                    searchScore: {
+                        $switch: {
+                            branches: [
+                                { case: { $regexMatch: { input: "$title", regex: searchRegex } }, then: 100 },
+                                { case: { $regexMatch: { input: "$state", regex: searchRegex } }, then: 50 },
+                                { case: { $regexMatch: { input: "$category", regex: searchRegex } }, then: 30 },
+                                { case: { $regexMatch: { input: "$description", regex: searchRegex } }, then: 20 },
+                                { case: { $regexMatch: { input: "$department", regex: searchRegex } }, then: 15 }
+                            ],
+                            default: 10
+                        }
+                    }
+                }
             },
-            ...collationOptions
-        })
-        .sort({ date: -1, _id: -1 })
-        .skip(skip)
-        .limit(pageSize)
-        .toArray()
+            { $sort: { searchScore: -1, date: -1, _id: -1 } },
+            { $skip: skip },
+            { $limit: pageSize },
+            {
+                $project: {
+                    searchScore: 0,
+                    sections: 0,
+                    language: 0,
+                    source_link: 0,
+                    _id: 0
+                }
+            }
+        ];
 
-    const totalCount = await db.collection("Translated_Announcements")
-        .countDocuments(filter, collationOptions);
+        announcements = await db.collection("Translated_Announcements").aggregate(pipeline).toArray();
+
+
+        totalCount = await db.collection("Translated_Announcements").countDocuments(baseMatch);
+
+    } else {
+        const filter: any = {
+            date: { $gte: start, $lte: end },
+            language: targetLanguage,
+            state: selectedStates.length > 0 ? { $in: selectedStates } : { $exists: true },
+            department: Department ? Department : { $exists: true }
+        };
+
+        const collationOptions = { collation: { locale: 'simple', strength: 1 } };
+
+        announcements = await db.collection("Translated_Announcements")
+            .find(filter, {
+                projection: {
+                    sections: 0,
+                    language: 0,
+                    source_link: 0,
+                    _id: 0
+                },
+                ...collationOptions
+            })
+            .sort({ date: -1, _id: -1 })
+            .skip(skip)
+            .limit(pageSize)
+            .toArray();
+
+        totalCount = await db.collection("Translated_Announcements")
+            .countDocuments(filter, collationOptions);
+    }
 
     const totalPages = Math.ceil(totalCount / pageSize);
 
     const responseData = {
         success: true,
-        data: annoucments,
+        data: announcements,
         pagination: {
             page: pageNumber,
             totalPages,
@@ -309,7 +381,7 @@ export const GetallAnnoucementsDepartments = asyncErrorHandler(async (req: Reque
     }
 
     const targetLanguage = LANGUAGE_CODES[target_lan] || "en";
-    const selectedStates = PrasePayloadAnnouncements(states as string);
+    const selectedStates = PrasePayloadArray(states as string);
     const sortedStates = [...selectedStates].sort();
     const stateCachePart = sortedStates.join(",");
 
@@ -336,7 +408,6 @@ export const GetallAnnoucementsDepartments = asyncErrorHandler(async (req: Reque
     const cached = await redis.get(redisKey);
 
     if (cached) {
-        console.log(cached, "cached departments");
         res.status(200).json(cached);
         return;
     }
