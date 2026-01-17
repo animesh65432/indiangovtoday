@@ -115,18 +115,20 @@ const Main: React.FC = () => {
 
     return (
         <section className='flex bg-[#E6E6E6] flex-col  h-[100vh] overflow-hidden '>
-            <AnnoucementsHeader />
-            <MobileSearchInput
-                ShowFilterCard={ShowFilterCard}
-                SetFilterShowCard={SetFilterShowCard}
-                StatesSelected={StatesSelected}
-                SetStatesSelected={SetStatesSelected}
-                DeparmentsSelected={DeparmentsSelected}
-                SetDeparmentsSelected={SetDeparmentsSelected}
-                SearchInput={SearchInput}
-                SetSearchInput={SetSearchInput}
-                onSearch={handleSearch}
-            />
+            <nav className='bg-[#1C3257] flex flex-col'>
+                <AnnoucementsHeader />
+                <MobileSearchInput
+                    ShowFilterCard={ShowFilterCard}
+                    SetFilterShowCard={SetFilterShowCard}
+                    StatesSelected={StatesSelected}
+                    SetStatesSelected={SetStatesSelected}
+                    DeparmentsSelected={DeparmentsSelected}
+                    SetDeparmentsSelected={SetDeparmentsSelected}
+                    SearchInput={SearchInput}
+                    SetSearchInput={SetSearchInput}
+                    onSearch={handleSearch}
+                />
+            </nav>
             <SerchInputbox
                 StatesSelected={StatesSelected}
                 SetStatesSelected={SetStatesSelected}

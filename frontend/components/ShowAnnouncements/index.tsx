@@ -51,11 +51,12 @@ const ShowAnnouncements: React.FC<Props> = ({
     return (
         <div className='flex flex-col gap-6 pb-20 overflow-x-auto flex-1 '>
 
-            <div className='w-[95%] sm:w-[85%] flex flex-col gap-6 pt-2 mx-auto '>
+            <div className='flex flex-col gap-6 p-10 w-full md:w-[65%]'>
                 {Announcements.map((ann) => (
                     <Announcement Announcement={ann} key={ann.title} />
                 ))}
             </div>
+
             {page < totalpage && (
                 <Button
                     className='mx-auto hover:bg-gray-100 rounded-none border border-black text-black'

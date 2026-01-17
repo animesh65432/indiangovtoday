@@ -25,7 +25,7 @@ const MobileSearchInput: React.FC<MobileSearchInputProps> = ({ SetFilterShowCard
     const { language } = useContext(LanguageContext)
 
     return (
-        <div className='bg-[#1C3257] block md:hidden p-4'>
+        <div className='block md:hidden p-4'>
             <div className="relative w-full">
                 <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
                     <Search size={18} />

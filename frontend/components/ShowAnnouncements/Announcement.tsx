@@ -33,7 +33,7 @@ const Announcement: React.FC<Props> = ({ Announcement }) => {
 
     return (
         <div
-            className="bg-[#FFFFFF] flex flex-col gap-4 w-[85%] mx-auto  p-4 "
+            className="bg-[#FFFFFF] flex flex-col gap-4   p-4 "
         >
             <div className="text-[#E04B4D] text-xl font-normal">{Announcement.department}</div>
             <div>
