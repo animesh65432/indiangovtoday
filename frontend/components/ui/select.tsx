@@ -23,14 +23,18 @@ function SelectValue({
   return <SelectPrimitive.Value data-slot="select-value" {...props} className="placeholder:text-black" />
 }
 
+interface SelectTriggerProps extends React.ComponentProps<typeof SelectPrimitive.Trigger> {
+  size?: "sm" | "default";
+  IsLanguageSelect?: boolean;
+}
+
 function SelectTrigger({
   className,
   size = "default",
   children,
+  IsLanguageSelect,
   ...props
-}: React.ComponentProps<typeof SelectPrimitive.Trigger> & {
-  size?: "sm" | "default"
-}) {
+}: SelectTriggerProps) {
   return (
     <SelectPrimitive.Trigger
       data-slot="select-trigger"
@@ -41,20 +45,20 @@ function SelectTrigger({
       )}
       {...props}
     >
-      {props.IsLanguageSelect &&
+      {IsLanguageSelect && (
         <SelectPrimitive.Icon asChild>
-          <Globe className="size-4 " />
+          <Globe className="size-4" />
         </SelectPrimitive.Icon>
-      }
+      )}
       {children}
-      {!props.IsLanguageSelect &&
-        < SelectPrimitive.Icon asChild>
+      {!IsLanguageSelect && (
+        <SelectPrimitive.Icon asChild>
           <ChevronDownIcon className="size-4 text-black" />
-        </SelectPrimitive.Icon>}
-    </SelectPrimitive.Trigger >
+        </SelectPrimitive.Icon>
+      )}
+    </SelectPrimitive.Trigger>
   )
 }
-
 function SelectContent({
   className,
   children,
