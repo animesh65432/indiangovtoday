@@ -48,6 +48,8 @@ const SerchInputbox: React.FC<Props> = ({
         fetchDeparmentsOptions();
     }, [language, StatesSelected])
 
+    console.log("DeparmentsOptions:", DeparmentsOptions);
+
     return (
         <nav className=' p-2 lg:p-5 hidden md:flex flex-col gap-2 lg:gap-5 bg-white  '>
             <ul className='flex flex-col gap-1'>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext, useRef } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { getAllAnnouncements } from "@/api/announcements";
 import { Announcement as AnnouncementTypes, AnnouncementsResponse } from "@/types";
 import { LanguageContext } from '@/context/Lan';
@@ -26,6 +26,8 @@ const Main: React.FC = () => {
     const { startdate, endDate } = useContext(Currentdate)
     const { language } = useContext(LanguageContext)
     const { state_ut } = useContext(LocationContext)
+
+    const [ShowFilterCard, SetFilterShowCard] = useState<boolean>(false)
 
     const [DefaultsStatesApplied, SetDefaultsStatesApplied] = useState<string[]>([])
 
@@ -114,7 +116,17 @@ const Main: React.FC = () => {
     return (
         <section className='flex bg-[#E6E6E6] flex-col  h-[100vh] overflow-hidden '>
             <AnnoucementsHeader />
-            <MobileSearchInput />
+            <MobileSearchInput
+                ShowFilterCard={ShowFilterCard}
+                SetFilterShowCard={SetFilterShowCard}
+                StatesSelected={StatesSelected}
+                SetStatesSelected={SetStatesSelected}
+                DeparmentsSelected={DeparmentsSelected}
+                SetDeparmentsSelected={SetDeparmentsSelected}
+                SearchInput={SearchInput}
+                SetSearchInput={SetSearchInput}
+                onSearch={handleSearch}
+            />
             <SerchInputbox
                 StatesSelected={StatesSelected}
                 SetStatesSelected={SetStatesSelected}

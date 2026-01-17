@@ -276,6 +276,8 @@ interface MultiSelectProps
      * Optional, defaults to false.
      */
     closeOnSelect?: boolean;
+
+    mobile?: boolean;
 }
 
 /**
@@ -331,6 +333,7 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
             deduplicateOptions = false,
             resetOnDefaultValueChange = true,
             closeOnSelect = false,
+            mobile = false,
             ...props
         },
         ref
