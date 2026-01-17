@@ -123,7 +123,7 @@ const MobileSerchInputbox: React.FC<MobileSerchInputboxProps> = ({
 
             <Button
                 onClick={onSearch}
-                className="w-full h-16 rounded-2xl bg-[#1C3257] hover:bg-[#152744] text-white font-bold text-lg shadow-lg shadow-blue-900/20 active:scale-[0.98] transition-all flex items-center justify-center gap-2"
+                className="w-full h-12 rounded-2xl bg-yellow-500 hover:bg-yellow-600 text-white font-bold text-lg shadow-lg shadow-blue-900/20 active:scale-[0.98] transition-all flex items-center justify-center gap-2"
             >
                 {TranslateText[language].SEARCH}
                 <ChevronRight size={20} />

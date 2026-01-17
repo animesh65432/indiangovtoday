@@ -10,6 +10,7 @@ import { LocationContext } from "@/context/LocationProvider"
 import SerchInputbox from './SearchInputbox';
 import { TranslateText } from "@/lib/translatetext"
 import MobileSearchInput from './MobileSearchInput';
+import AnnoucementsTitle from './AnnoucementsTitle';
 
 const Main: React.FC = () => {
     const [SearchInput, SetSearchInput] = useState<string>("")
@@ -42,7 +43,6 @@ const Main: React.FC = () => {
     ) => {
 
         if (append) SetIsLoadingMore(true);
-
         else SetIsLoading(true);
 
         if (StatesSelected.length === 0) {
@@ -73,14 +73,12 @@ const Main: React.FC = () => {
         }
     }
 
-
     useEffect(() => {
         const controller = new AbortController();
         Setpage(1);
         fetchGetIndiaAnnouncements(1, false, controller.signal);
         return () => controller.abort();
     }, [language, state_ut, trigger, DefaultsStatesApplied]);
-
 
     useEffect(() => {
         if (state_ut) {
@@ -115,8 +113,8 @@ const Main: React.FC = () => {
     }
 
     return (
-        <section className='flex bg-[#E6E6E6] flex-col  h-[100vh] overflow-hidden '>
-            <nav className='bg-[#1C3257] flex flex-col'>
+        <section className='flex flex-col h-screen overflow-hidden'>
+            <nav className='flex flex-col flex-shrink-0'>
                 <AnnoucementsHeader />
                 <MobileSearchInput
                     ShowFilterCard={ShowFilterCard}
@@ -130,7 +128,7 @@ const Main: React.FC = () => {
                     onSearch={handleSearch}
                 />
             </nav>
-            <nav className='hidden md:block'>
+            <nav className='hidden md:block flex-shrink-0 pt-4'>
                 <SerchInputbox
                     StatesSelected={StatesSelected}
                     SetStatesSelected={SetStatesSelected}
@@ -141,6 +139,10 @@ const Main: React.FC = () => {
                     onSearch={handleSearch}
                 />
             </nav>
+            <AnnoucementsTitle
+                page={page}
+                totalPages={totalPages}
+            />
             <ShowAnnouncements
                 LoadMoreData={OnLoadMoredata}
                 Announcements={Announcements}

@@ -10,6 +10,7 @@ import { Currentdate } from '@/context/Currentdate'
 import { Button } from '../ui/button'
 import { MultiSelect } from "@/components/ui/multi-select"
 import { GetallAnnoucementsDepartments } from "@/api/announcements"
+import { TextGenerateEffect } from "@/components/ui/text-generate-effect"
 
 type Props = {
     StatesSelected: string[],
@@ -48,15 +49,15 @@ const SerchInputbox: React.FC<Props> = ({
         fetchDeparmentsOptions();
     }, [language, StatesSelected])
 
-    console.log("DeparmentsOptions:", DeparmentsOptions);
-
     return (
-        <nav className=' p-2 lg:p-5 flex flex-col gap-2 lg:gap-5 bg-white  '>
+        <nav className='flex flex-col gap-2 lg:gap-5 w-[95vw] lg:w-[85vw] mx-auto pt-3'>
             <ul className='flex flex-col gap-1'>
                 <h2 className='uppercase'>public notification</h2>
                 <span className='uppercase text-[0.9rem] flex items-center gap-2'>
                     <span className=" border-2 border-t border-yellow-400 w-8 h-0"></span>
-                    Direct Access to Verified Government Circulars
+                    <TextGenerateEffect
+                        words="Direct Access to Verified Government Circulars"
+                    />
                 </span>
             </ul>
             <ul className='border border-slate-200 bg-white w-full p-5 flex flex-col gap-4'>
@@ -75,7 +76,7 @@ const SerchInputbox: React.FC<Props> = ({
                             }}
                         />
                     </li>
-                    <Button onClick={onSearch} className='bg-yellow-500 text-black font-semibold hover:cursor-pointer'>
+                    <Button onClick={onSearch} className='bg-yellow-500 shadow-md p-5 text-black font-semibold hover:cursor-pointer'>
                         {TranslateText[language].SEARCH}
                     </Button>
                 </ul>

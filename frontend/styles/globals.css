@@ -6,6 +6,7 @@
 
 @custom-variant dark (&:is(.dark *));
 
+
 :root {
   --background: oklch(1 0 0);
   --foreground: oklch(0.129 0.042 264.695);
@@ -107,16 +108,9 @@ body {
   color: #2C2C2C;
   font-family: var(--font-manrope);
   background-image: url('/bg.png');
+  background-size: cover;
+  background-position: center;
   font-weight: 400;
-
-  /* Critical font rendering for crisp text */
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-rendering: optimizeLegibility;
-
-  /* Prevent blur on transforms */
-  transform: translateZ(0);
-  backface-visibility: hidden;
 }
 
 /* Typography Styles */
@@ -235,6 +229,13 @@ input {
   h1 {
     font-size: 1.5rem;
   }
+}
+
+@media (max-width: 360px) {
+  h2 {
+    font-size: 1.3rem;
+  }
+
 }
 
 /* Hero Section */

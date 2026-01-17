@@ -13,7 +13,7 @@ const Summary: React.FC<Props> = ({ heading, content }) => {
                     {heading}
                 </h5>
             </div>
-            <p className='text-black leading-7 lg:leading-8'>{content}</p>
+            <p className='text-black leading-7 lg:leading-8 w-full lg:w-[60vw]'>{content}</p>
         </div>
     )
 }

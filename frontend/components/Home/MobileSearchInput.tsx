@@ -4,6 +4,7 @@ import { Search } from "lucide-react"
 import { LanguageContext } from "@/context/Lan"
 import { TranslateText } from "@/lib/translatetext"
 import ShowFilter from './ShowFilter'
+import { TextGenerateEffect } from '../ui/text-generate-effect'
 
 type MobileSearchInputProps = {
     ShowFilterCard: boolean;
@@ -25,8 +26,19 @@ const MobileSearchInput: React.FC<MobileSearchInputProps> = ({ SetFilterShowCard
     const { language } = useContext(LanguageContext)
 
     return (
-        <div className='block md:hidden p-4'>
-            <div className="relative w-full">
+        <div className='flex flex-col gap-5 md:hidden p-6'>
+            <div className='w-[95vw] sm:w-[90vw] mx-auto'>
+                <ul className='flex flex-col gap-2 sm:gap-1'>
+                    <h2 className='uppercase'>public notification</h2>
+                    <span className='uppercase text-[0.8rem] sm:text-[0.9rem] flex items-center gap-2'>
+                        <span className=" border-2 border-t border-yellow-400 hidden sm:block w-8 h-0"></span>
+                        <TextGenerateEffect
+                            words="Direct Access to Verified Government Circulars"
+                        />
+                    </span>
+                </ul>
+            </div>
+            <div className="relative w-full sm:w-[90vw] mx-auto">
                 <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
                     <Search size={18} />
                 </div>
