@@ -33,6 +33,8 @@ const Main: React.FC = () => {
 
     const [trigger, setTrigger] = useState(0);
 
+    const userStateCode = useStateCode(state_ut, language);
+
     const fetchGetIndiaAnnouncements = async (
         pageNumber: number,
         append: boolean,
@@ -82,7 +84,6 @@ const Main: React.FC = () => {
 
     useEffect(() => {
         if (state_ut) {
-            const userStateCode = useStateCode(state_ut, language);
             const INDIA_GOVT_CODE = TranslateText[language]["MULTISELECT_OPTIONS"][TranslateText[language]["MULTISELECT_OPTIONS"].length - 1].value;
             SetStatesSelected([INDIA_GOVT_CODE, userStateCode]);
             SetDefaultsStatesApplied([INDIA_GOVT_CODE, userStateCode]);
@@ -129,15 +130,17 @@ const Main: React.FC = () => {
                     onSearch={handleSearch}
                 />
             </nav>
-            <SerchInputbox
-                StatesSelected={StatesSelected}
-                SetStatesSelected={SetStatesSelected}
-                DeparmentsSelected={DeparmentsSelected}
-                SetDeparmentsSelected={SetDeparmentsSelected}
-                SearchInput={SearchInput}
-                SetSearchInput={SetSearchInput}
-                onSearch={handleSearch}
-            />
+            <nav className='hidden md:block'>
+                <SerchInputbox
+                    StatesSelected={StatesSelected}
+                    SetStatesSelected={SetStatesSelected}
+                    DeparmentsSelected={DeparmentsSelected}
+                    SetDeparmentsSelected={SetDeparmentsSelected}
+                    SearchInput={SearchInput}
+                    SetSearchInput={SetSearchInput}
+                    onSearch={handleSearch}
+                />
+            </nav>
             <ShowAnnouncements
                 LoadMoreData={OnLoadMoredata}
                 Announcements={Announcements}

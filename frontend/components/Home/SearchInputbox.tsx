@@ -51,7 +51,7 @@ const SerchInputbox: React.FC<Props> = ({
     console.log("DeparmentsOptions:", DeparmentsOptions);
 
     return (
-        <nav className=' p-2 lg:p-5 hidden md:flex flex-col gap-2 lg:gap-5 bg-white  '>
+        <nav className=' p-2 lg:p-5 flex flex-col gap-2 lg:gap-5 bg-white  '>
             <ul className='flex flex-col gap-1'>
                 <h2 className='uppercase'>public notification</h2>
                 <span className='uppercase text-[0.9rem] flex items-center gap-2'>

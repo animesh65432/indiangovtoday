@@ -11,7 +11,17 @@ import { Button } from '../ui/button'
 import { MultiSelect } from "@/components/ui/multi-select"
 import { GetallAnnoucementsDepartments } from "@/api/announcements"
 
-const MobileSerchInputbox: React.FC<any> = ({
+type MobileSerchInputboxProps = {
+    StatesSelected: string[],
+    SetStatesSelected: React.Dispatch<React.SetStateAction<string[]>>,
+    DeparmentsSelected: string,
+    SetDeparmentsSelected: React.Dispatch<React.SetStateAction<string>>,
+    SearchInput: string,
+    SetSearchInput: React.Dispatch<React.SetStateAction<string>>,
+    onSearch: () => void
+}
+
+const MobileSerchInputbox: React.FC<MobileSerchInputboxProps> = ({
     StatesSelected, SetStatesSelected,
     DeparmentsSelected, SetDeparmentsSelected,
     SearchInput, SetSearchInput,
@@ -23,7 +33,7 @@ const MobileSerchInputbox: React.FC<any> = ({
 
     useEffect(() => {
         const fetch = async () => {
-            const res = await GetallAnnoucementsDepartments(language, startdate, endDate, StatesSelected) as any;
+            const res = await GetallAnnoucementsDepartments(language, startdate, endDate, StatesSelected) as { data: string[] };
             if (res?.data) setOptions(res.data);
         }
         fetch();
