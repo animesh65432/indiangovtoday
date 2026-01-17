@@ -34,7 +34,7 @@ export default function ShareSection({ Announcement, setisShareOPen }: Props) {
             name: "WhatsApp",
             icon: <MessageCircle className="w-5 h-5 sm:w-6 sm:h-6" />,
             url: `https://wa.me/?text=${encodedMessageWithUrl}`,
-            className: "text-[#E0614B]",
+            className: "text-yellow-700",
             bgColor: "bg-[#ffff]",
             hoverColor: "hover:bg-[#ffff]"
         },
@@ -42,7 +42,7 @@ export default function ShareSection({ Announcement, setisShareOPen }: Props) {
             name: "X (Twitter)",
             icon: <Twitter className="w-5 h-5 sm:w-6 sm:h-6" />,
             url: `https://twitter.com/intent/tweet?text=${encodedMessage}&url=${encodedUrl}`,
-            className: "text-[#E0614B]",
+            className: "text-yellow-700",
             bgColor: "bg-[#ffff]",
             hoverColor: "hover:bg-[#ffff]"
         },
@@ -50,7 +50,7 @@ export default function ShareSection({ Announcement, setisShareOPen }: Props) {
             name: "Email",
             icon: <Mail className="w-5 h-5 sm:w-6 sm:h-6" />,
             url: `mailto:?subject=${encodeURIComponent("Check this amazing recipe!")}&body=${encodedMessageWithUrl}`,
-            className: "text-[#E0614B]",
+            className: "text-yellow-700",
             bgColor: "bg-[#ffff]",
             hoverColor: "hover:bg-[#ffff]"
         },

@@ -67,7 +67,7 @@ const Subscribe: React.FC = () => {
                     <X className="text-black " size={28} onClick={handleClose} />
                 </div>
                 <h6
-                    className="text-xl md:text-2xl font-semibold mb-2 text-[#E0614B]"
+                    className="text-xl md:text-2xl font-semibold mb-2 text-yellow-600"
                 >
                     {TranslateText[language].SUBSCRIBE_TO_ALERTS}
                 </h6>

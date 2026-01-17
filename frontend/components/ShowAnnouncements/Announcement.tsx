@@ -2,11 +2,12 @@ import React, { useContext } from "react";
 import { Announcement as AnnouncementType } from "@/types";
 import { useRouter } from "next/router";
 import { LanguageContext } from "@/context/Lan";
-import { formatDateInLanguage } from "@/lib/formatDate";
+import { formatDateRelative } from "@/lib/formatDate";
 import { LANGUAGE_CODES } from "@/lib/lan";
-import Image from "next/image";
 import { Button } from "../ui/button";
-import { TranslateText } from "@/lib/translatetext"
+import { Badge } from "@/components/ui/badge";
+import { ArrowRight, Building2, Clock } from "lucide-react";
+import { TranslateText } from "@/lib/translatetext";
 
 type Props = {
     Announcement: AnnouncementType;
@@ -30,46 +31,52 @@ const Announcement: React.FC<Props> = ({ Announcement }) => {
         );
     };
 
-
     return (
-        <div
-            className="bg-[#FFFFFF] flex flex-col gap-4   p-4 "
-        >
-            <div className="text-[#E04B4D] text-xl font-normal">{Announcement.department}</div>
-            <div>
-                <h3 className="text-black font-bold">
+        <article className="bg-white flex flex-col gap-4 p-5 border border-gray-200 rounded-lg hover:shadow-md transition-shadow duration-200">
+            {/* Header: State and Date */}
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between pb-3 border-b border-gray-100">
+                <Badge variant="secondary" className="px-3 py-1.5 text-xs font-medium w-fit">
                     {Announcement.state}
+                </Badge>
+                <span className="flex items-center gap-1.5 text-sm text-gray-500">
+                    <Clock className="w-4 h-4" />
+                    {formatDateRelative(Announcement.date, LANGUAGE_CODES[language])}
+                </span>
+            </div>
+
+            {/* Title */}
+            <div>
+                <h3 className="text-gray-900 font-bold text-lg leading-snug">
+                    {Announcement.title}
                 </h3>
             </div>
 
-            <div className="text-[#4B4B4B] text-sm md:text-base leading-relaxed whitespace-pre-line flex flex-col gap-2">
-                <p className="leading-7 lg:leading-8">
+            {/* Description */}
+            <div className="text-gray-600 text-sm md:text-base leading-relaxed">
+                <p className="leading-7 ">
                     {Announcement.description}
                 </p>
             </div>
 
-            <div className="flex flex-col gap-3 sm:gap-0 sm:flex-row sm:justify-between text-[#777777]">
-                <span className="flex items-center gap-1">
-                    <div>
-                        <Image
-                            src="/TimeCircle.svg"
-                            alt="source icon"
-                            width={20}
-                            height={20}
-                        />
-                    </div>
-                    {formatDateInLanguage(
-                        Announcement.date,
-                        LANGUAGE_CODES[language]
-                    )}
-                </span>
+            {/* Footer: Department and Action */}
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between pt-3 border-t border-gray-100">
+                <div className="flex items-center gap-2">
+                    <Building2 className="w-4 h-4 text-gray-400 flex-shrink-0" />
+                    <span className="text-gray-700 font-medium text-sm">
+                        {Announcement.department}
+                    </span>
+                </div>
+
                 <Button
                     onClick={redirectTo}
-                    className="text-black border w-fit  border-black rounded-none  hover:cursor-pointer">
+                    variant="ghost"
+                    className="text-black font-semibold uppercase text-xs px-3 py-2 hover:bg-gray-100 transition-colors group w-fit"
+                >
                     {TranslateText[language].SEE_DETAILS}
+                    <ArrowRight className="ml-1.5 w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </Button>
             </div>
-        </div>
+        </article>
     );
 };
 

@@ -1,11 +1,10 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import { SectionTypes } from '@/types'
 import Header from './Header'
 import Title from './Title'
 import Details from './Details'
 import TextDiv from "./TextDiv"
 import KeyInforMation from './KeyInforMation'
-import { LanguageContext } from '@/context/Lan'
 
 type Props = {
     title: string
@@ -22,7 +21,6 @@ type Props = {
 }
 
 const ShowAnnouncement: React.FC<Props> = ({ toggle, setToggle, title, source, lan, date, state, sections, department, category }) => {
-    const { language } = useContext(LanguageContext);
     return (
         <section className='w-[82%] mx-auto  flex flex-col gap-10 pt-7  pb-8'>
             <Header
@@ -34,13 +32,7 @@ const ShowAnnouncement: React.FC<Props> = ({ toggle, setToggle, title, source, l
             <Title
                 title={title}
             />
-            <div className='flex flex-col xl:flex-row gap-10'>
-                <div className='w-[65%] hidden xl:block'>
-                    <TextDiv
-                        heading={sections[0].heading}
-                        content={'content' in sections[0] ? sections[0].content : 'Content not available'}
-                    />
-                </div>
+            <div className='flex flex-col  gap-10'>
                 <Details
                     date={date}
                     state={state}
@@ -49,6 +41,12 @@ const ShowAnnouncement: React.FC<Props> = ({ toggle, setToggle, title, source, l
                     source={source}
                     lan={lan}
                 />
+                <div className='w-[65%] hidden xl:block'>
+                    <TextDiv
+                        heading={sections[0].heading}
+                        content={'content' in sections[0] ? sections[0].content : 'Content not available'}
+                    />
+                </div>
                 <div className='w-full block xl:hidden'>
                     <TextDiv
                         heading={sections[0].heading}
