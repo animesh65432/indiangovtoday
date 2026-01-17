@@ -63,3 +63,4 @@ export const LANGUAGE_CODES: Record<string, string> = {
     "తెలుగు": "te",
     "اردو": "ur"
 };
+

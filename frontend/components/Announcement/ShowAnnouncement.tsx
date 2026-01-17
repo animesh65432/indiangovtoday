@@ -5,7 +5,6 @@ import Title from './Title'
 import Details from './Details'
 import TextDiv from "./TextDiv"
 import KeyInforMation from './KeyInforMation'
-import { TranslateText } from '@/lib/translatetext'
 import { LanguageContext } from '@/context/Lan'
 
 type Props = {
@@ -64,9 +63,6 @@ const ShowAnnouncement: React.FC<Props> = ({ toggle, setToggle, title, source, l
             <KeyInforMation
                 heading={sections[2].heading}
                 points={'points' in sections[2] ? sections[2].points : []}
-            />
-            <Title
-                title={TranslateText[language].MORE_LIKE_THIS}
             />
         </section>
     )

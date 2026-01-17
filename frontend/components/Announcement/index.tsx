@@ -7,7 +7,6 @@ import AnnouncementSkeleton from './AnnouncementSkeleton'
 import { TranslateText } from "@/lib/translatetext"
 import { Inbox } from 'lucide-react'
 import { LanguageContext } from "@/context/Lan"
-import Explore from './Explore'
 import Subscribe from '@/components/Subscribe'
 
 type Props = {
@@ -68,9 +67,6 @@ const Announcement = ({ id, lan }: Props) => {
                     <AnnouncementSkeleton />
                 </div>
             }
-            <Explore
-                id={id}
-            />
         </main>
     )
 }

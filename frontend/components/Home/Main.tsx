@@ -1,80 +1,99 @@
-import React, { useEffect, useState, useContext, useCallback, useRef } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { getAllAnnouncements } from "@/api/announcements";
 import { Announcement as AnnouncementTypes, AnnouncementsResponse } from "@/types";
 import { LanguageContext } from '@/context/Lan';
 import { Currentdate } from "@/context/Currentdate";
-import { useRouter } from "next/router"
 import ShowAnnouncements from '../ShowAnnouncements';
 import AnnoucementsHeader from '@/components/AnnoucementsHeader';
-import { toast } from 'react-toastify';
-import { motion } from "framer-motion"
-import { fadeInContainer } from "@/lib/animations";
-
+import { useStateCode } from "@/lib/useStateCode"
+import { LocationContext } from "@/context/LocationProvider"
+import SerchInputbox from './SearchInputbox';
+import { TranslateText } from "@/lib/translatetext"
+import MobileSearchInput from './MobileSearchInput';
 
 const Main: React.FC = () => {
     const [SearchInput, SetSearchInput] = useState<string>("")
+    const [StatesSelected, SetStatesSelected] = useState<string[]>([]);
+    const [DeparmentsSelected, SetDeparmentsSelected] = useState<string>("");
+
     const [totalPages, settotalPages] = useState<number>(0)
     const [IsLoading, SetIsLoading] = useState<boolean>(false)
     const [IsLoadingMore, SetIsLoadingMore] = useState<boolean>(false)
     const [Announcements, SetAnnouncements] = useState<AnnouncementTypes[]>([])
-    const { startdate, endDate } = useContext(Currentdate)
-    const { language } = useContext(LanguageContext)
     const [page, Setpage] = useState<number>(1)
     const [limit] = useState<number>(10)
-    const paramsRef = useRef({ language, startdate, endDate, limit, page })
-    const router = useRouter()
 
-    useEffect(() => {
-        paramsRef.current = { language, startdate, endDate, limit, page }
-    }, [language, startdate, endDate, limit, page])
+    const { startdate, endDate } = useContext(Currentdate)
+    const { language } = useContext(LanguageContext)
+    const { state_ut } = useContext(LocationContext)
 
-    const fetchGetIndiaAnnouncements = useCallback(async (
+    const [ShowFilterCard, SetFilterShowCard] = useState<boolean>(false)
+
+    const [DefaultsStatesApplied, SetDefaultsStatesApplied] = useState<string[]>([])
+
+    const [trigger, setTrigger] = useState(0);
+
+    const userStateCode = useStateCode(state_ut, language);
+
+    const fetchGetIndiaAnnouncements = async (
         pageNumber: number,
         append: boolean,
         signal: AbortSignal
     ) => {
 
         if (append) SetIsLoadingMore(true);
+
         else SetIsLoading(true);
+
+        if (StatesSelected.length === 0) {
+            SetIsLoading(false);
+            return;
+        }
 
         try {
             const response = await getAllAnnouncements(
-                language, startdate, endDate, pageNumber, limit, signal
+                language, startdate, endDate, pageNumber, limit,
+                StatesSelected, DeparmentsSelected, SearchInput, signal
             ) as AnnouncementsResponse;
-
 
             if (!signal.aborted) {
                 settotalPages(response.pagination.totalPages);
-                if (append) {
-                    SetAnnouncements(prev => [...prev, ...response.data]);
-                } else {
-                    SetAnnouncements(response.data);
-                }
+                SetAnnouncements(prev => append ? [...prev, ...response.data] : response.data);
             }
         } catch (error: unknown) {
-            if (
-                error instanceof Error &&
-                (error.name === 'AbortError' ||
-                    (error as { code?: string }).code === 'ERR_CANCELED')
-            ) {
+            if (error instanceof Error &&
+                (error.name === 'AbortError' || (error as { code?: string }).code === 'ERR_CANCELED')) {
                 return;
             }
-        }
-        finally {
+        } finally {
             if (!signal.aborted) {
                 SetIsLoading(false);
                 SetIsLoadingMore(false);
             }
         }
-    }, [language, startdate, endDate, limit]);
+    }
+
+
     useEffect(() => {
         const controller = new AbortController();
         Setpage(1);
         fetchGetIndiaAnnouncements(1, false, controller.signal);
-
         return () => controller.abort();
-    }, [language, startdate, endDate, fetchGetIndiaAnnouncements]);
+    }, [language, state_ut, trigger, DefaultsStatesApplied]);
 
+
+    useEffect(() => {
+        if (state_ut) {
+            const INDIA_GOVT_CODE = TranslateText[language]["MULTISELECT_OPTIONS"][TranslateText[language]["MULTISELECT_OPTIONS"].length - 1].value;
+            SetStatesSelected([INDIA_GOVT_CODE, userStateCode]);
+            SetDefaultsStatesApplied([INDIA_GOVT_CODE, userStateCode]);
+        }
+        else {
+            const INDIA_GOVT_CODE = TranslateText[language]["MULTISELECT_OPTIONS"][TranslateText[language]["MULTISELECT_OPTIONS"].length - 1].value;
+            SetStatesSelected([INDIA_GOVT_CODE]);
+            SetDefaultsStatesApplied([INDIA_GOVT_CODE]);
+        }
+    }, [state_ut, language]);
 
     useEffect(() => {
         if (page > 1) {
@@ -82,45 +101,46 @@ const Main: React.FC = () => {
             fetchGetIndiaAnnouncements(page, true, controller.signal);
             return () => controller.abort();
         }
-    }, [page, fetchGetIndiaAnnouncements]);
+    }, [page]);
+
+    const handleSearch = () => {
+        Setpage(1);
+        setTrigger(prev => prev + 1);
+    };
 
     const OnLoadMoredata = () => {
-        if (page >= totalPages) {
-            return;
-        }
-        else {
-            Setpage((prev) => prev + 1)
+        if (page < totalPages) {
+            Setpage(prev => prev + 1);
         }
     }
 
-    const handleEnterKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
-        if (event.key === 'Enter') {
-            event.preventDefault();
-            if (SearchInput.trim() === "" || SearchInput.length < 3) {
-                toast.info("Please enter at least 3 characters to search.");
-                return;
-            }
-            router.push(`/announcements?SearchInput=${SearchInput}`);
-        }
-    };
-
     return (
-        <motion.section
-            id='announcements'
-            className='flex bg-[#E6E6E6] flex-col'
-            variants={fadeInContainer}
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: true, margin: "-100px" }}
-        >
-
-            <AnnoucementsHeader
-                SearchInput={SearchInput}
-                SetSearchInput={SetSearchInput}
-                handleEnterKeyPress={handleEnterKeyPress}
-                dontRedirect={false}
-                ShowBackButton={false}
-            />
+        <section className='flex bg-[#E6E6E6] flex-col  h-[100vh] overflow-hidden '>
+            <nav className='bg-[#1C3257] flex flex-col'>
+                <AnnoucementsHeader />
+                <MobileSearchInput
+                    ShowFilterCard={ShowFilterCard}
+                    SetFilterShowCard={SetFilterShowCard}
+                    StatesSelected={StatesSelected}
+                    SetStatesSelected={SetStatesSelected}
+                    DeparmentsSelected={DeparmentsSelected}
+                    SetDeparmentsSelected={SetDeparmentsSelected}
+                    SearchInput={SearchInput}
+                    SetSearchInput={SetSearchInput}
+                    onSearch={handleSearch}
+                />
+            </nav>
+            <nav className='hidden md:block'>
+                <SerchInputbox
+                    StatesSelected={StatesSelected}
+                    SetStatesSelected={SetStatesSelected}
+                    DeparmentsSelected={DeparmentsSelected}
+                    SetDeparmentsSelected={SetDeparmentsSelected}
+                    SearchInput={SearchInput}
+                    SetSearchInput={SetSearchInput}
+                    onSearch={handleSearch}
+                />
+            </nav>
             <ShowAnnouncements
                 LoadMoreData={OnLoadMoredata}
                 Announcements={Announcements}
@@ -128,10 +148,8 @@ const Main: React.FC = () => {
                 page={page}
                 totalpage={totalPages}
                 IsLoadingMore={IsLoadingMore}
-                ShowBackButtom={false}
             />
-
-        </motion.section>
+        </section>
     );
 };
 

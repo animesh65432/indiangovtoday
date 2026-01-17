@@ -3,7 +3,8 @@ import React, { createContext, useState, ReactNode } from "react";
 type CurrentDateContextType = {
     startdate: Date;
     endDate: Date;
-    onChangeDate: (newStartDate: Date, newEndDate: Date) => void;
+    onChangeStartDate: (newStartDate: Date) => void,
+    onChangeEndDate: (newEndDate: Date) => void,
 };
 
 
@@ -14,7 +15,8 @@ sevenDaysAgo.setDate(today.getDate() - 7);
 export const Currentdate = createContext<CurrentDateContextType>({
     startdate: sevenDaysAgo,
     endDate: today,
-    onChangeDate: () => { },
+    onChangeStartDate: () => { },
+    onChangeEndDate: () => { },
 });
 
 
@@ -22,13 +24,16 @@ export const CurrentdateProvider: React.FC<{ children: ReactNode }> = ({ childre
     const [startdate, setStartDate] = useState<Date>(sevenDaysAgo);
     const [endDate, setEndDate] = useState<Date>(today);
 
-    const onChangeDate = (newStartDate: Date, newEndDate: Date) => {
+    const onChangeStartDate = (newStartDate: Date) => {
         setStartDate(newStartDate);
+    };
+
+    const onChangeEndDate = (newEndDate: Date) => {
         setEndDate(newEndDate);
     };
 
     return (
-        <Currentdate.Provider value={{ startdate, endDate, onChangeDate }}>
+        <Currentdate.Provider value={{ startdate, endDate, onChangeEndDate, onChangeStartDate }}>
             {children}
         </Currentdate.Provider>
     );
