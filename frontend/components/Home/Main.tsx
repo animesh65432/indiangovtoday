@@ -9,6 +9,7 @@ import { useStateCode } from "@/lib/useStateCode"
 import { LocationContext } from "@/context/LocationProvider"
 import SerchInputbox from './SearchInputbox';
 import { TranslateText } from "@/lib/translatetext"
+import MobileSearchInput from './MobileSearchInput';
 
 const Main: React.FC = () => {
     const [SearchInput, SetSearchInput] = useState<string>("")
@@ -111,8 +112,9 @@ const Main: React.FC = () => {
     }
 
     return (
-        <section className='flex bg-[#E6E6E6] flex-col'>
+        <section className='flex bg-[#E6E6E6] flex-col  h-[100vh] overflow-hidden '>
             <AnnoucementsHeader />
+            <MobileSearchInput />
             <SerchInputbox
                 StatesSelected={StatesSelected}
                 SetStatesSelected={SetStatesSelected}
@@ -129,7 +131,6 @@ const Main: React.FC = () => {
                 page={page}
                 totalpage={totalPages}
                 IsLoadingMore={IsLoadingMore}
-                ShowBackButtom={false}
             />
         </section>
     );

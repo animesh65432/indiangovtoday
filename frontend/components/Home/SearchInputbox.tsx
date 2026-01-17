@@ -49,10 +49,13 @@ const SerchInputbox: React.FC<Props> = ({
     }, [language, StatesSelected])
 
     return (
-        <nav className='p-5 flex flex-col gap-5 bg-white  '>
+        <nav className=' p-2 lg:p-5 hidden md:flex flex-col gap-2 lg:gap-5 bg-white  '>
             <ul className='flex flex-col gap-1'>
                 <h2 className='uppercase'>public notification</h2>
-                <span className='uppercase text-[0.9rem]'>Direct Access to Verified Government Circulars</span>
+                <span className='uppercase text-[0.9rem] flex items-center gap-2'>
+                    <span className=" border-2 border-t border-yellow-400 w-8 h-0"></span>
+                    Direct Access to Verified Government Circulars
+                </span>
             </ul>
             <ul className='border border-slate-200 bg-white w-full p-5 flex flex-col gap-4'>
                 <ul className='flex items-center gap-10'>
@@ -74,7 +77,7 @@ const SerchInputbox: React.FC<Props> = ({
                         {TranslateText[language].SEARCH}
                     </Button>
                 </ul>
-                <ul className='hidden lg:flex gap-4 items-center '>
+                <ul className='flex gap-4 items-center '>
                     <li className='flex flex-col xl:flex-row xl:items-center gap-2 xl:gap-5 '>
                         <span className='uppercase text-slate-500 font-semibold'>region :</span>
                         <ol>
