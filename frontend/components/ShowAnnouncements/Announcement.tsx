@@ -36,11 +36,11 @@ const Announcement: React.FC<Props> = ({ Announcement }) => {
             {/* Header: State and Date */}
             <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between pb-3 border-b border-gray-100">
                 <Badge variant="secondary" className="px-3 py-1.5 text-xs font-medium w-fit">
-                    {Announcement.state}
+                    {Announcement.department}
                 </Badge>
                 <span className="flex items-center gap-1.5 text-sm text-gray-500">
                     <Clock className="w-4 h-4" />
-                    {formatDateRelative(Announcement.date, LANGUAGE_CODES[language])}
+                    {formatDateRelative(Announcement.date, LANGUAGE_CODES[language], language)}
                 </span>
             </div>
 
@@ -63,7 +63,7 @@ const Announcement: React.FC<Props> = ({ Announcement }) => {
                 <div className="flex items-center gap-2">
                     <Building2 className="w-4 h-4 text-gray-400 flex-shrink-0" />
                     <span className="text-gray-700 font-medium text-sm">
-                        {Announcement.department}
+                        {Announcement.state}
                     </span>
                 </div>
 

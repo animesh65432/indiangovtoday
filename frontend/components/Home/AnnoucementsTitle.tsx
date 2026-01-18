@@ -12,7 +12,7 @@ const AnnoucementsTitle: React.FC<Props> = ({ totalPages, page }) => {
     return (
         <div className=' hidden md:flex items-center gap-10  w-[85%] sm:w-full lg:w-[85%] mx-auto p-6'>
             <h2>{TranslateText[language].LATEST_ANNOUNCEMENTS}</h2>
-            <span className='text-sm text-gray-800'>PAGE {page} OF {totalPages}</span>
+            <span className='text-sm text-gray-800'>{TranslateText[language].PAGE} {page} {TranslateText[language].OF} {totalPages}</span>
         </div>
     )
 }

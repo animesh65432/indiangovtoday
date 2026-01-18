@@ -1,6 +1,8 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { motion, AnimatePresence } from "framer-motion"
 import { X } from 'lucide-react'
+import { TranslateText } from "@/lib/translatetext"
+import { LanguageContext } from "@/context/Lan"
 import MobileSerchInputbox from './MobileSerchInputbox'
 
 type Props = {
@@ -20,6 +22,8 @@ const ShowFilter: React.FC<Props> = ({
     DeparmentsSelected, SetDeparmentsSelected,
     SearchInput, SetSearchInput, onSearch
 }) => {
+
+    const { language } = useContext(LanguageContext)
 
     const onClose = () => SetFilterShowCard(false);
 
@@ -45,7 +49,7 @@ const ShowFilter: React.FC<Props> = ({
                         <div className="w-12 h-1.5 bg-gray-200 rounded-full mx-auto mb-6 shrink-0" />
 
                         <div className="flex justify-between items-center mb-6 px-2">
-                            <h2 className="text-2xl font-extrabold text-gray-900 tracking-tight">Filters Annoucments</h2>
+                            <h2 className="text-2xl font-extrabold text-gray-900 tracking-tight">{TranslateText[language].FILTER_ANNOUNCEMENTS}</h2>
                             <button
                                 onClick={onClose}
                                 className="p-2 bg-gray-100 text-gray-500 rounded-full active:scale-90 transition-transform"
