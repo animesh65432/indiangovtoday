@@ -40,7 +40,8 @@ const ShowAnnouncements: React.FC<Props> = ({
                             <AnnouncementSkeleton />
                         </div>
                     </div>
-                    <div className='hidden lg:block lg:w-[300px]'>
+                    <div className='hidden lg:block lg:w-[300px] border-0 lg:sticky lg:top-8 lg:self-start'>
+                        <Subscribe />
                     </div>
                 </div>
             </div>
