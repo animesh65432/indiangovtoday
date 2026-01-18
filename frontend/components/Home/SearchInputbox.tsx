@@ -52,11 +52,11 @@ const SerchInputbox: React.FC<Props> = ({
     return (
         <nav className='flex flex-col gap-2 lg:gap-5 w-[95vw] lg:w-[85vw] mx-auto pt-3'>
             <ul className='flex flex-col gap-1'>
-                <h2 className='uppercase'>public notification</h2>
+                <h2 className='uppercase'>{TranslateText[language].PUBLIC_NOTIFICATION}</h2>
                 <span className='uppercase text-[0.9rem] flex items-center gap-2'>
                     <span className=" border-2 border-t border-yellow-400 w-8 h-0"></span>
                     <TextGenerateEffect
-                        words="Direct Access to Verified Government Circulars"
+                        words={TranslateText[language].DIRECT_ACCESS_TO_VERIFIED_GOVT_CIRCULARS}
                     />
                 </span>
             </ul>
@@ -82,7 +82,7 @@ const SerchInputbox: React.FC<Props> = ({
                 </ul>
                 <ul className='flex gap-4 items-center '>
                     <li className='flex flex-col xl:flex-row xl:items-center gap-2 xl:gap-5 '>
-                        <span className='uppercase text-slate-500 font-semibold'>region :</span>
+                        <span className='uppercase text-slate-500 font-semibold'>{TranslateText[language].REGION} :</span>
                         <ol>
                             <MultiSelect
                                 options={TranslateText[language].MULTISELECT_OPTIONS}
@@ -94,10 +94,10 @@ const SerchInputbox: React.FC<Props> = ({
                         </ol>
                     </li>
                     <li className='flex flex-col xl:flex-row xl:items-center gap-2 xl:gap-5'>
-                        <span className='uppercase text-slate-500 font-semibold'>dept :</span>
+                        <span className='uppercase text-slate-500 font-semibold'>{TranslateText[language].DEPTARTMENT} :</span>
                         <Select value={DeparmentsSelected} onValueChange={SetDeparmentsSelected}>
                             <SelectTrigger className="w-fit p-5 rounded-none bg-transparent data-[placeholder]:text-black uppercase">
-                                <SelectValue placeholder="ALL DEPARMENTS" />
+                                <SelectValue placeholder={TranslateText[language].ALL_DEPARMENTS} />
                             </SelectTrigger>
                             <SelectContent>
                                 <SelectGroup>
@@ -115,7 +115,7 @@ const SerchInputbox: React.FC<Props> = ({
                         </Select>
                     </li>
                     <li className='flex flex-col xl:flex-row xl:items-center gap-2 xl:gap-5'>
-                        <span className='uppercase text-slate-500 font-semibold'>Range :</span>
+                        <span className='uppercase text-slate-500 font-semibold'>{TranslateText[language].RANGE} :</span>
                         <Popover open={startDateOpen} onOpenChange={setStartDateOpen}>
                             <PopoverTrigger asChild>
                                 <Button id="date" className="w-fit justify-between p-5 text-black font-semibold rounded-none border border-slate-200">
@@ -137,7 +137,7 @@ const SerchInputbox: React.FC<Props> = ({
                         </Popover>
                     </li>
                     <li className='flex flex-col xl:flex-row xl:items-center gap-2 xl:gap-5'>
-                        <span className='uppercase text-slate-500 font-semibold'>to</span>
+                        <span className='uppercase text-slate-500 font-semibold'>{TranslateText[language].TO}</span>
                         <Popover open={EndDateOpen} onOpenChange={setEndDateOpen}>
                             <PopoverTrigger asChild>
                                 <Button id="date" className="w-fit p-5 justify-between text-black font-semibold rounded-none border border-slate-200">

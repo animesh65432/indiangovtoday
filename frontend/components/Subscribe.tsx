@@ -85,7 +85,7 @@ const Subscribe: React.FC = () => {
                     <button
                         type="button"
                         onClick={handlesubscribe}
-                        className="p-2 border border-black rounded-none text-black"
+                        className="p-2 border border-black rounded-none bg-slate-900 text-white"
                     >
                         {IsLoading ? <LoaderCircle className="text-black P-4 mx-auto animate-spin h-6 w-6" /> : `${TranslateText[language].SUBSCRIBE}`}
                     </button>

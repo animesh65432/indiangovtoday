@@ -29,16 +29,16 @@ const MobileSearchInput: React.FC<MobileSearchInputProps> = ({ SetFilterShowCard
         <div className='flex flex-col gap-5 md:hidden p-6'>
             <div className='w-[95vw] sm:w-[90vw] mx-auto'>
                 <ul className='flex flex-col gap-2 sm:gap-1'>
-                    <h2 className='uppercase'>public notification</h2>
+                    <h2 className='uppercase'>{TranslateText[language].PUBLIC_NOTIFICATION}</h2>
                     <span className='uppercase text-[0.8rem] sm:text-[0.9rem] flex items-center gap-2'>
                         <span className=" border-2 border-t border-yellow-400 hidden sm:block w-8 h-0"></span>
                         <TextGenerateEffect
-                            words="Direct Access to Verified Government Circulars"
+                            words={TranslateText[language].DIRECT_ACCESS_TO_VERIFIED_GOVT_CIRCULARS}
                         />
                     </span>
                 </ul>
             </div>
-            <div className="relative w-full sm:w-[90vw] mx-auto">
+            <div className="relative w-[90vw] mx-auto">
                 <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
                     <Search size={18} />
                 </div>

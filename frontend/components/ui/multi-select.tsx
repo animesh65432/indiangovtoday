@@ -2,9 +2,9 @@ import * as React from "react";
 import { cva, type VariantProps } from "class-variance-authority";
 import {
     CheckIcon,
-    XCircle,
     ChevronDown,
     XIcon,
+    XCircle,
     WandSparkles,
 } from "lucide-react";
 
@@ -926,7 +926,7 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                                         {selectedValues.length > responsiveSettings.maxCount && (
                                             <Badge
                                                 className={cn(
-                                                    "bg-transparent text-foreground border-foreground/1 hover:bg-transparent",
+                                                    "bg-transparent text-foreground border-foreground/1 hover:bg-transparent flex items-center",
                                                     getBadgeAnimationClass(),
                                                     multiSelectVariants({ variant }),
                                                     responsiveSettings.compactMode &&

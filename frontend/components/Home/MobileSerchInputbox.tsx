@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react'
-import { CalendarIcon, MapPin, Building2, Search, ChevronRight } from "lucide-react"
+import { CalendarIcon, Building2, Search, ChevronRight } from "lucide-react"
 import { LanguageContext } from "@/context/Lan"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectGroup, SelectTrigger, SelectValue } from "@/components/ui/select"
@@ -43,7 +43,7 @@ const MobileSerchInputbox: React.FC<MobileSerchInputboxProps> = ({
         <div className="flex flex-col gap-8">
             {/* Keyword Search */}
             <div className="space-y-3">
-                <label className="text-xs font-bold uppercase text-gray-400 tracking-widest ml-1">Keywords</label>
+                <label className="text-xs font-bold uppercase text-gray-400 tracking-widest ml-1">{TranslateText[language].KEYWORDS}</label>
                 <div className="relative">
                     <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
                     <Input
@@ -57,7 +57,7 @@ const MobileSerchInputbox: React.FC<MobileSerchInputboxProps> = ({
 
 
             <div className="space-y-3">
-                <label className="text-xs font-bold uppercase text-gray-400 tracking-widest ml-1">Region</label>
+                <label className="text-xs font-bold uppercase text-gray-400 tracking-widest ml-1">{TranslateText[language].REGION}</label>
                 <MultiSelect
                     options={TranslateText[language].MULTISELECT_OPTIONS}
                     onValueChange={SetStatesSelected}
@@ -70,18 +70,16 @@ const MobileSerchInputbox: React.FC<MobileSerchInputboxProps> = ({
 
 
             <div className="space-y-3">
-                <label className="text-xs font-bold uppercase text-gray-400 tracking-widest ml-1">Department</label>
+                <label className="text-xs font-bold uppercase text-gray-400 tracking-widest ml-1">{TranslateText[language].DEPTARTMENT}</label>
                 <Select value={DeparmentsSelected} onValueChange={SetDeparmentsSelected}>
                     <SelectTrigger className="h-14 rounded-2xl bg-gray-50 border-none px-4">
                         <div className="flex items-center gap-3">
                             <Building2 size={18} className="text-gray-400" />
-                            <SelectValue placeholder="All Departments" />
+                            <SelectValue placeholder={TranslateText[language].ALL_DEPARMENTS} />
                         </div>
                     </SelectTrigger>
-                    {/* CRITICAL: Higher Z-index for the portal dropdown */}
                     <SelectContent className="z-[1100] rounded-xl border-gray-100 shadow-xl">
                         <SelectGroup>
-                            <SelectItem value="all">All Departments</SelectItem>
                             {options.map((dept) => (
                                 <SelectItem key={dept} value={dept}>{dept}</SelectItem>
                             ))}
@@ -92,7 +90,7 @@ const MobileSerchInputbox: React.FC<MobileSerchInputboxProps> = ({
 
 
             <div className="space-y-3">
-                <label className="text-xs font-bold uppercase text-gray-400 tracking-widest ml-1">Date Range</label>
+                <label className="text-xs font-bold uppercase text-gray-400 tracking-widest ml-1">{TranslateText[language].DATE_RANGE}</label>
                 <div className="grid grid-cols-2 gap-3">
                     <Popover>
                         <PopoverTrigger asChild>

@@ -1,5 +1,6 @@
-// Updated formatDate utility with relative time
-export const formatDateRelative = (dateString: string | Date | undefined, languageCode: string = 'en-US') => {
+import { TranslateText } from "@/lib/translatetext"
+
+export const formatDateRelative = (dateString: string | Date | undefined, languageCode: string = 'en-US', language: string) => {
     if (!dateString) return '';
 
     const date = new Date(dateString);
@@ -13,20 +14,20 @@ export const formatDateRelative = (dateString: string | Date | undefined, langua
 
     // Less than 1 hour
     if (diffMinutes < 60) {
-        if (diffMinutes < 1) return 'Just now';
-        return `${diffMinutes} min ago`;
+        if (diffMinutes < 1) return `${TranslateText[language].JUST_NOW}`;
+        return `${diffMinutes} ${TranslateText[language].MINUTES_AGO}`;
     }
 
     // Less than 24 hours
     if (diffHours < 24) {
-        return `${diffHours} hour${diffHours > 1 ? 's' : ''} ago`;
+        return `${diffHours} ${TranslateText[language].HOUR} ${language === "English" ? diffHours > 1 ? 's' : '' : ""} ${TranslateText[language].AGO}`;
     }
 
     // Less than 7 days
     if (diffDays < 7) {
-        if (diffDays === 0) return 'Today';
-        if (diffDays === 1) return 'Yesterday';
-        return `${diffDays} days ago`;
+        if (diffDays === 0) return `${TranslateText[language].TODAY}`;
+        if (diffDays === 1) return `${TranslateText[language].YESTERDAY}`;
+        return `${diffDays} ${TranslateText[language].DAYS_AGO}`;
     }
 
     // More than 7 days - show formatted date
