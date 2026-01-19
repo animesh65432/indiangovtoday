@@ -48,6 +48,7 @@ export type TranslationKeys = {
     DAYS_AGO: string,
     FILTER_ANNOUNCEMENTS: string,
     KEYWORDS: string,
+    NO_STATE_SELECTED: string,
 };
 const STATES_CODES: Record<string, Record<string, string>> = {
     "Andhra Pradesh": {
@@ -1031,6 +1032,7 @@ export const TranslateText: Record<string, TranslationKeys> = {
         DAYS_AGO: "Days Ago",
         FILTER_ANNOUNCEMENTS: "Filter Announcements",
         KEYWORDS: "Keywords",
+        NO_STATE_SELECTED: "No State Selected",
 
     },
     हिन्दी: {
@@ -1120,7 +1122,8 @@ export const TranslateText: Record<string, TranslationKeys> = {
         YESTERDAY: "कल",
         DAYS_AGO: "दिन पहले",
         FILTER_ANNOUNCEMENTS: "घोषणाएँ फ़िल्टर करें",
-        KEYWORDS: "कीवर्ड"
+        KEYWORDS: "कीवर्ड",
+        NO_STATE_SELECTED: "कोई राज्य चयनित नहीं",
     },
     বাংলা: {
         TITLE: "একটি একীভূত পোর্টালে সমস্ত সরকারি ঘোষণা অ্যাক্সেস করুন।",
@@ -1209,7 +1212,8 @@ export const TranslateText: Record<string, TranslationKeys> = {
         YESTERDAY: "গতকাল",
         DAYS_AGO: "দিন আগে",
         FILTER_ANNOUNCEMENTS: "ঘোষণা ফিল্টার করুন",
-        KEYWORDS: "কীওয়ার্ড "
+        KEYWORDS: "কীওয়ার্ড ",
+        NO_STATE_SELECTED: "কোনো রাজ্য নির্বাচিত হয়নি",
     },
     தமிழ்: {
         TITLE: "ஒரே ஒருங்கிணைந்த போர்ட்டலில் அனைத்து அதிகாரபூர்வ அரசு அறிவிப்புகளையும் அணுகவும்.",
@@ -1298,7 +1302,8 @@ export const TranslateText: Record<string, TranslationKeys> = {
         YESTERDAY: "நேற்று",
         DAYS_AGO: "நாட்களுக்கு முன்",
         FILTER_ANNOUNCEMENTS: "அறிவிப்புகளை வடிகட்டவும்",
-        KEYWORDS: "முக்கிய வார்த்தைகள்"
+        KEYWORDS: "முக்கிய வார்த்தைகள்",
+        NO_STATE_SELECTED: "எந்த மாநிலமும் தேர்ந்தெடுக்கப்படவில்லை",
     },
     తెలుగు: {
         TITLE: "ఒకే ఏకీకృత పోర్టల్‌లో అన్ని అధికారిక ప్రభుత్వ ప్రకటనలను యాక్సెస్ చేయండి.",
@@ -1389,7 +1394,8 @@ export const TranslateText: Record<string, TranslationKeys> = {
         YESTERDAY: "నిన్న",
         DAYS_AGO: "రోజుల క్రితం",
         FILTER_ANNOUNCEMENTS: "ప్రకటనలను ఫిల్టర్ చేయండి",
-        KEYWORDS: "కీలక పదాలు"
+        KEYWORDS: "కీలక పదాలు",
+        NO_STATE_SELECTED: "ఏ రాష్ట్రం ఎంపిక చేయబడలేదు",
     },
     മലയാളം: {
         TITLE: "ഒരൊറ്റ ഏകീകൃത പോർട്ടലിൽ എല്ലാ ഔദ്യോഗിക സർക്കാർ അറിയിപ്പുകളും ആക്സസ് ചെയ്യുക.",
@@ -1480,7 +1486,8 @@ export const TranslateText: Record<string, TranslationKeys> = {
         YESTERDAY: "ഇന്നലെ",
         DAYS_AGO: "ദിവസങ്ങൾക്ക് മുൻപ്",
         FILTER_ANNOUNCEMENTS: "അറിയിപ്പുകൾ ഫിൽട്ടർ ചെയ്യുക",
-        KEYWORDS: "കീവേഡുകൾ "
+        KEYWORDS: "കീവേഡുകൾ ",
+        NO_STATE_SELECTED: "ഏതെങ്കിലും സംസ്ഥാനമോ തിരഞ്ഞെടുക്കപ്പെട്ടിട്ടില്ല",
     },
     मराठी: {
         TITLE: "एका एकीकृत पोर्टलमध्ये सर्व अधिकृत सरकारी घोषणांमध्ये प्रवेश मिळवा.",
@@ -1571,7 +1578,8 @@ export const TranslateText: Record<string, TranslationKeys> = {
         YESTERDAY: "काल",
         DAYS_AGO: "दिवसांपूर्वी",
         FILTER_ANNOUNCEMENTS: "घोषणा फिल्टर करा",
-        KEYWORDS: "कीवर्ड"
+        KEYWORDS: "कीवर्ड",
+        NO_STATE_SELECTED: "कोणताही राज्य निवडलेले नाही",
     },
     ગુજરાતી: {
         TITLE: "એક એકીકૃત પોર્ટલમાં તમામ અધિકૃત સરકારી જાહેરાતોને ઍક્સેસ કરો.",
@@ -1662,7 +1670,8 @@ export const TranslateText: Record<string, TranslationKeys> = {
         YESTERDAY: "ગઈકાલે",
         DAYS_AGO: "દિવસો પહેલા",
         FILTER_ANNOUNCEMENTS: "જાહેરાતો ફિલ્ટર કરો",
-        KEYWORDS: "કીવર્ડ્સ "
+        KEYWORDS: "કીવર્ડ્સ ",
+        NO_STATE_SELECTED: "કોઈ રાજ્ય પસંદ કરેલ નથી",
     },
     ಕನ್ನಡ: {
         TITLE: "ಒಂದೇ ಏಕೀಕೃತ ಪೋರ್ಟಲ್‌ನಲ್ಲಿ ಎಲ್ಲಾ ಅಧಿಕೃತ ಸರ್ಕಾರಿ ಪ್ರಕಟಣೆಗಳನ್ನು ಪ್ರವೇಶಿಸಿ.",
@@ -1753,7 +1762,8 @@ export const TranslateText: Record<string, TranslationKeys> = {
         YESTERDAY: "ನಿನ್ನೆ",
         DAYS_AGO: "ದಿನಗಳ ಹಿಂದೆ",
         FILTER_ANNOUNCEMENTS: "ಪ್ರಕಟಣೆಗಳನ್ನು ಫಿಲ್ಟರ್ ಮಾಡಿ",
-        KEYWORDS: "ಪ್ರಮುಖ ಪದಗಳು"
+        KEYWORDS: "ಪ್ರಮುಖ ಪದಗಳು",
+        NO_STATE_SELECTED: "ಯಾವುದೇ ರಾಜ್ಯ ಆಯ್ಕೆ ಮಾಡಿಲ್ಲ",
     },
     اردو: {
         TITLE: "ایک متحدہ پورٹل میں تمام سرکاری اعلانات تک رسائی حاصل کریں۔",
@@ -1844,7 +1854,8 @@ export const TranslateText: Record<string, TranslationKeys> = {
         YESTERDAY: "کل",
         DAYS_AGO: "دن پہلے",
         FILTER_ANNOUNCEMENTS: "اعلان فلٹر کریں",
-        KEYWORDS: "کلیدی الفاظ"
+        KEYWORDS: "کلیدی الفاظ",
+        NO_STATE_SELECTED: "کوئی ریاست منتخب نہیں کی گئی",
     },
     অসমীয়া: {
         TITLE: "এটা একীভূত পৰ্টেলত সকলো চৰকাৰী ঘোষণা প্ৰৱেশ কৰক।",
@@ -1933,7 +1944,8 @@ export const TranslateText: Record<string, TranslationKeys> = {
         YESTERDAY: "কালি",
         DAYS_AGO: "দিন আগতে",
         FILTER_ANNOUNCEMENTS: "ঘোষণাসমূহ ফিল্টাৰ কৰক",
-        KEYWORDS: "মূলশব্দ"
+        KEYWORDS: "মূলশব্দ",
+        NO_STATE_SELECTED: "কোনো ৰাজ্য নিৰ্বাচন কৰা হোৱা নাই",
     },
     बर: {
         TITLE: "मोनसे एकीकृत पोर्टलआव गासै सरकारी फोसावनायफोरखौ मोननो हागोन।",
@@ -2022,7 +2034,8 @@ export const TranslateText: Record<string, TranslationKeys> = {
         YESTERDAY: "मैया",
         DAYS_AGO: "सान सिगाङाव",
         FILTER_ANNOUNCEMENTS: "फोसावनायखौ बासि",
-        KEYWORDS: "कीवार्ड"
+        KEYWORDS: "कीवार्ड",
+        NO_STATE_SELECTED: "जेबो ओनसोल नोंथांनि जायाखै",
     },
     डोगरी: {
         TITLE: "इक्क एकीकृत पोर्टल च सारे सरकारी घोषणाएं गी एक्सेस करो।",
@@ -2114,7 +2127,8 @@ export const TranslateText: Record<string, TranslationKeys> = {
         YESTERDAY: "कल",
         DAYS_AGO: "दिन पैहले",
         FILTER_ANNOUNCEMENTS: "घोषणाएं फिल्टर करो",
-        KEYWORDS: "कीवर्ड"
+        KEYWORDS: "कीवर्ड",
+        NO_STATE_SELECTED: "कोई राज्य चुना नेईं गया",
     },
     कॉशुर: {
         TITLE: "أکھ اکیکرِت پورٹل منز تمام سرکأری اعلانن تک رسائی حأصل کرِو۔",
@@ -2206,7 +2220,8 @@ export const TranslateText: Record<string, TranslationKeys> = {
         YESTERDAY: "ایوتھ",
         DAYS_AGO: "دۄہ برونٛہہ",
         FILTER_ANNOUNCEMENTS: "إعالان فلٹر کئریو",
-        KEYWORDS: "کی ورڈ"
+        KEYWORDS: "کی ورڈ",
+        NO_STATE_SELECTED: "کینٛہہ ریاست منتخب نہٕ کیتھ",
     },
     मैथिली: {
         TITLE: "एकटा एकीकृत पोर्टल मे सब सरकारी घोषणा सभ केँ एक्सेस करू।",
@@ -2295,7 +2310,8 @@ export const TranslateText: Record<string, TranslationKeys> = {
         YESTERDAY: "काल्हि",
         DAYS_AGO: "दिन पहिने",
         FILTER_ANNOUNCEMENTS: "घोषणा फिल्टर करू",
-        KEYWORDS: "मुख्य शब्द / कीवर्ड"
+        KEYWORDS: "मुख्य शब्द / कीवर्ड",
+        NO_STATE_SELECTED: "कोनो राज्य चयनित नहि भेल",
     },
     ꯃꯩꯇꯩꯂꯣꯟ: {
         TITLE: "ꯑꯃꯇ꯭ꯇꯥ ꯏꯟꯇꯦꯒ꯭ꯔꯦꯇꯦꯗ ꯄꯣꯔꯇꯦꯜꯗꯥ ꯁꯔꯀꯥꯔꯅ ꯑꯅꯥꯎꯟꯁꯃꯦꯟꯇꯁꯤꯡ ꯄꯨꯝꯅꯃꯛ ꯑꯦꯛꯁꯦꯁ ꯇꯧꯕꯥ꯫",
@@ -2384,7 +2400,8 @@ export const TranslateText: Record<string, TranslationKeys> = {
         YESTERDAY: "ꯉꯔꯥꯡ",
         DAYS_AGO: "ꯅꯨꯃꯤꯠ ꯈꯔꯒꯤ ꯃꯃꯥꯡꯗꯥ",
         FILTER_ANNOUNCEMENTS: "ꯄꯥꯎꯖꯦꯜꯁꯤꯡ ꯈꯟꯒꯠꯄꯥ",
-        KEYWORDS: "ꯃꯔꯨꯑꯣꯏꯕꯥ ꯋꯥꯍꯩꯁꯤꯡ"
+        KEYWORDS: "ꯃꯔꯨꯑꯣꯏꯕꯥ ꯋꯥꯍꯩꯁꯤꯡ",
+        NO_STATE_SELECTED: "ꯂꯃꯗꯝ ꯑꯃꯇ꯭ꯇꯥ ꯍꯦꯛꯇꯅꯥ ꯐꯪꯕꯤꯌꯨ"
     },
     नेपाली: {
         TITLE: "एउटै एकीकृत पोर्टलमा सबै आधिकारिक सरकारी घोषणाहरू पहुँच गर्नुहोस्।",
@@ -2473,7 +2490,8 @@ export const TranslateText: Record<string, TranslationKeys> = {
         YESTERDAY: "हिजो",
         DAYS_AGO: "दिन अगाडि",
         FILTER_ANNOUNCEMENTS: "घोषणा फिल्टर गर्नुहोस्",
-        KEYWORDS: "मुख्य शब्दहरू"
+        KEYWORDS: "मुख्य शब्दहरू",
+        NO_STATE_SELECTED: "कुनै राज्य चयन गरिएको छैन"
     },
     ଓଡ଼ିଆ: {
         TITLE: "ଗୋଟିଏ ଏକୀକୃତ ପୋର୍ଟାଲରେ ସମସ୍ତ ସରକାରୀ ଘୋଷଣାକୁ ଆକ୍ସେସ କରନ୍ତୁ।",
@@ -2562,7 +2580,8 @@ export const TranslateText: Record<string, TranslationKeys> = {
         YESTERDAY: "ଗତକାଲି",
         DAYS_AGO: "ଦିନ ପୂର୍ବରୁ",
         FILTER_ANNOUNCEMENTS: "ଘୋଷଣାଗୁଡ଼ିକୁ ଫିଲ୍ଟର୍ କରନ୍ତୁ",
-        KEYWORDS: "ମୁଖ୍ୟ ଶବ୍ଦଗୁଡ଼ିକ"
+        KEYWORDS: "ମୁଖ୍ୟ ଶବ୍ଦଗୁଡ଼ିକ",
+        NO_STATE_SELECTED: "କୌଣସି ରାଜ୍ୟ ଚୟନ କରାଯାଇନି"
     },
     ਪੰਜਾਬੀ: {
         TITLE: "ਇੱਕ ਇਕੱਠੇ ਪੋਰਟਲ ਵਿੱਚ ਸਾਰੇ ਸਰਕਾਰੀ ਐਲਾਨਾਂ ਤੱਕ ਪਹੁੰਚ ਪ੍ਰਾਪਤ ਕਰੋ।",
@@ -2651,7 +2670,8 @@ export const TranslateText: Record<string, TranslationKeys> = {
         YESTERDAY: "ਕੱਲ੍ਹ",
         DAYS_AGO: "ਦਿਨ ਪਹਿਲਾਂ",
         FILTER_ANNOUNCEMENTS: "ਘੋਸ਼ਣਾਵਾਂ ਫਿਲਟਰ ਕਰੋ",
-        KEYWORDS: "ਮੁੱਖ ਸ਼ਬਦ"
+        KEYWORDS: "ਮੁੱਖ ਸ਼ਬਦ",
+        NO_STATE_SELECTED: "ਕੋਈ ਰਾਜ ਚੁਣਿਆ ਨਹੀਂ ਗਿਆ"
     },
     संस्कृतम्: {
         TITLE: "एकस्मिन् एकीकृते द्वारे सर्वाणि शासकीयघोषणानि प्राप्नुवन्तु।",
@@ -2740,7 +2760,8 @@ export const TranslateText: Record<string, TranslationKeys> = {
         YESTERDAY: "ह्यः",
         DAYS_AGO: "दिनपूर्वम्",
         FILTER_ANNOUNCEMENTS: "घोषणाः शोधयन्तु",
-        KEYWORDS: "मुख्यशब्दाः"
+        KEYWORDS: "मुख्यशब्दाः",
+        NO_STATE_SELECTED: "काचित् राज्यं न निर्वाचितम्"
     },
     ᱥᱟᱱᱛᱟᱲᱤ: {
         TITLE: "ᱢᱤᱫ ᱮᱠᱟᱞ ᱯᱚᱨᱴᱟᱞ ᱨᱮ ᱡᱷᱚᱛᱚ ᱥᱚᱨᱠᱟᱨᱤ ᱠᱷᱚᱵᱚᱨ ᱠᱚ ᱧᱟᱢ ᱢᱮ᱾",
@@ -2829,7 +2850,8 @@ export const TranslateText: Record<string, TranslationKeys> = {
         YESTERDAY: "ᱦᱚᱞᱟ",
         DAYS_AGO: "ᱢᱟᱦᱟᱸ ᱢᱟᱲᱟᱝ",
         FILTER_ANNOUNCEMENTS: "ᱞᱟᱹᱭ ᱡᱟᱹᱦᱤᱨ ᱪᱷᱟᱹᱱᱴᱟᱹᱣ",
-        KEYWORDS: "ᱢᱩᱬᱩᱛ ᱟᱹᱲᱟᱹ ᱠᱚ"
+        KEYWORDS: "ᱢᱩᱬᱩᱛ ᱟᱹᱲᱟᱹ ᱠᱚ",
+        NO_STATE_SELECTED: "ᱠᱟᱛᱮ ᱥᱟᱱᱛᱟ ᱨᱮ ᱵᱟᱹᱲᱤᱡ᱾"
     },
     سنڌي: {
         TITLE: "هڪ متحد پورٽل ۾ سڀني سرڪاري اعلانن تائين رسائي حاصل ڪريو.",
@@ -2918,6 +2940,7 @@ export const TranslateText: Record<string, TranslationKeys> = {
         YESTERDAY: "ڪلهه",
         DAYS_AGO: "ڏينهن اڳ",
         FILTER_ANNOUNCEMENTS: "پڌرنامن کي فلٽر ڪريو",
-        KEYWORDS: "مکيه لفظ"
+        KEYWORDS: "مکيه لفظ",
+        NO_STATE_SELECTED: "ڪو به رياست منتخب نه ڪئي وئي آهي"
     }
 };

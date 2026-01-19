@@ -11,6 +11,7 @@ import SerchInputbox from './SearchInputbox';
 import { TranslateText } from "@/lib/translatetext"
 import MobileSearchInput from './MobileSearchInput';
 import AnnoucementsTitle from './AnnoucementsTitle';
+import { toast } from "react-toastify"
 
 const Main: React.FC = () => {
     const [SearchInput, SetSearchInput] = useState<string>("")
@@ -104,6 +105,7 @@ const Main: React.FC = () => {
     const handleSearch = () => {
         Setpage(1);
         setTrigger(prev => prev + 1);
+        toast.error(`${TranslateText[language].NO_STATE_SELECTED}`);
     };
 
     const OnLoadMoredata = () => {
