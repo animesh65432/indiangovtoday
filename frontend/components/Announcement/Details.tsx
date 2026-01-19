@@ -15,7 +15,7 @@ type Props = {
 
 const Details: React.FC<Props> = ({ lan, date, source, state, department, category }) => {
     return (
-        <div className='flex-1 border border-black p-5 ml-3 flex flex-col gap-2 bg-white w-fit'>
+        <div className='flex-1 border border-black p-5 ml-3 flex flex-col gap-2 bg-white max-w-[300px]'>
             <div className='text-slate-800 flex items-center gap-2'>
                 <Calendar className='w-4 h-4' />
                 {formatDateInLanguage(date, LANGUAGE_CODES[lan])}
