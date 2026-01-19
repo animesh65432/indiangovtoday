@@ -35,7 +35,7 @@ const Announcement: React.FC<Props> = ({ Announcement }) => {
         <article className="bg-white flex flex-col gap-4 p-5 border border-gray-200 rounded-lg hover:shadow-md transition-shadow duration-200">
             {/* Header: State and Date */}
             <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between pb-3 border-b border-gray-100">
-                <Badge variant="secondary" className="px-3 py-1.5 text-xs font-medium w-fit">
+                <Badge variant="secondary" className="px-3 py-1.5 text-[0.8]  font-medium w-fit whitespace-normal break-words">
                     {Announcement.department}
                 </Badge>
                 <span className="flex items-center gap-1.5 text-sm text-gray-500">
