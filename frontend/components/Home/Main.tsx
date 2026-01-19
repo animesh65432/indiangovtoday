@@ -103,9 +103,13 @@ const Main: React.FC = () => {
     }, [page]);
 
     const handleSearch = () => {
-        Setpage(1);
-        setTrigger(prev => prev + 1);
-        toast.error(`${TranslateText[language].NO_STATE_SELECTED}`);
+        if (StatesSelected.length === 0) {
+            toast.error(`${TranslateText[language].NO_STATE_SELECTED}`);
+        }
+        else {
+            Setpage(1);
+            setTrigger(prev => prev + 1);
+        }
     };
 
     const OnLoadMoredata = () => {
