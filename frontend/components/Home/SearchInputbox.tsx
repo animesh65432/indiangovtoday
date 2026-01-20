@@ -88,7 +88,7 @@ const SerchInputbox: React.FC<Props> = ({
                                 options={TranslateText[language].MULTISELECT_OPTIONS}
                                 onValueChange={SetStatesSelected}
                                 defaultValue={StatesSelected}
-                                className='rounded-none uppercase text-black [&_*]:text-black [&_*]:font-semibold'
+                                className='rounded-none uppercase text-black [&_*]:text-black [&_*]:font-semibold [&_*]:xl:w-fit'
                                 placeholder='Select Regions'
                             />
                         </ol>
