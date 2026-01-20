@@ -1003,7 +1003,7 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                             getPopoverAnimationClass(),
                             screenSize === "mobile" && "w-[85vw] max-w-[280px]",
                             screenSize === "tablet" && "w-[70vw] max-w-md",
-                            screenSize === "desktop" && "min-w-[300px]",
+                            screenSize === "desktop" && "min-w-[100px]",
                             popoverClassName
                         )}
                         style={{
@@ -1059,7 +1059,7 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                                                     selectedValues.length ===
                                                         getAllOptions().filter((opt) => !opt.disabled)
                                                             .length
-                                                        ? "bg-primary text-primary-foreground"
+                                                        ? "bg-white text-primary-foreground"
                                                         : "opacity-50 [&_svg]:invisible"
                                                 )}
                                                 aria-hidden="true">

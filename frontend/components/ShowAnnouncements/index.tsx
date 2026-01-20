@@ -7,7 +7,6 @@ import { LoaderCircle } from "lucide-react"
 import { LanguageContext } from "@/context/Lan"
 import { TranslateText } from "@/lib/translatetext"
 import Subscribe from './Subscribe'
-import AnnoucementsTitle from '../Home/AnnoucementsTitle'
 
 type Props = {
     Announcements: AnnouncementTypes[]
