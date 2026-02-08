@@ -2,6 +2,7 @@ import { asyncErrorHandler } from "../middleware/asyncErrorHandler"
 import { connectDB } from "../db"
 import { redis } from "../services/redis"
 import { LANGUAGE_CODES } from "../utils/lan"
+import { ObjectId } from "mongodb"
 
 const addSave = asyncErrorHandler(async (req, res) => {
     const userId = req.user?._id
@@ -45,7 +46,7 @@ const addSave = asyncErrorHandler(async (req, res) => {
 
 const removeSave = asyncErrorHandler(async (req, res) => {
     const userId = req.user?._id
-    const { announcementId } = req.params
+    const { announcementId } = req.query
 
     if (!userId || !announcementId) {
         res.status(401).json({
@@ -101,12 +102,12 @@ const getSavedAnnouncements = asyncErrorHandler(async (req, res) => {
     const db = await connectDB()
     const savesCollection = db.collection("saves")
 
-
     const savedRecords = await savesCollection
-        .find({ userid: userId })
+        .find({ userId: new ObjectId(userId) })
         .toArray();
 
-    const announcementIds = savedRecords.map(save => save.announcementId);
+
+    const announcementIds = savedRecords.map(save => new ObjectId(save.announcementId));
 
     if (announcementIds.length === 0) {
         const emptyResponse = {
