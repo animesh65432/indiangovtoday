@@ -15,7 +15,8 @@ app.use(cors({
         "capacitor://localhost",      // iOS Capacitor  
         "http://localhost",           // Android Capacitor
         "gap://ready",                // Cordova (older)
-        "gap-iab://localhost"         // Cordova InAppBrowser
+        "gap-iab://localhost",       // Cordova InAppBrowser,
+        "http://localhost:8081"
     ],
     credentials: true
 }))
