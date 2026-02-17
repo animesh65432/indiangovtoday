@@ -10,7 +10,7 @@ type CurrentDateContextType = {
 
 const today = new Date();
 const sevenDaysAgo = new Date();
-sevenDaysAgo.setDate(today.getDate() - 7);
+sevenDaysAgo.setDate(today.getDate() - 30);
 
 export const Currentdate = createContext<CurrentDateContextType>({
     startdate: sevenDaysAgo,
