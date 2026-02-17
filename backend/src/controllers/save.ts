@@ -126,7 +126,6 @@ const getSavedAnnouncements = asyncErrorHandler(async (req, res) => {
         return
     }
 
-
     const announcements = await db.collection("Translated_Announcements")
         .find({
             announcementId: { $in: announcementIds },
