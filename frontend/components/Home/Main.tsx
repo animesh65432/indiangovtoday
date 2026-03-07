@@ -12,6 +12,9 @@ import { TranslateText } from "@/lib/translatetext"
 import MobileSearchInput from './MobileSearchInput';
 import AnnoucementsTitle from './AnnoucementsTitle';
 import { toast } from "react-toastify"
+import Hero from './Hero';
+import data from "@/data.json"
+import TrendingTitle from './TrendingTitle';
 
 const Main: React.FC = () => {
     const [SearchInput, SetSearchInput] = useState<string>("")
@@ -119,44 +122,9 @@ const Main: React.FC = () => {
     }
 
     return (
-        <section className='flex flex-col h-screen overflow-hidden'>
-            <nav className='flex flex-col flex-shrink-0'>
-                <AnnoucementsHeader />
-                <MobileSearchInput
-                    ShowFilterCard={ShowFilterCard}
-                    SetFilterShowCard={SetFilterShowCard}
-                    StatesSelected={StatesSelected}
-                    SetStatesSelected={SetStatesSelected}
-                    DeparmentsSelected={DeparmentsSelected}
-                    SetDeparmentsSelected={SetDeparmentsSelected}
-                    SearchInput={SearchInput}
-                    SetSearchInput={SetSearchInput}
-                    onSearch={handleSearch}
-                />
-            </nav>
-            <nav className='hidden md:block flex-shrink-0 pt-4'>
-                <SerchInputbox
-                    StatesSelected={StatesSelected}
-                    SetStatesSelected={SetStatesSelected}
-                    DeparmentsSelected={DeparmentsSelected}
-                    SetDeparmentsSelected={SetDeparmentsSelected}
-                    SearchInput={SearchInput}
-                    SetSearchInput={SetSearchInput}
-                    onSearch={handleSearch}
-                />
-            </nav>
-            <AnnoucementsTitle
-                page={page}
-                totalPages={totalPages}
-            />
-            <ShowAnnouncements
-                LoadMoreData={OnLoadMoredata}
-                Announcements={Announcements}
-                IsLoading={IsLoading}
-                page={page}
-                totalpage={totalPages}
-                IsLoadingMore={IsLoadingMore}
-            />
+        <section className='flex flex-col gap-4 h-screen overflow-hidden'>
+            <AnnoucementsHeader />
+            <TrendingTitle />
         </section>
     );
 };

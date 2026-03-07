@@ -51,15 +51,6 @@ const SerchInputbox: React.FC<Props> = ({
 
     return (
         <nav className='flex flex-col gap-2 lg:gap-5 w-[95vw] lg:w-[85vw] mx-auto pt-3'>
-            <ul className='flex flex-col gap-1'>
-                <h2 className='uppercase'>{TranslateText[language].PUBLIC_NOTIFICATION}</h2>
-                <span className='uppercase text-[0.9rem] flex items-center gap-2'>
-                    <span className=" border-2 border-t border-yellow-400 w-8 h-0"></span>
-                    <TextGenerateEffect
-                        words={TranslateText[language].DIRECT_ACCESS_TO_VERIFIED_GOVT_CIRCULARS}
-                    />
-                </span>
-            </ul>
             <ul className='border border-slate-200 bg-white w-full p-5 flex flex-col gap-4'>
                 <ul className='flex items-center gap-10'>
                     <li className="relative w-[80%]">
