@@ -29,20 +29,11 @@ const ShowAnnouncements: React.FC<Props> = ({
 
     if (IsLoading) {
         return (
-            <div className='flex-1 w-full lg:w-[90%] mx-auto overflow-hidden'>
-                <div className='flex flex-col lg:flex-row gap-8 h-full'>
-                    <div className='flex-1 overflow-y-auto px-8 pt-8'>
-                        <div className='flex flex-col gap-8 pb-8'>
-                            <AnnouncementSkeleton />
-                            <AnnouncementSkeleton />
-                            <AnnouncementSkeleton />
-                            <AnnouncementSkeleton />
-                        </div>
-                    </div>
-                    <div className='hidden lg:block lg:w-[300px] border-0 lg:sticky lg:top-8 lg:self-start'>
-                        <Subscribe />
-                    </div>
-                </div>
+            <div className='grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-5 w-[85%] mx-auto '>
+                <AnnouncementSkeleton />
+                <AnnouncementSkeleton />
+                <AnnouncementSkeleton />
+                <AnnouncementSkeleton />
             </div>
         )
     }
@@ -58,37 +49,29 @@ const ShowAnnouncements: React.FC<Props> = ({
     }
 
     return (
-        <div className='flex-1 w-full lg:w-[90%] mx-auto overflow-hidden'>
-            <div className='flex flex-col lg:flex-row gap-8 h-full'>
-                <div className='overflow-y-auto px-10 md:pt-2 w-full lg:w-[75%]'>
-                    <div className='flex flex-col gap-6 pb-20'>
-                        {Announcements.map((ann) => (
-                            <Announcement
-                                Announcement={ann}
-                                key={ann.title}
-                            />
-                        ))}
+        <div className='flex-1 w-full lg:w-[90%] mx-auto overflow-x-auto '>
+            <div className='flex-1 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5 w-[95%] mx-auto overflow-x-auto'>
+                {Announcements.map((ann) => (
+                    <Announcement
+                        Announcement={ann}
+                        key={ann.title}
+                    />
+                ))}
 
-                        {page < totalpage && (
-                            <Button
-                                className='mx-auto hover:bg-gray-100 rounded-none border border-black text-black'
-                                disabled={IsLoadingMore}
-                                onClick={LoadMoreData}
-                                aria-label={IsLoadingMore ? 'Loading more announcements' : 'Load more announcements'}
-                            >
-                                {IsLoadingMore ? (
-                                    <LoaderCircle className='h-5 w-5 animate-spin text-black' />
-                                ) : (
-                                    TranslateText[language].LOAD_MORE
-                                )}
-                            </Button>
+                {page < totalpage && (
+                    <Button
+                        className='mx-auto hover:bg-gray-100 rounded-none border border-black text-black'
+                        disabled={IsLoadingMore}
+                        onClick={LoadMoreData}
+                        aria-label={IsLoadingMore ? 'Loading more announcements' : 'Load more announcements'}
+                    >
+                        {IsLoadingMore ? (
+                            <LoaderCircle className='h-5 w-5 animate-spin text-black' />
+                        ) : (
+                            TranslateText[language].LOAD_MORE
                         )}
-                    </div>
-                </div>
-
-                <div className='hidden lg:block lg:w-[300px] border-0 lg:sticky lg:top-8 lg:self-start'>
-                    <Subscribe />
-                </div>
+                    </Button>
+                )}
             </div>
         </div>
     )

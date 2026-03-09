@@ -11,7 +11,7 @@ const TrendingTitle: React.FC = () => {
         <div className="w-[93vw] xl:w-[85vw] mx-auto border-t border-b border-black overflow-hidden">
 
             <motion.div
-                className="flex whitespace-nowrap p-1"
+                className="flex whitespace-nowrap p-2"
                 animate={{ x: ["0%", "-100%"] }}
                 transition={{
                     repeat: Infinity,
@@ -20,13 +20,13 @@ const TrendingTitle: React.FC = () => {
                 }}
             >
                 {[...data, ...data].map((item, index) => (
-                    <span
+                    <h6
                         key={index}
                         onClick={() => router.push(`/announcement?id=${item.announcementId}&lan=${language}`)}
-                        className="[font-family:var(--font-inter)] font-semibold  leading-5 text-[0.9rem] hover:cursor-pointer border-r bg-pink-100 border-black px-6 py-2 text-black"
+                        className="font-semibold  leading-5  hover:cursor-pointer  border-r bg-pink-100 border-black px-6 py-2 text-black"
                     >
                         {item.title}
-                    </span>
+                    </h6>
                 ))}
             </motion.div>
 

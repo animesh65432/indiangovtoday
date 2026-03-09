@@ -4,10 +4,10 @@ import { useRouter } from "next/router";
 import { LanguageContext } from "@/context/Lan";
 import { formatDateRelative } from "@/lib/formatDate";
 import { LANGUAGE_CODES } from "@/lib/lan";
-import { Button } from "../ui/button";
-import { Badge } from "@/components/ui/badge";
-import { ArrowRight, Building2, Clock } from "lucide-react";
 import { TranslateText } from "@/lib/translatetext";
+import { motion } from "framer-motion";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
+import Image from "next/image";
 
 type Props = {
     Announcement: AnnouncementType;
@@ -17,66 +17,71 @@ const Announcement: React.FC<Props> = ({ Announcement }) => {
     const router = useRouter();
     const { language } = useContext(LanguageContext);
 
-    const redirectTo = (e: React.MouseEvent<HTMLButtonElement>) => {
-        e.preventDefault();
-        e.stopPropagation();
-
-        if (!Announcement?.announcementId) {
-            console.error("No announcement ID found");
-            return;
-        }
-
-        router.push(
-            `/announcement?id=${Announcement.announcementId}&lan=${language}`
-        );
+    const redirectTo = () => {
+        if (!Announcement?.announcementId) return;
+        router.push(`/announcement?id=${Announcement.announcementId}&lan=${language}`);
     };
 
     return (
-        <article className="bg-white flex flex-col gap-4 p-5 border border-gray-200 rounded-lg hover:shadow-md transition-shadow duration-200">
-            {/* Header: State and Date */}
-            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between pb-3 border-b border-gray-100">
-                <Badge variant="secondary" className="px-3 py-1.5 text-[0.8]  font-medium w-fit whitespace-normal break-words">
-                    {Announcement.department}
-                </Badge>
-                <span className="flex items-center gap-1.5 text-sm text-gray-500">
-                    <Clock className="w-4 h-4" />
-                    {formatDateRelative(Announcement.date, LANGUAGE_CODES[language], language)}
-                </span>
+        <motion.article
+            onClick={redirectTo}
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+            whileHover="hover"
+            className="cursor-pointer group bg-white border border-black/10 overflow-hidden"
+        >
+            <div className="relative w-full h-[220px] overflow-hidden">
+                <motion.div
+                    variants={{ hover: { scale: 1.04 } }}
+                    transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                    className="w-full h-full"
+                >
+                    <Image
+                        src={Announcement.image!}
+                        alt={Announcement.title}
+                        fill
+                        className="object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
+                        loading="lazy"
+                    />
+                </motion.div>
             </div>
 
-            {/* Title */}
-            <div>
-                <h3 className="text-gray-900 font-bold text-lg leading-snug">
-                    {Announcement.title}
-                </h3>
-            </div>
 
-            {/* Description */}
-            <div className="text-gray-600 text-sm md:text-base leading-relaxed">
-                <p className="leading-7 ">
-                    {Announcement.description}
-                </p>
-            </div>
+            <div className="h-[2px] bg-black w-full" />
 
-            {/* Footer: Department and Action */}
-            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between pt-3 border-t border-gray-100">
-                <div className="flex items-center gap-2">
-                    <Building2 className="w-4 h-4 text-gray-400 flex-shrink-0" />
-                    <span className="text-gray-700 font-medium text-sm">
-                        {Announcement.state}
+
+            <div className="p-5 flex flex-col gap-3">
+
+                <div className="flex items-center justify-between">
+                    <span className="text-[0.8rem] w-[70%] font-bold tracking-[0.18em] uppercase text-black/40">
+                        {Announcement.department}
+                    </span>
+                    <span className="text-[0.8rem] italic text-black/40">
+                        {formatDateRelative(Announcement.date, LANGUAGE_CODES[language], language)}
                     </span>
                 </div>
 
-                <Button
-                    onClick={redirectTo}
-                    variant="ghost"
-                    className="text-black font-semibold uppercase text-xs px-3 py-2 hover:bg-gray-100 transition-colors group w-fit"
+
+                <h2 className="font-display text-black font-bold text-[1.15rem] leading-snug m-0">
+                    {Announcement.title}
+                </h2>
+
+                <p className="font-body text-[13px] text-black/60 leading-relaxed">
+                    {Announcement.description}
+                </p>
+
+
+                <motion.div
+                    variants={{ hover: { x: 4 } }}
+                    transition={{ duration: 0.2 }}
+                    className="flex items-center gap-1 text-black font-body text-[0.9rem] sm:text-[1rem] font-bold tracking-[0.12em] uppercase mt-1 w-fit"
                 >
                     {TranslateText[language].SEE_DETAILS}
-                    <ArrowRight className="ml-1.5 w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                </Button>
+                    <ArrowRight className="w-6 h-6" />
+                </motion.div>
             </div>
-        </article>
+        </motion.article>
     );
 };
 

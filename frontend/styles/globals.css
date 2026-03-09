@@ -1,11 +1,8 @@
-/* Import all font weights */
-@import url('https://fonts.googleapis.com/css2?family=Anton&family=Crimson+Pro:ital,wght@0,200..900;1,200..900&family=Domine:wght@400..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Libertinus+Mono&family=Manrope:wght@200..800&family=Philosopher:ital,wght@0,400;0,700;1,400;1,700&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,600&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap');
 @import "tailwindcss";
 @import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
-
 
 :root {
   --background: oklch(1 0 0);
@@ -41,21 +38,15 @@
   --sidebar-border: oklch(0.929 0.013 255.508);
   --sidebar-ring: oklch(0.704 0.04 256.788);
 
-  /* Font families - FIXED: Corrected serif fonts and mono font */
-  --font-poppins: 'Poppins', sans-serif;
-  --font-inter: 'Inter', sans-serif;
-  --font-manrope: 'Manrope', sans-serif;
-  --font-anton: 'Anton', sans-serif;
-  --font-crimson: 'Crimson Pro', serif;
-  --font-domine: 'Domine', serif;
-  --font-philosopher: 'Philosopher', sans-serif;
-  --font-mono: 'Libertinus Mono', monospace;
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-body: 'Libre Baskerville', Georgia, serif;
+  --font-mono: 'Courier New', Courier, monospace;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-manrope);
+  --font-sans: var(--font-body);
   --font-mono: var(--font-mono);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
@@ -98,7 +89,6 @@
   }
 }
 
-/* Base HTML & Body Styles with Font Rendering Optimization */
 html,
 body {
   padding: 0;
@@ -106,15 +96,13 @@ body {
   min-height: 100%;
   width: 100%;
   color: #2C2C2C;
-  font-family: var(--font-manrope);
+  font-family: var(--font-body);
   font-weight: 400;
-  /* background-color: #F9F5EE; */
 }
 
-/* Typography Styles */
 h1 {
   font-size: 2.2rem;
-  font-family: var(--font-crimson);
+  font-family: var(--font-display);
   font-weight: 700;
   line-height: 1.2;
   -webkit-font-smoothing: antialiased;
@@ -122,9 +110,9 @@ h1 {
 }
 
 h2 {
-  font-size: 1.9rem;
+  font-size: 1.2rem;
   font-weight: 700;
-  font-family: var(--font-poppins);
+  font-family: var(--font-display);
   line-height: 1.3;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -133,7 +121,7 @@ h2 {
 h3 {
   font-size: 1.3rem;
   font-weight: 700;
-  font-family: var(--font-crimson);
+  font-family: var(--font-display);
   line-height: 1.4;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -143,18 +131,26 @@ h4 {
   font-size: 1.8rem;
   font-weight: 700;
   color: black;
-  font-family: var(--font-crimson);
+  font-family: var(--font-display);
   line-height: 1.4;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-
 h5 {
   font-size: 1.4rem;
   font-weight: 700;
-  font-family: var(--font-manrope);
+  font-family: var(--font-body);
   color: #464646;
+  line-height: 1.4;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h6 {
+  font-size: 1rem;
+  font-weight: 700;
+  font-family: var(--font-body);
   line-height: 1.4;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -162,40 +158,39 @@ h5 {
 
 p {
   font-size: 1.2rem;
-  font-weight: 500;
-  font-family: var(--font-manrope);
+  font-weight: 400;
+  font-family: var(--font-body);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-
 button {
-  font-family: var(--font-poppins);
+  font-family: var(--font-body);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 select {
-  font-family: var(--font-poppins);
+  font-family: var(--font-body);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 input {
-  font-family: var(--font-poppins);
+  font-family: var(--font-body);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Responsive Typography - Mobile */
+/* Responsive Typography */
 @media (max-width: 768px) {
   h1 {
     font-size: 2rem;
   }
 
   h2 {
-    font-size: 1.9rem;
+    font-size: 1.2rem;
   }
 
   h3 {
@@ -220,7 +215,7 @@ input {
 
 @media (max-width: 480px) {
   h2 {
-    font-size: 1.5rem;
+    font-size: 1.1rem;
   }
 }
 
@@ -232,9 +227,8 @@ input {
 
 @media (max-width: 360px) {
   h2 {
-    font-size: 1.3rem;
+    font-size: 1.1rem;
   }
-
 }
 
 /* Hero Section */
@@ -263,7 +257,6 @@ input {
   z-index: 2;
 }
 
-/* Utility Classes */
 #sharebutton {
   height: 4vh;
   width: 4vh;
@@ -274,7 +267,6 @@ input {
     height: 3.5vh;
     width: 3.5vh;
   }
-
 }
 
 #closeShareModal {
@@ -282,9 +274,6 @@ input {
   width: 5vh;
 }
 
-
-
-/* Custom Scrollbar */
 .custom-scroll::-webkit-scrollbar {
   width: 8px;
   height: 100px;
@@ -297,9 +286,6 @@ input {
 .custom-scroll::-webkit-scrollbar-thumb {
   background-color: #E0614B;
 }
-
-
-
 
 /* Dark Mode */
 .dark {
@@ -331,12 +317,11 @@ input {
   --sidebar-primary: oklch(0.488 0.243 264.376);
   --sidebar-primary-foreground: oklch(0.984 0.003 247.858);
   --sidebar-accent: oklch(0.279 0.041 260.031);
-  --sidebar-accent-foreground: oklch(0.984 0.003 247.858);
+  --sidebar-accent-foreground: oklch(0.208 0.042 265.755);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.551 0.027 264.364);
 }
 
-/* Tailwind Base Layer */
 @layer base {
   * {
     @apply border-border outline-ring/50;

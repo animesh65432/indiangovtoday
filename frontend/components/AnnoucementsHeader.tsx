@@ -15,7 +15,7 @@ const AnnoucementsHeader: React.FC = () => {
     return (
         <header className='h-14 flex items-center justify-between  pt-5 border-0  mx-auto w-[96vw] lg:w-[85vw]'>
             <nav>
-                <span className='text-xl font-bold uppercase font-poppins text-black'>
+                <span className='text-xl [font-family:var(--font-inter)] font-bold uppercase font-poppins text-black'>
                     INDIANGOVTODAY
                 </span>
             </nav>

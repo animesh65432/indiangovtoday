@@ -5,7 +5,8 @@ export type Announcement = {
     state: string
     title: string
     category: string
-    department: string
+    department: string,
+    image: string | null
 };
 
 export type AnnouncementsResponse = {

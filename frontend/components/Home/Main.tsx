@@ -125,6 +125,14 @@ const Main: React.FC = () => {
         <section className='flex flex-col gap-4 h-screen overflow-hidden'>
             <AnnoucementsHeader />
             <TrendingTitle />
+            <ShowAnnouncements
+                Announcements={Announcements}
+                IsLoading={IsLoading}
+                LoadMoreData={OnLoadMoredata}
+                IsLoadingMore={IsLoadingMore}
+                page={page}
+                totalpage={totalPages}
+            />
         </section>
     );
 };
