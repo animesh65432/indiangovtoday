@@ -49,7 +49,7 @@ const ShowAnnouncements: React.FC<Props> = ({
     }
 
     return (
-        <div className='flex-1 w-full lg:w-[90%] mx-auto overflow-x-auto '>
+        <div className='flex-1  w-full lg:w-[90%] mx-auto overflow-x-auto '>
             <div className='flex-1 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5 w-[95%] mx-auto overflow-x-auto'>
                 {Announcements.map((ann) => (
                     <Announcement
@@ -57,7 +57,9 @@ const ShowAnnouncements: React.FC<Props> = ({
                         key={ann.title}
                     />
                 ))}
-
+            </div>
+            <Subscribe />
+            <div className='w-full flex justify-center mt-5 mb-9'>
                 {page < totalpage && (
                     <Button
                         className='mx-auto hover:bg-gray-100 rounded-none border border-black text-black'
