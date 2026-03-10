@@ -5,7 +5,8 @@ export type Announcement = {
     state: string
     title: string
     category: string
-    department: string
+    department: string,
+    image: string | null
 };
 
 export type AnnouncementsResponse = {
@@ -18,3 +19,12 @@ export type AnnouncementsResponse = {
         pageSize: number
     }
 }
+
+export type TrendingAnnouncementTypes = {
+    announcementId: string
+    title: string
+}
+
+export type ResponseTrendingAnnouncementTypes = {
+    data: TrendingAnnouncementTypes[],
+} 

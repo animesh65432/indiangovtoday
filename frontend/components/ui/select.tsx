@@ -47,7 +47,7 @@ function SelectTrigger({
     >
       {IsLanguageSelect && (
         <SelectPrimitive.Icon asChild>
-          <Globe className="size-4" />
+          <Globe className="size-4 text-black" />
         </SelectPrimitive.Icon>
       )}
       {children}

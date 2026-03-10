@@ -4,11 +4,11 @@ import { Skeleton } from "../ui/skeleton";
 
 const AnnouncementSkeleton: React.FC = () => {
     return (
-        <div className="flex flex-col space-y-3 w-[65%] mx-auto">
-            <Skeleton className="h-[20vh] w-full rounded-xl mx-auto bg-white" />
+        <div className="flex flex-col space-y-3 w-full mx-auto">
+            <Skeleton className="h-[20vh] w-full rounded-xl mx-auto bg-slate-50" />
             <div className="space-y-2">
-                <Skeleton className="h-4 w-[200px] sm:w-[250px] mr-auto bg-white" />
-                <Skeleton className="h-4 w-[150px] sm:w-[200px] mr-auto bg-white" />
+                <Skeleton className="h-4 w-[90%] mr-auto bg-slate-100" />
+                <Skeleton className="h-4 w-[90%] mr-auto bg-slate-200" />
             </div>
         </div>
     );

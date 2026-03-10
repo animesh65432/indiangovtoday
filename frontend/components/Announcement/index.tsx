@@ -38,7 +38,7 @@ const Announcement = ({ id, lan }: Props) => {
     }, [id, language])
 
     return (
-        <main className=" flex flex-col  min-h-dvh bg-[#F8F8F8]">
+        <main className=" flex flex-col  min-h-dvh ">
             <Subscribe />
             {!IsLoading ?
                 (announcement ?

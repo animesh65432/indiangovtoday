@@ -1,10 +1,10 @@
 "use client";
 import React, { useEffect, useState, useContext } from "react";
 import { createPortal } from "react-dom";
-import { X, LoaderCircle } from "lucide-react"
-import { addthesubscribe } from "../api/aleart"
+import { X, LoaderCircle } from "lucide-react";
+import { addthesubscribe } from "../api/aleart";
 import { toast } from "react-toastify";
-import { LanguageContext } from "@/context/Lan"
+import { LanguageContext } from "@/context/Lan";
 import { TranslateText } from "@/lib/translatetext";
 
 const Subscribe: React.FC = () => {
@@ -17,13 +17,8 @@ const Subscribe: React.FC = () => {
     useEffect(() => {
         setMounted(true);
         const savedEmail = localStorage.getItem("Email");
-        if (savedEmail) {
-            return;
-        }
-        const timer = setTimeout(() => {
-            setShowPopup(true);
-        }, 10000);
-
+        if (savedEmail) return;
+        const timer = setTimeout(() => setShowPopup(true), 10000);
         return () => clearTimeout(timer);
     }, []);
 
@@ -35,12 +30,10 @@ const Subscribe: React.FC = () => {
             return;
         }
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
         if (!emailRegex.test(Email)) {
             toast.error(`${TranslateText[language].PLEASE_ENTER_A_VALID_EMAIL}`);
             return;
         }
-
         SetIsLoading(true);
         try {
             await addthesubscribe(Email);
@@ -56,40 +49,54 @@ const Subscribe: React.FC = () => {
 
     const handleClose = () => {
         setShowPopup(false);
-        setMounted(false)
+        setMounted(false);
         localStorage.setItem("Email", "subscribed");
-    }
+    };
 
     const popup = (
-        <div className="fixed inset-0 flex items-center justify-center  z-50">
-            <div className="bg-white p-6 rounded-2xl shadow-lg max-w-sm w-full text-center flex flex-col gap-2">
-                <div className="flex w-full  justify-end">
-                    <X className="text-black " size={28} onClick={handleClose} />
-                </div>
-                <h6
-                    className="text-xl md:text-2xl font-semibold mb-2 text-yellow-600"
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+            <div className="relative bg-[#f5f3ef] w-full max-w-md mx-4 p-8 flex flex-col gap-6">
+
+                <button
+                    onClick={handleClose}
+                    className="absolute top-4 right-4 text-[#999] hover:text-black transition-colors"
                 >
-                    {TranslateText[language].SUBSCRIBE_TO_ALERTS}
-                </h6>
-                <span className="text-black mb-4">
-                    {TranslateText[language].NEVER_MISS_AN_UPDATE}
-                </span>
-                <form className="flex flex-col gap-3">
+                    <X size={24} />
+                </button>
+
+                <div className="flex flex-col gap-1">
+                    <div className="w-8 h-[2px] bg-black mb-3" />
+                    <h3 className="font-display text-black text-2xl font-bold leading-tight">
+                        {TranslateText[language].SUBSCRIBE_TO_ALERTS}
+                    </h3>
+                    <span className="font-body text-[#888] text-[11px] uppercase tracking-[0.14em]">
+                        {TranslateText[language].NEVER_MISS_AN_UPDATE}
+                    </span>
+                </div>
+
+                <div className="flex flex-col gap-3">
                     <input
                         value={Email}
                         onChange={(e) => setEmail(e.target.value)}
-                        type="text"
+                        type="email"
                         placeholder={`${TranslateText[language].PLEASE_ENTER_YOUR_EMAIL}`}
-                        className="border rounded-none p-2 text-black w-full placeholder:text-black   border-black"
+                        className="border border-[#d0ccc5] bg-white text-black placeholder:text-[#bbb] placeholder:uppercase placeholder:text-[10px] placeholder:tracking-widest p-3 w-full outline-none focus:border-black transition-colors rounded-none font-body text-sm"
                     />
                     <button
                         type="button"
                         onClick={handlesubscribe}
-                        className="p-2 border border-black rounded-none bg-slate-900 text-white"
+                        className="bg-black text-white uppercase text-[10px] font-bold tracking-[0.16em] p-3 hover:bg-[#333] transition-colors rounded-none font-body"
                     >
-                        {IsLoading ? <LoaderCircle className="text-black P-4 mx-auto animate-spin h-6 w-6" /> : `${TranslateText[language].SUBSCRIBE}`}
+                        {IsLoading
+                            ? <LoaderCircle className="animate-spin h-4 w-4 mx-auto" />
+                            : `${TranslateText[language].SUBSCRIBE}`}
                     </button>
-                </form>
+                </div>
+
+                <p className="font-body text-[10px] text-[#bbb] tracking-wide text-center">
+                    No spam. Unsubscribe anytime.
+                </p>
+
             </div>
         </div>
     );

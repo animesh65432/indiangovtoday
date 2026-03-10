@@ -38,26 +38,39 @@ const Subscribe: React.FC = () => {
     };
 
     return (
-        <div className='bg-white w-full flex flex-col p-4 gap-5'>
-            <div className='flex flex-col gap-2'>
-                <h3 className='uppercase'>{TranslateText[language].STAY_INFORMED}</h3>
-                <span className='uppercase text-[0.8rem]'>{TranslateText[language].DIRECT_NOTICE_TO_YOUR_INBOX}</span>
+        <div className='w-[95%] mt-5 mx-auto flex flex-col sm:flex-row items-start sm:items-center gap-6 p-8 bg-[#f5f3ef] border border-[#e0ddd7]'>
+
+
+            <div className='flex flex-col gap-1 flex-shrink-0'>
+                <h3 className='font-display text-black text-lg font-bold uppercase tracking-wide'>
+                    {TranslateText[language].STAY_INFORMED}
+                </h3>
+                <span className='font-body text-[#999] text-[10px] uppercase tracking-[0.14em]'>
+                    {TranslateText[language].DIRECT_NOTICE_TO_YOUR_INBOX}
+                </span>
             </div>
 
-            <Input
-                type='email'
-                value={Email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder={`${TranslateText[language].EMAIL_ADRESS}`}
-                className='w-full  p-5 rounded-none border-b border-gray-300 placeholder:uppercase  '
-            />
 
-            <Button
-                onClick={handlesubscribe}
-                className='uppercase bg-yellow-600 text-black font-semibold'
-            >
-                {IsLoading ? <LoaderCircle className='animate-spin h-4 w-4' /> : `${TranslateText[language].SUBSCRIBE_NOW}`}
-            </Button>
+            <div className='hidden sm:block w-px h-8 bg-white flex-shrink-0' />
+
+
+            <div className='flex w-full'>
+                <Input
+                    type='email'
+                    value={Email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder={`${TranslateText[language].EMAIL_ADRESS}`}
+                    className='flex-1 rounded-none border border-[#d0ccc5] bg-white text-black placeholder:text-[#bbb] placeholder:uppercase placeholder:text-[10px] placeholder:tracking-widest focus:border-black focus:ring-0 h-10'
+                />
+                <Button
+                    onClick={handlesubscribe}
+                    className='rounded-none bg-black text-white font-bold uppercase text-[10px] tracking-[0.14em] hover:bg-[#333] transition-colors h-10 px-5 flex-shrink-0'
+                >
+                    {IsLoading
+                        ? <LoaderCircle className='animate-spin h-4 w-4' />
+                        : `${TranslateText[language].SUBSCRIBE_NOW}`}
+                </Button>
+            </div>
 
         </div>
     )

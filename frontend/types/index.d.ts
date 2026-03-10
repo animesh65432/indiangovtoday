@@ -1,4 +1,4 @@
-import { Announcement, AnnouncementsResponse } from "./AnnouncementsTypes"
+import { Announcement, AnnouncementsResponse, TrendingAnnouncementTypes, ResponseTrendingAnnouncementTypes } from "./AnnouncementsTypes"
 export type AnnouncementsTypes = {
     _id: string,
     title: string,
@@ -85,4 +85,4 @@ export type ShowAnnouncementsTypes = {
 
 }
 
-export { Announcement, AnnouncementsResponse }
+export { Announcement, AnnouncementsResponse, TrendingAnnouncementTypes, ResponseTrendingAnnouncementTypes }
