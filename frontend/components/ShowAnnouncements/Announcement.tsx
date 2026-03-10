@@ -40,7 +40,7 @@ const Announcement: React.FC<Props> = ({ Announcement }) => {
                         src={Announcement.image!}
                         alt={Announcement.title}
                         fill
-                        className="object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
+                        className="object-cover "
                         loading="lazy"
                     />
                 </motion.div>
