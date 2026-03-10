@@ -49,7 +49,7 @@ const ShowAnnouncements: React.FC<Props> = ({
     }
 
     return (
-        <div className='flex-1  w-full lg:w-[99%] xl:w-[90%] mx-auto overflow-x-auto '>
+        <div className='flex-1  w-full lg:w-[99%] xl:w-[90%] mx-auto overflow-x-auto pb-20 '>
             <div className='flex-1 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5 w-[95%] mx-auto overflow-x-auto'>
                 {Announcements.map((ann) => (
                     <Announcement

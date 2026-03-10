@@ -43,19 +43,35 @@ const SearchInputBox: React.FC<Props> = ({
         StatesSelected.length + (startdate ? 1 : 0) + (endDate ? 1 : 0)
 
     useEffect(() => {
+        const controller = new AbortController();
+
         const fetchDepartments = async () => {
             SetIsLoading(true);
+            setDepartmentOptions([]);
             try {
                 const response = await GetallAnnoucementsDepartments(
-                    language, startdate, endDate, StatesSelected
-                ) as { data: string[] }
-                setDepartmentOptions([TranslateText[language].ALL_DEPARMENTS, ...response.data])
+                    language, startdate, endDate, StatesSelected, controller.signal
+                ) as { data: string[] };
+
+                if (!controller.signal.aborted) {
+                    setDepartmentOptions([TranslateText[language].ALL_DEPARMENTS, ...response.data]);
+                }
+            } catch (error: unknown) {
+                if (error instanceof Error &&
+                    (error.name === 'AbortError' || (error as { code?: string }).code === 'ERR_CANCELED')) {
+                    return;
+                }
             } finally {
-                SetIsLoading(false);
+                if (!controller.signal.aborted) {
+                    SetIsLoading(false);
+                }
             }
-        }
-        fetchDepartments()
-    }, [language, StatesSelected])
+        };
+
+        fetchDepartments();
+        return () => controller.abort();
+
+    }, [language, StatesSelected]);
 
 
     const FilterFields = () => (
