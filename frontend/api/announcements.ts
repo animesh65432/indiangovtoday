@@ -56,7 +56,7 @@ export const GetallAnnoucementsDepartments = (target_lan: string, startdate: Dat
     });
 }
 
-export const GetTrendingIndiaAnnnouncements = (target_lan: string, states: string[]) => {
+export const GetTrendingIndiaAnnnouncements = (target_lan: string, states: string[], signal?: AbortSignal) => {
 
     const params = new URLSearchParams({
         target_lan,

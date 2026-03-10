@@ -17,23 +17,35 @@ const TrendingTitle: React.FC<Props> = ({ StatesSelected, DefaultsStatesApplied 
     const [TrendingAnnouncements, SetTrendingAnnouncements] = useState<TrendingAnnouncementTypes[]>([]);
     const { language } = useContext(LanguageContext)
 
-    const fetchTrendingAnnouncements = async () => {
-        SetIsLoading(true);
-        try {
-            if (StatesSelected.length === 0) {
-                const response = await GetTrendingIndiaAnnnouncements(language, DefaultsStatesApplied) as ResponseTrendingAnnouncementTypes;
-                SetTrendingAnnouncements(response.data);
-            } else {
-                const response = await GetTrendingIndiaAnnnouncements(language, StatesSelected) as ResponseTrendingAnnouncementTypes;
-                SetTrendingAnnouncements(response.data);
-            }
-        } finally {
-            SetIsLoading(false);
-        }
-    };
-
     useEffect(() => {
+        const controller = new AbortController();
+
+        const fetchTrendingAnnouncements = async () => {
+            SetIsLoading(true);
+            try {
+                const states = StatesSelected.length === 0 ? DefaultsStatesApplied : StatesSelected;
+                const response = await GetTrendingIndiaAnnnouncements(
+                    language, states, controller.signal
+                ) as ResponseTrendingAnnouncementTypes;
+
+                if (!controller.signal.aborted) {
+                    SetTrendingAnnouncements(response.data);
+                }
+            } catch (error: unknown) {
+                if (error instanceof Error &&
+                    (error.name === 'AbortError' || (error as { code?: string }).code === 'ERR_CANCELED')) {
+                    return;
+                }
+            } finally {
+                if (!controller.signal.aborted) {
+                    SetIsLoading(false);
+                }
+            }
+        };
+
         fetchTrendingAnnouncements();
+        return () => controller.abort();
+
     }, [language, StatesSelected, DefaultsStatesApplied]);
 
     return (

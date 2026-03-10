@@ -92,6 +92,7 @@ const Main: React.FC = () => {
             SetStatesSelected([INDIA_GOVT_CODE]);
             SetDefaultsStatesApplied([INDIA_GOVT_CODE]);
         }
+        SetDeparmentsSelected("")
     }, [state_ut, language]);
 
     useEffect(() => {
