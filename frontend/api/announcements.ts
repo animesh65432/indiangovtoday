@@ -55,3 +55,17 @@ export const GetallAnnoucementsDepartments = (target_lan: string, startdate: Dat
         signal
     });
 }
+
+export const GetTrendingIndiaAnnnouncements = (target_lan: string, states: string[]) => {
+
+    const params = new URLSearchParams({
+        target_lan,
+    });
+
+    states.forEach(state => params.append('states', state));
+
+    return Call({
+        method: "GET",
+        path: `/GetTrendingIndiaAnnnouncements?${params.toString()}`,
+    });
+}

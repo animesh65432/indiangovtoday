@@ -19,3 +19,12 @@ export type AnnouncementsResponse = {
         pageSize: number
     }
 }
+
+export type TrendingAnnouncementTypes = {
+    announcementId: string
+    title: string
+}
+
+export type ResponseTrendingAnnouncementTypes = {
+    data: TrendingAnnouncementTypes[],
+} 

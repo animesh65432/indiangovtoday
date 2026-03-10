@@ -437,3 +437,80 @@ export const GetallAnnoucementsDepartments = asyncErrorHandler(async (req: Reque
     return;
 }
 );
+
+
+export const GetAllTrendingTitles = asyncErrorHandler(async (req: Request, res: Response) => {
+    const { target_lan, states } = req.query;
+
+    console.log("Received request for trending announcements with target_lan:", target_lan, "and states:", states);
+
+    if (!target_lan || typeof target_lan !== "string") {
+        res.status(400).json({ message: "Missing or invalid target_lan" });
+        return;
+    }
+
+    const targetLanguage = LANGUAGE_CODES[target_lan as string] || "en";
+
+    const selectedStates = PrasePayloadArray(states as string);
+
+    const StateCachePart = selectedStates.sort().join(",");
+
+    const redis_key = `Trending_Announcements_${targetLanguage}-${StateCachePart}`;
+
+    const cached_data = await redis.get(redis_key);
+
+    if (cached_data) {
+        const parsedData = typeof cached_data === "string" ? JSON.parse(cached_data) : cached_data;
+        res.status(200).json(parsedData);
+        return;
+    }
+
+    const db = await connectDB();
+
+    const fifteenDaysAgo = new Date(Date.now() - 15 * 24 * 60 * 60 * 1000);
+
+    const trendingAnnouncements = await db
+        .collection("Translated_Announcements")
+        .aggregate([
+            {
+                $match: {
+                    date: { $gte: fifteenDaysAgo },
+                    language: targetLanguage,
+                    ...(selectedStates.length > 0 && { state: { $in: selectedStates } })
+                },
+            },
+            {
+                $sort: { date: -1 },
+            },
+            {
+                $group: {
+                    _id: "$department",
+                    doc: { $first: "$$ROOT" },
+                },
+            },
+            {
+                $replaceRoot: { newRoot: "$doc" },
+            },
+            {
+                $sort: { date: -1 },
+            },
+            {
+                $project: {
+                    announcementId: 1,
+                    title: 1,
+                }
+            }
+        ])
+        .toArray();
+
+    const responseData = {
+        success: true,
+        data: trendingAnnouncements,
+        languageCode: LANGUAGE_CODES[targetLanguage] || "en",
+    };
+
+    await redis.set(redis_key, JSON.stringify(responseData), { ex: 300 });
+
+    res.status(200).json(responseData);
+    return;
+});

@@ -1,12 +1,41 @@
-import React, { useContext } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import { motion } from "framer-motion"
-import data from "@/data.json"
 import { useRouter } from "next/navigation"
+import { TrendingAnnouncementTypes, ResponseTrendingAnnouncementTypes } from "@/types"
 import { LanguageContext } from "@/context/Lan"
+import { GetTrendingIndiaAnnnouncements } from "@/api/announcements"
+import { IsLoadingContext } from "@/context/IsLoading"
 
-const TrendingTitle: React.FC = () => {
+type Props = {
+    StatesSelected: string[],
+    DefaultsStatesApplied: string[]
+}
+
+const TrendingTitle: React.FC<Props> = ({ StatesSelected, DefaultsStatesApplied }) => {
     const router = useRouter()
+    const { SetIsLoading } = useContext(IsLoadingContext)
+    const [TrendingAnnouncements, SetTrendingAnnouncements] = useState<TrendingAnnouncementTypes[]>([]);
     const { language } = useContext(LanguageContext)
+
+    const fetchTrendingAnnouncements = async () => {
+        SetIsLoading(true);
+        try {
+            if (StatesSelected.length === 0) {
+                const response = await GetTrendingIndiaAnnnouncements(language, DefaultsStatesApplied) as ResponseTrendingAnnouncementTypes;
+                SetTrendingAnnouncements(response.data);
+            } else {
+                const response = await GetTrendingIndiaAnnnouncements(language, StatesSelected) as ResponseTrendingAnnouncementTypes;
+                SetTrendingAnnouncements(response.data);
+            }
+        } finally {
+            SetIsLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        fetchTrendingAnnouncements();
+    }, [language, StatesSelected, DefaultsStatesApplied]);
+
     return (
         <div className="w-[93vw] xl:w-[85vw] mx-auto border-t border-b border-black overflow-hidden">
 
@@ -19,7 +48,7 @@ const TrendingTitle: React.FC = () => {
                     ease: "linear",
                 }}
             >
-                {[...data, ...data].map((item, index) => (
+                {TrendingAnnouncements.map((item, index) => (
                     <h6
                         key={index}
                         onClick={() => router.push(`/announcement?id=${item.announcementId}&lan=${language}`)}

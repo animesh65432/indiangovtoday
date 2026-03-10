@@ -9,17 +9,14 @@ import { useStateCode } from "@/lib/useStateCode"
 import { LocationContext } from "@/context/LocationProvider"
 import SerchInputbox from './SearchInputbox';
 import { TranslateText } from "@/lib/translatetext"
-import MobileSearchInput from './MobileSearchInput';
-import AnnoucementsTitle from './AnnoucementsTitle';
 import { toast } from "react-toastify"
-import Hero from './Hero';
-import data from "@/data.json"
 import TrendingTitle from './TrendingTitle';
 
 const Main: React.FC = () => {
+    const { language } = useContext(LanguageContext);
     const [SearchInput, SetSearchInput] = useState<string>("")
     const [StatesSelected, SetStatesSelected] = useState<string[]>([]);
-    const [DeparmentsSelected, SetDeparmentsSelected] = useState<string>("");
+    const [DeparmentsSelected, SetDeparmentsSelected] = useState<string>(``);
 
     const [totalPages, settotalPages] = useState<number>(0)
     const [IsLoading, SetIsLoading] = useState<boolean>(false)
@@ -29,10 +26,7 @@ const Main: React.FC = () => {
     const [limit] = useState<number>(10)
 
     const { startdate, endDate } = useContext(Currentdate)
-    const { language } = useContext(LanguageContext)
     const { state_ut } = useContext(LocationContext)
-
-    const [ShowFilterCard, SetFilterShowCard] = useState<boolean>(false)
 
     const [DefaultsStatesApplied, SetDefaultsStatesApplied] = useState<string[]>([])
 
@@ -55,9 +49,12 @@ const Main: React.FC = () => {
         }
 
         try {
+
+            const DeparMentsPayload = TranslateText[language].ALL_DEPARMENTS === DeparmentsSelected ? "" : DeparmentsSelected;
+
             const response = await getAllAnnouncements(
                 language, startdate, endDate, pageNumber, limit,
-                StatesSelected, DeparmentsSelected, SearchInput, signal
+                StatesSelected, DeparMentsPayload, SearchInput, signal
             ) as AnnouncementsResponse;
 
             if (!signal.aborted) {
@@ -82,7 +79,7 @@ const Main: React.FC = () => {
         Setpage(1);
         fetchGetIndiaAnnouncements(1, false, controller.signal);
         return () => controller.abort();
-    }, [language, state_ut, trigger, DefaultsStatesApplied]);
+    }, [language, state_ut, trigger, DefaultsStatesApplied, DeparmentsSelected]);
 
     useEffect(() => {
         if (state_ut) {
@@ -124,7 +121,19 @@ const Main: React.FC = () => {
     return (
         <section className='flex flex-col gap-4 h-screen overflow-hidden'>
             <AnnoucementsHeader />
-            <TrendingTitle />
+            <TrendingTitle
+                StatesSelected={StatesSelected}
+                DefaultsStatesApplied={DefaultsStatesApplied}
+            />
+            <SerchInputbox
+                SearchInput={SearchInput}
+                SetSearchInput={SetSearchInput}
+                StatesSelected={StatesSelected}
+                SetStatesSelected={SetStatesSelected}
+                DeparmentsSelected={DeparmentsSelected}
+                SetDeparmentsSelected={SetDeparmentsSelected}
+                onSearch={handleSearch}
+            />
             <ShowAnnouncements
                 Announcements={Announcements}
                 IsLoading={IsLoading}

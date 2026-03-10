@@ -24,7 +24,6 @@ const Announcement: React.FC<Props> = ({ Announcement }) => {
 
     return (
         <motion.article
-            onClick={redirectTo}
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
@@ -75,6 +74,7 @@ const Announcement: React.FC<Props> = ({ Announcement }) => {
                 <motion.div
                     variants={{ hover: { x: 4 } }}
                     transition={{ duration: 0.2 }}
+                    onClick={redirectTo}
                     className="flex items-center gap-1 text-black font-body text-[0.9rem] sm:text-[1rem] font-bold tracking-[0.12em] uppercase mt-1 w-fit"
                 >
                     {TranslateText[language].SEE_DETAILS}
