@@ -1,0 +1,856 @@
+import { useState, useMemo, lazy, Suspense, useEffect } from "react";
+import {
+  ANNOUNCEMENTS, UNION_TERRITORIES, MINISTRIES, KINDS,
+  KIND_LIGHT_COLORS,
+  type Announcement, type AnnouncementKind, type Ministry,
+} from "../data/announcements";
+import { normalizeGeoName } from "../components/IndiaMap";
+
+const IndiaMap = lazy(() => import("../components/IndiaMap"));
+
+type SourceFilter = "all" | "central" | "states";
+
+const fmt = (d: string) =>
+  new Date(d).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" });
+
+const today     = new Date().toISOString().slice(0, 10);
+const threeDays = new Date(Date.now() - 3 * 86400000).toISOString().slice(0, 10);
+const weekAgo   = new Date(Date.now() - 7 * 86400000).toISOString().slice(0, 10);
+
+/* ────── filter hook ────── */
+function useFilters() {
+  const [source, setSource]                 = useState<SourceFilter>("all");
+  const [selectedMinistries, setMins]       = useState<Ministry[]>([]);
+  const [selectedKinds, setKinds]           = useState<AnnouncementKind[]>([]);
+  const [dateFrom, setDateFrom]             = useState("");
+  const [dateTo, setDateTo]                 = useState("");
+  const [search, setSearch]                 = useState("");
+  const [selectedState, setSelectedState]   = useState<string | null>(null);
+
+  const toggleMinistry = (m: Ministry) =>
+    setMins(p => p.includes(m) ? p.filter(x => x !== m) : [...p, m]);
+  const toggleKind = (k: AnnouncementKind) =>
+    setKinds(p => p.includes(k) ? p.filter(x => x !== k) : [...p, k]);
+  const clearAll = () => {
+    setSource("all"); setMins([]); setKinds([]);
+    setDateFrom(""); setDateTo(""); setSearch(""); setSelectedState(null);
+  };
+
+  const filtered = useMemo(() => ANNOUNCEMENTS.filter(a => {
+    if (source === "central" && a.type !== "central") return false;
+    if (source === "states"  && a.type !== "state")   return false;
+    if (selectedState && a.type === "state" && a.state !== selectedState) return false;
+    if (selectedMinistries.length && a.type === "central" && (!a.ministry || !selectedMinistries.includes(a.ministry))) return false;
+    if (selectedKinds.length && !selectedKinds.includes(a.kind)) return false;
+    if (dateFrom && a.date < dateFrom) return false;
+    if (dateTo   && a.date > dateTo)   return false;
+    if (search) {
+      const q = search.toLowerCase();
+      return a.title.toLowerCase().includes(q)
+          || (a.state || "").toLowerCase().includes(q)
+          || (a.ministry || "").toLowerCase().includes(q)
+          || a.kind.toLowerCase().includes(q)
+          || a.description.toLowerCase().includes(q);
+    }
+    return true;
+  }), [source, selectedState, selectedMinistries, selectedKinds, dateFrom, dateTo, search]);
+
+  const hasActive = !!(source !== "all" || selectedMinistries.length || selectedKinds.length || dateFrom || dateTo || search || selectedState);
+  return { source, setSource, selectedMinistries, toggleMinistry, selectedKinds, toggleKind, dateFrom, setDateFrom, dateTo, setDateTo, search, setSearch, selectedState, setSelectedState, clearAll, filtered, hasActive };
+}
+
+/* ════════════════════════════ ROOT ════════════════════════════ */
+export default function Dashboard() {
+  const f = useFilters();
+  const [ministryOpen, setMinistryOpen] = useState(false);
+  const [kindOpen,     setKindOpen]     = useState(false);
+  const [showFilters,  setShowFilters]  = useState(false);
+  const [mapOpen,      setMapOpen]      = useState(true);
+  const [openCard,     setOpenCard]     = useState<Announcement | null>(null);
+
+  const closeDropdowns = () => { setMinistryOpen(false); setKindOpen(false); };
+  const showMapPanel   = f.source !== "states";
+
+  /* Auto-detect user's state on first load */
+  useEffect(() => {
+    if (!navigator.geolocation) return;
+    navigator.geolocation.getCurrentPosition(
+      async (pos) => {
+        try {
+          const res  = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${pos.coords.latitude}&lon=${pos.coords.longitude}&format=json`);
+          const data = await res.json();
+          const raw  = data.address?.state;
+          if (raw) f.setSelectedState(normalizeGeoName(raw));
+        } catch { /* silent */ }
+      },
+      () => { /* permission denied — silently skip */ }
+    );
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const utCounts = UNION_TERRITORIES.map(ut => ({
+    name: ut,
+    count: ANNOUNCEMENTS.filter(a => a.type === "state" && a.state === ut).length,
+  }));
+
+  /* ── Filter toolbar (reused desktop + sheet) ── */
+  const FilterToolbar = ({ compact = false }: { compact?: boolean }) => (
+    <div style={{ display: "flex", flexWrap: "wrap", gap: 7, alignItems: "center" }} onClick={e => e.stopPropagation()}>
+      {/* Source */}
+      <div style={{ display: "flex", background: "#F0EDE5", border: "1.5px solid #E0DDD5", borderRadius: 7, overflow: "hidden" }}>
+        {(["all","central","states"] as SourceFilter[]).map(s => (
+          <button key={s} onClick={() => f.setSource(s)}
+            style={{ padding: compact ? "5px 10px" : "5px 13px", fontSize: 12, fontWeight: 700,
+              background: f.source === s ? (s === "central" ? "#FBBF24" : s === "states" ? "#141414" : "#FFF") : "transparent",
+              color: f.source === s ? (s === "states" ? "#FFF" : "#141414") : "#888",
+              border: "none", cursor: "pointer", borderRight: "1px solid #E0DDD5", transition: "all 0.1s" }}>
+            {s === "all" ? "All" : s === "central" ? "Central Govt" : "State Govts"}
+          </button>
+        ))}
+      </div>
+
+      {/* Ministry */}
+      {f.source !== "states" && (
+        <div style={{ position: "relative" }}>
+          <button onClick={e => { e.stopPropagation(); setMinistryOpen(v => !v); setKindOpen(false); }}
+            style={dropBtn(f.selectedMinistries.length > 0)}>
+            Ministry{f.selectedMinistries.length > 0 && ` (${f.selectedMinistries.length})`} <Chevron />
+          </button>
+          {ministryOpen && (
+            <div style={dropMenu}>
+              {MINISTRIES.map(m => (
+                <label key={m} style={{ display: "flex", alignItems: "center", gap: 9, padding: "7px 11px", cursor: "pointer", borderRadius: 5, fontSize: 13,
+                  fontWeight: f.selectedMinistries.includes(m) ? 700 : 400,
+                  color: f.selectedMinistries.includes(m) ? "#92400E" : "#444",
+                  background: f.selectedMinistries.includes(m) ? "#FEF3C7" : "transparent" }}>
+                  <input type="checkbox" checked={f.selectedMinistries.includes(m)} onChange={() => f.toggleMinistry(m)} style={{ accentColor: "#F59E0B" }} />
+                  {m}
+                </label>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Type */}
+      <div style={{ position: "relative" }}>
+        <button onClick={e => { e.stopPropagation(); setKindOpen(v => !v); setMinistryOpen(false); }}
+          style={dropBtn(f.selectedKinds.length > 0)}>
+          Type{f.selectedKinds.length > 0 && ` (${f.selectedKinds.length})`} <Chevron />
+        </button>
+        {kindOpen && (
+          <div style={{ ...dropMenu, minWidth: 210, padding: 10 }}>
+            <div style={{ fontSize: 10, color: "#AAA", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 7 }}>Filter by announcement type</div>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 5 }}>
+              {KINDS.map(k => {
+                const c = KIND_LIGHT_COLORS[k]; const on = f.selectedKinds.includes(k);
+                return <button key={k} onClick={() => f.toggleKind(k)}
+                  style={{ padding: "4px 11px", fontSize: 11, fontWeight: 700, letterSpacing: "0.05em", textTransform: "uppercase",
+                    borderRadius: 20, border: `1.5px solid ${on ? c.border : "#E0DDD5"}`,
+                    background: on ? c.bg : "transparent", color: on ? c.text : "#888", cursor: "pointer" }}>{k}</button>;
+              })}
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Date presets */}
+      {!compact && <>
+        <input type="date" value={f.dateFrom} onChange={e => f.setDateFrom(e.target.value)} style={dateInput} />
+        <span style={{ color: "#CCC", fontSize: 13 }}>–</span>
+        <input type="date" value={f.dateTo} onChange={e => f.setDateTo(e.target.value)} style={dateInput} />
+        <div style={{ display: "flex", gap: 4 }}>
+          {[{ l:"Today", fr:today, to:today }, { l:"3d", fr:threeDays, to:today }, { l:"Week", fr:weekAgo, to:today }, { l:"All", fr:"", to:"" }].map(({ l,fr,to }) => (
+            <button key={l} onClick={() => { f.setDateFrom(fr); f.setDateTo(to); }}
+              style={{ padding: "4px 9px", fontSize: 11, fontWeight: 700,
+                background: f.dateFrom === fr && f.dateTo === to ? "#141414" : "#F0EDE5",
+                border: "1.5px solid #E0DDD5", borderRadius: 4,
+                color: f.dateFrom === fr && f.dateTo === to ? "#FFF" : "#777", cursor: "pointer" }}>{l}</button>
+          ))}
+        </div>
+      </>}
+    </div>
+  );
+
+  /* ── Active chips ── */
+  const ActiveChips = () => !f.hasActive ? null : (
+    <div style={{ display: "flex", flexWrap: "wrap", gap: 5, alignItems: "center", padding: "6px 0 2px" }}>
+      {f.source !== "all"      && <Chip label={f.source === "central" ? "Central Govt" : "State Govts"} onRemove={() => f.setSource("all")} />}
+      {f.selectedState         && <Chip label={f.selectedState} onRemove={() => f.setSelectedState(null)} />}
+      {f.selectedMinistries.map(m => <Chip key={m} label={`Min. of ${m}`} onRemove={() => f.toggleMinistry(m)} />)}
+      {f.selectedKinds.map(k => <Chip key={k} label={k} onRemove={() => f.toggleKind(k)} />)}
+      {(f.dateFrom || f.dateTo) && <Chip label={`${f.dateFrom || "…"} → ${f.dateTo || "…"}`} onRemove={() => { f.setDateFrom(""); f.setDateTo(""); }} />}
+      {f.search && <Chip label={`"${f.search}"`} onRemove={() => f.setSearch("")} />}
+      <button onClick={f.clearAll} style={{ marginLeft: "auto", fontSize: 11, fontWeight: 700, color: "#888", background: "none", border: "none", cursor: "pointer", textDecoration: "underline" }}>Clear all</button>
+    </div>
+  );
+
+  /* ── Map panel ── */
+  const MapPanel = ({ height = "100%", hint = true }: { height?: string | number; hint?: boolean }) => (
+    <div style={{ display: "flex", flexDirection: "column", height }}>
+      {hint && (
+        <div style={{ padding: "7px 14px", background: "#FFFBEB", border: "1px solid #FDE68A", borderRadius: 6, margin: "8px 12px 4px",
+          display: "flex", alignItems: "center", gap: 6 }}>
+          <span style={{ fontSize: 14 }}>👆</span>
+          <span style={{ fontSize: 11, color: "#92400E", fontWeight: 600, lineHeight: 1.4 }}>
+            Click any state on the map to filter announcements for that state
+          </span>
+        </div>
+      )}
+      <div style={{ flex: 1, overflow: "hidden", padding: hint ? "0 8px 8px" : "0 6px 6px" }}>
+        <Suspense fallback={<MapLoader />}>
+          <IndiaMap announcements={ANNOUNCEMENTS} selectedState={f.selectedState} onStateClick={s => f.setSelectedState(s)} />
+        </Suspense>
+      </div>
+    </div>
+  );
+
+  return (
+    <div style={{ background: "#F8F7F2", height: "100vh", overflow: "hidden",
+      fontFamily: "'Inter', -apple-system, sans-serif", color: "#141414" }} onClick={closeDropdowns}>
+
+      {/* ═══════════════ DESKTOP ═══════════════ */}
+      <div className="gt-desktop" style={{ display: "flex", height: "100vh" }}>
+
+        {/* Left: Map */}
+        {showMapPanel && (
+          <div style={{ width: 380, minWidth: 380, display: "flex", flexDirection: "column",
+            background: "#FFF", borderRight: "1.5px solid #E5E2D8", overflow: "hidden" }}>
+
+            <div style={{ padding: "14px 16px 10px", borderBottom: "1.5px solid #E5E2D8" }}>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 8 }}>
+                <span style={{ fontSize: 10, fontWeight: 900, letterSpacing: "0.14em", textTransform: "uppercase", color: "#AAA" }}>India Map</span>
+                {f.selectedState && (
+                  <button onClick={e => { e.stopPropagation(); f.setSelectedState(null); }}
+                    style={{ fontSize: 11, fontWeight: 700, color: "#141414", background: "#FEF3C7",
+                      border: "1.5px solid #FBBF24", borderRadius: 4, padding: "2px 9px", cursor: "pointer",
+                      display: "flex", alignItems: "center", gap: 4 }}>
+                    {f.selectedState} <span>×</span>
+                  </button>
+                )}
+              </div>
+              {/* Legend */}
+              <div style={{ display: "flex", alignItems: "center", gap: 7, flexWrap: "wrap" }}>
+                <span style={{ fontSize: 10, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", color: "#CCC" }}>Announcements:</span>
+                {[["None", "#E8E4DA"], ["1", "#FDE68A"], ["2", "#FBBF24"], ["3+", "#F59E0B"]].map(([l, c]) => (
+                  <div key={l} style={{ display: "flex", alignItems: "center", gap: 3 }}>
+                    <div style={{ width: 10, height: 10, borderRadius: 2, background: c, border: "1px solid rgba(0,0,0,0.1)" }} />
+                    <span style={{ fontSize: 10, color: "#999" }}>{l}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <MapPanel />
+
+            {/* Union territories */}
+            <div style={{ padding: "9px 14px 13px", borderTop: "1.5px solid #E5E2D8", flexShrink: 0 }}>
+              <div style={{ fontSize: 10, fontWeight: 900, color: "#AAA", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 6 }}>Union Territories</div>
+              <div style={{ display: "flex", flexWrap: "wrap", gap: 5 }}>
+                {utCounts.map(({ name, count }) => (
+                  <button key={name} disabled={count === 0}
+                    onClick={e => { e.stopPropagation(); if (count > 0) f.setSelectedState(f.selectedState === name ? null : name); }}
+                    style={{ fontSize: 10, fontWeight: 600, padding: "3px 9px", borderRadius: 4,
+                      border: `1.5px solid ${f.selectedState === name ? "#141414" : count > 0 ? "#D97706" : "#E5E2D8"}`,
+                      background: f.selectedState === name ? "#141414" : count > 0 ? "#FEF3C7" : "#F5F4F0",
+                      color: f.selectedState === name ? "#FFF" : count > 0 ? "#92400E" : "#CCC",
+                      cursor: count > 0 ? "pointer" : "not-allowed" }}>
+                    {name.split(" ")[0]}{count > 0 && <span style={{ opacity: 0.6, marginLeft: 3 }}>({count})</span>}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Right: Feed */}
+        <div style={{ flex: 1, display: "flex", flexDirection: "column", overflow: "hidden" }}>
+          {/* Header */}
+          <div style={{ background: "#FFF", borderBottom: "1.5px solid #E5E2D8", padding: "16px 24px 0" }}>
+            <div style={{ display: "flex", alignItems: "baseline", gap: 10, marginBottom: 2 }}>
+              <h1 style={{ fontSize: 22, fontWeight: 900, letterSpacing: "-0.045em", lineHeight: 1 }}>GovTrack India</h1>
+              <span style={{ fontSize: 9, fontWeight: 900, letterSpacing: "0.12em", textTransform: "uppercase",
+                background: "#FBBF24", color: "#141414", borderRadius: 3, padding: "3px 7px" }}>Policy Intelligence</span>
+            </div>
+            <p style={{ fontSize: 12, color: "#AAA", marginBottom: 12 }}>
+              Track official announcements — schemes, policies, tenders &amp; orders — from Central ministries and all 29 states
+            </p>
+
+            {/* How-to strip */}
+            <div style={{ display: "flex", gap: 0, background: "#F8F7F2", border: "1px solid #E8E4DA",
+              borderRadius: 7, marginBottom: 12, overflow: "hidden" }}>
+              {[
+                { icon: "🗺️", step: "1", title: "Pick a state", sub: "Click map or use All / States tab" },
+                { icon: "🔍", step: "2", title: "Narrow it down", sub: "Filter by ministry, type, or date" },
+                { icon: "📋", step: "3", title: "Read full details", sub: "Click any card to open notice" },
+              ].map((item, i) => (
+                <div key={i} style={{ flex: 1, padding: "9px 12px", borderRight: i < 2 ? "1px solid #E8E4DA" : "none" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 2 }}>
+                    <span style={{ fontSize: 14 }}>{item.icon}</span>
+                    <span style={{ fontSize: 10, fontWeight: 900, color: "#FBBF24", letterSpacing: "0.05em" }}>STEP {item.step}</span>
+                  </div>
+                  <div style={{ fontSize: 11, fontWeight: 800, color: "#333", lineHeight: 1.3 }}>{item.title}</div>
+                  <div style={{ fontSize: 10, color: "#AAA", lineHeight: 1.4, marginTop: 1 }}>{item.sub}</div>
+                </div>
+              ))}
+            </div>
+
+            <div style={{ position: "relative", marginBottom: 10 }}>
+              <SearchIcon />
+              <input type="search" placeholder="Search by title, ministry, state, type…"
+                value={f.search} onChange={e => f.setSearch(e.target.value)}
+                onClick={e => e.stopPropagation()} style={searchStyle} />
+            </div>
+            <div style={{ paddingBottom: 10 }}><FilterToolbar /></div>
+            {f.hasActive && <div style={{ borderTop: "1px solid #F0EDE5" }}><ActiveChips /></div>}
+          </div>
+
+          {/* Feed */}
+          <div style={{ flex: 1, overflowY: "auto", padding: "14px 22px 32px" }} onClick={closeDropdowns}>
+            {/* State info banner */}
+            {/* {f.selectedState && <StateInfoBanner state={f.selectedState} onClear={() => f.setSelectedState(null)} />} */}
+            <div style={{ fontSize: 12, color: "#BBB", marginBottom: 13, fontWeight: 500 }}>
+              Showing <span style={{ fontWeight: 900, color: "#141414", fontSize: 15 }}>{f.filtered.length}</span> of {ANNOUNCEMENTS.length} announcements
+              {f.hasActive && <span style={{ color: "#D97706", marginLeft: 6, fontWeight: 700 }}>— filtered</span>}
+            </div>
+            {f.filtered.length === 0
+              ? <EmptyState onClear={f.clearAll} />
+              : <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(340px,1fr))", gap: 13 }}>
+                  {f.filtered.map(a => <Card key={a.id} a={a} onClick={() => setOpenCard(a)} />)}
+                </div>
+            }
+          </div>
+        </div>
+      </div>
+
+      {/* ═══════════════ MOBILE ═══════════════ */}
+      <div className="gt-mobile" style={{ display: "none", flexDirection: "column", height: "100vh", overflow: "hidden" }}>
+
+        {/* Header */}
+        <div style={{ background: "#FFF", borderBottom: "1.5px solid #E5E2D8", padding: "12px 15px 10px", flexShrink: 0 }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 8 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 7 }}>
+              <span style={{ fontSize: 17, fontWeight: 900, letterSpacing: "-0.04em" }}>GovTrack India</span>
+              <span style={{ fontSize: 8, fontWeight: 900, letterSpacing: "0.1em", textTransform: "uppercase",
+                background: "#FBBF24", color: "#141414", borderRadius: 3, padding: "2px 6px" }}>Policy</span>
+            </div>
+            <button onClick={e => { e.stopPropagation(); setShowFilters(true); }}
+              style={{ display: "flex", alignItems: "center", gap: 5, padding: "7px 13px", fontSize: 12, fontWeight: 700,
+                background: f.hasActive ? "#FBBF24" : "#F8F7F2",
+                border: `1.5px solid ${f.hasActive ? "#D97706" : "#E0DDD5"}`,
+                borderRadius: 7, color: f.hasActive ? "#141414" : "#555", cursor: "pointer" }}>
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                <line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="11" y1="18" x2="13" y2="18"/>
+              </svg>
+              {f.hasActive ? `Filters (${[f.source!=="all",f.selectedMinistries.length,f.selectedKinds.length,!!f.selectedState].filter(Boolean).length})` : "Filters"}
+            </button>
+          </div>
+
+          {/* Source tabs */}
+          <div style={{ display: "flex", background: "#F0EDE5", border: "1.5px solid #E0DDD5", borderRadius: 7, overflow: "hidden", marginBottom: 8 }}>
+            {(["all","central","states"] as SourceFilter[]).map(s => (
+              <button key={s} onClick={() => f.setSource(s)}
+                style={{ flex: 1, padding: "7px 0", fontSize: 11, fontWeight: 700,
+                  background: f.source === s ? (s==="central"?"#FBBF24":s==="states"?"#141414":"#FFF") : "transparent",
+                  color: f.source === s ? (s==="states"?"#FFF":"#141414") : "#888",
+                  border: "none", cursor: "pointer", borderRight: "1px solid #E0DDD5", transition: "all 0.1s" }}>
+                {s === "all" ? "All" : s === "central" ? "Central" : "States"}
+              </button>
+            ))}
+          </div>
+
+          {/* Search */}
+          <div style={{ position: "relative" }}>
+            <SearchIcon />
+            <input type="search" placeholder="Search announcements…"
+              value={f.search} onChange={e => f.setSearch(e.target.value)}
+              style={{ ...searchStyle, fontSize: 13 }} />
+          </div>
+        </div>
+
+        {/* Map section */}
+        {showMapPanel && (
+          <div style={{ background: "#FFF", borderBottom: "1.5px solid #E5E2D8", flexShrink: 0 }}>
+            <button onClick={e => { e.stopPropagation(); setMapOpen(v => !v); }}
+              style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "space-between",
+                padding: "9px 15px", fontSize: 11, fontWeight: 700, color: "#555",
+                background: "none", border: "none", cursor: "pointer",
+                borderBottom: mapOpen ? "1px solid #F0EDE5" : "none" }}>
+              <span style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#FBBF24" strokeWidth="2.5">
+                  <polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"/>
+                </svg>
+                India Map
+                {f.selectedState
+                  ? <span style={{ background: "#FEF3C7", color: "#92400E", border: "1px solid #FBBF24",
+                      borderRadius: 3, padding: "1px 7px", fontSize: 10, fontWeight: 700 }}>
+                      {f.selectedState} ×
+                    </span>
+                  : <span style={{ color: "#CCC", fontSize: 10, fontWeight: 500 }}>tap state to filter</span>
+                }
+              </span>
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"
+                style={{ transform: mapOpen ? "rotate(180deg)" : "none", transition: "transform 0.2s" }}>
+                <path d="m6 9 6 6 6-6"/>
+              </svg>
+            </button>
+
+            {mapOpen && (
+              <>
+                <div style={{ height: 200, padding: "4px 6px 0" }}>
+                  <Suspense fallback={<MapLoader />}>
+                    <IndiaMap announcements={ANNOUNCEMENTS} selectedState={f.selectedState} onStateClick={s => f.setSelectedState(s)} />
+                  </Suspense>
+                </div>
+                <div style={{ padding: "6px 12px 8px", borderTop: "1px solid #F0EDE5", display: "flex", gap: 4, overflowX: "auto" }}>
+                  {utCounts.map(({ name, count }) => (
+                    <button key={name} disabled={count === 0}
+                      onClick={e => { e.stopPropagation(); if (count > 0) f.setSelectedState(f.selectedState === name ? null : name); }}
+                      style={{ fontSize: 10, fontWeight: 600, padding: "3px 9px", borderRadius: 4, whiteSpace: "nowrap",
+                        border: `1.5px solid ${f.selectedState === name ? "#141414" : count > 0 ? "#D97706" : "#E5E2D8"}`,
+                        background: f.selectedState === name ? "#141414" : count > 0 ? "#FEF3C7" : "#F5F4F0",
+                        color: f.selectedState === name ? "#FFF" : count > 0 ? "#92400E" : "#CCC",
+                        cursor: count > 0 ? "pointer" : "not-allowed" }}>
+                      {name.split(" ")[0]}{count > 0 && ` (${count})`}
+                    </button>
+                  ))}
+                </div>
+              </>
+            )}
+          </div>
+        )}
+
+        {/* Active chips row */}
+        {f.hasActive && (
+          <div style={{ background: "#FFFBEB", borderBottom: "1px solid #FDE68A", padding: "6px 13px",
+            display: "flex", gap: 5, overflowX: "auto", flexShrink: 0, alignItems: "center" }}>
+            <span style={{ fontSize: 10, fontWeight: 700, color: "#92400E", whiteSpace: "nowrap", marginRight: 2 }}>Filtered:</span>
+            {f.selectedState && <Chip label={f.selectedState} onRemove={() => f.setSelectedState(null)} />}
+            {f.source !== "all" && <Chip label={f.source === "central" ? "Central" : "States"} onRemove={() => f.setSource("all")} />}
+            {f.selectedKinds.map(k => <Chip key={k} label={k} onRemove={() => f.toggleKind(k)} />)}
+            {f.selectedMinistries.map(m => <Chip key={m} label={m} onRemove={() => f.toggleMinistry(m)} />)}
+            <button onClick={f.clearAll}
+              style={{ fontSize: 11, fontWeight: 800, color: "#92400E", background: "none", border: "none",
+                cursor: "pointer", whiteSpace: "nowrap", marginLeft: 4 }}>Clear all ×</button>
+          </div>
+        )}
+
+        {/* Count */}
+        <div style={{ padding: "7px 15px 3px", fontSize: 12, color: "#AAA", fontWeight: 500, flexShrink: 0 }}>
+          Showing <span style={{ fontWeight: 900, color: "#141414" }}>{f.filtered.length}</span> of {ANNOUNCEMENTS.length} — tap a card to read details
+        </div>
+
+        {/* Feed */}
+        <div style={{ flex: 1, overflowY: "auto", padding: "4px 11px 60px" }}>
+          {f.filtered.length === 0
+            ? <EmptyState onClear={f.clearAll} />
+            : <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                {f.filtered.map(a => <Card key={a.id} a={a} mobile onClick={() => setOpenCard(a)} />)}
+              </div>
+          }
+        </div>
+
+        {/* Filter bottom sheet */}
+        {showFilters && (
+          <>
+            <div onClick={() => setShowFilters(false)}
+              style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.38)", zIndex: 40 }} />
+            <div style={{ position: "fixed", bottom: 0, left: 0, right: 0, background: "#FFF",
+              borderTop: "2px solid #141414", borderRadius: "16px 16px 0 0",
+              padding: "16px 18px 32px", zIndex: 50, maxHeight: "85vh", overflowY: "auto",
+              animation: "slideUp 0.22s ease-out" }}>
+              <div style={{ width: 36, height: 4, background: "#E5E2D8", borderRadius: 2, margin: "0 auto 14px" }} />
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}>
+                <span style={{ fontSize: 18, fontWeight: 900, letterSpacing: "-0.03em" }}>Filter announcements</span>
+                <button onClick={() => setShowFilters(false)}
+                  style={{ fontSize: 22, color: "#888", background: "none", border: "none", cursor: "pointer" }}>×</button>
+              </div>
+
+              <FSec label="View">
+                <div style={{ display: "flex", gap: 7 }}>
+                  {(["all","central","states"] as SourceFilter[]).map(s => (
+                    <button key={s} onClick={() => f.setSource(s)}
+                      style={{ flex: 1, padding: "9px 0", fontSize: 12, fontWeight: 700, borderRadius: 7,
+                        background: f.source === s ? (s==="central"?"#FBBF24":s==="states"?"#141414":"#F0EDE5") : "#F8F7F2",
+                        border: `1.5px solid ${f.source===s ? (s==="states"?"#141414":"#F59E0B") : "#E0DDD5"}`,
+                        color: f.source === s ? (s==="states"?"#FFF":"#141414") : "#555", cursor: "pointer" }}>
+                      {s === "all" ? "All" : s === "central" ? "Central" : "States"}
+                    </button>
+                  ))}
+                </div>
+              </FSec>
+
+              <FSec label="Ministry">
+                <div style={{ display: "flex", flexWrap: "wrap", gap: 7 }}>
+                  {MINISTRIES.map(m => (
+                    <button key={m} onClick={() => f.toggleMinistry(m)}
+                      style={{ padding: "7px 14px", fontSize: 12, fontWeight: 600, borderRadius: 7,
+                        border: `1.5px solid ${f.selectedMinistries.includes(m) ? "#F59E0B" : "#E0DDD5"}`,
+                        background: f.selectedMinistries.includes(m) ? "#FEF3C7" : "#F8F7F2",
+                        color: f.selectedMinistries.includes(m) ? "#92400E" : "#555", cursor: "pointer" }}>
+                      {m}
+                    </button>
+                  ))}
+                </div>
+              </FSec>
+
+              <FSec label="Type of Announcement">
+                <div style={{ display: "flex", flexWrap: "wrap", gap: 7 }}>
+                  {KINDS.map(k => {
+                    const c = KIND_LIGHT_COLORS[k]; const on = f.selectedKinds.includes(k);
+                    return <button key={k} onClick={() => f.toggleKind(k)}
+                      style={{ padding: "7px 14px", fontSize: 11, fontWeight: 800, letterSpacing: "0.07em",
+                        textTransform: "uppercase", borderRadius: 20,
+                        border: `1.5px solid ${on ? c.border : "#E0DDD5"}`,
+                        background: on ? c.bg : "#F8F7F2", color: on ? c.text : "#888", cursor: "pointer" }}>{k}</button>;
+                  })}
+                </div>
+              </FSec>
+
+              <FSec label="Date Range">
+                <div style={{ display: "flex", gap: 7, alignItems: "center", marginBottom: 9, flexWrap: "wrap" }}>
+                  <input type="date" value={f.dateFrom} onChange={e => f.setDateFrom(e.target.value)} style={{ ...dateInput, flex: 1 }} />
+                  <span style={{ color: "#CCC" }}>–</span>
+                  <input type="date" value={f.dateTo}   onChange={e => f.setDateTo(e.target.value)}   style={{ ...dateInput, flex: 1 }} />
+                </div>
+                <div style={{ display: "flex", gap: 7 }}>
+                  {[{ l:"Today", fr:today, to:today }, { l:"3 days", fr:threeDays, to:today }, { l:"Week", fr:weekAgo, to:today }, { l:"All time", fr:"", to:"" }].map(({ l,fr,to }) => (
+                    <button key={l} onClick={() => { f.setDateFrom(fr); f.setDateTo(to); }}
+                      style={{ flex: 1, padding: "8px 0", fontSize: 10, fontWeight: 700,
+                        background: f.dateFrom === fr && f.dateTo === to ? "#141414" : "#F0EDE5",
+                        border: "1.5px solid #E0DDD5", borderRadius: 6,
+                        color: f.dateFrom === fr && f.dateTo === to ? "#FFF" : "#777", cursor: "pointer" }}>{l}</button>
+                  ))}
+                </div>
+              </FSec>
+
+              <div style={{ display: "flex", gap: 9, marginTop: 8 }}>
+                <button onClick={f.clearAll}
+                  style={{ flex: 1, padding: 13, background: "#F0EDE5", border: "1.5px solid #E0DDD5",
+                    borderRadius: 9, color: "#555", fontSize: 14, fontWeight: 700, cursor: "pointer" }}>Reset</button>
+                <button onClick={() => setShowFilters(false)}
+                  style={{ flex: 2, padding: 13, background: "#FBBF24", border: "none",
+                    borderRadius: 9, color: "#141414", fontSize: 14, fontWeight: 900, cursor: "pointer" }}>
+                  Show {f.filtered.length} Announcements →
+                </button>
+              </div>
+            </div>
+          </>
+        )}
+      </div>
+
+      {/* ═══════════════ DETAIL DRAWER (shared) ═══════════════ */}
+      {openCard && <DetailDrawer a={openCard} onClose={() => setOpenCard(null)} />}
+
+      <style>{`
+        @media (max-width: 750px)  { .gt-desktop { display: none !important; } .gt-mobile { display: flex !important; } }
+        @media (min-width: 751px)  { .gt-desktop { display: flex !important; } .gt-mobile { display: none !important; } }
+        .gt-card { cursor: pointer; }
+        .gt-card:hover { background: #FFFBEB !important; border-color: #FCD34D !important; transform: translateY(-1px); box-shadow: 0 4px 14px rgba(0,0,0,0.07) !important; }
+        .gt-card:hover .gt-card-img { transform: scale(1.04); }
+        .gt-cta:hover { background: #F59E0B !important; }
+        .leaflet-tooltip { background: transparent !important; border: none !important; box-shadow: none !important; padding: 0 !important; }
+        .leaflet-tooltip-top::before, .leaflet-tooltip-bottom::before { display: none !important; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideRight { from { transform: translateX(100%); } to { transform: translateX(0); } }
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.12); border-radius: 2px; }
+      `}</style>
+    </div>
+  );
+}
+
+/* ════════════ Card — Desktop (vertical) ════════════ */
+function Card({ a, mobile = false, onClick }: { a: Announcement; mobile?: boolean; onClick?: () => void }) {
+  const isCentral = a.type === "central";
+  const c         = KIND_LIGHT_COLORS[a.kind];
+  const source    = isCentral ? `Ministry of ${a.ministry}` : a.state!;
+
+  if (mobile) return <MobileCard a={a} onClick={onClick} />;
+
+  return (
+    <div className="gt-card" style={{ background: "#FFF", border: "1.5px solid #E5E2D8",
+      borderLeft: `3px solid ${isCentral ? "#FBBF24" : "#141414"}`,
+      borderRadius: "0 10px 10px 0", overflow: "hidden",
+      transition: "all 0.15s", display: "flex", flexDirection: "column",
+      boxShadow: "0 1px 4px rgba(0,0,0,0.04)", cursor: "pointer" }} onClick={onClick}>
+      {/* Image */}
+      <div style={{ position: "relative", height: 155, overflow: "hidden", background: "#F0EDE5", flexShrink: 0 }}>
+        <img src={a.image} alt={a.title} loading="lazy"
+          style={{ width: "100%", height: "100%", objectFit: "cover", transition: "transform 0.35s" }}
+          className="gt-card-img"
+          onError={e => { (e.target as HTMLImageElement).style.display = "none"; }} />
+        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(0,0,0,0.5) 0%, transparent 60%)" }} />
+        <span style={{ position: "absolute", top: 9, left: 10, fontSize: 10, fontWeight: 800,
+          letterSpacing: "0.08em", textTransform: "uppercase",
+          color: c.text, background: c.bg, border: `1.5px solid ${c.border}`,
+          borderRadius: 4, padding: "2px 7px" }}>{a.kind}</span>
+        <span style={{ position: "absolute", bottom: 9, right: 10, fontSize: 10, fontWeight: 600,
+          color: "rgba(255,255,255,0.85)", background: "rgba(0,0,0,0.38)", borderRadius: 3, padding: "2px 6px" }}>
+          {fmt(a.date)}
+        </span>
+      </div>
+      {/* Body */}
+      <div style={{ padding: "11px 14px 13px", flex: 1, display: "flex", flexDirection: "column", gap: 6 }}>
+        <span style={{ alignSelf: "flex-start", fontSize: 10, fontWeight: 700,
+          color: isCentral ? "#92400E" : "#333",
+          background: isCentral ? "#FEF3C7" : "#F0EDE5",
+          border: `1px solid ${isCentral ? "#FCD34D" : "#E5E2D8"}`,
+          borderRadius: 4, padding: "2px 8px" }}>{source}</span>
+        <h3 style={{ fontSize: 13, fontWeight: 700, lineHeight: 1.45, letterSpacing: "-0.01em", color: "#141414", margin: 0 }}>{a.title}</h3>
+        <p style={{ fontSize: 12, color: "#666", lineHeight: 1.6, margin: 0,
+          display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" }}>
+          {a.description}
+        </p>
+        <button className="gt-cta" onClick={e => e.stopPropagation()}
+          style={{ alignSelf: "flex-start", marginTop: "auto", padding: "6px 13px",
+            background: "#FBBF24", border: "none", borderRadius: 6,
+            color: "#141414", fontSize: 11, fontWeight: 800, cursor: "pointer",
+            display: "flex", alignItems: "center", gap: 5, transition: "background 0.12s" }}>
+          Read full details
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="m9 18 6-6-6-6"/></svg>
+        </button>
+      </div>
+    </div>
+  );
+}
+
+/* ════════════ Card — Mobile (horizontal) ════════════ */
+function MobileCard({ a, onClick }: { a: Announcement; onClick?: () => void }) {
+  const isCentral = a.type === "central";
+  const c         = KIND_LIGHT_COLORS[a.kind];
+  const source    = isCentral ? `Min. of ${a.ministry}` : a.state!;
+
+  return (
+    <div className="gt-card" onClick={onClick}
+      style={{ background: "#FFF", border: "1.5px solid #E5E2D8",
+        borderLeft: `3px solid ${isCentral ? "#FBBF24" : "#141414"}`,
+        borderRadius: "0 10px 10px 0", overflow: "hidden",
+        transition: "all 0.15s", display: "flex", flexDirection: "row",
+        boxShadow: "0 1px 3px rgba(0,0,0,0.05)", cursor: "pointer", minHeight: 108 }}>
+
+      {/* Thumbnail */}
+      <div style={{ width: 110, minWidth: 110, position: "relative", overflow: "hidden", background: "#F0EDE5" }}>
+        <img src={a.image} alt={a.title} loading="lazy"
+          style={{ width: "100%", height: "100%", objectFit: "cover", transition: "transform 0.35s" }}
+          className="gt-card-img"
+          onError={e => { (e.target as HTMLImageElement).style.display = "none"; }} />
+        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(135deg, rgba(0,0,0,0.08) 0%, transparent 60%)" }} />
+        {/* Kind badge */}
+        <span style={{ position: "absolute", bottom: 5, left: 0, right: 0, textAlign: "center",
+          fontSize: 9, fontWeight: 900, letterSpacing: "0.06em", textTransform: "uppercase",
+          color: c.text, background: c.bg, padding: "2px 4px", borderTop: `1px solid ${c.border}` }}>
+          {a.kind}
+        </span>
+      </div>
+
+      {/* Content */}
+      <div style={{ flex: 1, padding: "10px 12px 10px", display: "flex", flexDirection: "column", gap: 4, minWidth: 0 }}>
+        {/* Row 1: source + date */}
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 4 }}>
+          <span style={{ fontSize: 10, fontWeight: 700,
+            color: isCentral ? "#92400E" : "#444",
+            background: isCentral ? "#FEF3C7" : "#F0EDE5",
+            border: `1px solid ${isCentral ? "#FCD34D" : "#E5E2D8"}`,
+            borderRadius: 3, padding: "1px 6px",
+            whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", maxWidth: "65%" }}>
+            {source}
+          </span>
+          <span style={{ fontSize: 10, color: "#BBB", fontWeight: 500, whiteSpace: "nowrap" }}>{fmt(a.date)}</span>
+        </div>
+
+        {/* Row 2: Title */}
+        <h3 style={{ fontSize: 13, fontWeight: 700, lineHeight: 1.35, letterSpacing: "-0.01em",
+          color: "#141414", margin: 0,
+          display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" }}>
+          {a.title}
+        </h3>
+
+        {/* Row 3: Description */}
+        <p style={{ fontSize: 11, color: "#777", lineHeight: 1.5, margin: 0,
+          display: "-webkit-box", WebkitLineClamp: 1, WebkitBoxOrient: "vertical", overflow: "hidden" }}>
+          {a.description}
+        </p>
+
+        {/* Row 4: CTA */}
+        <div style={{ marginTop: "auto", display: "flex", alignItems: "center", gap: 4 }}>
+          <span style={{ fontSize: 11, fontWeight: 700, color: "#D97706",
+            display: "flex", alignItems: "center", gap: 3 }}>
+            Read details
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="m9 18 6-6-6-6"/></svg>
+          </span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ════════════ Detail Drawer ════════════ */
+function DetailDrawer({ a, onClose }: { a: Announcement; onClose: () => void }) {
+  const c         = KIND_LIGHT_COLORS[a.kind];
+  const isCentral = a.type === "central";
+  const source    = isCentral ? `Ministry of ${a.ministry}` : a.state!;
+
+  const govUrl = isCentral
+    ? `https://pib.gov.in/search.aspx?reg=3&lang=1&k=${encodeURIComponent(a.title.split(":")[0])}`
+    : `https://google.com/search?q=site:.gov.in+${encodeURIComponent(a.title.split(":")[0])}`;
+
+  return (
+    <>
+      {/* Backdrop */}
+      <div onClick={onClose} style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.4)", zIndex: 60, animation: "fadeIn 0.18s" }} />
+
+      {/* Panel — slides in from right on desktop, bottom on mobile */}
+      <div className="detail-drawer" style={{ position: "fixed", zIndex: 70,
+        background: "#FFF", overflowY: "auto",
+        boxShadow: "-6px 0 30px rgba(0,0,0,0.12)" }}>
+
+        {/* Image */}
+        <div style={{ position: "relative", flexShrink: 0, height: 220, background: "#F0EDE5", overflow: "hidden" }}>
+          <img src={a.image} alt={a.title}
+            style={{ width: "100%", height: "100%", objectFit: "cover" }}
+            onError={e => { (e.target as HTMLImageElement).style.display = "none"; }} />
+          <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.1) 60%)" }} />
+          <button onClick={onClose}
+            style={{ position: "absolute", top: 12, right: 12, width: 32, height: 32,
+              background: "rgba(0,0,0,0.45)", border: "none", borderRadius: "50%",
+              color: "#FFF", fontSize: 18, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", lineHeight: 1 }}>×</button>
+          <div style={{ position: "absolute", bottom: 12, left: 14, display: "flex", gap: 6 }}>
+            <span style={{ fontSize: 10, fontWeight: 800, letterSpacing: "0.08em", textTransform: "uppercase",
+              color: c.text, background: c.bg, border: `1.5px solid ${c.border}`, borderRadius: 4, padding: "3px 9px" }}>{a.kind}</span>
+            <span style={{ fontSize: 10, fontWeight: 700, color: "#FFF",
+              background: isCentral ? "rgba(251,191,36,0.85)" : "rgba(20,20,20,0.75)",
+              borderRadius: 4, padding: "3px 9px" }}>{source}</span>
+          </div>
+        </div>
+
+        {/* Content */}
+        <div style={{ padding: "20px 22px 28px" }}>
+          <div style={{ fontSize: 11, fontWeight: 700, color: "#AAA", marginBottom: 8 }}>{fmt(a.date)}</div>
+          <h2 style={{ fontSize: 17, fontWeight: 900, lineHeight: 1.4, letterSpacing: "-0.02em", color: "#141414", marginBottom: 14 }}>{a.title}</h2>
+          <p style={{ fontSize: 14, color: "#444", lineHeight: 1.75, marginBottom: 22 }}>{a.description}</p>
+
+          {/* Meta row */}
+          <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 22,
+            padding: "12px 14px", background: "#F8F7F2", border: "1px solid #E8E4DA", borderRadius: 8 }}>
+            <MetaItem label="Source" value={isCentral ? "Central Govt" : "State Govt"} />
+            <MetaItem label={isCentral ? "Ministry" : "State"} value={source} />
+            <MetaItem label="Type" value={a.kind} />
+            <MetaItem label="Date" value={fmt(a.date)} />
+          </div>
+
+          {/* CTA buttons */}
+          <div style={{ display: "flex", gap: 9 }}>
+            <a href={govUrl} target="_blank" rel="noopener noreferrer"
+              style={{ flex: 2, padding: "12px 0", background: "#FBBF24", border: "none", borderRadius: 9,
+                color: "#141414", fontSize: 14, fontWeight: 900, cursor: "pointer", textDecoration: "none",
+                display: "flex", alignItems: "center", justifyContent: "center", gap: 6 }}>
+              Read Official Notice
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            </a>
+            <button onClick={onClose}
+              style={{ flex: 1, padding: "12px 0", background: "#F0EDE5", border: "1.5px solid #E0DDD5",
+                borderRadius: 9, color: "#555", fontSize: 14, fontWeight: 700, cursor: "pointer" }}>Close</button>
+          </div>
+        </div>
+
+        <style>{`
+          @media (min-width: 751px) {
+            .detail-drawer { top: 0; right: 0; bottom: 0; width: min(480px, 100vw); animation: slideRight 0.22s ease-out; }
+          }
+          @media (max-width: 750px) {
+            .detail-drawer { left: 0; right: 0; bottom: 0; max-height: 92vh; border-radius: 16px 16px 0 0; animation: slideUp 0.22s ease-out; }
+          }
+        `}</style>
+      </div>
+    </>
+  );
+}
+
+/* ════════════ Small components ════════════ */
+function MetaItem({ label, value }: { label: string; value: string }) {
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: 1 }}>
+      <span style={{ fontSize: 9, fontWeight: 800, letterSpacing: "0.1em", textTransform: "uppercase", color: "#CCC" }}>{label}</span>
+      <span style={{ fontSize: 12, fontWeight: 700, color: "#333" }}>{value}</span>
+    </div>
+  );
+}
+
+function Chip({ label, onRemove }: { label: string; onRemove: () => void }) {
+  return (
+    <span style={{ display: "inline-flex", alignItems: "center", gap: 4, padding: "2px 8px",
+      borderRadius: 4, fontSize: 11, fontWeight: 700, color: "#92400E",
+      background: "#FEF3C7", border: "1.5px solid #FCD34D", whiteSpace: "nowrap" }}>
+      {label}
+      <button onClick={onRemove} style={{ background: "none", border: "none", color: "#92400E", cursor: "pointer", padding: 0, lineHeight: 1, fontSize: 14 }}>×</button>
+    </span>
+  );
+}
+
+function MapLoader() {
+  return (
+    <div style={{ height: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 10 }}>
+      <div style={{ width: 26, height: 26, border: "3px solid #FDE68A", borderTop: "3px solid #F59E0B", borderRadius: "50%", animation: "spin 0.8s linear infinite" }} />
+      <span style={{ fontSize: 12, color: "#AAA" }}>Loading map…</span>
+    </div>
+  );
+}
+
+function EmptyState({ onClear }: { onClear: () => void }) {
+  return (
+    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "60px 20px", textAlign: "center" }}>
+      <div style={{ width: 56, height: 56, background: "#FEF3C7", border: "2px solid #FCD34D", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 14 }}>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#D97706" strokeWidth="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      </div>
+      <p style={{ fontSize: 17, fontWeight: 900, letterSpacing: "-0.03em", color: "#141414", marginBottom: 5 }}>No announcements match</p>
+      <p style={{ fontSize: 13, color: "#888", marginBottom: 18 }}>Adjust your filters to see more results</p>
+      <button onClick={onClear} style={{ padding: "10px 24px", background: "#FBBF24", border: "none", borderRadius: 7, color: "#141414", fontSize: 13, fontWeight: 900, cursor: "pointer" }}>Clear all filters</button>
+    </div>
+  );
+}
+
+function FSec({ label, children }: { label: string; children: React.ReactNode }) {
+  return (
+    <div style={{ marginBottom: 20 }}>
+      <div style={{ fontSize: 10, fontWeight: 900, color: "#AAA", textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: 9 }}>{label}</div>
+      {children}
+    </div>
+  );
+}
+
+function SearchIcon() {
+  return <svg style={{ position: "absolute", left: 11, top: "50%", transform: "translateY(-50%)", color: "#BBB", pointerEvents: "none" }}
+    width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+    <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+  </svg>;
+}
+
+function Chevron() {
+  return <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="m6 9 6 6 6-6"/></svg>;
+}
+
+const dropBtn = (active: boolean): React.CSSProperties => ({
+  display: "flex", alignItems: "center", gap: 5, padding: "5px 11px", fontSize: 12, fontWeight: 600,
+  background: active ? "#FEF3C7" : "#F8F7F2", border: `1.5px solid ${active ? "#F59E0B" : "#E0DDD5"}`,
+  borderRadius: 6, color: active ? "#92400E" : "#555", cursor: "pointer",
+});
+
+const dropMenu: React.CSSProperties = {
+  position: "absolute", top: "calc(100% + 5px)", left: 0, background: "#FFF",
+  border: "1.5px solid #141414", borderRadius: 7, padding: 6, zIndex: 200,
+  minWidth: 170, boxShadow: "3px 4px 0 rgba(0,0,0,0.08)",
+};
+
+const searchStyle: React.CSSProperties = {
+  width: "100%", background: "#F8F7F2", border: "1.5px solid #E0DDD5", borderRadius: 7,
+  padding: "9px 10px 9px 34px", color: "#141414", fontSize: 13, outline: "none",
+  boxSizing: "border-box", fontFamily: "inherit",
+};
+
+const dateInput: React.CSSProperties = {
+  background: "#F8F7F2", border: "1.5px solid #E0DDD5", borderRadius: 5,
+  padding: "4px 7px", color: "#141414", fontSize: 12, fontFamily: "inherit",
+};

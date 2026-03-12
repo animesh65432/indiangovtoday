@@ -10,7 +10,11 @@ import { LocationContext } from "@/context/LocationProvider"
 import SerchInputbox from './SearchInputbox';
 import { TranslateText } from "@/lib/translatetext"
 import { toast } from "react-toastify"
-import TrendingTitle from './TrendingTitle';
+import dynamic from 'next/dynamic';
+
+const IndiaMap = dynamic(() => import("../IndiaMap"), {
+    ssr: false,
+});
 
 const Main: React.FC = () => {
     const { language } = useContext(LanguageContext);
@@ -119,31 +123,29 @@ const Main: React.FC = () => {
         }
     }
 
+    const handleStateClick = (state: string | null) => {
+        console.log("State clicked:", state);
+    }
+
+
     return (
-        <section className='flex flex-col gap-4 h-screen overflow-hidden'>
-            <AnnoucementsHeader />
-            <TrendingTitle
-                StatesSelected={StatesSelected}
-                DefaultsStatesApplied={DefaultsStatesApplied}
-            />
-            <SerchInputbox
-                SearchInput={SearchInput}
-                SetSearchInput={SetSearchInput}
-                StatesSelected={StatesSelected}
-                SetStatesSelected={SetStatesSelected}
-                DeparmentsSelected={DeparmentsSelected}
-                SetDeparmentsSelected={SetDeparmentsSelected}
-                onSearch={handleSearch}
-            />
-            <ShowAnnouncements
-                Announcements={Announcements}
-                IsLoading={IsLoading}
-                LoadMoreData={OnLoadMoredata}
-                IsLoadingMore={IsLoadingMore}
-                page={page}
-                totalpage={totalPages}
-            />
+
+        <section className="flex flex-col md:flex-row w-full h-full ">
+
+            <div className="w-full h-full md:w-[40vw] xl:w-[25vw] md:shrink-0">
+                <IndiaMap
+                    announcements={Announcements}
+                    selectedStates={["Mizoram", "Delhi", "West Bengal"]}
+                    onStateClick={handleStateClick}
+                />
+            </div>
+
+            <div className="w-full h-full bg-gray-100">
+                Right Side Content
+            </div>
+
         </section>
+
     );
 };
 
