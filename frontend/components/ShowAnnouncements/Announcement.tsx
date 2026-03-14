@@ -1,6 +1,6 @@
 import React from "react"
 import { Announcement } from "@/types"
-import { ArrowRight } from "lucide-react"
+import { ChevronRight } from "lucide-react"
 import { TranslateText } from "@/lib/translatetext"
 import { LanguageContext } from "@/context/Lan"
 import { formatDateInLanguage } from "@/lib/formatDate"
@@ -58,9 +58,9 @@ const AnnouncementCard: React.FC<Props> = ({ Announcement }) => {
                     {Announcement.description}
                 </span>
 
-                <button className="mt-2 w-fit flex items-center font-poppins gap-1 bg-[#FACC15] hover:bg-[#EAB308] text-black text-[13px] font-semibold px-3 py-[6px] rounded">
+                <button className="mt-2 text-[0.7rem] w-fit flex items-center font-poppins gap-1 bg-[#FBBF24] hover:bg-[#EAB308] text-black font-semibold px-3 py-1.5 rounded">
                     {TranslateText[language].SEE_DETAILS}
-                    <ArrowRight size={14} />
+                    <ChevronRight size={14} />
                 </button>
             </div>
         </div>

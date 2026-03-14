@@ -1,4 +1,4 @@
-import { useEffect, useRef, useCallback, useContext } from "react";
+import React, { useEffect, useRef, useCallback, useContext, useState } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { TranslateText } from "@/lib/translatetext"
@@ -8,22 +8,23 @@ import { getStateColor, getStateFillOpacity, getStateBorder, getStateWeight, nor
 import { LanguageContext } from "@/context/Lan"
 import { getTooltipHTML } from "./utils"
 
-interface IndiaMapProps {
+const GEOJSON_URL = "/india_states.geojson";
+
+type Props = {
+    ShowIndiaMap: boolean;
+    SetShowIndiaMap: React.Dispatch<React.SetStateAction<boolean>>;
     announcements: Announcement[];
     selectedStates: string[];
     onStateClick: (state: string | null) => void;
 }
 
-const GEOJSON_URL = "/india_states.geojson";
 
-
-export default function IndiaMap({ announcements, selectedStates, onStateClick }: IndiaMapProps) {
+export default function IndiaMap({ ShowIndiaMap, SetShowIndiaMap, announcements, selectedStates, onStateClick }: Props) {
     const { language } = useContext(LanguageContext)
     const mapRef = useRef<HTMLDivElement>(null);
     const mapInstanceRef = useRef<any>(null);
     const geojsonLayerRef = useRef<any>(null);
 
-    console.log(selectedStates)
 
     const getStateCount = useCallback(
         (normalizedName: string) =>
@@ -161,11 +162,23 @@ export default function IndiaMap({ announcements, selectedStates, onStateClick }
 
     useEffect(() => { updateLayerStyles(); }, [updateLayerStyles]);
 
+    useEffect(() => {
+        if (ShowIndiaMap && mapInstanceRef.current) {
+            setTimeout(() => {
+                mapInstanceRef.current.invalidateSize();
+                // force tile re-render for the current view
+                mapInstanceRef.current.setView(
+                    mapInstanceRef.current.getCenter(),
+                    mapInstanceRef.current.getZoom()
+                );
+            }, 310);
+        }
+    }, [ShowIndiaMap]);
+
     return (
         <div className="flex flex-col w-full h-screen border-r border-[#E5E2D8] ">
-
-            <div className="flex flex-col gap-1 px-3 py-2 border-b border-[#E5E2D8] bg-white">
-                <div className="flex items-center justify-between">
+            <div className=" hidden md:flex flex-col gap-1 px-3 py-2 border-b border-[#E5E2D8] bg-white">
+                <div className="flex items-center ">
                     <span
                         className="font-inter uppercase tracking-[0.14em] font-black"
                         style={{ fontSize: 12, color: "#AAA" }}
@@ -175,7 +188,7 @@ export default function IndiaMap({ announcements, selectedStates, onStateClick }
                 </div>
 
                 {/* Legend */}
-                <div className="flex items-center gap-2 flex-wrap">
+                <div className=" flex items-center gap-2 flex-wrap">
                     <span
                         className="font-inter uppercase font-bold"
                         style={{ fontSize: 12, letterSpacing: "0.08em", color: "#CCC" }}
@@ -203,7 +216,7 @@ export default function IndiaMap({ announcements, selectedStates, onStateClick }
 
             {/* Hint */}
             <div
-                className="flex items-center gap-1.5 mx-3 my-2 px-3 py-2 rounded-md border"
+                className=" hidden md:flex items-center gap-1.5 mx-3 my-2 px-3 py-2 rounded-md border"
                 style={{ background: "#FFFBEB", borderColor: "#FDE68A" }}
             >
                 <span style={{ fontSize: 14 }}>👆</span>
@@ -216,12 +229,10 @@ export default function IndiaMap({ announcements, selectedStates, onStateClick }
             </div>
 
             {/* Map */}
-            <div
-                ref={mapRef}
-                className="h-[75vh] w-[95%] mx-auto rounded-md "
-                style={{ minHeight: 0 }}
-            />
-
+            <div className={`w-full md:w-[95%] mx-auto rounded-md overflow-hidden transition-all duration-300 ${ShowIndiaMap ? "h-[30vh] md:h-[75vh]" : "h-0"
+                }`}>
+                <div ref={mapRef} className="w-full h-full" />
+            </div>
         </div>
     );
 }

@@ -3,7 +3,6 @@ import { getAllAnnouncements } from "@/api/announcements";
 import { Announcement as AnnouncementTypes, AnnouncementsResponse } from "@/types";
 import { LanguageContext } from '@/context/Lan';
 import { Currentdate } from "@/context/Currentdate";
-import ShowAnnouncements from '../ShowAnnouncements';
 import AnnoucementsHeader from '@/components/AnnoucementsHeader';
 import { useStateCode } from "@/lib/useStateCode"
 import { LocationContext } from "@/context/LocationProvider"
@@ -12,6 +11,9 @@ import { TranslateText } from "@/lib/translatetext"
 import { toast } from "react-toastify"
 import dynamic from 'next/dynamic';
 import RightSide from './RightSide';
+import { ChevronDown, ChevronUp } from "lucide-react"
+import MobileShowAnnoucments from './MobileShowAnnoucments';
+
 
 const IndiaMap = dynamic(() => import("../IndiaMap"), {
     ssr: false,
@@ -36,6 +38,8 @@ const Main: React.FC = () => {
     const [DefaultsStatesApplied, SetDefaultsStatesApplied] = useState<string[]>([])
 
     const [trigger, setTrigger] = useState(0);
+
+    const [ShowIndiaMap, SetShowIndiaMap] = useState<boolean>(true)
 
     const userStateCode = useStateCode(state_ut, language);
 
@@ -131,17 +135,45 @@ const Main: React.FC = () => {
 
     return (
 
-        <section className="flex flex-col md:flex-row w-screen h-screen ">
-
-            <div className="w-full h-full md:w-[40vw] xl:w-[25vw] md:shrink-0">
-                <IndiaMap
-                    announcements={Announcements}
-                    selectedStates={["Mizoram", "Delhi", "West Bengal"]}
-                    onStateClick={handleStateClick}
+        <section className="flex flex-col md:flex-row w-full h-screen md:min-h-screen overflow-hidden md:overflow-visible  ">
+            <div className='block md:hidden'>
+                <AnnoucementsHeader />
+            </div>
+            <div className='block md:hidden'>
+                <SerchInputbox
+                    SearchInput={SearchInput}
+                    SetSearchInput={SetSearchInput}
+                    onSearch={handleSearch}
+                    DeparmentsSelected={DeparmentsSelected}
+                    SetDeparmentsSelected={SetDeparmentsSelected}
+                    StatesSelected={StatesSelected}
+                    SetStatesSelected={SetStatesSelected}
                 />
             </div>
+            <div className="flex mt-2 md:mt-0 items-center justify-between md:hidden px-3 py-1 border border-[#E5E2D8]">
+                <span className="flex items-center gap-1">
+                    <span>🗺️ </span>
+                    <span className="text-[13px] font-inter font-semibold text-[#555555]">Indian Map</span>
+                </span>
+                {ShowIndiaMap ? (
+                    <ChevronUp onClick={() => SetShowIndiaMap(false)} className="w-4 h-4 text-[#555]" />
+                ) : (
+                    <ChevronDown onClick={() => SetShowIndiaMap(true)} className="w-4 h-4 text-[#555]" />
+                )}
+            </div>
+            {ShowIndiaMap &&
+                <div className="h-[30vh] md:w-[40vw] xl:w-[25vw] md:shrink-0">
+                    <IndiaMap
+                        announcements={Announcements}
+                        selectedStates={["Mizoram", "Delhi", "West Bengal"]}
+                        onStateClick={handleStateClick}
+                        ShowIndiaMap={ShowIndiaMap}
+                        SetShowIndiaMap={SetShowIndiaMap}
+                    />
+                </div>
+            }
 
-            <div className="flex-1">
+            <div className="hidden md:flex-1 md:block">
                 <RightSide
                     StatesSelected={StatesSelected}
                     SetStatesSelected={SetStatesSelected}
@@ -158,7 +190,15 @@ const Main: React.FC = () => {
                     totalpages={totalPages}
                 />
             </div>
-        </section>
+            <MobileShowAnnoucments
+                announcements={Announcements}
+                IsLoading={IsLoading}
+                IsLoadingMore={IsLoadingMore}
+                LoadMoreData={OnLoadMoredata}
+                page={page}
+                totalpages={totalPages}
+            />
+        </section >
 
     );
 };

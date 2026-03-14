@@ -60,7 +60,7 @@ const ShowAnnouncements: React.FC<Props> = ({
             <div className='w-full flex justify-center mt-5 mb-9'>
                 {page < totalpage && (
                     <Button
-                        className='mx-auto font-poppins font-bold rounded-md bg-[#FACC15] hover:bg-[#EAB308] p-4 text-black text-[13px]'
+                        className='mx-auto font-poppins font-bold rounded-md bg-[#FBBF24] hover:bg-[#EAB308] p-4 text-black text-[13px]'
                         disabled={IsLoadingMore}
                         onClick={LoadMoreData}
                         aria-label={IsLoadingMore ? 'Loading more announcements' : 'Load more announcements'}

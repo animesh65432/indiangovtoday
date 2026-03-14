@@ -89,11 +89,14 @@ const SearchInputBox: React.FC<Props> = ({
 
     return (
         <div className='w-[97%] mx-auto  flex flex-col gap-2'>
+            <div className=' flex md:hidden mt-2 md:mt-0'>
+                <SourceToggle />
+            </div>
             <div className="relative w-full">
                 <Input
                     placeholder={TranslateText[language].INPUT_PLACEHOLDER}
                     style={{ paddingLeft: 30 }}
-                    className="bg-[#f8f7f2] placeholder:text-[0.9rem]  placeholder:font-inter w-full "
+                    className="bg-[#f8f7f2] placeholder:text-[13px]  md:placeholder:text-[0.9rem]  placeholder:font-inter w-full "
                     value={SearchInput}
                     onChange={(e) => SetSearchInput(e.target.value)}
                 />
@@ -103,7 +106,7 @@ const SearchInputBox: React.FC<Props> = ({
                     onClick={onSearch}
                 />
             </div>
-            <div className='flex items-center gap-2 flex-wrap'>
+            <div className=' hidden md:flex items-center gap-2 flex-wrap'>
                 <SourceToggle
                 />
                 <Select>
@@ -150,7 +153,7 @@ const SearchInputBox: React.FC<Props> = ({
                         </SelectGroup>
                     </SelectContent>
                 </Select>
-                <Popover>
+                <Popover >
                     <PopoverTrigger asChild>
                         <Button
                             className="w-fit  bg-[#F8F7F2]  font-poppins text-[#555555] border border-[#E8E4DA] font-semibold rounded-md"
