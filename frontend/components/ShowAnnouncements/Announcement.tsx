@@ -1,75 +1,70 @@
-import React, { useContext } from "react";
-import { Announcement as AnnouncementType } from "@/types";
-import { useRouter } from "next/router";
-import { LanguageContext } from "@/context/Lan";
-import { formatDateRelative } from "@/lib/formatDate";
-import { LANGUAGE_CODES } from "@/lib/lan";
-import { TranslateText } from "@/lib/translatetext";
-import { motion } from "framer-motion";
-import { ArrowRight, ArrowUpRight } from "lucide-react";
-import Image from "next/image";
+import React from "react"
+import { Announcement } from "@/types"
+import { ArrowRight } from "lucide-react"
+import { TranslateText } from "@/lib/translatetext"
+import { LanguageContext } from "@/context/Lan"
+import { formatDateInLanguage } from "@/lib/formatDate"
+import { categoryStyles } from "@/lib/categoryStyles"
 
 type Props = {
-    Announcement: AnnouncementType;
-};
+    Announcement: Announcement
+}
 
-const Announcement: React.FC<Props> = ({ Announcement }) => {
-    const router = useRouter();
-    const { language } = useContext(LanguageContext);
-
-    const redirectTo = () => {
-        if (!Announcement?.announcementId) return;
-        router.push(`/announcement?id=${Announcement.announcementId}&lan=${language}`);
-    };
+const AnnouncementCard: React.FC<Props> = ({ Announcement }) => {
+    const { language } = React.useContext(LanguageContext)
 
     return (
-        <motion.article
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-            whileHover="hover"
-            className="cursor-pointer group bg-white border border-black/10 overflow-hidden"
-        >
-            <div className="relative w-full h-50 overflow-hidden">
-                <motion.div
-                    variants={{ hover: { scale: 1.04 } }}
-                    transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                    className="w-full h-full"
+        <div className="bg-white rounded-xl border border-[#E8E4DA] overflow-hidden hover:shadow-md transition">
+
+            {/* Image */}
+            <div className="relative h-40 w-full">
+                <img
+                    src={Announcement.image ?? "/default-announcement.jpg"}
+                    alt={Announcement.title}
+                    className="w-full h-full object-cover"
+                />
+
+                {/* Gradient */}
+                <div className="absolute inset-0 bg-linear-to-t from-black/40 via-black/10 to-transparent" />
+
+                {/* Category */}
+                <span
+                    className={`absolute top-3 left-3 text-[11px] font-bold tracking-wide px-2 py-[3px] rounded uppercase ${categoryStyles[Announcement.category] || categoryStyles["Other"]
+                        }`}
                 >
-                    <Image
-                        src={Announcement.image!}
-                        alt={Announcement.title}
-                        fill
-                        className="object-cover "
-                        loading="lazy"
-                    />
-                </motion.div>
+                    {Announcement.category}
+                </span>
+
+                {/* Date */}
+                <span className="absolute bottom-3 right-3 text-[13px] bg-black/60 text-white px-2 py-[3px] rounded">
+                    {formatDateInLanguage(Announcement.date, language)}
+                </span>
             </div>
 
+            <div className="p-4 flex flex-col gap-2">
 
-            <div className="p-5 flex flex-col gap-3">
+                {/* Department */}
+                <span className="w-fit text-[12px] font-poppins  text-[#92400E] font-semibold border border-[#F2C572] px-2 py-0.5 bg-[#FEF3C7] rounded">
+                    {Announcement.department}
+                </span>
 
-                <h2 className="font-display text-black font-bold text-[1.15rem] leading-snug m-0">
+                {/* Title */}
+                <h6 className="font-semibold font-poppins text-[15px] leading-snug text-[#1A1A1A]">
                     {Announcement.title}
-                </h2>
+                </h6>
 
-                <p className="font-body text-[13px] text-black/60 leading-relaxed">
+                {/* Description */}
+                <span className="text-[14px] font-poppins text-[#666] line-clamp-3">
                     {Announcement.description}
-                </p>
+                </span>
 
-
-                <motion.div
-                    variants={{ hover: { x: 4 } }}
-                    transition={{ duration: 0.2 }}
-                    onClick={redirectTo}
-                    className="flex items-center gap-1 text-black font-body text-[0.9rem] sm:text-[1rem] font-bold tracking-[0.12em] uppercase mt-1 w-fit"
-                >
+                <button className="mt-2 w-fit flex items-center font-poppins gap-1 bg-[#FACC15] hover:bg-[#EAB308] text-black text-[13px] font-semibold px-3 py-[6px] rounded">
                     {TranslateText[language].SEE_DETAILS}
-                    <ArrowRight className="w-6 h-6" />
-                </motion.div>
+                    <ArrowRight size={14} />
+                </button>
             </div>
-        </motion.article>
-    );
-};
+        </div>
+    )
+}
 
-export default Announcement;
+export default AnnouncementCard

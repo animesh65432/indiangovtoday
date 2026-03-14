@@ -1,0 +1,16 @@
+export const categoryStyles: Record<string, string> = {
+    Scheme: "bg-[#B8F1D1] text-[#065F46]",
+    Election: "bg-[#E0F2FE] text-[#075985]",
+    Award: "bg-[#FCE7F3] text-[#9D174D]",
+    Policy: "bg-[#EDE9FE] text-[#5B21B6]",
+    Welfare: "bg-[#FEF3C7] text-[#92400E]",
+    Infrastructure: "bg-[#FDE68A] text-[#78350F]",
+    Education: "bg-[#DBEAFE] text-[#1E40AF]",
+    Health: "bg-[#DCFCE7] text-[#166534]",
+    Employment: "bg-[#FFE4E6] text-[#9F1239]",
+    Agriculture: "bg-[#D9F99D] text-[#3F6212]",
+    Finance: "bg-[#E0E7FF] text-[#3730A3]",
+    Event: "bg-[#F3F4F6] text-[#374151]",
+    Notification: "bg-[#F1F5F9] text-[#334155]",
+    Other: "bg-[#E5E7EB] text-[#374151]",
+}

@@ -49,7 +49,7 @@ const ShowAnnouncements: React.FC<Props> = ({
 
     return (
         <div className='bg-[#f8f7f2] border border-t border-[#E8E4DA] p-6 pt-12 flex-1'>
-            <div className='overflow-x-auto   grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5 pt-2'>
+            <div className='overflow-x-auto   grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-5 pt-2'>
                 {Announcements.map((ann) => (
                     <Announcement
                         Announcement={ann}
@@ -60,7 +60,7 @@ const ShowAnnouncements: React.FC<Props> = ({
             <div className='w-full flex justify-center mt-5 mb-9'>
                 {page < totalpage && (
                     <Button
-                        className='mx-auto hover:bg-gray-100 rounded-none border border-black text-black'
+                        className='mx-auto font-poppins font-bold rounded-md bg-[#FACC15] hover:bg-[#EAB308] p-4 text-black text-[13px]'
                         disabled={IsLoadingMore}
                         onClick={LoadMoreData}
                         aria-label={IsLoadingMore ? 'Loading more announcements' : 'Load more announcements'}
