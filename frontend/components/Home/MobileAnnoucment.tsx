@@ -5,6 +5,7 @@ import { categoryStyles } from "@/lib/categoryStyles"
 import { formatDateInLanguage } from "@/lib/formatDate"
 import { LanguageContext } from '@/context/Lan';
 import { TranslateText } from '@/lib/translatetext';
+import { useRouter } from "next/navigation"
 
 type Props = {
     announcement: AnnouncementTypes
@@ -12,6 +13,7 @@ type Props = {
 
 const MobileAnnoucment: React.FC<Props> = ({ announcement }) => {
     const { language } = useContext(LanguageContext)
+    const router = useRouter()
     return (
         <div className=' mx-auto my-2 flex gap-1 bg-white border border-[#E5E2D8] rounded-md'>
 
@@ -55,7 +57,7 @@ const MobileAnnoucment: React.FC<Props> = ({ announcement }) => {
                 </div>
 
                 {/* Read details link */}
-                <span className='text-[12px] font-poppins font-semibold text-[#D97706] flex items-center gap-1 mt-1'>
+                <span onClick={() => router.push(`announcement?id=${announcement.announcementId}&lan=${language}`)} className='text-[12px] font-poppins font-semibold text-[#D97706] flex items-center gap-1 mt-1'>
                     {TranslateText[language].SEE_DETAILS} <span>›</span>
                 </span>
             </div>

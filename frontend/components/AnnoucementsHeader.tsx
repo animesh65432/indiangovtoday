@@ -17,8 +17,8 @@ const AnnoucementsHeader: React.FC = () => {
     return (
         <header className='h-14 flex items-center justify-between  w-[97%] mx-auto mt-2'>
             <nav className='flex flex-col gap-1'>
-                <span className='text-[1.4rem] font-poppins  font-bold  text-black'>
-                    IndanGovt Today
+                <span className='text-[1.3rem] font-poppins  font-bold  text-black'>
+                    IndanGovtToday
                 </span>
                 <span className='font-poppins text-xs uppercase text-[#aaaaaa] font-medium'>
                     <TextGenerateEffect words={TranslateText[language].DIRECT_ACCESS_TO_VERIFIED_GOVT_CIRCULARS} />
@@ -37,7 +37,7 @@ const AnnoucementsHeader: React.FC = () => {
                     </SelectTrigger>
                     <SelectContent >
                         {optionsforLanguages.map((lan) => (
-                            <SelectItem key={lan.label} value={lan.label} className='font-poppins'>
+                            <SelectItem key={lan.label} value={lan.label} className='font-poppins hover:bg-amber-100'>
                                 {lan.label}
                             </SelectItem>
                         ))}

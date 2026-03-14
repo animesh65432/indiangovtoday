@@ -81,7 +81,8 @@ export type ShowAnnouncementsTypes = {
     date: string,
     category: string,
     department: string,
-    sections: SectionTypes[]
+    sections: SectionTypes[],
+    image: string
 
 }
 

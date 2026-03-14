@@ -46,7 +46,7 @@ const MobileShowAnnoucments = ({ announcements, IsLoading, IsLoadingMore, LoadMo
             <div className='w-full flex justify-center mt-5 mb-9'>
                 {page < totalpages && (
                     <Button
-                        className='mx-auto font-poppins font-bold rounded-md bg-[#FBBF24] hover:bg-[#EAB308] p-4 text-black text-[13px]'
+                        className='mx-auto font-poppins font-bold hover:cursor-pointer rounded-md bg-[#FEF3C7] border border-[#e2680a] p-4 text-black text-[13px]'
                         disabled={IsLoadingMore}
                         onClick={LoadMoreData}
                         aria-label={IsLoadingMore ? 'Loading more announcements' : 'Load more announcements'}

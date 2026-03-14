@@ -54,6 +54,7 @@ const Announcement = ({ id, lan }: Props) => {
                         sections={announcement.sections}
                         toggle={toggle}
                         setToggle={setToggle}
+                        image={announcement.image}
                     /> :
                     <main className='h-[100vh] flex justify-center items-center'>
                         <div className='flex items-center gap-2'>

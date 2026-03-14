@@ -1,30 +1,32 @@
 import React, { useContext, useState, useEffect } from 'react'
-import { ChevronDownIcon, MapPin, Calendar as CalendarIcon, SlidersHorizontal, X } from "lucide-react"
-import { motion, AnimatePresence } from "framer-motion"
 import { LanguageContext } from "@/context/Lan"
 import { Input } from "@/components/ui/input"
 import { TranslateText } from "@/lib/translatetext"
-import DeparmentSelection from "./DeparmentSelection"
 import { Calendar } from "@/components/ui/calendar"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Currentdate } from '@/context/Currentdate'
 import { Button } from '../ui/button'
-import { MultiSelect } from "@/components/ui/multi-select"
 import { GetallAnnoucementsDepartments } from "@/api/announcements"
 import { IsLoadingContext } from '@/context/IsLoading'
-import { Search } from "lucide-react";
+import { Search, ListFilterPlus } from "lucide-react";
 import SourceToggle from './SourceToggle'
 import {
     Select,
     SelectContent,
     SelectGroup,
     SelectItem,
-    SelectLabel,
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
 import { format } from "date-fns"
 import { Calendar as CalenderIcon } from "lucide-react"
+import {
+    Sheet,
+    SheetClose,
+    SheetContent,
+    SheetTrigger,
+} from "@/components/ui/sheet"
+import MobileSearchInput from './MobileSearchInput'
 
 
 type Props = {
@@ -89,10 +91,39 @@ const SearchInputBox: React.FC<Props> = ({
 
     return (
         <div className='w-[97%] mx-auto  flex flex-col gap-2'>
-            <div className=' flex md:hidden mt-2 md:mt-0'>
+            <div className=' flex md:hidden mt-4 md:mt-0'>
                 <SourceToggle />
             </div>
-            <div className="relative w-full">
+            <div className='flex items-center gap-4 md:hidden'>
+                <div className="relative w-[93%] ">
+                    <Input
+                        placeholder={TranslateText[language].INPUT_PLACEHOLDER}
+                        style={{ paddingLeft: 30 }}
+                        className="bg-[#f8f7f2] placeholder:text-[13px]  md:placeholder:text-[0.9rem]  placeholder:font-inter w-full "
+                        value={SearchInput}
+                        onChange={(e) => SetSearchInput(e.target.value)}
+                    />
+                    <Search
+                        className="absolute top-1/2 left-2 -translate-y-1/2 text-gray-500 cursor-pointer"
+                        size={14}
+                        onClick={onSearch}
+                    />
+                </div>
+                <div>
+                    <Sheet >
+                        <SheetTrigger asChild>
+                            <ListFilterPlus />
+                        </SheetTrigger>
+                        <SheetContent side="bottom" className="z-[9999] h-fit">
+                            <MobileSearchInput
+                                departmentOptions={departmentOptions}
+                                SetDeparmentsSelected={SetDeparmentsSelected}
+                            />
+                        </SheetContent>
+                    </Sheet>
+                </div>
+            </div>
+            <div className="relative w-full hidden md:block">
                 <Input
                     placeholder={TranslateText[language].INPUT_PLACEHOLDER}
                     style={{ paddingLeft: 30 }}
