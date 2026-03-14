@@ -11,6 +11,7 @@ import SerchInputbox from './SearchInputbox';
 import { TranslateText } from "@/lib/translatetext"
 import { toast } from "react-toastify"
 import dynamic from 'next/dynamic';
+import RightSide from './RightSide';
 
 const IndiaMap = dynamic(() => import("../IndiaMap"), {
     ssr: false,
@@ -130,7 +131,7 @@ const Main: React.FC = () => {
 
     return (
 
-        <section className="flex flex-col md:flex-row w-full h-full ">
+        <section className="flex flex-col md:flex-row w-screen h-screen ">
 
             <div className="w-full h-full md:w-[40vw] xl:w-[25vw] md:shrink-0">
                 <IndiaMap
@@ -140,10 +141,23 @@ const Main: React.FC = () => {
                 />
             </div>
 
-            <div className="w-full h-full bg-gray-100">
-                Right Side Content
+            <div className="flex-1">
+                <RightSide
+                    StatesSelected={StatesSelected}
+                    SetStatesSelected={SetStatesSelected}
+                    DeparmentsSelected={DeparmentsSelected}
+                    SetDeparmentsSelected={SetDeparmentsSelected}
+                    SearchInput={SearchInput}
+                    SetSearchInput={SetSearchInput}
+                    onSearch={handleSearch}
+                    announcements={Announcements}
+                    IsLoading={IsLoading}
+                    IsLoadingMore={IsLoadingMore}
+                    LoadMoreData={OnLoadMoredata}
+                    page={page}
+                    totalpages={totalPages}
+                />
             </div>
-
         </section>
 
     );

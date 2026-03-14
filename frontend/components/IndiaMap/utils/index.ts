@@ -74,8 +74,8 @@ export const getTooltipHTML = (
         : "No announcements";
 
     return `<div style="font-family:'Inter',-apple-system,sans-serif;min-width:155px;color:#141414;">
-<span style="display:inline-flex;font-size:10px;font-weight:700;color:#333;background:#F0EDE5;border:1px solid #E5E2D8;border-radius:4px;padding:2px 8px;margin-bottom:7px;">${displayName}</span>
-<div style="font-size:13px;font-weight:700;line-height:1.45;letter-spacing:-0.01em;color:#141414;margin-bottom:4px;">${countLabel}</div>
-<div style="font-size:11px;font-weight:700;color:#AAA;letter-spacing:0.08em;text-transform:uppercase;">${hasCounts ? "Click to filter" : "Click to select"}</div>
+<span style="font-size:13px;font-weight:700;line-height:1.45;letter-spacing:-0.01em;color:#141414;margin-bottom:4px;">${displayName}</span>
+<div style="font-size:13px;font-weight:700;color:#AAA;letter-spacing:0.08em; ${hasCounts ? "text-gray-500" : "text-red-500"}">${countLabel}</div>
+<div style="font-size:12px;font-weight:700;color:#AAA;letter-spacing:0.08em;">${hasCounts ? "Click to filter" : "Click to select"}</div>
 </div>`;
 };

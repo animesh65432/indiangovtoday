@@ -30,7 +30,7 @@ const Announcement: React.FC<Props> = ({ Announcement }) => {
             whileHover="hover"
             className="cursor-pointer group bg-white border border-black/10 overflow-hidden"
         >
-            <div className="relative w-full h-[220px] overflow-hidden">
+            <div className="relative w-full h-50 overflow-hidden">
                 <motion.div
                     variants={{ hover: { scale: 1.04 } }}
                     transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
@@ -47,20 +47,7 @@ const Announcement: React.FC<Props> = ({ Announcement }) => {
             </div>
 
 
-            <div className="h-[2px] bg-black w-full" />
-
-
             <div className="p-5 flex flex-col gap-3">
-
-                <div className="flex items-center justify-between">
-                    <span className="text-[0.8rem] w-[70%] font-bold tracking-[0.18em] uppercase text-black/40">
-                        {Announcement.department}
-                    </span>
-                    <span className="text-[0.8rem] italic text-black/40">
-                        {formatDateRelative(Announcement.date, LANGUAGE_CODES[language], language)}
-                    </span>
-                </div>
-
 
                 <h2 className="font-display text-black font-bold text-[1.15rem] leading-snug m-0">
                     {Announcement.title}

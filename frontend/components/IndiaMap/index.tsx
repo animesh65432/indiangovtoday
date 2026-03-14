@@ -168,7 +168,7 @@ export default function IndiaMap({ announcements, selectedStates, onStateClick }
                 <div className="flex items-center justify-between">
                     <span
                         className="font-inter uppercase tracking-[0.14em] font-black"
-                        style={{ fontSize: 10, color: "#AAA" }}
+                        style={{ fontSize: 12, color: "#AAA" }}
                     >
                         India Map
                     </span>
@@ -178,7 +178,7 @@ export default function IndiaMap({ announcements, selectedStates, onStateClick }
                 <div className="flex items-center gap-2 flex-wrap">
                     <span
                         className="font-inter uppercase font-bold"
-                        style={{ fontSize: 10, letterSpacing: "0.08em", color: "#CCC" }}
+                        style={{ fontSize: 12, letterSpacing: "0.08em", color: "#CCC" }}
                     >
                         Announcements:
                     </span>
@@ -193,7 +193,7 @@ export default function IndiaMap({ announcements, selectedStates, onStateClick }
                                 style={{ background: color }}
                                 className="inline-block w-2 h-2 border border-black/10"
                             />
-                            <span className="font-mono" style={{ fontSize: 11, color: "#999" }}>
+                            <span className="font-mono" style={{ fontSize: 12, color: "#999" }}>
                                 {label}
                             </span>
                         </div>

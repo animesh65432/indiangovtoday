@@ -1,0 +1,67 @@
+import React from 'react'
+import AnnoucementsHeader from '../AnnoucementsHeader'
+import Hwt from './Hwt'
+import SearchInputBox from './SearchInputbox'
+import { Announcement } from '@/types'
+import ShowAnnouncements from '../ShowAnnouncements'
+
+type Props = {
+    StatesSelected: string[]
+    SetStatesSelected: React.Dispatch<React.SetStateAction<string[]>>
+    DeparmentsSelected: string
+    SetDeparmentsSelected: React.Dispatch<React.SetStateAction<string>>
+    SearchInput: string
+    SetSearchInput: React.Dispatch<React.SetStateAction<string>>
+    onSearch: () => void,
+    announcements: Announcement[],
+    LoadMoreData: () => void
+    page: number
+    totalpages: number
+    IsLoading: boolean
+    IsLoadingMore: boolean
+
+}
+
+const RightSide: React.FC<Props> = ({
+    StatesSelected,
+    SetStatesSelected,
+    DeparmentsSelected,
+    SetDeparmentsSelected,
+    SearchInput,
+    SetSearchInput,
+    onSearch,
+    announcements,
+    LoadMoreData,
+    page,
+    totalpages,
+    IsLoading,
+    IsLoadingMore
+}) => {
+    return (
+        <div className='flex flex-col gap-2 h-screen '>
+            <AnnoucementsHeader />
+            <Hwt />
+            <SearchInputBox
+                StatesSelected={StatesSelected}
+                SetStatesSelected={SetStatesSelected}
+                DeparmentsSelected={DeparmentsSelected}
+                SetDeparmentsSelected={SetDeparmentsSelected}
+                SearchInput={SearchInput}
+                SetSearchInput={SetSearchInput}
+                onSearch={onSearch}
+            />
+            <div className="flex-1 overflow-y-auto">
+                <ShowAnnouncements
+                    Announcements={announcements}
+                    LoadMoreData={LoadMoreData}
+                    page={page}
+                    totalpage={totalpages}
+                    IsLoading={IsLoading}
+                    IsLoadingMore={IsLoadingMore}
+                />
+            </div>
+        </div>
+    )
+}
+
+export default RightSide

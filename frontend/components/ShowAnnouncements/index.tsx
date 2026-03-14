@@ -6,7 +6,6 @@ import AnnouncementSkeleton from './AnnouncementSkeleton'
 import { LoaderCircle } from "lucide-react"
 import { LanguageContext } from "@/context/Lan"
 import { TranslateText } from "@/lib/translatetext"
-import Subscribe from './Subscribe'
 
 type Props = {
     Announcements: AnnouncementTypes[]
@@ -29,7 +28,7 @@ const ShowAnnouncements: React.FC<Props> = ({
 
     if (IsLoading) {
         return (
-            <div className='grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-5 w-[85%] mx-auto '>
+            <div className='bg-[#f8f7f2] border border-t border-[#E8E4DA]  h-full  pt-12 flex-1 grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-8  p-8 mx-auto '>
                 <AnnouncementSkeleton />
                 <AnnouncementSkeleton />
                 <AnnouncementSkeleton />
@@ -40,8 +39,8 @@ const ShowAnnouncements: React.FC<Props> = ({
 
     if (Announcements.length === 0) {
         return (
-            <div className='flex-1 flex justify-center items-center'>
-                <h3 className='text-black text-xl text-center'>
+            <div className='bg-[#f8f7f2] border border-t border-[#E8E4DA] p-8 pt-12 h-full flex justify-center items-center'>
+                <h3 className='text-black text-xl text-center font-poppins'>
                     {TranslateText[language].NO_ANNOUNCEMENTS_FOUND}
                 </h3>
             </div>
@@ -49,8 +48,8 @@ const ShowAnnouncements: React.FC<Props> = ({
     }
 
     return (
-        <div className='flex-1  w-full lg:w-[99%] xl:w-[90%] mx-auto overflow-x-auto pb-20 '>
-            <div className='flex-1 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5 w-[95%] mx-auto overflow-x-auto'>
+        <div className='bg-[#f8f7f2] border border-t border-[#E8E4DA] p-6 pt-12 flex-1'>
+            <div className='overflow-x-auto   grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5 pt-2'>
                 {Announcements.map((ann) => (
                     <Announcement
                         Announcement={ann}
@@ -58,7 +57,6 @@ const ShowAnnouncements: React.FC<Props> = ({
                     />
                 ))}
             </div>
-            <Subscribe />
             <div className='w-full flex justify-center mt-5 mb-9'>
                 {page < totalpage && (
                     <Button

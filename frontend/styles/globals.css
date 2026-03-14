@@ -47,6 +47,7 @@
   --font-body: 'Libre Baskerville', Georgia, serif;
   --font-poppins: 'Poppins', sans-serif;
   --font-mono: 'Courier New', Courier, monospace;
+  --font-anton: 'Anton', sans-serif;
 }
 
 /* ─── Tailwind v4 theme — generates font-* utility classes ─── */
@@ -97,6 +98,7 @@
   --font-body: var(--font-body);
   --font-poppins: var(--font-poppins);
   --font-mono: var(--font-mono);
+  --font-anton: var(--font-anton);
 }
 
 /* ─── Dark mode ─── */
@@ -142,6 +144,10 @@
 
   body {
     @apply bg-background text-foreground;
+  }
+
+  input::placeholder {
+    font: inherit;
   }
 }
 
@@ -224,14 +230,11 @@ p {
 
 button,
 select {
-  font-family: var(--font-body);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 input {
-  font-family: var(--font-poppins);
-  padding: 1.2rem;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
