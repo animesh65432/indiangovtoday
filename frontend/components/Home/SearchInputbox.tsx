@@ -22,7 +22,6 @@ import { format } from "date-fns"
 import { Calendar as CalenderIcon } from "lucide-react"
 import {
     Sheet,
-    SheetClose,
     SheetContent,
     SheetTrigger,
 } from "@/components/ui/sheet"
@@ -36,7 +35,7 @@ type Props = {
     SetDeparmentsSelected: React.Dispatch<React.SetStateAction<string>>
     SearchInput: string
     SetSearchInput: React.Dispatch<React.SetStateAction<string>>
-    onSearch: () => void
+    onSearch: () => void,
 }
 
 const SearchInputBox: React.FC<Props> = ({
@@ -51,6 +50,7 @@ const SearchInputBox: React.FC<Props> = ({
     const [mobileSheetOpen, setMobileSheetOpen] = useState(false)
     const [startDateOpen, setStartDateOpen] = useState(false)
     const [endDateOpen, setEndDateOpen] = useState(false)
+    const [AnnouncementsType, SetAnnouncementsType] = useState<"All" | "Central Govt" | "States Govt">(`All`)
 
     const { language } = useContext(LanguageContext)
     const { onChangeStartDate, startdate, endDate, onChangeEndDate } = useContext(Currentdate)
@@ -92,7 +92,10 @@ const SearchInputBox: React.FC<Props> = ({
     return (
         <div className='w-[97%] mx-auto  flex flex-col gap-2'>
             <div className=' flex md:hidden mt-4 md:mt-0'>
-                <SourceToggle />
+                <SourceToggle
+                    AnnouncementsType={AnnouncementsType}
+                    SetAnnouncementsType={SetAnnouncementsType}
+                />
             </div>
             <div className='flex items-center gap-4 md:hidden'>
                 <div className="relative w-[93%] ">
@@ -139,6 +142,8 @@ const SearchInputBox: React.FC<Props> = ({
             </div>
             <div className=' hidden md:flex items-center gap-2 flex-wrap'>
                 <SourceToggle
+                    AnnouncementsType={AnnouncementsType}
+                    SetAnnouncementsType={SetAnnouncementsType}
                 />
                 <Select>
                     <SelectTrigger className="w-fit h-3 bg-[#F8F7F2] rounded-md border border-[#E8E4DA]">

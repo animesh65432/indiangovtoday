@@ -14,6 +14,7 @@ const GEO_NAME_MAP: Record<string, string> = {
     "Jammu & Kashmir": "Jammu and Kashmir",
     "NCT of Delhi": "Delhi",
     "Delhi": "Delhi",
+    "WestBengal": "West Bengal",
 };
 
 export function normalizeGeoName(name: string): string {
@@ -79,3 +80,9 @@ export const getTooltipHTML = (
 <div style="font-size:12px;font-weight:700;color:#AAA;letter-spacing:0.08em;">${hasCounts ? "Click to filter" : "Click to select"}</div>
 </div>`;
 };
+
+export const checkIfStateSelected = (state: string, selectedStates: string[]): boolean => {
+    const normalizedState = normalizeGeoName(state);
+    console.log(normalizedState);
+    return selectedStates.some(selected => normalizeGeoName(selected) === normalizedState);
+}

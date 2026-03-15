@@ -514,3 +514,84 @@ export const GetAllTrendingTitles = asyncErrorHandler(async (req: Request, res: 
     res.status(200).json(responseData);
     return;
 });
+
+export const GetAllCountAnnouncements = asyncErrorHandler(async (req: Request, res: Response) => {
+
+    const { target_lan, startDate, endDate } = req.query;
+
+    if (!target_lan || typeof target_lan !== "string") {
+        res.status(400).json({ message: "Missing or invalid target_lan" });
+        return;
+    }
+
+    const targetLanguage = LANGUAGE_CODES[target_lan as string] || "en";
+
+    const announcementsStartDate = startDate
+        ? new Date(startDate as string)
+        : new Date(new Date().setDate(new Date().getDate() - 7));
+
+    const announcementsEndDate = endDate
+        ? new Date(endDate as string)
+        : new Date();
+
+    const start = new Date(announcementsStartDate);
+    start.setUTCHours(0, 0, 0, 0);
+
+    const end = new Date(announcementsEndDate);
+    end.setUTCHours(23, 59, 59, 999);
+
+    const redis_key = `Count_Announcements_${targetLanguage}_${start
+        .toISOString()
+        .split("T")[0]}_${end.toISOString().split("T")[0]}`;
+
+    const cached_data = await redis.get(redis_key);
+
+    if (cached_data) {
+        const parsedData = typeof cached_data === "string" ? JSON.parse(cached_data) : cached_data;
+        res.status(200).json(parsedData);
+        return;
+    }
+
+    const db = await connectDB();
+
+
+    const stateCounts = await db
+        .collection("Translated_Announcements")
+        .aggregate([
+            {
+                $match: {
+                    date: { $gte: start, $lte: end },
+                    language: targetLanguage
+                }
+            },
+            {
+                $group: {
+                    _id: "$state",
+                    count: { $sum: 1 }
+                }
+            },
+            {
+                $project: {
+                    _id: 0,
+                    state: "$_id",
+                    count: 1
+                }
+            },
+            {
+                $sort: { count: -1 }
+            }
+        ])
+        .toArray();
+
+    await redis.set(redis_key, JSON.stringify({
+        success: true,
+        data: stateCounts
+    }), { ex: 300 });
+
+    res.status(200).json({
+        success: true,
+        data: stateCounts
+    });
+
+    return;
+});

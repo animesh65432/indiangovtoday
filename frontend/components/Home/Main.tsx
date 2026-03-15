@@ -4,7 +4,7 @@ import { Announcement as AnnouncementTypes, AnnouncementsResponse } from "@/type
 import { LanguageContext } from '@/context/Lan';
 import { Currentdate } from "@/context/Currentdate";
 import AnnoucementsHeader from '@/components/AnnoucementsHeader';
-import { useStateCode } from "@/lib/useStateCode"
+import { GetStateCode } from "@/lib/GetStateCode"
 import { LocationContext } from "@/context/LocationProvider"
 import SerchInputbox from './SearchInputbox';
 import { TranslateText } from "@/lib/translatetext"
@@ -23,6 +23,7 @@ const Main: React.FC = () => {
     const { language } = useContext(LanguageContext);
     const [SearchInput, SetSearchInput] = useState<string>("")
     const [StatesSelected, SetStatesSelected] = useState<string[]>([]);
+    const [AnnouncementsType, SetAnnouncementsType] = useState<"All" | "Central Govt" | "States Govt">(`All`);
     const [DeparmentsSelected, SetDeparmentsSelected] = useState<string>(``);
 
     const [totalPages, settotalPages] = useState<number>(0)
@@ -41,7 +42,7 @@ const Main: React.FC = () => {
 
     const [ShowIndiaMap, SetShowIndiaMap] = useState<boolean>(true)
 
-    const userStateCode = useStateCode(state_ut, language);
+    const userStateCode = GetStateCode(state_ut, language);
 
     const fetchGetIndiaAnnouncements = async (
         pageNumber: number,
@@ -132,7 +133,6 @@ const Main: React.FC = () => {
         console.log("State clicked:", state);
     }
 
-
     return (
 
         <section className="flex flex-col md:flex-row w-full h-screen md:min-h-screen overflow-hidden md:overflow-visible  ">
@@ -165,7 +165,7 @@ const Main: React.FC = () => {
                 <div className="h-[30vh] md:w-[40vw] xl:w-[25vw] md:shrink-0">
                     <IndiaMap
                         announcements={Announcements}
-                        selectedStates={["Mizoram", "Delhi", "West Bengal"]}
+                        selectedStates={StatesSelected}
                         onStateClick={handleStateClick}
                         ShowIndiaMap={ShowIndiaMap}
                         SetShowIndiaMap={SetShowIndiaMap}

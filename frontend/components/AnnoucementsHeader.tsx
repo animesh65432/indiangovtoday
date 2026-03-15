@@ -35,7 +35,7 @@ const AnnoucementsHeader: React.FC = () => {
                     >
                         <SelectValue placeholder="Language" />
                     </SelectTrigger>
-                    <SelectContent >
+                    <SelectContent className='z-[999]' >
                         {optionsforLanguages.map((lan) => (
                             <SelectItem key={lan.label} value={lan.label} className='font-poppins hover:bg-amber-100'>
                                 {lan.label}
