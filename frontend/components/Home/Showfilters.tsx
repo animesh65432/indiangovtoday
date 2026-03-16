@@ -66,7 +66,7 @@ const Showfilters: React.FC<Props> = ({ SetStatesSelected, selectedDepartment, c
                 </div>
 
             </div>
-            <div className='text-[#787373] text-[11px] underline font-poppins'>Clear all</div>
+            <div className='text-[#787373] text-[11px] underline font-poppins hover:cursor-pointer'>Clear all</div>
         </div>
     )
 }

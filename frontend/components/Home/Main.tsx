@@ -27,6 +27,8 @@ const Main: React.FC = () => {
     const [DeparmentsSelected, SetDeparmentsSelected] = useState<string>(``);
 
     const [totalPages, settotalPages] = useState<number>(0)
+    const [departmentOptions, setDepartmentOptions] = useState<string[]>([])
+    const [categoryOptions, setCategoryOptions] = useState<string[]>([])
     const [IsLoading, SetIsLoading] = useState<boolean>(false)
     const [IsLoadingMore, SetIsLoadingMore] = useState<boolean>(false)
     const [Announcements, SetAnnouncements] = useState<AnnouncementTypes[]>([])
@@ -179,6 +181,10 @@ const Main: React.FC = () => {
                     SetStatesSelected={SetStatesSelected}
                     AnnouncementsType={AnnouncementsType}
                     SetAnnouncementsType={SetAnnouncementsType}
+                    departmentOptions={departmentOptions}
+                    setDepartmentOptions={setDepartmentOptions}
+                    categoryOptions={categoryOptions}
+                    setCategoryOptions={setCategoryOptions}
                 />
             </div>
             {shouldShowMap &&
@@ -223,6 +229,10 @@ const Main: React.FC = () => {
                     totalpages={totalPages}
                     AnnouncementsType={AnnouncementsType}
                     SetAnnouncementsType={SetAnnouncementsType}
+                    departmentOptions={departmentOptions}
+                    setDepartmentOptions={setDepartmentOptions}
+                    categoryOptions={categoryOptions}
+                    setCategoryOptions={setCategoryOptions}
                 />
             </div>
             <MobileShowAnnoucments

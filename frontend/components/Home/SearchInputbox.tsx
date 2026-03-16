@@ -6,7 +6,7 @@ import { Calendar } from "@/components/ui/calendar"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Currentdate } from '@/context/Currentdate'
 import { Button } from '../ui/button'
-import { GetallAnnoucementsDepartments } from "@/api/announcements"
+import { GetallAnnoucementsDepartments, GetAllCategoriesAnnouncements } from "@/api/announcements"
 import { IsLoadingContext } from '@/context/IsLoading'
 import { Search, ListFilterPlus } from "lucide-react";
 import SourceToggle from './SourceToggle'
@@ -39,6 +39,10 @@ type Props = {
     onSearch: () => void,
     AnnouncementsType: "All" | "Central Govt" | "States Govt",
     SetAnnouncementsType: React.Dispatch<React.SetStateAction<"All" | "Central Govt" | "States Govt">>
+    departmentOptions: string[]
+    setDepartmentOptions: React.Dispatch<React.SetStateAction<string[]>>
+    categoryOptions: string[]
+    setCategoryOptions: React.Dispatch<React.SetStateAction<string[]>>
 }
 
 const SearchInputBox: React.FC<Props> = ({
@@ -46,9 +50,12 @@ const SearchInputBox: React.FC<Props> = ({
     DeparmentsSelected, SetDeparmentsSelected,
     SearchInput, SetSearchInput,
     onSearch,
-    AnnouncementsType, SetAnnouncementsType
+    AnnouncementsType, SetAnnouncementsType,
+    departmentOptions,
+    setDepartmentOptions,
+    categoryOptions,
+    setCategoryOptions
 }) => {
-    const [departmentOptions, setDepartmentOptions] = useState<string[]>([])
     const { SetIsLoading } = useContext(IsLoadingContext)
 
     const { language } = useContext(LanguageContext)
@@ -81,6 +88,37 @@ const SearchInputBox: React.FC<Props> = ({
         };
 
         fetchDepartments();
+        return () => controller.abort();
+
+    }, [language, StatesSelected]);
+
+    useEffect(() => {
+        const controller = new AbortController();
+
+        const fetchCategoriesAnnouncements = async () => {
+            SetIsLoading(true);
+            setCategoryOptions([]);
+            try {
+                const response = await GetAllCategoriesAnnouncements(
+                    language, startdate, endDate, StatesSelected, controller.signal
+                ) as { data: string[] };
+
+                if (!controller.signal.aborted) {
+                    setCategoryOptions([TranslateText[language].ALL_DEPARMENTS, ...response.data]);
+                }
+            } catch (error: unknown) {
+                if (error instanceof Error &&
+                    (error.name === 'AbortError' || (error as { code?: string }).code === 'ERR_CANCELED')) {
+                    return;
+                }
+            } finally {
+                if (!controller.signal.aborted) {
+                    SetIsLoading(false);
+                }
+            }
+        };
+
+        fetchCategoriesAnnouncements();
         return () => controller.abort();
 
     }, [language, StatesSelected]);

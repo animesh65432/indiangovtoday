@@ -70,7 +70,7 @@ export const GetTrendingIndiaAnnnouncements = (target_lan: string, states: strin
     });
 }
 
-export const GetAllCountAnnouncements = (target_lan: string, startdate: Date, endDate: Date,) => {
+export const GetAllCountAnnouncements = (target_lan: string, startdate: Date, endDate: Date) => {
 
     const params = new URLSearchParams({
         target_lan,
@@ -81,5 +81,21 @@ export const GetAllCountAnnouncements = (target_lan: string, startdate: Date, en
     return Call({
         method: "GET",
         path: `/GetAllCountAnnouncements?${params.toString()}`,
+    });
+}
+
+export const GetAllCategoriesAnnouncements = (target_lan: string, startdate: Date, endDate: Date, states: string[], signal?: AbortSignal) => {
+
+    const params = new URLSearchParams({
+        target_lan,
+        startDate: startdate.toISOString().split('T')[0],
+        endDate: endDate.toISOString().split('T')[0],
+    });
+
+    states.forEach(state => params.append('states', state));
+
+    return Call({
+        method: "GET",
+        path: `/GetAllCategoriesAnnouncements?${params.toString()}`
     });
 }
