@@ -5,6 +5,7 @@ import Title from './Title'
 import Details from './Details'
 import TextDiv from "./TextDiv"
 import KeyInforMation from './KeyInforMation'
+import Image from 'next/image'
 
 type Props = {
     title: string
@@ -17,10 +18,12 @@ type Props = {
     department: string,
     sections: SectionTypes[]
     toggle: boolean,
-    setToggle: React.Dispatch<React.SetStateAction<boolean>>
+    setToggle: React.Dispatch<React.SetStateAction<boolean>>,
+    image: string
 }
 
-const ShowAnnouncement: React.FC<Props> = ({ toggle, setToggle, title, source, lan, date, state, sections, department, category }) => {
+const ShowAnnouncement: React.FC<Props> = ({ image, toggle, setToggle, title, source, lan, date, state, sections, department, category }) => {
+    console.log(image)
     return (
         <section className='w-[82%] mx-auto  flex flex-col gap-10 pt-7  pb-8'>
             <Header
@@ -32,15 +35,37 @@ const ShowAnnouncement: React.FC<Props> = ({ toggle, setToggle, title, source, l
             <Title
                 title={title}
             />
-            <div className='flex flex-col  gap-10'>
-                <Details
-                    date={date}
-                    state={state}
-                    category={category}
-                    department={department}
-                    source={source}
-                    lan={lan}
+            <div className='flex justify-between'>
+                <Image
+                    src={image}
+                    alt={title}
+                    width={500}
+                    height={300}
+                    className="object-cover"
                 />
+                <div className=' hidden lg:block'>
+                    <Details
+                        date={date}
+                        state={state}
+                        category={category}
+                        department={department}
+                        source={source}
+                        lan={lan}
+                    />
+                </div>
+            </div>
+
+            <div className='flex flex-col  gap-10'>
+                <div className='lg:hidden block'>
+                    <Details
+                        date={date}
+                        state={state}
+                        category={category}
+                        department={department}
+                        source={source}
+                        lan={lan}
+                    />
+                </div>
                 <div className='w-[65%] hidden xl:block'>
                     <TextDiv
                         heading={sections[0].heading}

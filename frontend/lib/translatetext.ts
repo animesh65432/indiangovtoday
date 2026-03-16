@@ -50,7 +50,7 @@ export type TranslationKeys = {
     KEYWORDS: string,
     NO_STATE_SELECTED: string,
 };
-const STATES_CODES: Record<string, Record<string, string>> = {
+export const STATES_CODES: Record<string, Record<string, string>> = {
     "Andhra Pradesh": {
         "English": "AndhraPradesh",
         "অসমীয়া": "অন্ধ্ৰপ্ৰদেশ",
@@ -1369,7 +1369,6 @@ export const TranslateText: Record<string, TranslationKeys> = {
             { label: "లదాఖ్", value: "లదాఖ్" },
             { label: "లక్షద్వీపులు", value: "లక్షద్వీప్లు" },
             { label: "పుదుచ్చేరి", value: "పుదుచ్చేరి" },
-
             { label: "భారత ప్రభుత్వం", value: "భారత ప్రభుత్వం" }
         ],
         PUBLIC_NOTIFICATION: "ప్రజా నోటిఫికేషన్",

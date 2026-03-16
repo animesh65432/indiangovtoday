@@ -1,4 +1,5 @@
 import { TranslateText } from "@/lib/translatetext"
+import { LANGUAGE_CODES } from "./lan";
 
 export const formatDateRelative = (dateString: string | Date | undefined, languageCode: string = 'en-US', language: string) => {
     if (!dateString) return '';
@@ -41,10 +42,12 @@ export const formatDateRelative = (dateString: string | Date | undefined, langua
 // Keep the full date formatter but with better defaults
 export const formatDateInLanguage = (
     date: Date | string | number | undefined | null,
-    languageCode: string,
+    language: string,
     options?: Intl.DateTimeFormatOptions
 ): string => {
     if (!date) return '';
+
+    const languageCode = LANGUAGE_CODES[language] || 'en-US';
 
     const parsedDate = new Date(date);
     if (isNaN(parsedDate.getTime())) return '';

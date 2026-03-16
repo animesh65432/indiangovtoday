@@ -1,6 +1,6 @@
 import { Router } from "express"
 import { rateLimiter } from "../../middleware/ratelimiter"
-import { GetAllTrendingTitles, GetIndiaAnnouncements, GetIndiaAnnouncement, SerachallIndiaAnnouncements, GetallAnnoucementsDepartments } from "../../controllers/announcements"
+import { GetAllCategoriesAnnouncements, GetAllCountAnnouncements, GetAllTrendingTitles, GetIndiaAnnouncements, GetIndiaAnnouncement, SerachallIndiaAnnouncements, GetallAnnoucementsDepartments } from "../../controllers/announcements"
 
 
 const router = Router()
@@ -12,6 +12,8 @@ router.get("/GetIndiaAnnnouncement", GetIndiaAnnouncement)
 router.get("/GetallAnnoucementsDepartments", GetallAnnoucementsDepartments)
 router.get("/GetTrendingIndiaAnnnouncements", GetAllTrendingTitles)
 router.get("/SerachallIndiaAnnouncements", SerachallIndiaAnnouncements)
+router.get("/GetAllCountAnnouncements", GetAllCountAnnouncements)
+router.get("/GetAllCategoriesAnnouncements", GetAllCategoriesAnnouncements)
 
 
 export default router

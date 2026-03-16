@@ -1,38 +1,53 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState, useContext, useRef } from 'react';
 import { getAllAnnouncements } from "@/api/announcements";
 import { Announcement as AnnouncementTypes, AnnouncementsResponse } from "@/types";
 import { LanguageContext } from '@/context/Lan';
 import { Currentdate } from "@/context/Currentdate";
-import ShowAnnouncements from '../ShowAnnouncements';
 import AnnoucementsHeader from '@/components/AnnoucementsHeader';
-import { useStateCode } from "@/lib/useStateCode"
+import { GetStateCode } from "@/lib/GetStateCode"
 import { LocationContext } from "@/context/LocationProvider"
 import SerchInputbox from './SearchInputbox';
 import { TranslateText } from "@/lib/translatetext"
 import { toast } from "react-toastify"
-import TrendingTitle from './TrendingTitle';
+import dynamic from 'next/dynamic';
+import RightSide from './RightSide';
+import { ChevronDown, ChevronUp } from "lucide-react"
+import MobileShowAnnoucments from './MobileShowAnnoucments';
+import { buildCacheKey, withCache } from "@/lib/lsCache";
+
+
+const IndiaMap = dynamic(() => import("../IndiaMap"), {
+    ssr: false,
+});
 
 const Main: React.FC = () => {
     const { language } = useContext(LanguageContext);
     const [SearchInput, SetSearchInput] = useState<string>("")
     const [StatesSelected, SetStatesSelected] = useState<string[]>([]);
+    const [sheetOpen, setSheetOpen] = useState(false)
+    const [AnnouncementsType, SetAnnouncementsType] = useState<"All" | "Central Govt" | "States Govt">(`All`);
     const [DeparmentsSelected, SetDeparmentsSelected] = useState<string>(``);
-
+    const [CategoriesSelected, SetCategoriesSelected] = useState<string>(``);
     const [totalPages, settotalPages] = useState<number>(0)
+    const [departmentOptions, setDepartmentOptions] = useState<string[]>([])
+    const [categoryOptions, setCategoryOptions] = useState<string[]>([])
     const [IsLoading, SetIsLoading] = useState<boolean>(false)
     const [IsLoadingMore, SetIsLoadingMore] = useState<boolean>(false)
+    const firstLoad = useRef(true);
     const [Announcements, SetAnnouncements] = useState<AnnouncementTypes[]>([])
     const [page, Setpage] = useState<number>(1)
     const [limit] = useState<number>(10)
 
-    const { startdate, endDate } = useContext(Currentdate)
+    const { startdate, endDate, onChangeEndDate, onChangeStartDate } = useContext(Currentdate)
     const { state_ut } = useContext(LocationContext)
 
     const [DefaultsStatesApplied, SetDefaultsStatesApplied] = useState<string[]>([])
 
     const [trigger, setTrigger] = useState(0);
 
-    const userStateCode = useStateCode(state_ut, language);
+    const [ShowIndiaMap, SetShowIndiaMap] = useState<boolean>(true)
+
+    const userStateCode = GetStateCode(state_ut, language);
 
     const fetchGetIndiaAnnouncements = async (
         pageNumber: number,
@@ -50,12 +65,28 @@ const Main: React.FC = () => {
 
         try {
 
+            const INDIA_GOVT_CODE = TranslateText[language]["MULTISELECT_OPTIONS"][
+                TranslateText[language]["MULTISELECT_OPTIONS"].length - 1
+            ].value;
+
+
+            const filteredStates =
+                AnnouncementsType === "Central Govt"
+                    ? StatesSelected.filter(s => s === INDIA_GOVT_CODE)
+                    : AnnouncementsType === "States Govt"
+                        ? StatesSelected.filter(s => s !== INDIA_GOVT_CODE)
+                        : StatesSelected;
+
             const DeparMentsPayload = TranslateText[language].ALL_DEPARMENTS === DeparmentsSelected ? "" : DeparmentsSelected;
 
-            const response = await getAllAnnouncements(
-                language, startdate, endDate, pageNumber, limit,
-                StatesSelected, DeparMentsPayload, SearchInput, signal
-            ) as AnnouncementsResponse;
+            const key = buildCacheKey("announcements", { language, startdate, endDate, page, states: filteredStates, dept: DeparMentsPayload, search: SearchInput })
+
+            const response = await withCache(key, "announcements", async () => (
+                await getAllAnnouncements(
+                    language, startdate, endDate, pageNumber, limit,
+                    filteredStates, DeparMentsPayload, SearchInput, signal
+                ) as AnnouncementsResponse
+            ));
 
             if (!signal.aborted) {
                 settotalPages(response.pagination.totalPages);
@@ -75,11 +106,27 @@ const Main: React.FC = () => {
     }
 
     useEffect(() => {
+        if (firstLoad.current) {
+            firstLoad.current = false;
+            return;
+        }
         const controller = new AbortController();
+
         Setpage(1);
         fetchGetIndiaAnnouncements(1, false, controller.signal);
+
         return () => controller.abort();
-    }, [language, state_ut, trigger, DefaultsStatesApplied, DeparmentsSelected]);
+    }, [
+        CategoriesSelected,
+        language,
+        state_ut,
+        trigger,
+        DeparmentsSelected,
+        AnnouncementsType,
+        startdate,
+        endDate,
+        StatesSelected
+    ]);
 
     useEffect(() => {
         if (state_ut) {
@@ -103,6 +150,8 @@ const Main: React.FC = () => {
         }
     }, [page]);
 
+
+
     const handleSearch = () => {
         if (StatesSelected.length === 0) {
             toast.error(`${TranslateText[language].NO_STATE_SELECTED}`);
@@ -119,32 +168,156 @@ const Main: React.FC = () => {
         }
     }
 
+    const handleStateClick = (state: string | null) => {
+        if (!state) return;
+        SetStatesSelected((prev) => {
+            if (prev.includes(state)) {
+                return prev.filter((s) => s !== state);
+            } else {
+                return [...prev, state];
+            }
+        })
+    }
+
+    useEffect(() => {
+        if (!SearchInput) return;
+        const timer = setTimeout(() => handleSearch(), 500);
+        return () => clearTimeout(timer);
+    }, [SearchInput]);
+
+    const shouldShowMap = ShowIndiaMap && AnnouncementsType !== "Central Govt";
+
+    const handleMobileApply = (
+        dept: string,
+        category: string,
+        states: string[],
+        startDate: Date | null,
+        endDate: Date | null
+    ) => {
+        SetDeparmentsSelected(dept)
+        SetCategoriesSelected(category)
+        SetStatesSelected(states)
+        if (startDate) onChangeStartDate(startDate)
+        if (endDate) onChangeEndDate(endDate)
+        setSheetOpen(false)
+    }
+
+    const handleMobileReset = () => {
+        SetDeparmentsSelected("")
+        SetCategoriesSelected("")
+        const today = new Date();
+        const ThirteenDaysAgo = new Date();
+        ThirteenDaysAgo.setDate(today.getDate() - 30);
+        onChangeStartDate(ThirteenDaysAgo);
+        onChangeEndDate(today);
+        if (state_ut) {
+            const INDIA_GOVT_CODE = TranslateText[language]["MULTISELECT_OPTIONS"][TranslateText[language]["MULTISELECT_OPTIONS"].length - 1].value;
+            SetStatesSelected([INDIA_GOVT_CODE, userStateCode]);
+            SetDefaultsStatesApplied([INDIA_GOVT_CODE, userStateCode]);
+        }
+        else {
+            const INDIA_GOVT_CODE = TranslateText[language]["MULTISELECT_OPTIONS"][TranslateText[language]["MULTISELECT_OPTIONS"].length - 1].value;
+            SetStatesSelected([INDIA_GOVT_CODE]);
+            SetDefaultsStatesApplied([INDIA_GOVT_CODE]);
+        }
+        setSheetOpen(false)
+    }
+
     return (
-        <section className='flex flex-col gap-4 h-screen overflow-hidden'>
-            <AnnoucementsHeader />
-            <TrendingTitle
-                StatesSelected={StatesSelected}
-                DefaultsStatesApplied={DefaultsStatesApplied}
-            />
-            <SerchInputbox
-                SearchInput={SearchInput}
-                SetSearchInput={SetSearchInput}
-                StatesSelected={StatesSelected}
-                SetStatesSelected={SetStatesSelected}
-                DeparmentsSelected={DeparmentsSelected}
-                SetDeparmentsSelected={SetDeparmentsSelected}
-                onSearch={handleSearch}
-            />
-            <ShowAnnouncements
-                Announcements={Announcements}
+
+        <section className="flex flex-col md:flex-row w-full h-screen md:min-h-screen overflow-hidden md:overflow-visible  ">
+            <div className='block md:hidden'>
+                <AnnoucementsHeader />
+            </div>
+            <div className='block md:hidden'>
+                <SerchInputbox
+                    SearchInput={SearchInput}
+                    SetSearchInput={SetSearchInput}
+                    onSearch={handleSearch}
+                    DeparmentsSelected={DeparmentsSelected}
+                    SetDeparmentsSelected={SetDeparmentsSelected}
+                    StatesSelected={StatesSelected}
+                    SetStatesSelected={SetStatesSelected}
+                    AnnouncementsType={AnnouncementsType}
+                    SetAnnouncementsType={SetAnnouncementsType}
+                    departmentOptions={departmentOptions}
+                    setDepartmentOptions={setDepartmentOptions}
+                    categoryOptions={categoryOptions}
+                    setCategoryOptions={setCategoryOptions}
+                    CategoriesSelected={CategoriesSelected}
+                    SetCategoriesSelected={SetCategoriesSelected}
+                    handleMobileApply={handleMobileApply}
+                    handleMobileReset={handleMobileReset}
+                    sheetOpen={sheetOpen}
+                    setSheetOpen={setSheetOpen}
+                />
+            </div>
+
+            <div className="flex mt-2 md:mt-0 items-center justify-between md:hidden px-3 py-1 border border-[#E5E2D8]">
+                <span className="flex items-center gap-1">
+                    <span>🗺️ </span>
+                    <span className="text-[13px] font-inter font-semibold text-[#555555]">Indian Map</span>
+                </span>
+                {ShowIndiaMap ? (
+                    <ChevronUp onClick={() => SetShowIndiaMap(false)} className="w-4 h-4 text-[#555]" />
+                ) : (
+                    <ChevronDown onClick={() => SetShowIndiaMap(true)} className="w-4 h-4 text-[#555]" />
+                )}
+            </div>
+
+            {shouldShowMap &&
+                <div className="h-[30vh] md:w-[40vw] xl:w-[25vw] md:shrink-0">
+                    <IndiaMap
+                        announcements={Announcements}
+                        selectedStates={StatesSelected}
+                        onStateClick={handleStateClick}
+                        ShowIndiaMap={ShowIndiaMap}
+                        SetShowIndiaMap={SetShowIndiaMap}
+                    />
+                </div>
+            }
+
+            <div className="hidden md:flex-1 md:block">
+                <RightSide
+                    StatesSelected={StatesSelected}
+                    SetStatesSelected={SetStatesSelected}
+                    DeparmentsSelected={DeparmentsSelected}
+                    SetDeparmentsSelected={SetDeparmentsSelected}
+                    SearchInput={SearchInput}
+                    SetSearchInput={SetSearchInput}
+                    onSearch={handleSearch}
+                    announcements={Announcements}
+                    IsLoading={IsLoading}
+                    IsLoadingMore={IsLoadingMore}
+                    LoadMoreData={OnLoadMoredata}
+                    page={page}
+                    totalpages={totalPages}
+                    AnnouncementsType={AnnouncementsType}
+                    SetAnnouncementsType={SetAnnouncementsType}
+                    departmentOptions={departmentOptions}
+                    setDepartmentOptions={setDepartmentOptions}
+                    categoryOptions={categoryOptions}
+                    setCategoryOptions={setCategoryOptions}
+                    CategoriesSelected={CategoriesSelected}
+                    SetCategoriesSelected={SetCategoriesSelected}
+                    sheetOpen={sheetOpen}
+                    setSheetOpen={setSheetOpen}
+                    handleMobileApply={handleMobileApply}
+                    handleMobileReset={handleMobileReset}
+                />
+            </div>
+            <MobileShowAnnoucments
+                announcements={Announcements}
                 IsLoading={IsLoading}
-                LoadMoreData={OnLoadMoredata}
                 IsLoadingMore={IsLoadingMore}
+                LoadMoreData={OnLoadMoredata}
                 page={page}
-                totalpage={totalPages}
+                totalpages={totalPages}
             />
-        </section>
+        </section >
+
     );
 };
 
 export default Main;
+

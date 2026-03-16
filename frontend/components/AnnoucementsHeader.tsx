@@ -8,15 +8,20 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 import { optionsforLanguages } from "@/lib/lan"
+import { TranslateText } from '@/lib/translatetext';
+import { TextGenerateEffect } from "@/components/ui/text-generate-effect"
 
 const AnnoucementsHeader: React.FC = () => {
     const { language, onSelectLanguage } = useContext(LanguageContext)
 
     return (
-        <header className='h-14 flex items-center justify-between  pt-5 border-0  mx-auto w-[96vw] lg:w-[85vw]'>
-            <nav>
-                <span className='text-xl [font-family:var(--font-inter)] font-bold uppercase font-poppins text-black'>
-                    INDIANGOVTODAY
+        <header className='h-14 flex items-center justify-between  w-[97%] mx-auto mt-2'>
+            <nav className='flex flex-col gap-1'>
+                <span className='text-[1.3rem] font-poppins  font-bold  text-black'>
+                    IndanGovtToday
+                </span>
+                <span className='font-poppins text-xs uppercase text-[#aaaaaa] font-medium'>
+                    <TextGenerateEffect words={TranslateText[language].DIRECT_ACCESS_TO_VERIFIED_GOVT_CIRCULARS} />
                 </span>
             </nav>
             <nav>
@@ -26,13 +31,13 @@ const AnnoucementsHeader: React.FC = () => {
                 >
                     <SelectTrigger
                         IsLanguageSelect={true}
-                        className=" border-2 border-black text-black uppercase text-[0.8rem] font-poppins  rounded-none font-bold"
+                        className="text-[#555555] bg-[#FBF7F2] uppercase text-[0.7rem] font-inter  rounded-md font-semibold"
                     >
                         <SelectValue placeholder="Language" />
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent className='z-999' >
                         {optionsforLanguages.map((lan) => (
-                            <SelectItem key={lan.label} value={lan.label} className='font-medium'>
+                            <SelectItem key={lan.label} value={lan.label} className='font-poppins hover:bg-amber-100'>
                                 {lan.label}
                             </SelectItem>
                         ))}

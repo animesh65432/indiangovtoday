@@ -1,4 +1,4 @@
-import { Announcement, AnnouncementsResponse, TrendingAnnouncementTypes, ResponseTrendingAnnouncementTypes } from "./AnnouncementsTypes"
+import { ResponseCountAnnouncementTypes, CountAnnouncementTypes, Announcement, AnnouncementsResponse, TrendingAnnouncementTypes, ResponseTrendingAnnouncementTypes } from "./AnnouncementsTypes"
 export type AnnouncementsTypes = {
     _id: string,
     title: string,
@@ -81,8 +81,9 @@ export type ShowAnnouncementsTypes = {
     date: string,
     category: string,
     department: string,
-    sections: SectionTypes[]
+    sections: SectionTypes[],
+    image: string
 
 }
 
-export { Announcement, AnnouncementsResponse, TrendingAnnouncementTypes, ResponseTrendingAnnouncementTypes }
+export { ResponseCountAnnouncementTypes, CountAnnouncementTypes, Announcement, AnnouncementsResponse, TrendingAnnouncementTypes, ResponseTrendingAnnouncementTypes }
