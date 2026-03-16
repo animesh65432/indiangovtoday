@@ -32,14 +32,14 @@ const AnnouncementCard: React.FC<Props> = ({ Announcement }) => {
 
                 {/* Category */}
                 <span
-                    className={`absolute top-3 left-3 text-[11px] font-bold tracking-wide px-2 py-[3px] rounded uppercase ${categoryStyles[Announcement.category] || categoryStyles["Other"]
+                    className={`absolute top-3 left-3 text-[11px] font-bold tracking-wide px-2 py-0.75 rounded uppercase ${categoryStyles[Announcement.category] || categoryStyles["Other"]
                         }`}
                 >
                     {Announcement.category}
                 </span>
 
                 {/* Date */}
-                <span className="absolute bottom-3 right-3 text-[11px] font-inter bg-black/60 text-white px-2 py-[3px] rounded">
+                <span className="absolute bottom-3 right-3 text-[11px] font-inter bg-black/60 text-white px-2 py-0.75 rounded">
                     {formatDateInLanguage(Announcement.date, language)}
                 </span>
             </div>

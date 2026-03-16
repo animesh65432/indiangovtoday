@@ -1369,7 +1369,6 @@ export const TranslateText: Record<string, TranslationKeys> = {
             { label: "లదాఖ్", value: "లదాఖ్" },
             { label: "లక్షద్వీపులు", value: "లక్షద్వీప్లు" },
             { label: "పుదుచ్చేరి", value: "పుదుచ్చేరి" },
-
             { label: "భారత ప్రభుత్వం", value: "భారత ప్రభుత్వం" }
         ],
         PUBLIC_NOTIFICATION: "ప్రజా నోటిఫికేషన్",

@@ -4,7 +4,7 @@ import { Announcement as AnnouncementTypes, AnnouncementsResponse } from "@/type
 import { LanguageContext } from '@/context/Lan';
 import { Currentdate } from "@/context/Currentdate";
 import AnnoucementsHeader from '@/components/AnnoucementsHeader';
-import { GetStateCode } from "@/lib/GetStateCode"
+import { GetStateCode, normalizeGeoName } from "@/lib/GetStateCode"
 import { LocationContext } from "@/context/LocationProvider"
 import SerchInputbox from './SearchInputbox';
 import { TranslateText } from "@/lib/translatetext"
@@ -101,7 +101,7 @@ const Main: React.FC = () => {
         Setpage(1);
         fetchGetIndiaAnnouncements(1, false, controller.signal);
         return () => controller.abort();
-    }, [language, state_ut, trigger, DefaultsStatesApplied, DeparmentsSelected, AnnouncementsType]);
+    }, [language, state_ut, trigger, DefaultsStatesApplied, DeparmentsSelected, AnnouncementsType, startdate, endDate, StatesSelected]);
 
     useEffect(() => {
         if (state_ut) {
@@ -125,6 +125,8 @@ const Main: React.FC = () => {
         }
     }, [page]);
 
+
+
     const handleSearch = () => {
         if (StatesSelected.length === 0) {
             toast.error(`${TranslateText[language].NO_STATE_SELECTED}`);
@@ -142,11 +144,23 @@ const Main: React.FC = () => {
     }
 
     const handleStateClick = (state: string | null) => {
-        console.log("State clicked:", state);
+        if (!state) return;
+        SetStatesSelected((prev) => {
+            if (prev.includes(state)) {
+                return prev.filter((s) => s !== state);
+            } else {
+                return [...prev, state];
+            }
+        })
     }
 
-    const shouldShowMap = ShowIndiaMap && AnnouncementsType !== "Central Govt";
+    useEffect(() => {
+        if (!SearchInput) return;
+        const timer = setTimeout(() => handleSearch(), 500);
+        return () => clearTimeout(timer);
+    }, [SearchInput]);
 
+    const shouldShowMap = ShowIndiaMap && AnnouncementsType !== "Central Govt";
 
     return (
 

@@ -26,6 +26,7 @@ import {
     SheetTrigger,
 } from "@/components/ui/sheet"
 import MobileSearchInput from './MobileSearchInput'
+import Showfilters from './Showfilters'
 
 
 type Props = {
@@ -49,16 +50,9 @@ const SearchInputBox: React.FC<Props> = ({
 }) => {
     const [departmentOptions, setDepartmentOptions] = useState<string[]>([])
     const { SetIsLoading } = useContext(IsLoadingContext)
-    const [filtersOpen, setFiltersOpen] = useState(false)
-    const [mobileSheetOpen, setMobileSheetOpen] = useState(false)
-    const [startDateOpen, setStartDateOpen] = useState(false)
-    const [endDateOpen, setEndDateOpen] = useState(false)
 
     const { language } = useContext(LanguageContext)
     const { onChangeStartDate, startdate, endDate, onChangeEndDate } = useContext(Currentdate)
-
-    const activeFilterCount =
-        StatesSelected.length + (startdate ? 1 : 0) + (endDate ? 1 : 0)
 
     useEffect(() => {
         const controller = new AbortController();
@@ -104,9 +98,10 @@ const SearchInputBox: React.FC<Props> = ({
                     <Input
                         placeholder={TranslateText[language].INPUT_PLACEHOLDER}
                         style={{ paddingLeft: 30 }}
-                        className="bg-[#f8f7f2] placeholder:text-[13px]  md:placeholder:text-[0.9rem]  placeholder:font-inter w-full "
+                        className="bg-[#f8f7f2] placeholder:text-[13px] font-poppins  placeholder:font-poppins w-full "
                         value={SearchInput}
                         onChange={(e) => SetSearchInput(e.target.value)}
+                        onKeyDown={(e) => e.key === "Enter" && onSearch()}
                     />
                     <Search
                         className="absolute top-1/2 left-2 -translate-y-1/2 text-gray-500 cursor-pointer"
@@ -132,9 +127,10 @@ const SearchInputBox: React.FC<Props> = ({
                 <Input
                     placeholder={TranslateText[language].INPUT_PLACEHOLDER}
                     style={{ paddingLeft: 30 }}
-                    className="bg-[#f8f7f2] placeholder:text-[13px]  md:placeholder:text-[0.9rem]  placeholder:font-inter w-full "
+                    className="bg-[#f8f7f2] placeholder:text-[13px] font-poppins  placeholder:font-poppins w-full "
                     value={SearchInput}
                     onChange={(e) => SetSearchInput(e.target.value)}
+                    onKeyDown={(e) => e.key === "Enter" && onSearch()}
                 />
                 <Search
                     className="absolute top-1/2 left-2 -translate-y-1/2 text-gray-500 cursor-pointer"
@@ -147,7 +143,7 @@ const SearchInputBox: React.FC<Props> = ({
                     AnnouncementsType={AnnouncementsType}
                     SetAnnouncementsType={SetAnnouncementsType}
                 />
-                <Select>
+                <Select value={DeparmentsSelected} onValueChange={(value) => SetDeparmentsSelected(value)}>
                     <SelectTrigger className="w-fit h-3 bg-[#F8F7F2] rounded-md border border-[#E8E4DA]">
                         <SelectValue
                             className='placeholder:text-[#555555] text-[#555555] placeholder:font-poppins font-poppins'
@@ -161,7 +157,6 @@ const SearchInputBox: React.FC<Props> = ({
                                     key={dept}
                                     value={dept}
                                     className='hover:bg-[#F8F7F2] hover:text-[#555555] hover:font-semibold'
-                                    onSelect={() => SetDeparmentsSelected(dept)}
                                 >
                                     {dept}
                                 </SelectItem>
@@ -183,7 +178,7 @@ const SearchInputBox: React.FC<Props> = ({
                                     key={dept}
                                     value={dept}
                                     className='hover:bg-[#F8F7F2] hover:text-[#555555] hover:font-semibold'
-                                    onSelect={() => SetDeparmentsSelected(dept)}
+                                    onSelect={() => console.log(dept)}
                                 >
                                     {dept}
                                 </SelectItem>
@@ -194,7 +189,7 @@ const SearchInputBox: React.FC<Props> = ({
                 <Popover >
                     <PopoverTrigger asChild>
                         <Button
-                            className="w-fit  bg-[#F8F7F2]  font-poppins text-[#555555] border border-[#E8E4DA] font-semibold rounded-md"
+                            className="w-fit  bg-[#F8F7F2] text-[11px] md:text-[12px]  font-poppins text-[#555555] border border-[#E8E4DA] font-semibold rounded-md"
                         >
                             {format(startdate, "PPP")}
                             <CalenderIcon className="ml-1" size={14} />
@@ -206,6 +201,7 @@ const SearchInputBox: React.FC<Props> = ({
                             selected={startdate}
                             defaultMonth={startdate}
                             className='font-poppins'
+                            onSelect={(date) => date && onChangeStartDate(date)}
                         />
                     </PopoverContent>
                 </Popover>
@@ -213,7 +209,7 @@ const SearchInputBox: React.FC<Props> = ({
                 <Popover>
                     <PopoverTrigger asChild>
                         <Button
-                            className="w-fit  bg-[#F8F7F2]  font-poppins text-[#555555] border border-[#E8E4DA] font-semibold rounded-md"
+                            className="w-fit  bg-[#F8F7F2] text-[11px] md:text-[12px]  font-poppins text-[#555555] border border-[#E8E4DA] font-semibold rounded-md"
                         >
                             {format(endDate, "PPP")}
                             <CalenderIcon className="ml-1" size={14} />
@@ -224,10 +220,18 @@ const SearchInputBox: React.FC<Props> = ({
                             mode="single"
                             selected={endDate}
                             defaultMonth={endDate}
+                            onSelect={(date) => date && onChangeEndDate(date)}
                         />
                     </PopoverContent>
                 </Popover>
             </div>
+
+            <Showfilters
+                selectedDepartment={DeparmentsSelected}
+                category={AnnouncementsType}
+                selectedStates={StatesSelected}
+                SetStatesSelected={SetStatesSelected}
+            />
         </div>
     )
 }

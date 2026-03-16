@@ -83,6 +83,5 @@ export const getTooltipHTML = (
 
 export const checkIfStateSelected = (state: string, selectedStates: string[]): boolean => {
     const normalizedState = normalizeGeoName(state);
-    console.log(normalizedState);
     return selectedStates.some(selected => normalizeGeoName(selected) === normalizedState);
 }

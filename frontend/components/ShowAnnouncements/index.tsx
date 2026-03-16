@@ -48,7 +48,7 @@ const ShowAnnouncements: React.FC<Props> = ({
     }
 
     return (
-        <div className='bg-[#f8f7f2] border border-t border-[#E8E4DA] p-6 pt-12 flex-1'>
+        <div className='bg-[#f8f7f2] border border-t border-[#E8E4DA] p-6 pt-8 flex-1'>
             <div className='overflow-x-auto   grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-5 pt-2'>
                 {Announcements.map((ann) => (
                     <Announcement
