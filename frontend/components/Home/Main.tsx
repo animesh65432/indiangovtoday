@@ -25,7 +25,7 @@ const Main: React.FC = () => {
     const [StatesSelected, SetStatesSelected] = useState<string[]>([]);
     const [AnnouncementsType, SetAnnouncementsType] = useState<"All" | "Central Govt" | "States Govt">(`All`);
     const [DeparmentsSelected, SetDeparmentsSelected] = useState<string>(``);
-
+    const [CategoriesSelected, SetCategoriesSelected] = useState<string>(``);
     const [totalPages, settotalPages] = useState<number>(0)
     const [departmentOptions, setDepartmentOptions] = useState<string[]>([])
     const [categoryOptions, setCategoryOptions] = useState<string[]>([])
@@ -185,6 +185,8 @@ const Main: React.FC = () => {
                     setDepartmentOptions={setDepartmentOptions}
                     categoryOptions={categoryOptions}
                     setCategoryOptions={setCategoryOptions}
+                    CategoriesSelected={CategoriesSelected}
+                    SetCategoriesSelected={SetCategoriesSelected}
                 />
             </div>
             {shouldShowMap &&
@@ -233,6 +235,8 @@ const Main: React.FC = () => {
                     setDepartmentOptions={setDepartmentOptions}
                     categoryOptions={categoryOptions}
                     setCategoryOptions={setCategoryOptions}
+                    CategoriesSelected={CategoriesSelected}
+                    SetCategoriesSelected={SetCategoriesSelected}
                 />
             </div>
             <MobileShowAnnoucments

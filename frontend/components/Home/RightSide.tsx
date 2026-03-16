@@ -24,7 +24,9 @@ type Props = {
     departmentOptions: string[]
     setDepartmentOptions: React.Dispatch<React.SetStateAction<string[]>>
     categoryOptions: string[]
-    setCategoryOptions: React.Dispatch<React.SetStateAction<string[]>>
+    setCategoryOptions: React.Dispatch<React.SetStateAction<string[]>>,
+    CategoriesSelected: string
+    SetCategoriesSelected: React.Dispatch<React.SetStateAction<string>>
 }
 
 const RightSide: React.FC<Props> = ({
@@ -46,7 +48,9 @@ const RightSide: React.FC<Props> = ({
     departmentOptions,
     setDepartmentOptions,
     categoryOptions,
-    setCategoryOptions
+    setCategoryOptions,
+    CategoriesSelected,
+    SetCategoriesSelected
 }) => {
     return (
         <div className='flex flex-col gap-2 h-screen '>
@@ -66,7 +70,8 @@ const RightSide: React.FC<Props> = ({
                 setDepartmentOptions={setDepartmentOptions}
                 categoryOptions={categoryOptions}
                 setCategoryOptions={setCategoryOptions}
-
+                CategoriesSelected={CategoriesSelected}
+                SetCategoriesSelected={SetCategoriesSelected}
             />
             <div className="flex-1 overflow-y-auto">
                 <ShowAnnouncements

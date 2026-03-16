@@ -17,6 +17,10 @@ const Showfilters: React.FC<Props> = ({ SetStatesSelected, selectedDepartment, c
         SetStatesSelected((prev) => prev.filter((s) => s !== state));
     }
 
+    const handleClearAll = () => {
+        SetStatesSelected([]);
+    }
+
     return (
         <div className='w-full border-t border-[#E8E4DA] flex  justify-between items-center pt-2'>
             <div className='flex gap-2 items-center flex-wrap'>
@@ -66,7 +70,7 @@ const Showfilters: React.FC<Props> = ({ SetStatesSelected, selectedDepartment, c
                 </div>
 
             </div>
-            <div className='text-[#787373] text-[11px] underline font-poppins hover:cursor-pointer'>Clear all</div>
+            <div onClick={handleClearAll} className='text-[#787373] text-[11px] underline font-poppins hover:cursor-pointer'>Clear all</div>
         </div>
     )
 }

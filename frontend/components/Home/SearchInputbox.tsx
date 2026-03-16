@@ -43,6 +43,8 @@ type Props = {
     setDepartmentOptions: React.Dispatch<React.SetStateAction<string[]>>
     categoryOptions: string[]
     setCategoryOptions: React.Dispatch<React.SetStateAction<string[]>>
+    CategoriesSelected: string
+    SetCategoriesSelected: React.Dispatch<React.SetStateAction<string>>
 }
 
 const SearchInputBox: React.FC<Props> = ({
@@ -54,10 +56,11 @@ const SearchInputBox: React.FC<Props> = ({
     departmentOptions,
     setDepartmentOptions,
     categoryOptions,
-    setCategoryOptions
+    setCategoryOptions,
+    CategoriesSelected,
+    SetCategoriesSelected
 }) => {
     const { SetIsLoading } = useContext(IsLoadingContext)
-
     const { language } = useContext(LanguageContext)
     const { onChangeStartDate, startdate, endDate, onChangeEndDate } = useContext(Currentdate)
 
@@ -122,6 +125,8 @@ const SearchInputBox: React.FC<Props> = ({
         return () => controller.abort();
 
     }, [language, StatesSelected]);
+
+    const ShowfiltersComponent = StatesSelected.length > 0 || DeparmentsSelected.length > 0 || CategoriesSelected.length > 0 || AnnouncementsType !== "All"
 
     return (
         <div className='w-[97%] mx-auto  flex flex-col gap-2'>
@@ -211,7 +216,7 @@ const SearchInputBox: React.FC<Props> = ({
                     </SelectTrigger>
                     <SelectContent className='text-[0.9rem]  uppercase z-9999 '>
                         <SelectGroup>
-                            {departmentOptions.map((dept) => (
+                            {categoryOptions.map((dept) => (
                                 <SelectItem
                                     key={dept}
                                     value={dept}
@@ -263,13 +268,14 @@ const SearchInputBox: React.FC<Props> = ({
                     </PopoverContent>
                 </Popover>
             </div>
-
-            <Showfilters
-                selectedDepartment={DeparmentsSelected}
-                category={AnnouncementsType}
-                selectedStates={StatesSelected}
-                SetStatesSelected={SetStatesSelected}
-            />
+            {ShowfiltersComponent &&
+                <Showfilters
+                    selectedDepartment={DeparmentsSelected}
+                    category={CategoriesSelected}
+                    selectedStates={StatesSelected}
+                    SetStatesSelected={SetStatesSelected}
+                />
+            }
         </div>
     )
 }
