@@ -27,6 +27,8 @@ import {
 } from "@/components/ui/sheet"
 import MobileSearchInput from './MobileSearchInput'
 import Showfilters from './Showfilters'
+import { withCache, buildCacheKey } from "@/lib/lsCache"
+
 
 
 type Props = {
@@ -71,8 +73,11 @@ const SearchInputBox: React.FC<Props> = ({
             SetIsLoading(true);
             setDepartmentOptions([]);
             try {
-                const response = await GetallAnnoucementsDepartments(
-                    language, startdate, endDate, StatesSelected, controller.signal
+
+                const key = buildCacheKey("Departments", { language, startdate, endDate, states: StatesSelected });
+
+                const response = await withCache(key, "Departments", () =>
+                    GetallAnnoucementsDepartments(language, startdate, endDate, StatesSelected, controller.signal)
                 ) as { data: string[] };
 
                 if (!controller.signal.aborted) {
@@ -102,8 +107,10 @@ const SearchInputBox: React.FC<Props> = ({
             SetIsLoading(true);
             setCategoryOptions([]);
             try {
-                const response = await GetAllCategoriesAnnouncements(
-                    language, startdate, endDate, StatesSelected, controller.signal
+                const key = buildCacheKey("categories", { language, startdate, endDate, states: StatesSelected });
+
+                const response = await withCache(key, "categories", () =>
+                    GetAllCategoriesAnnouncements(language, startdate, endDate, StatesSelected, controller.signal)
                 ) as { data: string[] };
 
                 if (!controller.signal.aborted) {
@@ -207,7 +214,7 @@ const SearchInputBox: React.FC<Props> = ({
                         </SelectGroup>
                     </SelectContent>
                 </Select>
-                <Select>
+                <Select value={CategoriesSelected} onValueChange={(value) => SetCategoriesSelected(value)}>
                     <SelectTrigger className="w-fit h-3 bg-[#F8F7F2] rounded-md border border-[#E8E4DA]">
                         <SelectValue
                             className='placeholder:text-[#555555] text-[#555555] placeholder:font-poppins font-poppins'
@@ -271,9 +278,11 @@ const SearchInputBox: React.FC<Props> = ({
             {ShowfiltersComponent &&
                 <Showfilters
                     selectedDepartment={DeparmentsSelected}
-                    category={CategoriesSelected}
                     selectedStates={StatesSelected}
                     SetStatesSelected={SetStatesSelected}
+                    CategoriesSelected={CategoriesSelected}
+                    SetCategoriesSelected={SetCategoriesSelected}
+                    SetDeparmentsSelected={SetDeparmentsSelected}
                 />
             }
         </div>

@@ -6,6 +6,7 @@ import { LanguageContext } from "@/context/Lan"
 import { formatDateInLanguage } from "@/lib/formatDate"
 import { useRouter } from "next/navigation"
 import { categoryStyles } from "@/lib/categoryStyles"
+import Image from "next/image"
 
 
 type Props = {
@@ -21,12 +22,12 @@ const AnnouncementCard: React.FC<Props> = ({ Announcement }) => {
 
             {/* Image */}
             <div className="relative h-40 w-full">
-                <img
-                    src={Announcement.image ?? "/default-announcement.jpg"}
+                <Image
+                    src={Announcement.image!}
                     alt={Announcement.title}
-                    className="w-full h-full object-cover"
+                    fill
+                    className="object-cover"
                 />
-
                 {/* Gradient */}
                 <div className="absolute inset-0 bg-linear-to-t from-black/40 via-black/10 to-transparent" />
 

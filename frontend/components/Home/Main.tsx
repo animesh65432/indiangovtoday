@@ -1,10 +1,10 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState, useContext, useRef } from 'react';
 import { getAllAnnouncements } from "@/api/announcements";
 import { Announcement as AnnouncementTypes, AnnouncementsResponse } from "@/types";
 import { LanguageContext } from '@/context/Lan';
 import { Currentdate } from "@/context/Currentdate";
 import AnnoucementsHeader from '@/components/AnnoucementsHeader';
-import { GetStateCode, normalizeGeoName } from "@/lib/GetStateCode"
+import { GetStateCode } from "@/lib/GetStateCode"
 import { LocationContext } from "@/context/LocationProvider"
 import SerchInputbox from './SearchInputbox';
 import { TranslateText } from "@/lib/translatetext"
@@ -13,6 +13,7 @@ import dynamic from 'next/dynamic';
 import RightSide from './RightSide';
 import { ChevronDown, ChevronUp } from "lucide-react"
 import MobileShowAnnoucments from './MobileShowAnnoucments';
+import { buildCacheKey, withCache } from "@/lib/lsCache";
 
 
 const IndiaMap = dynamic(() => import("../IndiaMap"), {
@@ -31,6 +32,7 @@ const Main: React.FC = () => {
     const [categoryOptions, setCategoryOptions] = useState<string[]>([])
     const [IsLoading, SetIsLoading] = useState<boolean>(false)
     const [IsLoadingMore, SetIsLoadingMore] = useState<boolean>(false)
+    const firstLoad = useRef(true);
     const [Announcements, SetAnnouncements] = useState<AnnouncementTypes[]>([])
     const [page, Setpage] = useState<number>(1)
     const [limit] = useState<number>(10)
@@ -76,10 +78,14 @@ const Main: React.FC = () => {
 
             const DeparMentsPayload = TranslateText[language].ALL_DEPARMENTS === DeparmentsSelected ? "" : DeparmentsSelected;
 
-            const response = await getAllAnnouncements(
-                language, startdate, endDate, pageNumber, limit,
-                filteredStates, DeparMentsPayload, SearchInput, signal
-            ) as AnnouncementsResponse;
+            const key = buildCacheKey("announcements", { language, startdate, endDate, page, states: filteredStates, dept: DeparMentsPayload, search: SearchInput })
+
+            const response = await withCache(key, "announcements", async () => (
+                await getAllAnnouncements(
+                    language, startdate, endDate, pageNumber, limit,
+                    filteredStates, DeparMentsPayload, SearchInput, signal
+                ) as AnnouncementsResponse
+            ));
 
             if (!signal.aborted) {
                 settotalPages(response.pagination.totalPages);
@@ -99,11 +105,27 @@ const Main: React.FC = () => {
     }
 
     useEffect(() => {
+        if (firstLoad.current) {
+            firstLoad.current = false;
+            return;
+        }
         const controller = new AbortController();
+
         Setpage(1);
         fetchGetIndiaAnnouncements(1, false, controller.signal);
+
         return () => controller.abort();
-    }, [language, state_ut, trigger, DefaultsStatesApplied, DeparmentsSelected, AnnouncementsType, startdate, endDate, StatesSelected]);
+    }, [
+        CategoriesSelected,
+        language,
+        state_ut,
+        trigger,
+        DeparmentsSelected,
+        AnnouncementsType,
+        startdate,
+        endDate,
+        StatesSelected
+    ]);
 
     useEffect(() => {
         if (state_ut) {

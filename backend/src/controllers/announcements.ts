@@ -8,7 +8,7 @@ import { PrasePayloadArray } from "../utils/translatePayloadAnnoucements"
 
 export const GetIndiaAnnouncements = asyncErrorHandler(async (req: Request, res: Response) => {
 
-    const { target_lan, startDate, endDate, page, limit, states, department, SearchInput } = req.query;
+    const { categories, target_lan, startDate, endDate, page, limit, states, department, SearchInput } = req.query;
 
     const pageNumber = parseInt(page as string) || 1;
     const pageSize = parseInt(limit as string) || 10;
@@ -17,6 +17,8 @@ export const GetIndiaAnnouncements = asyncErrorHandler(async (req: Request, res:
     const selectedStates = PrasePayloadArray(states as string);
 
     const Department = department ? department.toString().trim() : "";
+
+    const Categories = categories ? categories.toString().trim() : "";
 
     const announcementsStartDate = startDate
         ? new Date(startDate as string)
@@ -29,8 +31,7 @@ export const GetIndiaAnnouncements = asyncErrorHandler(async (req: Request, res:
     const StateCachePart = selectedStates.sort().join(",");
     const SearchCachePart = SearchInput ? `_search${SearchInput}` : "";
 
-    const redis_key = `Announcements_${targetLanguage}_${announcementsStartDate.toISOString().split('T')[0]}_${announcementsEndDate.toISOString().split('T')[0]}_page${page}_limit${limit}_${StateCachePart}_${Department}${SearchCachePart}`;
-
+    const redis_key = `Announcements_${targetLanguage}_${announcementsStartDate.toISOString().split('T')[0]}_${announcementsEndDate.toISOString().split('T')[0]}_page${page}_limit${limit}_${StateCachePart}_${Department}${SearchCachePart}_${Categories}`;
     const cached_data = await redis.get(redis_key);
 
     if (cached_data && typeof cached_data === "string") {
@@ -116,7 +117,8 @@ export const GetIndiaAnnouncements = asyncErrorHandler(async (req: Request, res:
             date: { $gte: start, $lte: end },
             language: targetLanguage,
             state: selectedStates.length > 0 ? { $in: selectedStates } : { $exists: true },
-            department: Department ? Department : { $exists: true }
+            department: Department ? Department : { $exists: true },
+            category: Categories ? Categories : { $exists: true }
         };
 
         const collationOptions = { collation: { locale: 'simple', strength: 1 } };

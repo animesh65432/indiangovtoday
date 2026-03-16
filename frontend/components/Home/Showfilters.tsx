@@ -5,12 +5,14 @@ import { TranslateText } from '@/lib/translatetext'
 
 type Props = {
     selectedDepartment: string,
-    category: string,
     selectedStates: string[],
     SetStatesSelected: React.Dispatch<React.SetStateAction<string[]>>,
+    CategoriesSelected: string
+    SetCategoriesSelected: React.Dispatch<React.SetStateAction<string>>,
+    SetDeparmentsSelected: React.Dispatch<React.SetStateAction<string>>,
 }
 
-const Showfilters: React.FC<Props> = ({ SetStatesSelected, selectedDepartment, category, selectedStates }) => {
+const Showfilters: React.FC<Props> = ({ SetDeparmentsSelected, CategoriesSelected, SetCategoriesSelected, SetStatesSelected, selectedDepartment, selectedStates }) => {
     const { language } = useContext(LanguageContext)
 
     const handleStateRemove = (state: string) => {
@@ -19,6 +21,8 @@ const Showfilters: React.FC<Props> = ({ SetStatesSelected, selectedDepartment, c
 
     const handleClearAll = () => {
         SetStatesSelected([]);
+        SetCategoriesSelected("");
+        SetDeparmentsSelected("");
     }
 
     return (
@@ -44,7 +48,7 @@ const Showfilters: React.FC<Props> = ({ SetStatesSelected, selectedDepartment, c
                         )
                     })}
                     {selectedDepartment.length > 0 &&
-                        <div className='w-fit flex items-center text-[11px] font-poppins  text-[#92400E] font-semibold border border-[#F2C572] px-2 py-0.5 bg-[#FEF3C7] rounded'>
+                        <div onClick={() => SetDeparmentsSelected("")} className='w-fit flex items-center text-[11px] font-poppins  text-[#92400E] font-semibold border border-[#F2C572] px-2 py-0.5 bg-[#FEF3C7] rounded'>
                             {selectedDepartment}
                             <span>
                                 <X
@@ -55,9 +59,9 @@ const Showfilters: React.FC<Props> = ({ SetStatesSelected, selectedDepartment, c
                             </span>
                         </div>
                     }
-                    {category.length > 0 &&
-                        <div className='w-fit flex items-center text-[11px] font-poppins  text-[#92400E] font-semibold border border-[#F2C572] px-2 py-0.5 bg-[#FEF3C7] rounded'>
-                            {category}
+                    {CategoriesSelected.length > 0 &&
+                        <div onClick={() => SetCategoriesSelected("")} className='w-fit flex items-center text-[11px] font-poppins  text-[#92400E] font-semibold border border-[#F2C572] px-2 py-0.5 bg-[#FEF3C7] rounded'>
+                            {CategoriesSelected}
                             <span>
                                 <X
                                     size={12}
