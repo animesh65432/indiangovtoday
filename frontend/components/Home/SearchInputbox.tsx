@@ -47,6 +47,14 @@ type Props = {
     setCategoryOptions: React.Dispatch<React.SetStateAction<string[]>>
     CategoriesSelected: string
     SetCategoriesSelected: React.Dispatch<React.SetStateAction<string>>
+    handleMobileApply: (dept: string,
+        category: string,
+        states: string[],
+        startDate: Date | null,
+        endDate: Date | null) => void
+    handleMobileReset: () => void,
+    sheetOpen: boolean,
+    setSheetOpen: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 const SearchInputBox: React.FC<Props> = ({
@@ -60,7 +68,11 @@ const SearchInputBox: React.FC<Props> = ({
     categoryOptions,
     setCategoryOptions,
     CategoriesSelected,
-    SetCategoriesSelected
+    SetCategoriesSelected,
+    handleMobileApply,
+    handleMobileReset,
+    sheetOpen,
+    setSheetOpen
 }) => {
     const { SetIsLoading } = useContext(IsLoadingContext)
     const { language } = useContext(LanguageContext)
@@ -160,14 +172,20 @@ const SearchInputBox: React.FC<Props> = ({
                     />
                 </div>
                 <div>
-                    <Sheet >
+                    <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
                         <SheetTrigger asChild>
                             <ListFilterPlus />
                         </SheetTrigger>
                         <SheetContent side="bottom" className="z-9999 h-fit">
                             <MobileSearchInput
                                 departmentOptions={departmentOptions}
-                                SetDeparmentsSelected={SetDeparmentsSelected}
+                                categoryOptions={categoryOptions}
+                                setCategoryOptions={setCategoryOptions}
+                                CategoriesSelected={CategoriesSelected}
+                                DeparmentsSelected={DeparmentsSelected}
+                                StatesSelected={StatesSelected}
+                                onApply={handleMobileApply}
+                                onReset={handleMobileReset}
                             />
                         </SheetContent>
                     </Sheet>

@@ -362,3 +362,16 @@ input {
 .leaflet-tooltip.govtrack-tooltip::before {
   display: none !important;
 }
+
+/* Yellow theme override scoped to mobile filter panel only */
+.mobile-filter-panel {
+  --primary: #FFD600;
+  --primary-foreground: #111111;
+}
+
+/* Badge chips inside MultiSelect */
+.mobile-filter-panel [data-slot="badge"] {
+  background-color: #FEF3C7;
+  border-color: #e2680a;
+  color: #111;
+}

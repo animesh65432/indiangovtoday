@@ -26,7 +26,16 @@ type Props = {
     categoryOptions: string[]
     setCategoryOptions: React.Dispatch<React.SetStateAction<string[]>>,
     CategoriesSelected: string
-    SetCategoriesSelected: React.Dispatch<React.SetStateAction<string>>
+    SetCategoriesSelected: React.Dispatch<React.SetStateAction<string>>,
+    sheetOpen: boolean,
+    setSheetOpen: React.Dispatch<React.SetStateAction<boolean>>,
+    handleMobileApply: (dept: string,
+        category: string,
+        states: string[],
+        startDate: Date | null,
+        endDate: Date | null) => void
+    handleMobileReset: () => void,
+
 }
 
 const RightSide: React.FC<Props> = ({
@@ -50,7 +59,11 @@ const RightSide: React.FC<Props> = ({
     categoryOptions,
     setCategoryOptions,
     CategoriesSelected,
-    SetCategoriesSelected
+    SetCategoriesSelected,
+    sheetOpen,
+    setSheetOpen,
+    handleMobileApply,
+    handleMobileReset
 }) => {
     return (
         <div className='flex flex-col gap-2 h-screen '>
@@ -72,6 +85,10 @@ const RightSide: React.FC<Props> = ({
                 setCategoryOptions={setCategoryOptions}
                 CategoriesSelected={CategoriesSelected}
                 SetCategoriesSelected={SetCategoriesSelected}
+                sheetOpen={sheetOpen}
+                setSheetOpen={setSheetOpen}
+                handleMobileApply={handleMobileApply}
+                handleMobileReset={handleMobileReset}
             />
             <div className="flex-1 overflow-y-auto">
                 <ShowAnnouncements

@@ -24,6 +24,7 @@ const Main: React.FC = () => {
     const { language } = useContext(LanguageContext);
     const [SearchInput, SetSearchInput] = useState<string>("")
     const [StatesSelected, SetStatesSelected] = useState<string[]>([]);
+    const [sheetOpen, setSheetOpen] = useState(false)
     const [AnnouncementsType, SetAnnouncementsType] = useState<"All" | "Central Govt" | "States Govt">(`All`);
     const [DeparmentsSelected, SetDeparmentsSelected] = useState<string>(``);
     const [CategoriesSelected, SetCategoriesSelected] = useState<string>(``);
@@ -37,7 +38,7 @@ const Main: React.FC = () => {
     const [page, Setpage] = useState<number>(1)
     const [limit] = useState<number>(10)
 
-    const { startdate, endDate } = useContext(Currentdate)
+    const { startdate, endDate, onChangeEndDate, onChangeStartDate } = useContext(Currentdate)
     const { state_ut } = useContext(LocationContext)
 
     const [DefaultsStatesApplied, SetDefaultsStatesApplied] = useState<string[]>([])
@@ -186,6 +187,42 @@ const Main: React.FC = () => {
 
     const shouldShowMap = ShowIndiaMap && AnnouncementsType !== "Central Govt";
 
+    const handleMobileApply = (
+        dept: string,
+        category: string,
+        states: string[],
+        startDate: Date | null,
+        endDate: Date | null
+    ) => {
+        SetDeparmentsSelected(dept)
+        SetCategoriesSelected(category)
+        SetStatesSelected(states)
+        if (startDate) onChangeStartDate(startDate)
+        if (endDate) onChangeEndDate(endDate)
+        setSheetOpen(false)
+    }
+
+    const handleMobileReset = () => {
+        SetDeparmentsSelected("")
+        SetCategoriesSelected("")
+        const today = new Date();
+        const ThirteenDaysAgo = new Date();
+        ThirteenDaysAgo.setDate(today.getDate() - 30);
+        onChangeStartDate(ThirteenDaysAgo);
+        onChangeEndDate(today);
+        if (state_ut) {
+            const INDIA_GOVT_CODE = TranslateText[language]["MULTISELECT_OPTIONS"][TranslateText[language]["MULTISELECT_OPTIONS"].length - 1].value;
+            SetStatesSelected([INDIA_GOVT_CODE, userStateCode]);
+            SetDefaultsStatesApplied([INDIA_GOVT_CODE, userStateCode]);
+        }
+        else {
+            const INDIA_GOVT_CODE = TranslateText[language]["MULTISELECT_OPTIONS"][TranslateText[language]["MULTISELECT_OPTIONS"].length - 1].value;
+            SetStatesSelected([INDIA_GOVT_CODE]);
+            SetDefaultsStatesApplied([INDIA_GOVT_CODE]);
+        }
+        setSheetOpen(false)
+    }
+
     return (
 
         <section className="flex flex-col md:flex-row w-full h-screen md:min-h-screen overflow-hidden md:overflow-visible  ">
@@ -209,21 +246,25 @@ const Main: React.FC = () => {
                     setCategoryOptions={setCategoryOptions}
                     CategoriesSelected={CategoriesSelected}
                     SetCategoriesSelected={SetCategoriesSelected}
+                    handleMobileApply={handleMobileApply}
+                    handleMobileReset={handleMobileReset}
+                    sheetOpen={sheetOpen}
+                    setSheetOpen={setSheetOpen}
                 />
             </div>
-            {shouldShowMap &&
-                <div className="flex mt-2 md:mt-0 items-center justify-between md:hidden px-3 py-1 border border-[#E5E2D8]">
-                    <span className="flex items-center gap-1">
-                        <span>🗺️ </span>
-                        <span className="text-[13px] font-inter font-semibold text-[#555555]">Indian Map</span>
-                    </span>
-                    {ShowIndiaMap ? (
-                        <ChevronUp onClick={() => SetShowIndiaMap(false)} className="w-4 h-4 text-[#555]" />
-                    ) : (
-                        <ChevronDown onClick={() => SetShowIndiaMap(true)} className="w-4 h-4 text-[#555]" />
-                    )}
-                </div>
-            }
+
+            <div className="flex mt-2 md:mt-0 items-center justify-between md:hidden px-3 py-1 border border-[#E5E2D8]">
+                <span className="flex items-center gap-1">
+                    <span>🗺️ </span>
+                    <span className="text-[13px] font-inter font-semibold text-[#555555]">Indian Map</span>
+                </span>
+                {ShowIndiaMap ? (
+                    <ChevronUp onClick={() => SetShowIndiaMap(false)} className="w-4 h-4 text-[#555]" />
+                ) : (
+                    <ChevronDown onClick={() => SetShowIndiaMap(true)} className="w-4 h-4 text-[#555]" />
+                )}
+            </div>
+
             {shouldShowMap &&
                 <div className="h-[30vh] md:w-[40vw] xl:w-[25vw] md:shrink-0">
                     <IndiaMap
@@ -259,6 +300,10 @@ const Main: React.FC = () => {
                     setCategoryOptions={setCategoryOptions}
                     CategoriesSelected={CategoriesSelected}
                     SetCategoriesSelected={SetCategoriesSelected}
+                    sheetOpen={sheetOpen}
+                    setSheetOpen={setSheetOpen}
+                    handleMobileApply={handleMobileApply}
+                    handleMobileReset={handleMobileReset}
                 />
             </div>
             <MobileShowAnnoucments
@@ -275,3 +320,4 @@ const Main: React.FC = () => {
 };
 
 export default Main;
+
