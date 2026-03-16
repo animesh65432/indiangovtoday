@@ -18,7 +18,9 @@ type Props = {
     page: number
     totalpages: number
     IsLoading: boolean
-    IsLoadingMore: boolean
+    IsLoadingMore: boolean;
+    AnnouncementsType: "All" | "Central Govt" | "States Govt",
+    SetAnnouncementsType: React.Dispatch<React.SetStateAction<"All" | "Central Govt" | "States Govt">>
 
 }
 
@@ -35,7 +37,9 @@ const RightSide: React.FC<Props> = ({
     page,
     totalpages,
     IsLoading,
-    IsLoadingMore
+    IsLoadingMore,
+    AnnouncementsType,
+    SetAnnouncementsType
 }) => {
     return (
         <div className='flex flex-col gap-2 h-screen '>
@@ -49,6 +53,8 @@ const RightSide: React.FC<Props> = ({
                 SearchInput={SearchInput}
                 SetSearchInput={SetSearchInput}
                 onSearch={onSearch}
+                AnnouncementsType={AnnouncementsType}
+                SetAnnouncementsType={SetAnnouncementsType}
             />
             <div className="flex-1 overflow-y-auto">
                 <ShowAnnouncements

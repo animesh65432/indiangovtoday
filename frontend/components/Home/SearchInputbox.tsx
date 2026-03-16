@@ -36,13 +36,16 @@ type Props = {
     SearchInput: string
     SetSearchInput: React.Dispatch<React.SetStateAction<string>>
     onSearch: () => void,
+    AnnouncementsType: "All" | "Central Govt" | "States Govt",
+    SetAnnouncementsType: React.Dispatch<React.SetStateAction<"All" | "Central Govt" | "States Govt">>
 }
 
 const SearchInputBox: React.FC<Props> = ({
     StatesSelected, SetStatesSelected,
     DeparmentsSelected, SetDeparmentsSelected,
     SearchInput, SetSearchInput,
-    onSearch
+    onSearch,
+    AnnouncementsType, SetAnnouncementsType
 }) => {
     const [departmentOptions, setDepartmentOptions] = useState<string[]>([])
     const { SetIsLoading } = useContext(IsLoadingContext)
@@ -50,7 +53,6 @@ const SearchInputBox: React.FC<Props> = ({
     const [mobileSheetOpen, setMobileSheetOpen] = useState(false)
     const [startDateOpen, setStartDateOpen] = useState(false)
     const [endDateOpen, setEndDateOpen] = useState(false)
-    const [AnnouncementsType, SetAnnouncementsType] = useState<"All" | "Central Govt" | "States Govt">(`All`)
 
     const { language } = useContext(LanguageContext)
     const { onChangeStartDate, startdate, endDate, onChangeEndDate } = useContext(Currentdate)
@@ -117,7 +119,7 @@ const SearchInputBox: React.FC<Props> = ({
                         <SheetTrigger asChild>
                             <ListFilterPlus />
                         </SheetTrigger>
-                        <SheetContent side="bottom" className="z-[9999] h-fit">
+                        <SheetContent side="bottom" className="z-9999 h-fit">
                             <MobileSearchInput
                                 departmentOptions={departmentOptions}
                                 SetDeparmentsSelected={SetDeparmentsSelected}

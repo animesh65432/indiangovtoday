@@ -60,11 +60,23 @@ const Main: React.FC = () => {
 
         try {
 
+            const INDIA_GOVT_CODE = TranslateText[language]["MULTISELECT_OPTIONS"][
+                TranslateText[language]["MULTISELECT_OPTIONS"].length - 1
+            ].value;
+
+
+            const filteredStates =
+                AnnouncementsType === "Central Govt"
+                    ? StatesSelected.filter(s => s === INDIA_GOVT_CODE)
+                    : AnnouncementsType === "States Govt"
+                        ? StatesSelected.filter(s => s !== INDIA_GOVT_CODE)
+                        : StatesSelected;
+
             const DeparMentsPayload = TranslateText[language].ALL_DEPARMENTS === DeparmentsSelected ? "" : DeparmentsSelected;
 
             const response = await getAllAnnouncements(
                 language, startdate, endDate, pageNumber, limit,
-                StatesSelected, DeparMentsPayload, SearchInput, signal
+                filteredStates, DeparMentsPayload, SearchInput, signal
             ) as AnnouncementsResponse;
 
             if (!signal.aborted) {
@@ -89,7 +101,7 @@ const Main: React.FC = () => {
         Setpage(1);
         fetchGetIndiaAnnouncements(1, false, controller.signal);
         return () => controller.abort();
-    }, [language, state_ut, trigger, DefaultsStatesApplied, DeparmentsSelected]);
+    }, [language, state_ut, trigger, DefaultsStatesApplied, DeparmentsSelected, AnnouncementsType]);
 
     useEffect(() => {
         if (state_ut) {
@@ -133,6 +145,9 @@ const Main: React.FC = () => {
         console.log("State clicked:", state);
     }
 
+    const shouldShowMap = ShowIndiaMap && AnnouncementsType !== "Central Govt";
+
+
     return (
 
         <section className="flex flex-col md:flex-row w-full h-screen md:min-h-screen overflow-hidden md:overflow-visible  ">
@@ -148,20 +163,24 @@ const Main: React.FC = () => {
                     SetDeparmentsSelected={SetDeparmentsSelected}
                     StatesSelected={StatesSelected}
                     SetStatesSelected={SetStatesSelected}
+                    AnnouncementsType={AnnouncementsType}
+                    SetAnnouncementsType={SetAnnouncementsType}
                 />
             </div>
-            <div className="flex mt-2 md:mt-0 items-center justify-between md:hidden px-3 py-1 border border-[#E5E2D8]">
-                <span className="flex items-center gap-1">
-                    <span>🗺️ </span>
-                    <span className="text-[13px] font-inter font-semibold text-[#555555]">Indian Map</span>
-                </span>
-                {ShowIndiaMap ? (
-                    <ChevronUp onClick={() => SetShowIndiaMap(false)} className="w-4 h-4 text-[#555]" />
-                ) : (
-                    <ChevronDown onClick={() => SetShowIndiaMap(true)} className="w-4 h-4 text-[#555]" />
-                )}
-            </div>
-            {ShowIndiaMap &&
+            {shouldShowMap &&
+                <div className="flex mt-2 md:mt-0 items-center justify-between md:hidden px-3 py-1 border border-[#E5E2D8]">
+                    <span className="flex items-center gap-1">
+                        <span>🗺️ </span>
+                        <span className="text-[13px] font-inter font-semibold text-[#555555]">Indian Map</span>
+                    </span>
+                    {ShowIndiaMap ? (
+                        <ChevronUp onClick={() => SetShowIndiaMap(false)} className="w-4 h-4 text-[#555]" />
+                    ) : (
+                        <ChevronDown onClick={() => SetShowIndiaMap(true)} className="w-4 h-4 text-[#555]" />
+                    )}
+                </div>
+            }
+            {shouldShowMap &&
                 <div className="h-[30vh] md:w-[40vw] xl:w-[25vw] md:shrink-0">
                     <IndiaMap
                         announcements={Announcements}
@@ -188,6 +207,8 @@ const Main: React.FC = () => {
                     LoadMoreData={OnLoadMoredata}
                     page={page}
                     totalpages={totalPages}
+                    AnnouncementsType={AnnouncementsType}
+                    SetAnnouncementsType={SetAnnouncementsType}
                 />
             </div>
             <MobileShowAnnoucments
