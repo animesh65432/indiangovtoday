@@ -13,7 +13,9 @@ import dynamic from 'next/dynamic';
 import RightSide from './RightSide';
 import { ChevronDown, ChevronUp } from "lucide-react"
 import MobileShowAnnoucments from './MobileShowAnnoucments';
+import Hero from './Hero';
 import { buildCacheKey, withCache } from "@/lib/lsCache";
+
 
 
 const IndiaMap = dynamic(() => import("../IndiaMap"), {
@@ -224,96 +226,9 @@ const Main: React.FC = () => {
     }
 
     return (
-
-        <section className="flex flex-col md:flex-row w-full h-screen md:min-h-screen overflow-hidden md:overflow-visible  ">
-            <div className='block md:hidden'>
-                <AnnoucementsHeader />
-            </div>
-            <div className='block md:hidden'>
-                <SerchInputbox
-                    SearchInput={SearchInput}
-                    SetSearchInput={SetSearchInput}
-                    onSearch={handleSearch}
-                    DeparmentsSelected={DeparmentsSelected}
-                    SetDeparmentsSelected={SetDeparmentsSelected}
-                    StatesSelected={StatesSelected}
-                    SetStatesSelected={SetStatesSelected}
-                    AnnouncementsType={AnnouncementsType}
-                    SetAnnouncementsType={SetAnnouncementsType}
-                    departmentOptions={departmentOptions}
-                    setDepartmentOptions={setDepartmentOptions}
-                    categoryOptions={categoryOptions}
-                    setCategoryOptions={setCategoryOptions}
-                    CategoriesSelected={CategoriesSelected}
-                    SetCategoriesSelected={SetCategoriesSelected}
-                    handleMobileApply={handleMobileApply}
-                    handleMobileReset={handleMobileReset}
-                    sheetOpen={sheetOpen}
-                    setSheetOpen={setSheetOpen}
-                />
-            </div>
-
-            <div className="flex mt-2 md:mt-0 items-center justify-between md:hidden px-3 py-1 border border-[#E5E2D8]">
-                <span className="flex items-center gap-1">
-                    <span>🗺️ </span>
-                    <span className="text-[13px] font-inter font-semibold text-[#555555]">Indian Map</span>
-                </span>
-                {ShowIndiaMap ? (
-                    <ChevronUp onClick={() => SetShowIndiaMap(false)} className="w-4 h-4 text-[#555]" />
-                ) : (
-                    <ChevronDown onClick={() => SetShowIndiaMap(true)} className="w-4 h-4 text-[#555]" />
-                )}
-            </div>
-
-            {shouldShowMap &&
-                <div className="h-[30vh] md:w-[40vw] xl:w-[25vw] md:shrink-0">
-                    <IndiaMap
-                        announcements={Announcements}
-                        selectedStates={StatesSelected}
-                        onStateClick={handleStateClick}
-                        ShowIndiaMap={ShowIndiaMap}
-                        SetShowIndiaMap={SetShowIndiaMap}
-                    />
-                </div>
-            }
-
-            <div className="hidden md:flex-1 md:block">
-                <RightSide
-                    StatesSelected={StatesSelected}
-                    SetStatesSelected={SetStatesSelected}
-                    DeparmentsSelected={DeparmentsSelected}
-                    SetDeparmentsSelected={SetDeparmentsSelected}
-                    SearchInput={SearchInput}
-                    SetSearchInput={SetSearchInput}
-                    onSearch={handleSearch}
-                    announcements={Announcements}
-                    IsLoading={IsLoading}
-                    IsLoadingMore={IsLoadingMore}
-                    LoadMoreData={OnLoadMoredata}
-                    page={page}
-                    totalpages={totalPages}
-                    AnnouncementsType={AnnouncementsType}
-                    SetAnnouncementsType={SetAnnouncementsType}
-                    departmentOptions={departmentOptions}
-                    setDepartmentOptions={setDepartmentOptions}
-                    categoryOptions={categoryOptions}
-                    setCategoryOptions={setCategoryOptions}
-                    CategoriesSelected={CategoriesSelected}
-                    SetCategoriesSelected={SetCategoriesSelected}
-                    sheetOpen={sheetOpen}
-                    setSheetOpen={setSheetOpen}
-                    handleMobileApply={handleMobileApply}
-                    handleMobileReset={handleMobileReset}
-                />
-            </div>
-            <MobileShowAnnoucments
-                announcements={Announcements}
-                IsLoading={IsLoading}
-                IsLoadingMore={IsLoadingMore}
-                LoadMoreData={OnLoadMoredata}
-                page={page}
-                totalpages={totalPages}
-            />
+        <section className=" bg-[url('/bg.png')] flex flex-col w-full h-screen md:min-h-screen overflow-hidden md:overflow-visible  ">
+            <AnnoucementsHeader />
+            <Hero />
         </section >
 
     );

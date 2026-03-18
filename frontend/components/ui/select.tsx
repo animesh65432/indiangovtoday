@@ -47,13 +47,13 @@ function SelectTrigger({
     >
       {IsLanguageSelect && (
         <SelectPrimitive.Icon asChild>
-          <Globe className="size-4 text-[#888888]" />
+          <Globe className="size-4 " />
         </SelectPrimitive.Icon>
       )}
       {children}
       {!IsLanguageSelect && (
         <SelectPrimitive.Icon asChild>
-          <ChevronDownIcon className="size-4 text-[#888888]" />
+          <ChevronDownIcon className="size-4" />
         </SelectPrimitive.Icon>
       )}
     </SelectPrimitive.Trigger>
