@@ -12,6 +12,7 @@ import { toast } from "react-toastify"
 import dynamic from 'next/dynamic';
 import RightSide from './RightSide';
 import { ChevronDown, ChevronUp } from "lucide-react"
+import SearchInputBox from './SearchInputbox';
 import MobileShowAnnoucments from './MobileShowAnnoucments';
 import Hero from './Hero';
 import { buildCacheKey, withCache } from "@/lib/lsCache";
@@ -226,8 +227,25 @@ const Main: React.FC = () => {
     }
 
     return (
-        <section className=" bg-[url('/bg.png')] flex flex-col w-full h-screen md:min-h-screen overflow-hidden md:overflow-visible  ">
+        <section className=" bg-[url('/bg.png')] flex flex-col gap-4 md:gap-5 w-full h-screen md:min-h-screen overflow-hidden md:overflow-visible  ">
             <AnnoucementsHeader />
+            <SearchInputBox
+                StatesSelected={StatesSelected}
+                SetStatesSelected={SetStatesSelected}
+                DeparmentsSelected={DeparmentsSelected} SetDeparmentsSelected={SetDeparmentsSelected}
+                SearchInput={SearchInput} SetSearchInput={SetSearchInput}
+                onSearch={handleSearch}
+                AnnouncementsType={AnnouncementsType} SetAnnouncementsType={SetAnnouncementsType}
+                departmentOptions={departmentOptions}
+                setDepartmentOptions={setDepartmentOptions}
+                categoryOptions={categoryOptions}
+                setCategoryOptions={setCategoryOptions}
+                CategoriesSelected={CategoriesSelected} SetCategoriesSelected={SetCategoriesSelected}
+                handleMobileApply={handleMobileApply}
+                handleMobileReset={handleMobileReset}
+                sheetOpen={sheetOpen}
+                setSheetOpen={setSheetOpen}
+            />
             <Hero />
         </section >
 

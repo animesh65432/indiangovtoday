@@ -8,7 +8,7 @@ import { Currentdate } from '@/context/Currentdate'
 import { Button } from '../ui/button'
 import { GetallAnnoucementsDepartments, GetAllCategoriesAnnouncements } from "@/api/announcements"
 import { IsLoadingContext } from '@/context/IsLoading'
-import { Search, ListFilterPlus } from "lucide-react";
+import { Search, ListFilterPlus, FunnelPlus } from "lucide-react";
 import SourceToggle from './SourceToggle'
 import {
     Select,
@@ -28,6 +28,7 @@ import {
 import MobileSearchInput from './MobileSearchInput'
 import Showfilters from './Showfilters'
 import { withCache, buildCacheKey } from "@/lib/lsCache"
+import { MultiSelect } from '../ui/multi-select'
 
 
 
@@ -81,40 +82,6 @@ const SearchInputBox: React.FC<Props> = ({
     useEffect(() => {
         const controller = new AbortController();
 
-        const fetchDepartments = async () => {
-            SetIsLoading(true);
-            setDepartmentOptions([]);
-            try {
-
-                const key = buildCacheKey("Departments", { language, startdate, endDate, states: StatesSelected });
-
-                const response = await withCache(key, "Departments", () =>
-                    GetallAnnoucementsDepartments(language, startdate, endDate, StatesSelected, controller.signal)
-                ) as { data: string[] };
-
-                if (!controller.signal.aborted) {
-                    setDepartmentOptions([TranslateText[language].ALL_DEPARMENTS, ...response.data]);
-                }
-            } catch (error: unknown) {
-                if (error instanceof Error &&
-                    (error.name === 'AbortError' || (error as { code?: string }).code === 'ERR_CANCELED')) {
-                    return;
-                }
-            } finally {
-                if (!controller.signal.aborted) {
-                    SetIsLoading(false);
-                }
-            }
-        };
-
-        fetchDepartments();
-        return () => controller.abort();
-
-    }, [language, StatesSelected]);
-
-    useEffect(() => {
-        const controller = new AbortController();
-
         const fetchCategoriesAnnouncements = async () => {
             SetIsLoading(true);
             setCategoryOptions([]);
@@ -145,164 +112,97 @@ const SearchInputBox: React.FC<Props> = ({
 
     }, [language, StatesSelected]);
 
-    const ShowfiltersComponent = StatesSelected.length > 0 || DeparmentsSelected.length > 0 || CategoriesSelected.length > 0 || AnnouncementsType !== "All"
-
     return (
-        <div className='w-[97%] mx-auto  flex flex-col gap-2'>
-            <div className=' flex md:hidden mt-4 md:mt-0'>
-                <SourceToggle
-                    AnnouncementsType={AnnouncementsType}
-                    SetAnnouncementsType={SetAnnouncementsType}
-                />
-            </div>
-            <div className='flex items-center gap-4 md:hidden'>
-                <div className="relative w-[93%] ">
+        <div className='w-[90%] mx-auto flex flex-col gap-2'>
+            <div className='flex flex-col gap-2'>
+                <div className="relative">
                     <Input
+                        className="text-[#2D4870] placeholder:truncate placeholder:text-ellipsis font-satoshi bg-white/50 backdrop-blur-sm border text-[1rem] md:text-xl! p-6 pl-10 pr-12 md:pr-6 border-[#a8c0e0]/40 placeholder:text-[1rem] md:placeholder:text-xl! placeholder:font-satoshi rounded-none"
                         placeholder={TranslateText[language].INPUT_PLACEHOLDER}
-                        style={{ paddingLeft: 30 }}
-                        className="bg-[#f8f7f2] placeholder:text-[13px] font-poppins  placeholder:font-poppins w-full "
-                        value={SearchInput}
-                        onChange={(e) => SetSearchInput(e.target.value)}
-                        onKeyDown={(e) => e.key === "Enter" && onSearch()}
                     />
-                    <Search
-                        className="absolute top-1/2 left-2 -translate-y-1/2 text-gray-500 cursor-pointer"
-                        size={14}
-                        onClick={onSearch}
-                    />
-                </div>
-                <div>
+                    <Search className="absolute left-2 top-1/2 -translate-y-1/2 text-[#2D4870]" />
                     <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
-                        <SheetTrigger asChild>
-                            <ListFilterPlus />
+                        <SheetTrigger className="w-fit text-multiselect  bg-white/50 text-[11px] md:text-[12px]  font-satoshi  border border-[#a8c0e0]/40 font-semibold rounded-none absolute right-3 top-1/2 -translate-y-1/2 block md:hidden">
+                            <FunnelPlus className='absolute right-3 top-1/2 -translate-y-1/2 text-[#2D4870] block md:hidden' />
                         </SheetTrigger>
-                        <SheetContent side="bottom" className="z-9999 h-fit">
+                        <SheetContent className='p-0' side="bottom">
                             <MobileSearchInput
-                                departmentOptions={departmentOptions}
                                 categoryOptions={categoryOptions}
-                                setCategoryOptions={setCategoryOptions}
-                                CategoriesSelected={CategoriesSelected}
                                 DeparmentsSelected={DeparmentsSelected}
+                                CategoriesSelected={CategoriesSelected}
+                                departmentOptions={departmentOptions}
                                 StatesSelected={StatesSelected}
                                 onApply={handleMobileApply}
                                 onReset={handleMobileReset}
+                                setCategoryOptions={setCategoryOptions}
                             />
                         </SheetContent>
                     </Sheet>
                 </div>
+                <div className='hidden md:flex items-center gap-3 flex-wrap'>
+                    <MultiSelect
+                        options={TranslateText[language].MULTISELECT_OPTIONS}
+                        value={StatesSelected}
+                        onValueChange={(value) => SetStatesSelected(value)}
+                        className='rounded-none w-fit font-satoshi bg-white/50 text-[#2D4870]!'
+                        maxCount={1}
+                        autoSize
+                    />
+                    <Select>
+                        <SelectTrigger className='rounded-none px-4 py-4.5 text-multiselect w-fit font-satoshi bg-white/50 font-medium'>
+                            <SelectValue placeholder="Types" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            {
+                                categoryOptions.map((category) => (
+                                    <SelectItem className='font-satoshi  hover:bg-white/70  text-[#1B3A7A] focus:bg-[#dce8f5]' key={category} value={category} onClick={() => SetCategoriesSelected(category)}>
+                                        {category}
+                                    </SelectItem>
+                                ))
+                            }
+                        </SelectContent>
+                    </Select>
+                    <Popover >
+                        <PopoverTrigger asChild>
+                            <Button
+                                className="w-fit text-multiselect  bg-white/50 text-[11px] md:text-[12px]  font-satoshi  border border-[#a8c0e0]/40 font-semibold rounded-none"
+                            >
+                                {format(startdate, "PPP")}
+                                <CalenderIcon className="ml-1" size={14} />
+                            </Button>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-auto p-0 z-9999" align="start">
+                            <Calendar
+                                mode="single"
+                                selected={startdate}
+                                defaultMonth={startdate}
+                                className='font-satoshi bg-white/50 '
+                                onSelect={(date) => date && onChangeStartDate(date)}
+                            />
+                        </PopoverContent>
+                    </Popover>
+                    <span className='text-[#a5c3eb] font-bold'>–</span>
+                    <Popover>
+                        <PopoverTrigger asChild>
+                            <Button
+                                className="w-fit text-multiselect bg-white/50 text-[11px] md:text-[12px]  font-satoshi  border border-[#a8c0e0]/40 font-semibold rounded-none"
+                            >
+                                {format(endDate, "PPP")}
+                                <CalenderIcon className="ml-1" size={14} />
+                            </Button>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-auto p-0 z-9999" align="start">
+                            <Calendar
+                                mode="single"
+                                className='font-satoshi bg-white/50 '
+                                selected={endDate}
+                                defaultMonth={endDate}
+                                onSelect={(date) => date && onChangeEndDate(date)}
+                            />
+                        </PopoverContent>
+                    </Popover>
+                </div>
             </div>
-            <div className="relative w-full hidden md:block">
-                <Input
-                    placeholder={TranslateText[language].INPUT_PLACEHOLDER}
-                    style={{ paddingLeft: 30 }}
-                    className="bg-[#f8f7f2] placeholder:text-[13px] font-poppins  placeholder:font-poppins w-full "
-                    value={SearchInput}
-                    onChange={(e) => SetSearchInput(e.target.value)}
-                    onKeyDown={(e) => e.key === "Enter" && onSearch()}
-                />
-                <Search
-                    className="absolute top-1/2 left-2 -translate-y-1/2 text-gray-500 cursor-pointer"
-                    size={14}
-                    onClick={onSearch}
-                />
-            </div>
-            <div className=' hidden md:flex items-center gap-2 flex-wrap'>
-                <SourceToggle
-                    AnnouncementsType={AnnouncementsType}
-                    SetAnnouncementsType={SetAnnouncementsType}
-                />
-                <Select value={DeparmentsSelected} onValueChange={(value) => SetDeparmentsSelected(value)}>
-                    <SelectTrigger className="w-fit h-3 bg-[#F8F7F2] rounded-md border border-[#E8E4DA]">
-                        <SelectValue
-                            className='placeholder:text-[#555555] text-[#555555] placeholder:font-poppins font-poppins'
-                            placeholder={TranslateText[language].ALL_DEPARMENTS}
-                        />
-                    </SelectTrigger>
-                    <SelectContent className='text-[0.9rem]  uppercase z-9999 '>
-                        <SelectGroup>
-                            {departmentOptions.map((dept) => (
-                                <SelectItem
-                                    key={dept}
-                                    value={dept}
-                                    className='hover:bg-[#F8F7F2] hover:text-[#555555] hover:font-semibold'
-                                >
-                                    {dept}
-                                </SelectItem>
-                            ))}
-                        </SelectGroup>
-                    </SelectContent>
-                </Select>
-                <Select value={CategoriesSelected} onValueChange={(value) => SetCategoriesSelected(value)}>
-                    <SelectTrigger className="w-fit h-3 bg-[#F8F7F2] rounded-md border border-[#E8E4DA]">
-                        <SelectValue
-                            className='placeholder:text-[#555555] text-[#555555] placeholder:font-poppins font-poppins'
-                            placeholder={TranslateText[language].ALL_DEPARMENTS}
-                        />
-                    </SelectTrigger>
-                    <SelectContent className='text-[0.9rem]  uppercase z-9999 '>
-                        <SelectGroup>
-                            {categoryOptions.map((dept) => (
-                                <SelectItem
-                                    key={dept}
-                                    value={dept}
-                                    className='hover:bg-[#F8F7F2] hover:text-[#555555] hover:font-semibold'
-                                    onSelect={() => console.log(dept)}
-                                >
-                                    {dept}
-                                </SelectItem>
-                            ))}
-                        </SelectGroup>
-                    </SelectContent>
-                </Select>
-                <Popover >
-                    <PopoverTrigger asChild>
-                        <Button
-                            className="w-fit  bg-[#F8F7F2] text-[11px] md:text-[12px]  font-poppins text-[#555555] border border-[#E8E4DA] font-semibold rounded-md"
-                        >
-                            {format(startdate, "PPP")}
-                            <CalenderIcon className="ml-1" size={14} />
-                        </Button>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0 z-9999" align="start">
-                        <Calendar
-                            mode="single"
-                            selected={startdate}
-                            defaultMonth={startdate}
-                            className='font-poppins'
-                            onSelect={(date) => date && onChangeStartDate(date)}
-                        />
-                    </PopoverContent>
-                </Popover>
-                <span className='text-[#c9c9c9] font-bold'>–</span>
-                <Popover>
-                    <PopoverTrigger asChild>
-                        <Button
-                            className="w-fit  bg-[#F8F7F2] text-[11px] md:text-[12px]  font-poppins text-[#555555] border border-[#E8E4DA] font-semibold rounded-md"
-                        >
-                            {format(endDate, "PPP")}
-                            <CalenderIcon className="ml-1" size={14} />
-                        </Button>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0 z-9999" align="start">
-                        <Calendar
-                            mode="single"
-                            selected={endDate}
-                            defaultMonth={endDate}
-                            onSelect={(date) => date && onChangeEndDate(date)}
-                        />
-                    </PopoverContent>
-                </Popover>
-            </div>
-            {ShowfiltersComponent &&
-                <Showfilters
-                    selectedDepartment={DeparmentsSelected}
-                    selectedStates={StatesSelected}
-                    SetStatesSelected={SetStatesSelected}
-                    CategoriesSelected={CategoriesSelected}
-                    SetCategoriesSelected={SetCategoriesSelected}
-                    SetDeparmentsSelected={SetDeparmentsSelected}
-                />
-            }
         </div>
     )
 }

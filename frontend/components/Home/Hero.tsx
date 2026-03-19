@@ -4,7 +4,7 @@ import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
 
 const Hero: React.FC = () => {
     return (
-        <div className="w-[90%] mx-auto mt-6 mb-4">
+        <div className="w-[90%] mx-auto ">
             <div className="space-y-1 flex flex-col">
                 <TextGenerateEffect
                     words="All government announcements in one place"

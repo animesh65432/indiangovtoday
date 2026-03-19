@@ -489,13 +489,23 @@ input {
 
 /* Yellow theme override scoped to mobile filter panel only */
 .mobile-filter-panel {
-  --primary: #FFD600;
-  --primary-foreground: #111111;
+  font-family: var(--font-satoshi) !important;
 }
 
-/* Badge chips inside MultiSelect */
-.mobile-filter-panel [data-slot="badge"] {
-  background-color: #FEF3C7;
-  border-color: #e2680a;
-  color: #111;
+
+/* ─── MultiSelect popover text color ─── */
+.multiselect-popover [cmdk-item],
+.multiselect-popover [cmdk-input],
+.multiselect-popover [cmdk-group-heading],
+.multiselect-popover [cmdk-empty] {
+  color: #2D4870 !important;
+}
+
+.multiselect-popover [cmdk-input]::placeholder {
+  color: #2D4870;
+  opacity: 0.5;
+}
+
+.text-multiselect {
+  color: #355b95;
 }
