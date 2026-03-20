@@ -14,11 +14,14 @@ const AnnoucementsHeader: React.FC = () => {
     const { language, onSelectLanguage } = useContext(LanguageContext)
 
     return (
-        <header className='h-14 flex items-center justify-between w-[90%] mx-auto mt-4'>
-            <nav className='flex flex-col gap-0.5'>
+        <header className='h-16 flex items-center justify-between w-[98%] mx-auto mt-4 px-2'>
+
+            {/* Logo */}
+            <nav className='flex items-center'>
                 <Logo />
             </nav>
 
+            {/* Language Selector */}
             <nav>
                 <Select
                     onValueChange={onSelectLanguage}
@@ -27,25 +30,37 @@ const AnnoucementsHeader: React.FC = () => {
                     <SelectTrigger
                         IsLanguageSelect={true}
                         className="
-                        text-[#2D4870]
-                        bg-white/50
-                        backdrop-blur-sm
-                        border border-[#a8c0e0]/40
+                        text-[#EAEAEA]
+                        bg-[#1A1A1A] 
+                        backdrop-blur-md
+                        border border-[#FF9933]/30
                         uppercase text-[0.65rem]
                         font-inter font-semibold tracking-wider
-                        rounded-none
-                        hover:bg-white/70
+                        rounded-md
+                        px-3 py-2
+
+                        hover:border-[#FF9933]
+                        hover:bg-[#1A1A1A]
                         transition-all duration-200
+
+                        focus:ring-1 focus:ring-[#FF9933]
                     "
                     >
                         <SelectValue placeholder="Language" />
                     </SelectTrigger>
-                    <SelectContent className='z-999 border-[#a8c0e0]/30 rounded-none'>
+
+                    <SelectContent className='z-50 bg-[#1A1A1A]  border border-[#FF9933]/30 rounded-md'>
                         {optionsforLanguages.map((lan) => (
                             <SelectItem
                                 key={lan.label}
                                 value={lan.label}
-                                className='font-satoshi text-[#1B3A7A] hover:bg-[#dce8f5] focus:bg-[#dce8f5]'
+                                className="
+                                font-satoshi
+                                text-[#EAEAEA]
+                                hover:bg-[#FF9933]/10
+                                focus:bg-[#FF9933]/20
+                                cursor-pointer
+                            "
                             >
                                 {lan.label}
                             </SelectItem>

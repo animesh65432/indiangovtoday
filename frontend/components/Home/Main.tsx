@@ -12,6 +12,12 @@ import SearchInputBox from './SearchInputbox';
 import Hero from './Hero';
 import { buildCacheKey, withCache } from "@/lib/lsCache";
 import ShowAnnouncements from '../ShowAnnouncements';
+import dynamic from "next/dynamic";
+
+const IndiaMap = dynamic(() => import("@/components/IndiaMap"), {
+    ssr: false,
+});
+
 
 
 const Main: React.FC = () => {
@@ -160,6 +166,7 @@ const Main: React.FC = () => {
 
     useEffect(() => {
         if (!SearchInput) return;
+
         const timer = setTimeout(() => handleSearch(), 500);
         return () => clearTimeout(timer);
     }, [SearchInput]);
@@ -200,31 +207,37 @@ const Main: React.FC = () => {
         setSheetOpen(false)
     }
 
+
     return (
-        <section className="flex flex-col pb-2 gap-4 md:gap-5 h-screen w-screen overflow-hidden md:overflow-visible  ">
+        <section className="flex flex-col gap-2 pb-2 h-screen w-screen overflow-hidden md:overflow-visible  ">
             <AnnoucementsHeader />
-            <SearchInputBox
-                StatesSelected={StatesSelected}
-                SetStatesSelected={SetStatesSelected}
-                SearchInput={SearchInput} SetSearchInput={SetSearchInput}
-                onSearch={handleSearch}
-                categoryOptions={categoryOptions}
-                setCategoryOptions={setCategoryOptions}
-                CategoriesSelected={CategoriesSelected} SetCategoriesSelected={SetCategoriesSelected}
-                handleMobileApply={handleMobileApply}
-                handleMobileReset={handleMobileReset}
-                sheetOpen={sheetOpen}
-                setSheetOpen={setSheetOpen}
-            />
-            <Hero />
-            <ShowAnnouncements
-                Announcements={Announcements}
-                LoadMoreData={OnLoadMoredata}
-                page={page}
-                totalpage={totalPages}
-                IsLoading={IsLoading}
-                IsLoadingMore={IsLoadingMore}
-            />
+            <div className='flex flex-col md:flex-row'>
+                <div>
+                    <IndiaMap
+                        ShowIndiaMap={ShowIndiaMap}
+                        SetShowIndiaMap={SetShowIndiaMap}
+                        announcements={Announcements}
+                        selectedStates={StatesSelected}
+                        onStateClick={handleStateClick}
+                    />
+                </div>
+                <div className='flex-1 flex flex-col gap-4'>
+                    <Hero />
+                    <SearchInputBox
+                        StatesSelected={StatesSelected}
+                        SetStatesSelected={SetStatesSelected}
+                        SearchInput={SearchInput} SetSearchInput={SetSearchInput}
+                        onSearch={handleSearch}
+                        categoryOptions={categoryOptions}
+                        setCategoryOptions={setCategoryOptions}
+                        CategoriesSelected={CategoriesSelected} SetCategoriesSelected={SetCategoriesSelected}
+                        handleMobileApply={handleMobileApply}
+                        handleMobileReset={handleMobileReset}
+                        sheetOpen={sheetOpen}
+                        setSheetOpen={setSheetOpen}
+                    />
+                </div>
+            </div>
         </section >
 
     );

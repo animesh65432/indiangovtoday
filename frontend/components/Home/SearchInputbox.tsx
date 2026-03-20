@@ -100,11 +100,11 @@ const SearchInputBox: React.FC<Props> = ({
     }, [language, StatesSelected]);
 
     return (
-        <div className='w-[90%] mx-auto flex flex-col gap-2'>
+        <div className='ml-4 flex flex-col gap-2'>
             <div className='flex flex-col gap-2'>
                 <div className="relative">
                     <Input
-                        className="text-[#2D4870] placeholder:truncate placeholder:text-ellipsis font-satoshi bg-white/50 backdrop-blur-sm border text-[1rem] md:text-xl! p-6 pl-10 pr-12 md:pr-6 border-[#a8c0e0]/40 placeholder:text-[1rem] md:placeholder:text-xl! placeholder:font-satoshi rounded-none"
+                        className="text-[#FFFFFF] placeholder:text-[#6B7280] w-[98%] md:w-[90%] mx-auto md:mx-0 placeholder:truncate placeholder:text-ellipsis font-satoshi bg-[#1A1A1A] backdrop-blur-sm border text-[1rem] md:text-xl! p-6 pl-10 pr-12 md:pr-6 border-[#FF9933] placeholder:text-[1rem] md:placeholder:text-xl! placeholder:font-satoshi rounded-none"
                         placeholder={TranslateText[language].INPUT_PLACEHOLDER}
                         value={SearchInput}
                         onChange={(e) => SetSearchInput(e.target.value)}
@@ -114,10 +114,10 @@ const SearchInputBox: React.FC<Props> = ({
                             }
                         }}
                     />
-                    <Search className="absolute left-2 top-1/2 -translate-y-1/2 text-[#2D4870]" />
+                    <Search className="absolute left-2 top-1/2 -translate-y-1/2 text-[#FF9933]" />
                     <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
                         <SheetTrigger className="w-fit text-multiselect  bg-white/50 text-[11px] md:text-[12px]  font-satoshi  border border-[#a8c0e0]/40 font-semibold rounded-none absolute right-3 top-1/2 -translate-y-1/2 block md:hidden">
-                            <FunnelPlus className='absolute right-3 top-1/2 -translate-y-1/2 text-[#2D4870] block md:hidden' />
+                            <FunnelPlus className='absolute right-3 top-1/2 -translate-y-1/2 text-[#FF9933] block md:hidden' />
                         </SheetTrigger>
                         <SheetContent className='p-0' side="bottom">
                             <MobileSearchInput
@@ -136,20 +136,20 @@ const SearchInputBox: React.FC<Props> = ({
                         options={TranslateText[language].MULTISELECT_OPTIONS}
                         defaultValue={StatesSelected}
                         onValueChange={(value) => SetStatesSelected(value)}
-                        className='rounded-none w-fit font-satoshi bg-white/50 text-[#2D4870]!'
+                        className='rounded-none w-fit font-satoshi bg-[#1A1A1A]  border border-[#FF9933]  text-[#FFFFFF]!'
                         maxCount={1}
                         autoSize
                         resetOnDefaultValueChange={true}
                     />
                     <Select>
-                        <SelectTrigger className='rounded-none px-4 py-4.5 text-multiselect w-fit font-satoshi bg-white/50 font-medium'>
+                        <SelectTrigger className='rounded-none px-4 py-4.5 border border-[#FF9933] text-[#FFFFFF]!  w-fit font-satoshi bg-[#1A1A1A] font-medium'>
                             <SelectValue placeholder="Types" />
                         </SelectTrigger>
-                        <SelectContent>
+                        <SelectContent className='bg-[#1A1A1A] border border-[#FF9933]/30'>
                             {
                                 categoryOptions.map((category) => (
                                     <SelectItem
-                                        className='font-satoshi  hover:bg-white/70  text-[#1B3A7A] focus:bg-[#dce8f5]'
+                                        className='font-satoshi text-[#EAEAEA] hover:bg-[#FF9933]/10 focus:bg-[#FF9933]/20 cursor-pointer'
                                         key={category}
                                         value={category}
                                         onClick={() => SetCategoriesSelected(category)}
@@ -163,36 +163,36 @@ const SearchInputBox: React.FC<Props> = ({
                     <Popover >
                         <PopoverTrigger asChild>
                             <Button
-                                className="w-fit text-multiselect  bg-white/50 text-[11px] md:text-[12px]  font-satoshi  border border-[#a8c0e0]/40 font-semibold rounded-none"
+                                className="w-fit text-multiselect bg-[#1A1A1A]  border border-[#FF9933] text-[#FFFFFF]! text-[11px] md:text-[12px]  font-satoshi   font-semibold rounded-none"
                             >
                                 {format(startdate, "PPP")}
-                                <CalenderIcon className="ml-1" size={14} />
+                                <CalenderIcon className="ml-1 text-[#FF9933]" size={14} />
                             </Button>
                         </PopoverTrigger>
-                        <PopoverContent className="w-auto p-0 z-9999" align="start">
+                        <PopoverContent className="w-auto p-0 z-[9999] !border-[#FF9933] !bg-[#1A1A1A] rounded-md" align="start">
                             <Calendar
                                 mode="single"
                                 selected={startdate}
                                 defaultMonth={startdate}
-                                className='font-satoshi bg-white/50 '
+                                className='font-satoshi'
                                 onSelect={(date) => date && onChangeStartDate(date)}
                             />
                         </PopoverContent>
                     </Popover>
-                    <span className='text-[#a5c3eb] font-bold'>–</span>
+                    <span className='text-[#FF9933] font-bold'>–</span>
                     <Popover>
                         <PopoverTrigger asChild>
                             <Button
-                                className="w-fit text-multiselect bg-white/50 text-[11px] md:text-[12px]  font-satoshi  border border-[#a8c0e0]/40 font-semibold rounded-none"
+                                className="w-fit text-multiselect bg-[#1A1A1A]  border border-[#FF9933] text-[#FFFFFF]! text-[11px] md:text-[12px]  font-satoshi   font-semibold rounded-none"
                             >
                                 {format(endDate, "PPP")}
-                                <CalenderIcon className="ml-1" size={14} />
+                                <CalenderIcon className="ml-1 text-[#FF9933]" size={14} />
                             </Button>
                         </PopoverTrigger>
-                        <PopoverContent className="w-auto p-0 z-9999" align="start">
+                        <PopoverContent className="w-auto p-0 z-[9999] !border-[#FF9933] !bg-[#1A1A1A] rounded-md" align="start">
                             <Calendar
                                 mode="single"
-                                className='font-satoshi bg-white/50 '
+                                className='font-satoshi '
                                 selected={endDate}
                                 defaultMonth={endDate}
                                 onSelect={(date) => date && onChangeEndDate(date)}
