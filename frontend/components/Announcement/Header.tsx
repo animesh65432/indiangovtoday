@@ -1,9 +1,8 @@
 import React, { useContext } from "react";
-import Image from "next/image";
 import { SectionTypes } from "@/types";
 import { useRouter } from "next/navigation";
 import { Button } from "../ui/button";
-import { Share2, Play, Pause, Square, AudioLines, Volume2 } from "lucide-react";
+import { Share2, Play, Pause, Square, AudioLines, Volume2, ArrowLeft } from "lucide-react";
 import ShareSection from "../Share";
 import { LanguageContext } from "@/context/Lan"
 import { usetexttospech } from "@/hooks/usetexttospech";
@@ -37,19 +36,19 @@ export default function Header({ sections, title, toggle, setToggle }: Props) {
     }
 
     const getAudioIcon = () => {
-        if (IsLoading) return <AudioLines className="animate-spin text-black w-5 h-5" />
-        if (isPlaying) return <Pause className="text-black w-5 h-5" />
-        if (isPaused) return <Play className="text-black w-5 h-5" />
-        return <Volume2 className="text-black w-5 h-5" />
+        if (IsLoading) return <AudioLines className="animate-spin text-multiselect  w-5 h-5" />
+        if (isPlaying) return <Pause className="text-multiselect  w-5 h-5" />
+        if (isPaused) return <Play className="text-multiselect  w-5 h-5" />
+        return <Volume2 className="text-multiselect  w-5 h-5" />
     }
 
     return (
         <header className='flex items-center justify-between'>
             <Button
                 onClick={() => router.push("/#announcements")}
-                className='text-[#2C3143] border border-[#000000] rounded-none font-poppins'
+                className='w-fit text-multiselect  p-4 hover:cursor-pointer  bg-white/50 text-[11px] md:text-[12px]  font-satoshi  border border-[#a8c0e0]/40 font-semibold rounded-none'
             >
-                <Image src="/Left.svg" alt='arrow' width={14} height={14} />
+                <ArrowLeft className="inline-block ml-1" />
                 {TranslateText[language].BACK}
             </Button>
             <nav className='flex items-center gap-6 '>
@@ -58,7 +57,7 @@ export default function Header({ sections, title, toggle, setToggle }: Props) {
                         onClick={() => setToggle(prev => !prev)}
                         role="button"
                         aria-label="Share announcement"
-                        className='text-black'
+                        className='text-multiselect'
                         id='sharebutton'
                     />
                     {toggle && <ShareSection Announcement={title} setisShareOPen={setToggle} />}

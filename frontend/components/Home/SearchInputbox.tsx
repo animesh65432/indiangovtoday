@@ -6,14 +6,12 @@ import { Calendar } from "@/components/ui/calendar"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Currentdate } from '@/context/Currentdate'
 import { Button } from '../ui/button'
-import { GetallAnnoucementsDepartments, GetAllCategoriesAnnouncements } from "@/api/announcements"
+import { GetAllCategoriesAnnouncements } from "@/api/announcements"
 import { IsLoadingContext } from '@/context/IsLoading'
-import { Search, ListFilterPlus, FunnelPlus } from "lucide-react";
-import SourceToggle from './SourceToggle'
+import { Search, FunnelPlus } from "lucide-react";
 import {
     Select,
     SelectContent,
-    SelectGroup,
     SelectItem,
     SelectTrigger,
     SelectValue,
@@ -26,7 +24,6 @@ import {
     SheetTrigger,
 } from "@/components/ui/sheet"
 import MobileSearchInput from './MobileSearchInput'
-import Showfilters from './Showfilters'
 import { withCache, buildCacheKey } from "@/lib/lsCache"
 import { MultiSelect } from '../ui/multi-select'
 
@@ -112,6 +109,8 @@ const SearchInputBox: React.FC<Props> = ({
 
     }, [language, StatesSelected]);
 
+    console.log(StatesSelected, "state selected in search input box")
+
     return (
         <div className='w-[90%] mx-auto flex flex-col gap-2'>
             <div className='flex flex-col gap-2'>
@@ -119,6 +118,13 @@ const SearchInputBox: React.FC<Props> = ({
                     <Input
                         className="text-[#2D4870] placeholder:truncate placeholder:text-ellipsis font-satoshi bg-white/50 backdrop-blur-sm border text-[1rem] md:text-xl! p-6 pl-10 pr-12 md:pr-6 border-[#a8c0e0]/40 placeholder:text-[1rem] md:placeholder:text-xl! placeholder:font-satoshi rounded-none"
                         placeholder={TranslateText[language].INPUT_PLACEHOLDER}
+                        value={SearchInput}
+                        onChange={(e) => SetSearchInput(e.target.value)}
+                        onKeyDown={(e) => {
+                            if (e.key === "Enter") {
+                                onSearch();
+                            }
+                        }}
                     />
                     <Search className="absolute left-2 top-1/2 -translate-y-1/2 text-[#2D4870]" />
                     <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
@@ -142,11 +148,12 @@ const SearchInputBox: React.FC<Props> = ({
                 <div className='hidden md:flex items-center gap-3 flex-wrap'>
                     <MultiSelect
                         options={TranslateText[language].MULTISELECT_OPTIONS}
-                        value={StatesSelected}
+                        defaultValue={StatesSelected}
                         onValueChange={(value) => SetStatesSelected(value)}
                         className='rounded-none w-fit font-satoshi bg-white/50 text-[#2D4870]!'
                         maxCount={1}
                         autoSize
+                        resetOnDefaultValueChange={true}
                     />
                     <Select>
                         <SelectTrigger className='rounded-none px-4 py-4.5 text-multiselect w-fit font-satoshi bg-white/50 font-medium'>

@@ -6,22 +6,13 @@ import { Currentdate } from "@/context/Currentdate";
 import AnnoucementsHeader from '@/components/AnnoucementsHeader';
 import { GetStateCode } from "@/lib/GetStateCode"
 import { LocationContext } from "@/context/LocationProvider"
-import SerchInputbox from './SearchInputbox';
 import { TranslateText } from "@/lib/translatetext"
 import { toast } from "react-toastify"
-import dynamic from 'next/dynamic';
-import RightSide from './RightSide';
-import { ChevronDown, ChevronUp } from "lucide-react"
 import SearchInputBox from './SearchInputbox';
-import MobileShowAnnoucments from './MobileShowAnnoucments';
 import Hero from './Hero';
 import { buildCacheKey, withCache } from "@/lib/lsCache";
+import ShowAnnouncements from '../ShowAnnouncements';
 
-
-
-const IndiaMap = dynamic(() => import("../IndiaMap"), {
-    ssr: false,
-});
 
 const Main: React.FC = () => {
     const { language } = useContext(LanguageContext);
@@ -227,7 +218,7 @@ const Main: React.FC = () => {
     }
 
     return (
-        <section className=" bg-[url('/bg.png')] flex flex-col gap-4 md:gap-5 w-full h-screen md:min-h-screen overflow-hidden md:overflow-visible  ">
+        <section className="flex flex-col pb-2 gap-4 md:gap-5 h-screen w-screen overflow-hidden md:overflow-visible  ">
             <AnnoucementsHeader />
             <SearchInputBox
                 StatesSelected={StatesSelected}
@@ -247,6 +238,14 @@ const Main: React.FC = () => {
                 setSheetOpen={setSheetOpen}
             />
             <Hero />
+            <ShowAnnouncements
+                Announcements={Announcements}
+                LoadMoreData={OnLoadMoredata}
+                page={page}
+                totalpage={totalPages}
+                IsLoading={IsLoading}
+                IsLoadingMore={IsLoadingMore}
+            />
         </section >
 
     );

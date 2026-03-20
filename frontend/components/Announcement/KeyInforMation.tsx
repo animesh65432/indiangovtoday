@@ -7,17 +7,17 @@ type Props = {
 
 const KeyInforMation: React.FC<Props> = ({ heading, points }) => {
     return (
-        <div className='flex flex-col gap-2'>
+        <div className='flex flex-col gap-2 font-satoshi text-multiselect'>
             <div>
-                <h5>
+                <h3 className='text-xl font-semibold'>
                     {heading}
-                </h5>
+                </h3>
             </div>
             <div className='flex flex-col gap-2'>
                 {points.map((point, index) => (
                     <div key={index} className='flex items-start gap-2 w-full md:w-[75%]'>
-                        <span className='font-bold text-black'>•</span>
-                        <p className='text-black leading-7 lg:leading-8'>{point}</p>
+                        <span className='font-bold '>•</span>
+                        <p className='leading-7 lg:leading-8'>{point}</p>
                     </div>
                 ))}
             </div>

@@ -34,7 +34,7 @@ export default function ShareSection({ Announcement, setisShareOPen }: Props) {
             name: "WhatsApp",
             icon: <MessageCircle className="w-5 h-5 sm:w-6 sm:h-6" />,
             url: `https://wa.me/?text=${encodedMessageWithUrl}`,
-            className: "text-yellow-700",
+            className: "text-multiselect",
             bgColor: "bg-[#ffff]",
             hoverColor: "hover:bg-[#ffff]"
         },
@@ -42,7 +42,7 @@ export default function ShareSection({ Announcement, setisShareOPen }: Props) {
             name: "X (Twitter)",
             icon: <Twitter className="w-5 h-5 sm:w-6 sm:h-6" />,
             url: `https://twitter.com/intent/tweet?text=${encodedMessage}&url=${encodedUrl}`,
-            className: "text-yellow-700",
+            className: "text-multiselect",
             bgColor: "bg-[#ffff]",
             hoverColor: "hover:bg-[#ffff]"
         },
@@ -50,7 +50,7 @@ export default function ShareSection({ Announcement, setisShareOPen }: Props) {
             name: "Email",
             icon: <Mail className="w-5 h-5 sm:w-6 sm:h-6" />,
             url: `mailto:?subject=${encodeURIComponent("Check this amazing recipe!")}&body=${encodedMessageWithUrl}`,
-            className: "text-yellow-700",
+            className: "text-multiselect",
             bgColor: "bg-[#ffff]",
             hoverColor: "hover:bg-[#ffff]"
         },
@@ -69,10 +69,10 @@ export default function ShareSection({ Announcement, setisShareOPen }: Props) {
     }
 
     return (
-        <div className="fixed h-screen inset-0 z-50 flex items-center justify-center  p-4 animate-in fade-in duration-300">
+        <div className="fixed font-satoshi h-screen inset-0 z-50 flex items-center justify-center  p-4 animate-in fade-in duration-300">
             <div
                 ref={modalRef}
-                className="bg-white rounded-2xl shadow-2xl max-w-md w-full mx-4 transform animate-in slide-in-from-bottom-4 duration-300"
+                className="bg-white text-multiselect rounded-2xl shadow-2xl max-w-md w-full mx-4 transform animate-in slide-in-from-bottom-4 duration-300"
             >
                 <button
                     onClick={handleClose}
@@ -81,7 +81,7 @@ export default function ShareSection({ Announcement, setisShareOPen }: Props) {
                     style={{ border: 0 }}
                 >
                     <X
-                        className="text-black w-5 h-5 sm:w-6 sm:h-6"
+                        className="text-multiselect w-5 h-5 sm:w-6 sm:h-6"
                         id="closeShareModal"
                     />
                 </button>
@@ -90,20 +90,20 @@ export default function ShareSection({ Announcement, setisShareOPen }: Props) {
 
                     <div className="flex items-center gap-3 mb-2">
                         <div >
-                            <Share2 className="w-5 h-5 sm:w-6 sm:h-6 text-black" />
+                            <Share2 className="w-5 h-5 sm:w-6 sm:h-6 " />
                         </div>
-                        <h3 className="text-lg sm:text-xl font-semibold text-black">{TranslateText[language].SHARE_ANNOUNCEMENT}</h3>
+                        <h3 className="text-lg sm:text-xl font-semibold ">{TranslateText[language].SHARE_ANNOUNCEMENT}</h3>
                     </div>
-                    <p className="text-gray-800 text-sm sm:text-base">{TranslateText[language].HELP_OTHERS_DISCOVER}</p>
+                    <p className="text-sm sm:text-base">{TranslateText[language].HELP_OTHERS_DISCOVER}</p>
                 </div>
 
                 {/* Share Preview */}
                 <div className="p-4 sm:p-6 py-3 sm:py-4 bg-gray-50 border-b border-gray-100">
                     <div className="bg-white p-3 sm:p-4 rounded-lg border border-gray-200 shadow-sm">
-                        <p className="text-sm sm:text-base font-medium text-gray-900 mb-2 leading-relaxed">
+                        <p className="text-sm sm:text-base font-medium  mb-2 leading-relaxed">
                             {shareMessage}
                         </p>
-                        <p className="text-xs sm:text-sm text-gray-800 underline truncate font-mono  px-2 py-1 rounded">
+                        <p className="text-xs sm:text-sm underline truncate font-mono  px-2 py-1 rounded">
                             {shareUrl}
                         </p>
                     </div>

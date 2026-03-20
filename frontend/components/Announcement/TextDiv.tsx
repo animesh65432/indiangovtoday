@@ -7,13 +7,13 @@ type Props = {
 
 const Summary: React.FC<Props> = ({ heading, content }) => {
     return (
-        <div className='flex flex-col gap-2'>
+        <div className='flex flex-col gap-2 font-satoshi text-multiselect'>
             <div>
-                <h5>
+                <h3 className='font-semibold text-xl'>
                     {heading}
-                </h5>
+                </h3>
             </div>
-            <p className='text-black leading-7 lg:leading-8 w-full lg:w-[60vw]'>{content}</p>
+            <p className='leading-relaxed w-full lg:w-[60vw]'>{content}</p>
         </div>
     )
 }

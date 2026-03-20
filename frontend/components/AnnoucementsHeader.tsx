@@ -14,7 +14,7 @@ const AnnoucementsHeader: React.FC = () => {
     const { language, onSelectLanguage } = useContext(LanguageContext)
 
     return (
-        <header className='h-14 flex items-center justify-between w-[90%] mx-auto mt-2'>
+        <header className='h-14 flex items-center justify-between w-[90%] mx-auto mt-4'>
             <nav className='flex flex-col gap-0.5'>
                 <Logo />
             </nav>

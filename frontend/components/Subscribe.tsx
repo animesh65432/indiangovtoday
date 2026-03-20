@@ -54,38 +54,36 @@ const Subscribe: React.FC = () => {
     };
 
     const popup = (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+        <div className="fixed inset-0 z-50 font-satoshi flex items-center justify-center bg-black/40">
             <div className="relative bg-[#f5f3ef] w-full max-w-md mx-4 p-8 flex flex-col gap-6">
 
                 <button
                     onClick={handleClose}
-                    className="absolute top-4 right-4 text-[#999] hover:text-black transition-colors"
+                    className="absolute top-4 right-4  transition-colors"
                 >
-                    <X size={24} />
+                    <X size={24} className="text-multiselect" />
                 </button>
 
-                <div className="flex flex-col gap-1">
-                    <div className="w-8 h-[2px] bg-black mb-3" />
-                    <h3 className="font-display text-black text-2xl font-bold leading-tight">
+                <div className="flex flex-col gap-4">
+                    <h3 className="text-multiselect text-2xl font-bold leading-tight">
                         {TranslateText[language].SUBSCRIBE_TO_ALERTS}
                     </h3>
-                    <span className="font-body text-[#888] text-[11px] uppercase tracking-[0.14em]">
+                    <span className="text-[11px] text-multiselect uppercase tracking-[0.14em]">
                         {TranslateText[language].NEVER_MISS_AN_UPDATE}
                     </span>
                 </div>
-
                 <div className="flex flex-col gap-3">
                     <input
                         value={Email}
                         onChange={(e) => setEmail(e.target.value)}
                         type="email"
                         placeholder={`${TranslateText[language].PLEASE_ENTER_YOUR_EMAIL}`}
-                        className="border border-[#d0ccc5] bg-white text-black placeholder:text-[#bbb] placeholder:uppercase placeholder:text-[10px] placeholder:tracking-widest p-3 w-full outline-none focus:border-black transition-colors rounded-none font-body text-sm"
+                        className="border border-[#a8c0e0]/40 text-multiselect font-semibold  placeholder:uppercase placeholder:text-[10px] placeholder:tracking-widest p-3 w-full outline-none transition-colors rounded-none text-sm"
                     />
                     <button
                         type="button"
                         onClick={handlesubscribe}
-                        className="bg-black text-white uppercase text-[10px] font-bold tracking-[0.16em] p-3 hover:bg-[#333] transition-colors rounded-none font-body"
+                        className="border border-[#a8c0e0]/40 bg-white/50 text-multiselect uppercase text-[10px] font-bold tracking-[0.16em] p-3  transition-colors rounded-none "
                     >
                         {IsLoading
                             ? <LoaderCircle className="animate-spin h-4 w-4 mx-auto" />
@@ -93,9 +91,9 @@ const Subscribe: React.FC = () => {
                     </button>
                 </div>
 
-                <p className="font-body text-[10px] text-[#bbb] tracking-wide text-center">
+                <span className="text-[14px] text-multiselect tracking-wide text-center">
                     No spam. Unsubscribe anytime.
-                </p>
+                </span>
 
             </div>
         </div>
