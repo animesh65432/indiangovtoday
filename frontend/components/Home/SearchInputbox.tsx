@@ -32,15 +32,9 @@ import { MultiSelect } from '../ui/multi-select'
 type Props = {
     StatesSelected: string[]
     SetStatesSelected: React.Dispatch<React.SetStateAction<string[]>>
-    DeparmentsSelected: string
-    SetDeparmentsSelected: React.Dispatch<React.SetStateAction<string>>
     SearchInput: string
     SetSearchInput: React.Dispatch<React.SetStateAction<string>>
     onSearch: () => void,
-    AnnouncementsType: "All" | "Central Govt" | "States Govt",
-    SetAnnouncementsType: React.Dispatch<React.SetStateAction<"All" | "Central Govt" | "States Govt">>
-    departmentOptions: string[]
-    setDepartmentOptions: React.Dispatch<React.SetStateAction<string[]>>
     categoryOptions: string[]
     setCategoryOptions: React.Dispatch<React.SetStateAction<string[]>>
     CategoriesSelected: string
@@ -57,12 +51,8 @@ type Props = {
 
 const SearchInputBox: React.FC<Props> = ({
     StatesSelected, SetStatesSelected,
-    DeparmentsSelected, SetDeparmentsSelected,
     SearchInput, SetSearchInput,
     onSearch,
-    AnnouncementsType, SetAnnouncementsType,
-    departmentOptions,
-    setDepartmentOptions,
     categoryOptions,
     setCategoryOptions,
     CategoriesSelected,
@@ -109,8 +99,6 @@ const SearchInputBox: React.FC<Props> = ({
 
     }, [language, StatesSelected]);
 
-    console.log(StatesSelected, "state selected in search input box")
-
     return (
         <div className='w-[90%] mx-auto flex flex-col gap-2'>
             <div className='flex flex-col gap-2'>
@@ -134,9 +122,7 @@ const SearchInputBox: React.FC<Props> = ({
                         <SheetContent className='p-0' side="bottom">
                             <MobileSearchInput
                                 categoryOptions={categoryOptions}
-                                DeparmentsSelected={DeparmentsSelected}
                                 CategoriesSelected={CategoriesSelected}
-                                departmentOptions={departmentOptions}
                                 StatesSelected={StatesSelected}
                                 onApply={handleMobileApply}
                                 onReset={handleMobileReset}
@@ -162,7 +148,12 @@ const SearchInputBox: React.FC<Props> = ({
                         <SelectContent>
                             {
                                 categoryOptions.map((category) => (
-                                    <SelectItem className='font-satoshi  hover:bg-white/70  text-[#1B3A7A] focus:bg-[#dce8f5]' key={category} value={category} onClick={() => SetCategoriesSelected(category)}>
+                                    <SelectItem
+                                        className='font-satoshi  hover:bg-white/70  text-[#1B3A7A] focus:bg-[#dce8f5]'
+                                        key={category}
+                                        value={category}
+                                        onClick={() => SetCategoriesSelected(category)}
+                                    >
                                         {category}
                                     </SelectItem>
                                 ))

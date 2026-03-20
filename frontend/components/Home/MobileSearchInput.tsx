@@ -12,14 +12,12 @@ import {
     SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select"
 import { MultiSelect } from "../ui/multi-select"
-import { cn } from "@/lib/utils"
+
 
 type Props = {
-    departmentOptions: string[]
     categoryOptions: string[]
     setCategoryOptions: React.Dispatch<React.SetStateAction<string[]>>
     CategoriesSelected: string
-    DeparmentsSelected: string
     StatesSelected: string[]
     onApply: (
         dept: string,
@@ -33,16 +31,13 @@ type Props = {
 
 const MobileSearchInput: React.FC<Props> = ({
     categoryOptions,
-    DeparmentsSelected,
     CategoriesSelected,
-    departmentOptions,
     StatesSelected,
     onApply,
     onReset,
 }) => {
     const { language } = useContext(LanguageContext)
     const { startdate, endDate } = useContext(Currentdate)
-    const [localDept, setLocalDept] = useState(DeparmentsSelected)
     const [localCategory, setLocalCategory] = useState(CategoriesSelected)
     const [localStates, setLocalStates] = useState<string[]>(StatesSelected)
     const [localStartDate, setLocalStartDate] = useState<Date | null>(startdate)
@@ -51,11 +46,10 @@ const MobileSearchInput: React.FC<Props> = ({
     const stateOptions = TranslateText[language].MULTISELECT_OPTIONS
 
     const handleApply = () => {
-        onApply(localDept, localCategory, localStates, localStartDate, localEndDate)
+        onApply("", localCategory, localStates, localStartDate, localEndDate)
     }
 
     const handleReset = () => {
-        setLocalDept("")
         setLocalCategory("")
         setLocalStates(StatesSelected)
         setLocalStartDate(startdate)

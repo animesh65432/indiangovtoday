@@ -19,11 +19,9 @@ const Main: React.FC = () => {
     const [SearchInput, SetSearchInput] = useState<string>("")
     const [StatesSelected, SetStatesSelected] = useState<string[]>([]);
     const [sheetOpen, setSheetOpen] = useState(false)
-    const [AnnouncementsType, SetAnnouncementsType] = useState<"All" | "Central Govt" | "States Govt">(`All`);
     const [DeparmentsSelected, SetDeparmentsSelected] = useState<string>(``);
     const [CategoriesSelected, SetCategoriesSelected] = useState<string>(``);
     const [totalPages, settotalPages] = useState<number>(0)
-    const [departmentOptions, setDepartmentOptions] = useState<string[]>([])
     const [categoryOptions, setCategoryOptions] = useState<string[]>([])
     const [IsLoading, SetIsLoading] = useState<boolean>(false)
     const [IsLoadingMore, SetIsLoadingMore] = useState<boolean>(false)
@@ -59,26 +57,14 @@ const Main: React.FC = () => {
 
         try {
 
-            const INDIA_GOVT_CODE = TranslateText[language]["MULTISELECT_OPTIONS"][
-                TranslateText[language]["MULTISELECT_OPTIONS"].length - 1
-            ].value;
-
-
-            const filteredStates =
-                AnnouncementsType === "Central Govt"
-                    ? StatesSelected.filter(s => s === INDIA_GOVT_CODE)
-                    : AnnouncementsType === "States Govt"
-                        ? StatesSelected.filter(s => s !== INDIA_GOVT_CODE)
-                        : StatesSelected;
-
             const DeparMentsPayload = TranslateText[language].ALL_DEPARMENTS === DeparmentsSelected ? "" : DeparmentsSelected;
 
-            const key = buildCacheKey("announcements", { language, startdate, endDate, page, states: filteredStates, dept: DeparMentsPayload, search: SearchInput })
+            const key = buildCacheKey("announcements", { language, startdate, endDate, page, states: StatesSelected, dept: DeparMentsPayload, search: SearchInput })
 
             const response = await withCache(key, "announcements", async () => (
                 await getAllAnnouncements(
                     language, startdate, endDate, pageNumber, limit,
-                    filteredStates, DeparMentsPayload, SearchInput, signal
+                    StatesSelected, DeparMentsPayload, SearchInput, signal
                 ) as AnnouncementsResponse
             ));
 
@@ -116,7 +102,6 @@ const Main: React.FC = () => {
         state_ut,
         trigger,
         DeparmentsSelected,
-        AnnouncementsType,
         startdate,
         endDate,
         StatesSelected
@@ -179,8 +164,6 @@ const Main: React.FC = () => {
         return () => clearTimeout(timer);
     }, [SearchInput]);
 
-    const shouldShowMap = ShowIndiaMap && AnnouncementsType !== "Central Govt";
-
     const handleMobileApply = (
         dept: string,
         category: string,
@@ -223,12 +206,8 @@ const Main: React.FC = () => {
             <SearchInputBox
                 StatesSelected={StatesSelected}
                 SetStatesSelected={SetStatesSelected}
-                DeparmentsSelected={DeparmentsSelected} SetDeparmentsSelected={SetDeparmentsSelected}
                 SearchInput={SearchInput} SetSearchInput={SetSearchInput}
                 onSearch={handleSearch}
-                AnnouncementsType={AnnouncementsType} SetAnnouncementsType={SetAnnouncementsType}
-                departmentOptions={departmentOptions}
-                setDepartmentOptions={setDepartmentOptions}
                 categoryOptions={categoryOptions}
                 setCategoryOptions={setCategoryOptions}
                 CategoriesSelected={CategoriesSelected} SetCategoriesSelected={SetCategoriesSelected}

@@ -9,11 +9,11 @@ const Summary: React.FC<Props> = ({ heading, content }) => {
     return (
         <div className='flex flex-col gap-2 font-satoshi text-multiselect'>
             <div>
-                <h3 className='font-semibold text-xl'>
+                <h3 className='font-semibold text-[1.4rem]'>
                     {heading}
                 </h3>
             </div>
-            <p className='leading-relaxed w-full lg:w-[60vw]'>{content}</p>
+            <p className='leading-relaxed w-full lg:w-[60vw] text-[1.2rem]'>{content}</p>
         </div>
     )
 }
