@@ -29,8 +29,8 @@ const Main: React.FC = () => {
     const [IsLoading, SetIsLoading] = useState<boolean>(false)
     const [IsLoadingMore, SetIsLoadingMore] = useState<boolean>(false)
     const firstLoad = useRef(true);
-    const [IsMapLoading, SetIsMapLoading] = useState(false);
-    const [IsAnnouncementsLoading, SetIsAnnouncementsLoading] = useState(false);
+    const [IsMapLoading, SetIsMapLoading] = useState(true);
+    const [IsAnnouncementsLoading, SetIsAnnouncementsLoading] = useState(true);
     const [Announcements, SetAnnouncements] = useState<AnnouncementTypes[]>([])
     const [page, Setpage] = useState<number>(1)
     const [limit] = useState<number>(10)
@@ -54,10 +54,9 @@ const Main: React.FC = () => {
 
         if (append) SetIsLoadingMore(true);
         else SetIsLoading(true);
-        SetIsAnnouncementsLoading(true);
-
         if (StatesSelected.length === 0) {
             SetIsLoading(false);
+            SetIsAnnouncementsLoading(false);
             return;
         }
 
@@ -137,6 +136,11 @@ const Main: React.FC = () => {
         }
     }, [page]);
 
+    useEffect(() => {
+        SetIsAnnouncementsLoading(true);
+        SetIsMapLoading(true);
+    }, [language])
+
     const handleSearch = () => {
         if (StatesSelected.length === 0 && DefaultsStatesApplied.length === 0) {
             return;
@@ -208,7 +212,7 @@ const Main: React.FC = () => {
         setSheetOpen(false)
     }
 
-    const isGlobalLoading = IsLoading && IsMapLoading && StatesSelected.length > 0;
+    const isGlobalLoading = IsAnnouncementsLoading && IsMapLoading && StatesSelected.length > 0;
 
     if (isGlobalLoading) {
         return <Loading />

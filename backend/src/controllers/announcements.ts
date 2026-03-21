@@ -599,7 +599,7 @@ export const GetAllCountAnnouncements = asyncErrorHandler(async (req: Request, r
 });
 
 export const GetAllCategoriesAnnouncements = asyncErrorHandler(async (req: Request, res: Response) => {
-    const { target_lan, startDate, endDate, states } = req.query;
+    const { target_lan, startDate, endDate } = req.query;
 
     if (!target_lan || typeof target_lan !== "string") {
         res.status(400).json({ message: "Missing or invalid target_lan" });
@@ -607,9 +607,6 @@ export const GetAllCategoriesAnnouncements = asyncErrorHandler(async (req: Reque
     }
 
     const targetLanguage = LANGUAGE_CODES[target_lan] || "en";
-    const selectedStates = PrasePayloadArray(states as string);
-    const sortedStates = [...selectedStates].sort();
-    const stateCachePart = sortedStates.join(",");
 
     const announcementsStartDate = startDate
         ? new Date(startDate as string)
@@ -629,7 +626,7 @@ export const GetAllCategoriesAnnouncements = asyncErrorHandler(async (req: Reque
         .toISOString()
         .split("T")[0]}_${end
             .toISOString()
-            .split("T")[0]}_${stateCachePart}`;
+            .split("T")[0]}`;
 
     const cached = await redis.get(redisKey);
 
@@ -643,7 +640,6 @@ export const GetAllCategoriesAnnouncements = asyncErrorHandler(async (req: Reque
     const filter = {
         date: { $gte: start, $lte: end },
         language: targetLanguage,
-        state: sortedStates.length ? { $in: sortedStates } : { $exists: true },
     };
 
     const collationOptions = { collation: { locale: "simple", strength: 1 } };
