@@ -36,7 +36,7 @@ const AnnoucementsHeader: React.FC = () => {
                         border border-[#FF9933]/30
                         uppercase text-[0.65rem]
                         font-inter font-semibold tracking-wider
-                        rounded-md
+                        rounded-none
                         px-3 py-2
 
                         hover:border-[#FF9933]
@@ -49,7 +49,7 @@ const AnnoucementsHeader: React.FC = () => {
                         <SelectValue placeholder="Language" />
                     </SelectTrigger>
 
-                    <SelectContent className='z-50 bg-[#1A1A1A]  border border-[#FF9933]/30 rounded-md'>
+                    <SelectContent className='z-[999] bg-[#1A1A1A]  border border-[#FF9933]/30 rounded-md'>
                         {optionsforLanguages.map((lan) => (
                             <SelectItem
                                 key={lan.label}

@@ -5,7 +5,6 @@ import Title from './Title'
 import Details from './Details'
 import TextDiv from "./TextDiv"
 import KeyInforMation from './KeyInforMation'
-import Image from 'next/image'
 
 type Props = {
     title: string

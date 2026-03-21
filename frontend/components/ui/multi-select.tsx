@@ -667,7 +667,7 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                         className={cn(
                             // popover: black bg, saffron border, saffron text
                             "w-auto p-0 font-satoshi multiselect-popover",
-                            "bg-[#1A1A1A]  border border-[#FF9933] text-[#FF9933]",
+                            "bg-[#1A1A1A]  z-[999] border border-[#FF9933] text-[#FF9933]",
                             getPopoverAnimationClass(),
                             screenSize === "mobile" && "w-[85vw] max-w-[280px]",
                             screenSize === "tablet" && "w-[70vw] max-w-md",

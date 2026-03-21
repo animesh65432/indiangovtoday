@@ -1,7 +1,6 @@
 import React, { useContext } from "react";
 import { SectionTypes } from "@/types";
 import { useRouter } from "next/navigation";
-import { Button } from "../ui/button";
 import { Share2, Play, Pause, Square, AudioLines, Volume2, ArrowLeft } from "lucide-react";
 import ShareSection from "../Share";
 import { LanguageContext } from "@/context/Lan"
@@ -11,7 +10,7 @@ import { TranslateText } from "@/lib/translatetext";
 type Props = {
     title: string
     sections: SectionTypes[]
-    toggle: boolean,
+    toggle: boolean
     setToggle: React.Dispatch<React.SetStateAction<boolean>>
 }
 
@@ -19,81 +18,75 @@ export default function Header({ sections, title, toggle, setToggle }: Props) {
     const router = useRouter();
     const { language } = useContext(LanguageContext);
     const { call, stop, togglePlayPause, IsLoading, isPlaying, isPaused } = usetexttospech()
+
     const handleAudioAction = async () => {
         if (IsLoading) return
         if (isPlaying || isPaused) {
             togglePlayPause()
         } else {
-            await call(sections[0].heading + ". " + ('content' in sections[0] ? sections[0].content : '') + " " +
+            await call(
+                sections[0].heading + ". " + ('content' in sections[0] ? sections[0].content : '') + " " +
                 sections[1].heading + ". " + ('content' in sections[1] ? sections[1].content : '') + " " +
                 sections[2].heading + ". " + (sections[2].type === "keypoints" && 'points' in sections[2] ? sections[2].points.join('. ') : '')
             )
         }
     }
 
-    const handleStopAudio = () => {
-        stop()
-    }
-
     const getAudioIcon = () => {
-        if (IsLoading) return <AudioLines className="animate-spin text-multiselect  w-5 h-5" />
-        if (isPlaying) return <Pause className="text-multiselect  w-5 h-5" />
-        if (isPaused) return <Play className="text-multiselect  w-5 h-5" />
-        return <Volume2 className="text-multiselect  w-5 h-5" />
+        if (IsLoading) return <AudioLines className="animate-spin text-[#FF9933] w-4 h-4" />
+        if (isPlaying) return <Pause className="text-[#FF9933] w-4 h-4" />
+        if (isPaused) return <Play className="text-[#FF9933] w-4 h-4" />
+        return <Volume2 className="text-[#FF9933] w-4 h-4" />
     }
 
     return (
-        <header className='flex items-center justify-between'>
-            <Button
+        <header className="flex items-center justify-between">
+            {/* Back button */}
+            <button
                 onClick={() => router.push("/#announcements")}
-                className='w-fit text-multiselect  p-4 hover:cursor-pointer  bg-white/50 text-[11px] md:text-[12px]  font-satoshi  border border-[#a8c0e0]/40 font-semibold rounded-none'
+                className="flex items-center gap-2 font-satoshi text-[11px] md:text-[12px] font-semibold text-white/70 border border-[#FF9933]/25 bg-transparent px-4 py-2 rounded hover:text-[#FF9933] hover:border-[#FF9933]/60 hover:bg-[#FF9933]/5 transition-all duration-150"
             >
-                <ArrowLeft className="inline-block ml-1" />
+                <ArrowLeft className="w-3.5 h-3.5" />
                 {TranslateText[language].BACK}
-            </Button>
-            <nav className='flex items-center gap-6 '>
-                <ul>
-                    <Share2
-                        onClick={() => setToggle(prev => !prev)}
-                        role="button"
-                        aria-label="Share announcement"
-                        className='text-multiselect'
-                        id='sharebutton'
-                    />
-                    {toggle && <ShareSection Announcement={title} setisShareOPen={setToggle} />}
-                </ul>
+            </button>
 
-                <ul className="flex items-center gap-3">
+            {/* Right controls */}
+            <nav className="flex items-center gap-4">
+                {/* Share */}
+                <button
+                    onClick={() => setToggle(prev => !prev)}
+                    aria-label="Share announcement"
+                    className="flex items-center justify-center w-9 h-9 rounded border border-[#FF9933]/25 bg-transparent text-[#FF9933]/60 hover:text-[#FF9933] hover:border-[#FF9933]/60 hover:bg-[#FF9933]/5 transition-all duration-150"
+                >
+                    <Share2 className="w-4 h-4" />
+                </button>
+                {toggle && <ShareSection Announcement={title} setisShareOPen={setToggle} />}
+
+                {/* Audio controls */}
+                <div className="flex items-center gap-2">
                     {(isPlaying || isPaused) && (
                         <button
-                            className="group relative bg-white/90 backdrop-blur-sm p-3.5 rounded-full shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-110 active:scale-95"
-                            onClick={handleStopAudio}
+                            onClick={stop}
                             aria-label="Stop audio"
-                            style={{ border: 0 }}
+                            className="flex items-center justify-center w-9 h-9 rounded border border-red-500/30 bg-transparent text-red-500/70 hover:text-red-500 hover:border-red-500/60 hover:bg-red-500/5 transition-all duration-150"
                         >
-                            <Square className="text-red-500  h-10 w-10" />
-                            <li className="absolute inset-0 rounded-full bg-gray-100/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                            <Square className="w-4 h-4" />
                         </button>
                     )}
                     <button
-                        className={`group relative bg-white/90 backdrop-blur-sm p-4 rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 ${IsLoading
-                            ? 'cursor-not-allowed opacity-60'
-                            : 'hover:scale-110 active:scale-95'
-                            }`}
                         onClick={IsLoading ? undefined : handleAudioAction}
                         disabled={IsLoading}
                         aria-label={isPlaying ? "Pause audio" : "Play audio"}
-                        style={{ border: 0 }}
+                        className={`flex items-center justify-center w-9 h-9 rounded border border-[#FF9933]/25 bg-transparent transition-all duration-150
+                            ${IsLoading
+                                ? 'opacity-50 cursor-not-allowed'
+                                : 'hover:text-[#FF9933] hover:border-[#FF9933]/60 hover:bg-[#FF9933]/5'
+                            }`}
                     >
                         {getAudioIcon()}
-                        <li className="absolute inset-0 rounded-full bg-gray-100/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-
-                        {IsLoading && (
-                            <li className="absolute inset-0 rounded-full border-2 border-gray-300/50 border-t-gray-600 animate-spin" />
-                        )}
                     </button>
-                </ul>
+                </div>
             </nav>
         </header>
-    );
+    )
 }

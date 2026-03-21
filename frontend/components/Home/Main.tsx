@@ -11,7 +11,7 @@ import { toast } from "react-toastify"
 import SearchInputBox from './SearchInputbox';
 import Hero from './Hero';
 import { buildCacheKey, withCache } from "@/lib/lsCache";
-import ShowAnnouncements from '../ShowAnnouncements';
+import ShowAnnouncements from './ShowAnnouncements';
 import dynamic from "next/dynamic";
 
 const IndiaMap = dynamic(() => import("@/components/IndiaMap"), {
@@ -207,12 +207,37 @@ const Main: React.FC = () => {
         setSheetOpen(false)
     }
 
+    console.log(ShowIndiaMap)
+
 
     return (
-        <section className="flex flex-col gap-2 pb-2 h-screen w-screen overflow-hidden md:overflow-visible  ">
+        <section className="flex flex-col gap-4 md:gap-0 h-screen w-screen overflow-hidden">
             <AnnoucementsHeader />
-            <div className='flex flex-col md:flex-row'>
-                <div>
+            <div className='md:hidden block'>
+                <Hero />
+            </div>
+            <div className='md:hidden block'>
+                <SearchInputBox
+                    StatesSelected={StatesSelected}
+                    SetStatesSelected={SetStatesSelected}
+                    SearchInput={SearchInput}
+                    SetSearchInput={SetSearchInput}
+                    onSearch={handleSearch}
+                    categoryOptions={categoryOptions}
+                    setCategoryOptions={setCategoryOptions}
+                    CategoriesSelected={CategoriesSelected}
+                    SetCategoriesSelected={SetCategoriesSelected}
+                    handleMobileApply={handleMobileApply}
+                    handleMobileReset={handleMobileReset}
+                    sheetOpen={sheetOpen}
+                    setSheetOpen={setSheetOpen}
+                />
+            </div>
+
+
+            <div className="flex flex-col md:flex-row flex-1 min-h-0 overflow-hidden">
+
+                <div className={`flex-shrink-0 w-[98%] mx-auto md:0 md:w-[380px] ${ShowIndiaMap ? "h-[35vh] md:h-full" : "h-auto"}  overflow-hidden`}>
                     <IndiaMap
                         ShowIndiaMap={ShowIndiaMap}
                         SetShowIndiaMap={SetShowIndiaMap}
@@ -221,24 +246,45 @@ const Main: React.FC = () => {
                         onStateClick={handleStateClick}
                     />
                 </div>
-                <div className='flex-1 flex flex-col gap-4'>
-                    <Hero />
-                    <SearchInputBox
-                        StatesSelected={StatesSelected}
-                        SetStatesSelected={SetStatesSelected}
-                        SearchInput={SearchInput} SetSearchInput={SetSearchInput}
-                        onSearch={handleSearch}
-                        categoryOptions={categoryOptions}
-                        setCategoryOptions={setCategoryOptions}
-                        CategoriesSelected={CategoriesSelected} SetCategoriesSelected={SetCategoriesSelected}
-                        handleMobileApply={handleMobileApply}
-                        handleMobileReset={handleMobileReset}
-                        sheetOpen={sheetOpen}
-                        setSheetOpen={setSheetOpen}
-                    />
+
+
+                <div className="flex-1 flex flex-col gap-4 min-h-0 overflow-hidden">
+                    <div className='md:block hidden'>
+                        <Hero />
+                    </div>
+                    <div className='md:block hidden'>
+                        <SearchInputBox
+                            StatesSelected={StatesSelected}
+                            SetStatesSelected={SetStatesSelected}
+                            SearchInput={SearchInput}
+                            SetSearchInput={SetSearchInput}
+                            onSearch={handleSearch}
+                            categoryOptions={categoryOptions}
+                            setCategoryOptions={setCategoryOptions}
+                            CategoriesSelected={CategoriesSelected}
+                            SetCategoriesSelected={SetCategoriesSelected}
+                            handleMobileApply={handleMobileApply}
+                            handleMobileReset={handleMobileReset}
+                            sheetOpen={sheetOpen}
+                            setSheetOpen={setSheetOpen}
+                        />
+                    </div>
+
+                    {/* ── Only this div scrolls ── */}
+                    <div className="flex-1 min-h-0 overflow-y-auto">
+                        <ShowAnnouncements
+                            Announcements={Announcements}
+                            LoadMoreData={OnLoadMoredata}
+                            page={page}
+                            totalpage={totalPages}
+                            IsLoading={IsLoading}
+                            IsLoadingMore={IsLoadingMore}
+                        />
+                    </div>
+
                 </div>
             </div>
-        </section >
+        </section>
 
     );
 };

@@ -100,7 +100,7 @@ const SearchInputBox: React.FC<Props> = ({
     }, [language, StatesSelected]);
 
     return (
-        <div className='ml-4 flex flex-col gap-2'>
+        <div className=' ml-2 md:ml-4 flex flex-col gap-2'>
             <div className='flex flex-col gap-2'>
                 <div className="relative">
                     <Input
@@ -114,12 +114,12 @@ const SearchInputBox: React.FC<Props> = ({
                             }
                         }}
                     />
-                    <Search className="absolute left-2 top-1/2 -translate-y-1/2 text-[#FF9933]" />
+                    <Search className="absolute left-4 md:left-2 top-1/2 -translate-y-1/2 text-[#FF9933]" />
                     <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
                         <SheetTrigger className="w-fit text-multiselect  bg-white/50 text-[11px] md:text-[12px]  font-satoshi  border border-[#a8c0e0]/40 font-semibold rounded-none absolute right-3 top-1/2 -translate-y-1/2 block md:hidden">
                             <FunnelPlus className='absolute right-3 top-1/2 -translate-y-1/2 text-[#FF9933] block md:hidden' />
                         </SheetTrigger>
-                        <SheetContent className='p-0' side="bottom">
+                        <SheetContent className='p-0 z-[9999]' side="bottom">
                             <MobileSearchInput
                                 categoryOptions={categoryOptions}
                                 CategoriesSelected={CategoriesSelected}
@@ -174,7 +174,7 @@ const SearchInputBox: React.FC<Props> = ({
                                 mode="single"
                                 selected={startdate}
                                 defaultMonth={startdate}
-                                className='font-satoshi'
+                                className='font-satoshi z-[999]'
                                 onSelect={(date) => date && onChangeStartDate(date)}
                             />
                         </PopoverContent>
@@ -192,7 +192,7 @@ const SearchInputBox: React.FC<Props> = ({
                         <PopoverContent className="w-auto p-0 z-[9999] !border-[#FF9933] !bg-[#1A1A1A] rounded-md" align="start">
                             <Calendar
                                 mode="single"
-                                className='font-satoshi '
+                                className='font-satoshi z-[999]'
                                 selected={endDate}
                                 defaultMonth={endDate}
                                 onSelect={(date) => date && onChangeEndDate(date)}

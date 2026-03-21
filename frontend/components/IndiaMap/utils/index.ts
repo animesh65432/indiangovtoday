@@ -1,5 +1,6 @@
 
 import { STATES_CODES } from "@/lib/translatetext";
+import L from "leaflet";
 
 const GEO_NAME_MAP: Record<string, string> = {
     "Andaman and Nicobar": "Andaman and Nicobar Islands",
@@ -84,4 +85,38 @@ export const getTooltipHTML = (
 export const checkIfStateSelected = (state: string, selectedStates: string[]): boolean => {
     const normalizedState = normalizeGeoName(state);
     return selectedStates.some(selected => normalizeGeoName(selected) === normalizedState);
+}
+
+export const DARK_MAP_STYLE = `
+.leaflet-top.leaflet-left { left: 10px !important; top: 10px !important; }
+.leaflet-control-zoom .leaflet-bar { border: 1px solid #FF9933 !important; border-radius: 6px !important; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.6) !important; }
+.leaflet-control-zoom a { background: #1A1A1A !important; color: #FF9933 !important; border-bottom: 1px solid #FF9933 !important; width: 26px !important; height: 26px !important; line-height: 26px !important; font-size: 15px !important; display: flex !important; align-items: center !important; justify-content: center !important; transition: background 0.15s; }
+.leaflet-control-zoom a:hover { background: #FF9933 !important; color: #000 !important; }
+.leaflet-control-zoom a:last-child { border-bottom: none !important; }
+.leaflet-control-attribution { display: none !important; }
+.state-label { background: transparent !important; border: none !important; box-shadow: none !important; pointer-events: none !important; }
+.state-label-inner { display: flex; flex-direction: column; align-items: center; gap: 1px; transform: translate(-50%, -50%); white-space: nowrap; }
+.state-label-name { font-size: 8px; font-weight: 700; color: #fff; letter-spacing: 0.03em; text-shadow: 0 1px 3px rgba(0,0,0,0.9), 0 0 6px rgba(0,0,0,0.8); line-height: 1.1; text-transform: uppercase; }
+.state-label-count { font-size: 9px; font-weight: 800; color: #FF9933; background: rgba(0,0,0,0.55); border: 1px solid #FF9933; border-radius: 10px; padding: 0px 5px; line-height: 1.5; }
+.govtrack-tooltip { background: #1A1A1A !important; border: 1px solid #FF9933 !important; border-radius: 8px !important; box-shadow: 0 2px 12px rgba(0,0,0,0.6) !important; padding: 6px 10px !important; color: white !important; font-size: 12px !important; pointer-events: none !important; }
+.govtrack-tooltip::before { display: none !important; }
+`;
+
+export function injectMapStyles() {
+    if (typeof document === "undefined") return;
+    if (document.getElementById("dark-map-styles")) return;
+    const el = document.createElement("style");
+    el.id = "dark-map-styles";
+    el.textContent = DARK_MAP_STYLE;
+    document.head.appendChild(el);
+}
+
+export function makeStateLabel(name: string, count: number): L.DivIcon {
+    const countHtml = count > 0 ? `<div class="state-label-count">${count}</div>` : "";
+    return L.divIcon({
+        className: "state-label",
+        html: `<div class="state-label-inner"><div class="state-label-name">${name}</div>${countHtml}</div>`,
+        iconSize: [0, 0],
+        iconAnchor: [0, 0],
+    });
 }

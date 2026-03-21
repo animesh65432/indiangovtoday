@@ -6,9 +6,9 @@ type Props = {
 
 const Title: React.FC<Props> = ({ title }) => {
     return (
-        <h3 className='text-multiselect  font-satoshi text-xl md:text-2xl font-bold'>
+        <h1 className="font-satoshi text-xl md:text-2xl font-bold text-white leading-snug">
             {title}
-        </h3>
+        </h1>
     )
 }
 

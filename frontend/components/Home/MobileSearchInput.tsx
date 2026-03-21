@@ -58,12 +58,12 @@ const MobileSearchInput: React.FC<Props> = ({
     }
 
     return (
-        <div className="bg-white min-h-screen p-6 mobile-filter-panel">
+        <div className="bg-[#111111] min-h-screen p-6 mobile-filter-panel">
 
             {/* Header */}
             <div className="flex items-center gap-3 mb-7">
-                <div className="w-0.75 h-5 bg-[#2D4870] rounded-full" />
-                <span className="text-[#2D4870] font-satoshi text-xs font-semibold tracking-widest uppercase">
+                <div className="w-0.75 h-5 bg-[#FF9933] rounded-full" />
+                <span className="text-[#FF9933] font-satoshi text-xs font-semibold tracking-widest uppercase">
                     Filters
                 </span>
             </div>
@@ -72,17 +72,17 @@ const MobileSearchInput: React.FC<Props> = ({
 
                 {/* Types */}
                 <div className="flex flex-col gap-2">
-                    <span className="text-[#3c5b8a] text-[11px] font-semibold tracking-widest uppercase">
+                    <span className="text-[#FF9933] text-[11px] font-semibold tracking-widest uppercase">
                         Types
                     </span>
                     <Select value={localCategory} onValueChange={setLocalCategory}>
-                        <SelectTrigger className="h-12 text-multiselect placeholder:text-multiselect border border-[#E8E8E8] rounded-none text-multiselect text-sm px-4 ">
+                        <SelectTrigger className="h-12 text-white placeholder:text-white border border-[#FF9933] rounded-none text-sm px-4 ">
                             <SelectValue className='placeholder:font-satoshi font-satoshi' placeholder="All Types" />
                         </SelectTrigger>
-                        <SelectContent className=" font-satoshi border-[#E8E8E8] z-[9999]">
+                        <SelectContent className=" font-satoshi z-[9999] bg-[#1A1A1A] border border-[#FF9933]/30  ">
                             <SelectGroup>
                                 {categoryOptions.map((cat) => (
-                                    <SelectItem key={cat} value={cat} className='text-multiselect'>
+                                    <SelectItem key={cat} value={cat} className='font-satoshi text-[#EAEAEA] hover:bg-[#FF9933]/10 focus:bg-[#FF9933]/20 cursor-pointer'>
                                         {cat}
                                     </SelectItem>
                                 ))}
@@ -93,7 +93,7 @@ const MobileSearchInput: React.FC<Props> = ({
 
                 {/* State / Region */}
                 <div className="flex flex-col gap-2">
-                    <span className="font-satoshi text-[11px] text-multiselect  font-semibold tracking-widest uppercase">
+                    <span className="font-satoshi text-[11px] text-[#FF9933]  font-semibold tracking-widest uppercase">
                         State / Region
                     </span>
                     <MultiSelect
@@ -105,14 +105,14 @@ const MobileSearchInput: React.FC<Props> = ({
                         mobile={true}
                         modalPopover={true}
                         searchable={true}
-                        popoverClassName="z-[9999] border-[#E8E8E8]"
+                        popoverClassName="z-[9999] border-[#FF9933]"
                         className='rounded-none '
                     />
                 </div>
 
                 {/* Date Range */}
                 <div className="flex flex-col gap-2">
-                    <span className="font-satoshi text-multiselect  text-[11px] font-semibold tracking-widest uppercase">
+                    <span className="font-satoshi text-[#FF9933]  text-[11px] font-semibold tracking-widest uppercase">
                         Date Range
                     </span>
                     <div className="flex items-center gap-3">
@@ -120,9 +120,9 @@ const MobileSearchInput: React.FC<Props> = ({
                         {/* Start Date */}
                         <Popover>
                             <PopoverTrigger asChild>
-                                <Button className="w-fit p-5 text-multiselect  bg-white/50 text-[11px] md:text-[12px]  font-satoshi  border border-[#a8c0e0]/40 font-semibold rounded-none">
+                                <Button className="w-fit p-5 bg-[#1A1A1A] text-white border border-[#FF9933]  text-[11px] md:text-[12px]  font-satoshi   font-semibold rounded-none">
                                     {localStartDate ? format(localStartDate, "dd MMM yyyy") : "Start date"}
-                                    <CalendarIcon size={14} className="border-[#E8E8E8]" />
+                                    <CalendarIcon size={14} className="text-[#FF9933]" />
                                 </Button>
                             </PopoverTrigger>
                             <PopoverContent className="w-auto p-0 z-[9999] bg-white border-[#E8E8E8]" align="start">
@@ -136,14 +136,14 @@ const MobileSearchInput: React.FC<Props> = ({
                             </PopoverContent>
                         </Popover>
 
-                        <div className="w-3 h-px bg-[#355b95] shrink-0" />
+                        <div className="w-3 h-px bg-[#FF9933] shrink-0" />
 
                         {/* End Date */}
                         <Popover>
                             <PopoverTrigger asChild>
-                                <Button className="w-fit text-multiselect p-5  bg-white/50 text-[11px] md:text-[12px]  font-satoshi  border border-[#a8c0e0]/40 font-semibold rounded-none">
+                                <Button className="w-fit p-5 bg-[#1A1A1A] text-white border border-[#FF9933]  text-[11px] md:text-[12px]  font-satoshi   font-semibold rounded-none">
                                     {localEndDate ? format(localEndDate, "dd MMM yyyy") : "End date"}
-                                    <CalendarIcon size={14} className="" />
+                                    <CalendarIcon size={14} className="text-[#FF9933]" />
                                 </Button>
                             </PopoverTrigger>
                             <PopoverContent className="w-auto p-0 z-[9999] bg-white border-[#E8E8E8]" align="start">
@@ -164,13 +164,13 @@ const MobileSearchInput: React.FC<Props> = ({
                 <div className="flex gap-3 mt-2">
                     <Button
                         onClick={handleReset}
-                        className="flex-1 rounded-none font-satoshi h-12 bg-white border border-[#a8c0e0]/40 text-multiselect  text-sm hover:bg-[#F5F5F5]"
+                        className="flex-1 w-fit p-5 bg-[#1A1A1A] text-white border border-[#FF9933]  text-[14px]  font-satoshi   font-semibold rounded-none"
                     >
                         Reset
                     </Button>
                     <Button
                         onClick={handleApply}
-                        className="flex-2 rounded-none font-satoshi h-12 border border-[#a8c0e0]/40  text-multiselect font-semibold  text-sm"
+                        className="flex-1 w-fit p-5 bg-[#1A1A1A] text-white border border-[#FF9933]  text-[14px]  font-satoshi   font-semibold rounded-none"
                     >
                         Apply Filters
                     </Button>
