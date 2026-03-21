@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { LanguageContext } from "@/context/Lan"
 import { Input } from "@/components/ui/input"
 import { TranslateText } from "@/lib/translatetext"
@@ -37,8 +37,8 @@ type Props = {
     onSearch: () => void,
     categoryOptions: string[]
     setCategoryOptions: React.Dispatch<React.SetStateAction<string[]>>
-    CategoriesSelected: string
-    SetCategoriesSelected: React.Dispatch<React.SetStateAction<string>>
+    CategorySelected: string
+    SetCategorySelected: React.Dispatch<React.SetStateAction<string>>
     handleMobileApply: (dept: string,
         category: string,
         states: string[],
@@ -55,8 +55,8 @@ const SearchInputBox: React.FC<Props> = ({
     onSearch,
     categoryOptions,
     setCategoryOptions,
-    CategoriesSelected,
-    SetCategoriesSelected,
+    CategorySelected,
+    SetCategorySelected,
     handleMobileApply,
     handleMobileReset,
     sheetOpen,
@@ -122,7 +122,7 @@ const SearchInputBox: React.FC<Props> = ({
                         <SheetContent className='p-0 z-[9999]' side="bottom">
                             <MobileSearchInput
                                 categoryOptions={categoryOptions}
-                                CategoriesSelected={CategoriesSelected}
+                                CategorySelected={CategorySelected}
                                 StatesSelected={StatesSelected}
                                 onApply={handleMobileApply}
                                 onReset={handleMobileReset}
@@ -141,9 +141,9 @@ const SearchInputBox: React.FC<Props> = ({
                         autoSize
                         resetOnDefaultValueChange={true}
                     />
-                    <Select>
+                    <Select value={CategorySelected} onValueChange={SetCategorySelected}>
                         <SelectTrigger className='rounded-none px-4 py-4.5 border border-[#FF9933] text-[#FFFFFF]!  w-fit font-satoshi bg-[#1A1A1A] font-medium'>
-                            <SelectValue placeholder="Types" />
+                            <SelectValue placeholder={TranslateText[language].ALL_DEPARMENTS} />
                         </SelectTrigger>
                         <SelectContent className='bg-[#1A1A1A] border border-[#FF9933]/30'>
                             {
@@ -152,7 +152,6 @@ const SearchInputBox: React.FC<Props> = ({
                                         className='font-satoshi text-[#EAEAEA] hover:bg-[#FF9933]/10 focus:bg-[#FF9933]/20 cursor-pointer'
                                         key={category}
                                         value={category}
-                                        onClick={() => SetCategoriesSelected(category)}
                                     >
                                         {category}
                                     </SelectItem>

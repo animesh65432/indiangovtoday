@@ -17,7 +17,7 @@ import { MultiSelect } from "../ui/multi-select"
 type Props = {
     categoryOptions: string[]
     setCategoryOptions: React.Dispatch<React.SetStateAction<string[]>>
-    CategoriesSelected: string
+    CategorySelected: string
     StatesSelected: string[]
     onApply: (
         dept: string,
@@ -31,14 +31,14 @@ type Props = {
 
 const MobileSearchInput: React.FC<Props> = ({
     categoryOptions,
-    CategoriesSelected,
+    CategorySelected,
     StatesSelected,
     onApply,
     onReset,
 }) => {
     const { language } = useContext(LanguageContext)
     const { startdate, endDate } = useContext(Currentdate)
-    const [localCategory, setLocalCategory] = useState(CategoriesSelected)
+    const [localCategory, setLocalCategory] = useState(CategorySelected)
     const [localStates, setLocalStates] = useState<string[]>(StatesSelected)
     const [localStartDate, setLocalStartDate] = useState<Date | null>(startdate)
     const [localEndDate, setLocalEndDate] = useState<Date | null>(endDate)

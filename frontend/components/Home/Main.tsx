@@ -7,7 +7,6 @@ import AnnoucementsHeader from '@/components/AnnoucementsHeader';
 import { GetStateCode } from "@/lib/GetStateCode"
 import { LocationContext } from "@/context/LocationProvider"
 import { TranslateText } from "@/lib/translatetext"
-import { toast } from "react-toastify"
 import SearchInputBox from './SearchInputbox';
 import Hero from './Hero';
 import { buildCacheKey, withCache } from "@/lib/lsCache";
@@ -18,15 +17,12 @@ const IndiaMap = dynamic(() => import("@/components/IndiaMap"), {
     ssr: false,
 });
 
-
-
 const Main: React.FC = () => {
     const { language } = useContext(LanguageContext);
     const [SearchInput, SetSearchInput] = useState<string>("")
     const [StatesSelected, SetStatesSelected] = useState<string[]>([]);
     const [sheetOpen, setSheetOpen] = useState(false)
-    const [DeparmentsSelected, SetDeparmentsSelected] = useState<string>(``);
-    const [CategoriesSelected, SetCategoriesSelected] = useState<string>(``);
+    const [CategorySelected, SetCategorySelected] = useState<string>(`${TranslateText[language].ALL_DEPARMENTS}`);
     const [totalPages, settotalPages] = useState<number>(0)
     const [categoryOptions, setCategoryOptions] = useState<string[]>([])
     const [IsLoading, SetIsLoading] = useState<boolean>(false)
@@ -63,14 +59,14 @@ const Main: React.FC = () => {
 
         try {
 
-            const DeparMentsPayload = TranslateText[language].ALL_DEPARMENTS === DeparmentsSelected ? "" : DeparmentsSelected;
+            const key = buildCacheKey("announcements", { language, startdate, endDate, page, states: StatesSelected, search: SearchInput, category: CategorySelected });
 
-            const key = buildCacheKey("announcements", { language, startdate, endDate, page, states: StatesSelected, dept: DeparMentsPayload, search: SearchInput })
+            const SelectedCategory = CategorySelected === TranslateText[language].ALL_DEPARMENTS ? "" : CategorySelected;
 
             const response = await withCache(key, "announcements", async () => (
                 await getAllAnnouncements(
                     language, startdate, endDate, pageNumber, limit,
-                    StatesSelected, DeparMentsPayload, SearchInput, signal
+                    StatesSelected, SelectedCategory, SearchInput, signal
                 ) as AnnouncementsResponse
             ));
 
@@ -103,11 +99,10 @@ const Main: React.FC = () => {
 
         return () => controller.abort();
     }, [
-        CategoriesSelected,
+        CategorySelected,
         language,
         state_ut,
         trigger,
-        DeparmentsSelected,
         startdate,
         endDate,
         StatesSelected
@@ -124,7 +119,6 @@ const Main: React.FC = () => {
             SetStatesSelected([INDIA_GOVT_CODE]);
             SetDefaultsStatesApplied([INDIA_GOVT_CODE]);
         }
-        SetDeparmentsSelected("")
     }, [state_ut, language]);
 
     useEffect(() => {
@@ -135,11 +129,9 @@ const Main: React.FC = () => {
         }
     }, [page]);
 
-
-
     const handleSearch = () => {
-        if (StatesSelected.length === 0) {
-            toast.error(`${TranslateText[language].NO_STATE_SELECTED}`);
+        if (StatesSelected.length === 0 && DefaultsStatesApplied.length === 0) {
+            return;
         }
         else {
             Setpage(1);
@@ -165,8 +157,7 @@ const Main: React.FC = () => {
     }
 
     useEffect(() => {
-        if (!SearchInput) return;
-
+        if (firstLoad.current) return;
         const timer = setTimeout(() => handleSearch(), 500);
         return () => clearTimeout(timer);
     }, [SearchInput]);
@@ -178,8 +169,7 @@ const Main: React.FC = () => {
         startDate: Date | null,
         endDate: Date | null
     ) => {
-        SetDeparmentsSelected(dept)
-        SetCategoriesSelected(category)
+        SetCategorySelected(category)
         SetStatesSelected(states)
         if (startDate) onChangeStartDate(startDate)
         if (endDate) onChangeEndDate(endDate)
@@ -187,8 +177,7 @@ const Main: React.FC = () => {
     }
 
     const handleMobileReset = () => {
-        SetDeparmentsSelected("")
-        SetCategoriesSelected("")
+        SetCategorySelected("")
         const today = new Date();
         const ThirteenDaysAgo = new Date();
         ThirteenDaysAgo.setDate(today.getDate() - 30);
@@ -207,16 +196,13 @@ const Main: React.FC = () => {
         setSheetOpen(false)
     }
 
-    console.log(ShowIndiaMap)
-
-
     return (
-        <section className="flex flex-col gap-4 md:gap-0 h-screen w-screen overflow-hidden">
+        <section className="flex flex-col gap-0 h-screen w-screen overflow-hidden">
             <AnnoucementsHeader />
             <div className='md:hidden block'>
                 <Hero />
             </div>
-            <div className='md:hidden block'>
+            <div className='md:hidden block mt-2 md:mt-0'>
                 <SearchInputBox
                     StatesSelected={StatesSelected}
                     SetStatesSelected={SetStatesSelected}
@@ -225,8 +211,8 @@ const Main: React.FC = () => {
                     onSearch={handleSearch}
                     categoryOptions={categoryOptions}
                     setCategoryOptions={setCategoryOptions}
-                    CategoriesSelected={CategoriesSelected}
-                    SetCategoriesSelected={SetCategoriesSelected}
+                    CategorySelected={CategorySelected}
+                    SetCategorySelected={SetCategorySelected}
                     handleMobileApply={handleMobileApply}
                     handleMobileReset={handleMobileReset}
                     sheetOpen={sheetOpen}
@@ -235,7 +221,7 @@ const Main: React.FC = () => {
             </div>
 
 
-            <div className="flex flex-col md:flex-row flex-1 min-h-0 overflow-hidden">
+            <div className="flex flex-col md:flex-row flex-1 min-h-0 overflow-hidden mt-2 md:mt-0">
 
                 <div className={`flex-shrink-0 w-[98%] mx-auto md:0 md:w-[380px] ${ShowIndiaMap ? "h-[35vh] md:h-full" : "h-auto"}  overflow-hidden`}>
                     <IndiaMap
@@ -261,8 +247,8 @@ const Main: React.FC = () => {
                             onSearch={handleSearch}
                             categoryOptions={categoryOptions}
                             setCategoryOptions={setCategoryOptions}
-                            CategoriesSelected={CategoriesSelected}
-                            SetCategoriesSelected={SetCategoriesSelected}
+                            CategorySelected={CategorySelected}
+                            SetCategorySelected={SetCategorySelected}
                             handleMobileApply={handleMobileApply}
                             handleMobileReset={handleMobileReset}
                             sheetOpen={sheetOpen}

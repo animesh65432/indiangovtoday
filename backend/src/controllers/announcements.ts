@@ -8,7 +8,7 @@ import { PrasePayloadArray } from "../utils/translatePayloadAnnoucements"
 
 export const GetIndiaAnnouncements = asyncErrorHandler(async (req: Request, res: Response) => {
 
-    const { categories, target_lan, startDate, endDate, page, limit, states, department, SearchInput } = req.query;
+    const { category, target_lan, startDate, endDate, page, limit, states, department, SearchInput } = req.query;
 
     const pageNumber = parseInt(page as string) || 1;
     const pageSize = parseInt(limit as string) || 10;
@@ -18,7 +18,7 @@ export const GetIndiaAnnouncements = asyncErrorHandler(async (req: Request, res:
 
     const Department = department ? department.toString().trim() : "";
 
-    const Categories = categories ? categories.toString().trim() : "";
+    const Category = category ? category.toString().trim() : "";
 
     const announcementsStartDate = startDate
         ? new Date(startDate as string)
@@ -31,7 +31,7 @@ export const GetIndiaAnnouncements = asyncErrorHandler(async (req: Request, res:
     const StateCachePart = selectedStates.sort().join(",");
     const SearchCachePart = SearchInput ? `_search${SearchInput}` : "";
 
-    const redis_key = `Announcements_${targetLanguage}_${announcementsStartDate.toISOString().split('T')[0]}_${announcementsEndDate.toISOString().split('T')[0]}_page${page}_limit${limit}_${StateCachePart}_${Department}${SearchCachePart}_${Categories}`;
+    const redis_key = `Announcements_${targetLanguage}_${announcementsStartDate.toISOString().split('T')[0]}_${announcementsEndDate.toISOString().split('T')[0]}_page${page}_limit${limit}_${StateCachePart}_${Department}${SearchCachePart}_${Category}`;
     const cached_data = await redis.get(redis_key);
 
     if (cached_data && typeof cached_data === "string") {
@@ -118,7 +118,7 @@ export const GetIndiaAnnouncements = asyncErrorHandler(async (req: Request, res:
             language: targetLanguage,
             state: selectedStates.length > 0 ? { $in: selectedStates } : { $exists: true },
             department: Department ? Department : { $exists: true },
-            category: Categories ? Categories : { $exists: true }
+            category: Category ? Category : { $exists: true }
         };
 
         const collationOptions = { collation: { locale: 'simple', strength: 1 } };
@@ -635,6 +635,7 @@ export const GetAllCategoriesAnnouncements = asyncErrorHandler(async (req: Reque
 
     if (cached) {
         res.status(200).json(cached)
+        return;
     }
 
     const db = await connectDB();
@@ -659,6 +660,5 @@ export const GetAllCategoriesAnnouncements = asyncErrorHandler(async (req: Reque
     await redis.set(redisKey, JSON.stringify(response), { ex: 300 });
 
     res.status(200).json(response);
-
     return;
 })

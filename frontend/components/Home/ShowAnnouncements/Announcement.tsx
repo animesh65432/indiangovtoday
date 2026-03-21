@@ -28,7 +28,6 @@ const AnnouncementCard: React.FC<Props> = ({ Announcement, size = "small" }) => 
 
     return (
         <div
-            onClick={handleClick}
             className={cn(
                 "group relative hover:-translate-y-[2px] flex flex-col overflow-hidden rounded-lg cursor-pointer",
                 "bg-[#1A1A1A] border border-white/[0.07]",

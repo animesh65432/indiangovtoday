@@ -25,7 +25,7 @@ const Details: React.FC<Props> = ({ lan, date, source, state, department, catego
     const cat = getCat(category)
 
     return (
-        <div className="w-fit border border-[#FF9933]/20 bg-[#1A1A1A] rounded-lg p-5 flex flex-col gap-3">
+        <div className="w-fit min-w-[300px] border border-[#FF9933]/20 bg-[#1A1A1A] rounded-lg p-5 flex flex-col gap-3">
             {/* Category badge */}
             <span
                 className="font-satoshi inline-flex items-center gap-[5px] self-start rounded px-[8px] py-[3px] text-[10px] font-bold tracking-[0.06em] uppercase"
