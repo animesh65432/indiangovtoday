@@ -288,7 +288,9 @@ body {
   -moz-osx-font-smoothing: grayscale;
   background-size: cover;
   background-position: center;
-  background-color: #111111;
+  background: radial-gradient(circle at 20% 20%, rgba(255, 153, 51, 0.08), transparent 40%),
+    radial-gradient(circle at 80% 0%, rgba(255, 153, 51, 0.05), transparent 40%),
+    #050505;
 }
 
 h1 {

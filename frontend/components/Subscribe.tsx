@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState, useContext } from "react";
 import { createPortal } from "react-dom";
-import { X, LoaderCircle } from "lucide-react";
+import { X, LoaderCircle, Bell } from "lucide-react";
 import { addthesubscribe } from "../api/aleart";
 import { toast } from "react-toastify";
 import { LanguageContext } from "@/context/Lan";
@@ -54,47 +54,75 @@ const Subscribe: React.FC = () => {
     };
 
     const popup = (
-        <div className="fixed inset-0 z-50 font-satoshi flex items-center justify-center bg-black/40">
-            <div className="relative bg-[#f5f3ef] w-full max-w-md mx-4 p-8 flex flex-col gap-6">
+        <div className="fixed inset-0 z-50 font-satoshi flex items-center justify-center bg-black/60 backdrop-blur-sm">
+            <div className="relative w-full max-w-md mx-4 overflow-hidden rounded-xl
+                            bg-[#111111] border border-white/[0.08]
+                            shadow-[0_24px_60px_rgba(0,0,0,0.8)]">
 
+                {/* Top orange accent line */}
+                <div className="h-[2px] w-full bg-gradient-to-r from-transparent via-[#FF9933] to-transparent" />
+
+                {/* Close button */}
                 <button
                     onClick={handleClose}
-                    className="absolute top-4 right-4  transition-colors"
+                    className="absolute top-4 right-4 text-white/30 hover:text-white/70 transition-colors"
                 >
-                    <X size={24} className="text-multiselect" />
+                    <X size={18} />
                 </button>
 
-                <div className="flex flex-col gap-4">
-                    <h3 className="text-multiselect text-2xl font-bold leading-tight">
-                        {TranslateText[language].SUBSCRIBE_TO_ALERTS}
-                    </h3>
-                    <span className="text-[11px] text-multiselect uppercase tracking-[0.14em]">
-                        {TranslateText[language].NEVER_MISS_AN_UPDATE}
-                    </span>
-                </div>
-                <div className="flex flex-col gap-3">
-                    <input
-                        value={Email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        type="email"
-                        placeholder={`${TranslateText[language].PLEASE_ENTER_YOUR_EMAIL}`}
-                        className="border border-[#a8c0e0]/40 text-multiselect font-semibold  placeholder:uppercase placeholder:text-[10px] placeholder:tracking-widest p-3 w-full outline-none transition-colors rounded-none text-sm"
-                    />
-                    <button
-                        type="button"
-                        onClick={handlesubscribe}
-                        className="border border-[#a8c0e0]/40 bg-white/50 text-multiselect uppercase text-[10px] font-bold tracking-[0.16em] p-3  transition-colors rounded-none "
-                    >
-                        {IsLoading
-                            ? <LoaderCircle className="animate-spin h-4 w-4 mx-auto" />
-                            : `${TranslateText[language].SUBSCRIBE}`}
-                    </button>
-                </div>
+                <div className="p-8 flex flex-col gap-6">
 
-                <span className="text-[14px] text-multiselect tracking-wide text-center">
-                    No spam. Unsubscribe anytime.
-                </span>
+                    {/* Icon + Heading */}
+                    <div className="flex flex-col gap-3">
+                        <div className="flex items-center gap-2">
+                            <Bell size={14} className="text-[#FF9933]" />
+                            <span className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#FF9933]">
+                                {TranslateText[language].NEVER_MISS_AN_UPDATE}
+                            </span>
+                        </div>
+                        <h3 className="text-white text-xl font-bold leading-snug">
+                            {TranslateText[language].SUBSCRIBE_TO_ALERTS}
+                        </h3>
+                        <p className="text-white/40 text-[12px] leading-relaxed">
+                            Get notified when new government announcements are published — filtered to what matters to you.
+                        </p>
+                    </div>
 
+                    {/* Input + Button */}
+                    <div className="flex flex-col gap-3">
+                        <input
+                            value={Email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            onKeyDown={(e) => e.key === "Enter" && handlesubscribe()}
+                            type="email"
+                            placeholder={`${TranslateText[language].PLEASE_ENTER_YOUR_EMAIL}`}
+                            className="bg-white/[0.05] border border-white/[0.08] rounded-lg
+                                       text-white text-sm placeholder:text-white/25
+                                       px-4 py-3 w-full outline-none
+                                       focus:border-[#FF9933]/50 focus:ring-1 focus:ring-[#FF9933]/20
+                                       transition-all duration-200"
+                        />
+                        <button
+                            type="button"
+                            onClick={handlesubscribe}
+                            className="bg-[#FF9933] hover:bg-[#e88820]
+                                       text-black font-bold text-[11px] uppercase tracking-[0.14em]
+                                       py-3 px-4 rounded-lg w-full
+                                       transition-all duration-200
+                                       hover:shadow-[0_0_20px_rgba(255,153,51,0.3)]
+                                       active:scale-[0.98]"
+                        >
+                            {IsLoading
+                                ? <LoaderCircle className="animate-spin h-4 w-4 mx-auto" />
+                                : `${TranslateText[language].SUBSCRIBE}`}
+                        </button>
+                    </div>
+
+                    {/* Footer note */}
+                    <p className="text-white/20 text-[11px] text-center tracking-wide">
+                        No spam. Unsubscribe anytime.
+                    </p>
+                </div>
             </div>
         </div>
     );

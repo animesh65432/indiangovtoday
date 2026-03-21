@@ -21,7 +21,6 @@ const AnnouncementCard: React.FC<Props> = ({ Announcement, size = "small" }) => 
 
     const cat = getCat(Announcement.category)
     const isBig = size === "big"
-    const isWide = size === "wide"
 
     const handleClick = () => {
         router.push(`/announcement?id=${Announcement.announcementId}&lan=${language}`)
@@ -31,7 +30,7 @@ const AnnouncementCard: React.FC<Props> = ({ Announcement, size = "small" }) => 
         <div
             onClick={handleClick}
             className={cn(
-                "group relative flex flex-col overflow-hidden rounded-lg cursor-pointer",
+                "group relative hover:-translate-y-[2px] flex flex-col overflow-hidden rounded-lg cursor-pointer",
                 "bg-[#1A1A1A] border border-white/[0.07]",
                 "transition-all duration-150 hover:border-[#FF9933]/40 hover:bg-[#1f1f1f]",
                 isBig ? "min-h-[210px]" : "min-h-[140px]"
