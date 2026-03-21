@@ -103,11 +103,23 @@ export default function IndiaMap({ SetIsMapLoading, SetShowIndiaMap, ShowIndiaMa
             scrollWheelZoom: true, attributionControl: false, preferCanvas: true,
         });
 
-        L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png", { subdomains: "abcd", maxZoom: 19 }).addTo(map);
+        const tileLayer = L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png", { subdomains: "abcd", maxZoom: 19 }).addTo(map);
         L.control.zoom({ position: "topleft" }).addTo(map);
 
         mapInstanceRef.current = map;
         labelLayerRef.current = L.layerGroup().addTo(map);
+
+        let tilesReady = false;
+        let geojsonReady = false;
+        const checkReady = () => {
+            if (tilesReady && geojsonReady) {
+                setTimeout(() => {
+                    mapInstanceRef.current?.invalidateSize();
+                    SetIsMapLoading(false);
+                }, 100);
+            }
+        };
+        tileLayer.on("load", () => { tilesReady = true; checkReady(); });
 
         fetch(GEOJSON_URL)
             .then(r => r.json())
@@ -156,6 +168,9 @@ export default function IndiaMap({ SetIsMapLoading, SetShowIndiaMap, ShowIndiaMa
                 } else {
                     map.fitBounds(geojsonLayer.getBounds(), { padding: [8, 8] });
                 }
+
+                geojsonReady = true;
+                checkReady();
             })
             .catch(err => console.error("GeoJSON fetch failed:", err));
 
@@ -174,7 +189,6 @@ export default function IndiaMap({ SetIsMapLoading, SetShowIndiaMap, ShowIndiaMa
     }, [ShowIndiaMap]);
 
     async function initGetAllCountAnnouncements(lan: string, start: Date, end: Date) {
-        SetIsMapLoading(true);
         try {
             const key = buildCacheKey("GetAllCountAnnouncements", { language: lan, startdate: start, endDate: end });
             const res = await withCache(key, "GetAllCountAnnouncements", async () => (
@@ -184,8 +198,6 @@ export default function IndiaMap({ SetIsMapLoading, SetShowIndiaMap, ShowIndiaMa
             updateLayerStylesRef.current();
         } catch (error) {
             console.error("Error initializing map:", error);
-        } finally {
-            SetIsMapLoading(false);
         }
     }
 

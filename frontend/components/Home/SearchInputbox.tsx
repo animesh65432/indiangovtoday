@@ -73,10 +73,10 @@ const SearchInputBox: React.FC<Props> = ({
             SetIsLoading(true);
             setCategoryOptions([]);
             try {
-                const key = buildCacheKey("categories", { language, startdate, endDate, states: StatesSelected });
+                const key = buildCacheKey("categories", { language, startdate, endDate });
 
                 const response = await withCache(key, "categories", () =>
-                    GetAllCategoriesAnnouncements(language, startdate, endDate, StatesSelected, controller.signal)
+                    GetAllCategoriesAnnouncements(language, startdate, endDate, controller.signal)
                 ) as { data: string[] };
 
                 if (!controller.signal.aborted) {
@@ -97,7 +97,7 @@ const SearchInputBox: React.FC<Props> = ({
         fetchCategoriesAnnouncements();
         return () => controller.abort();
 
-    }, [language, StatesSelected]);
+    }, [language]);
 
     return (
         <div className=' ml-2 md:ml-4 flex flex-col gap-2'>
