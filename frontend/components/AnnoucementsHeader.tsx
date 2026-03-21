@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/select"
 import { optionsforLanguages } from "@/lib/lan"
 import Logo from './ui/Logo';
+import { TranslateText } from '@/lib/translatetext';
 
 const AnnoucementsHeader: React.FC = () => {
     const { language, onSelectLanguage } = useContext(LanguageContext)
@@ -18,7 +19,10 @@ const AnnoucementsHeader: React.FC = () => {
 
             {/* Logo */}
             <nav className='flex items-center'>
-                <Logo />
+                <Logo
+                    fst={TranslateText[language].INDIAN}
+                    snd={TranslateText[language].GOVTODAY}
+                />
             </nav>
 
             {/* Language Selector */}

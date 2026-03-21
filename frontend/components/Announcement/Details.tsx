@@ -42,7 +42,7 @@ const Details: React.FC<Props> = ({ lan, date, source, state, department, catego
             <div className="h-px bg-[#FF9933]/10" />
 
             <Row icon={<Calendar className="w-4 h-4" />}>
-                {formatDateInLanguage(date, LANGUAGE_CODES[lan])}
+                {formatDateInLanguage(date, lan)}
             </Row>
             <Row icon={<MapPin className="w-4 h-4" />}>
                 {state}

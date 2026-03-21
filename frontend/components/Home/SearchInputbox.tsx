@@ -16,7 +16,6 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
-import { format } from "date-fns"
 import { Calendar as CalenderIcon } from "lucide-react"
 import {
     Sheet,
@@ -26,6 +25,7 @@ import {
 import MobileSearchInput from './MobileSearchInput'
 import { withCache, buildCacheKey } from "@/lib/lsCache"
 import { MultiSelect } from '../ui/multi-select'
+import { formatDateInLanguage } from '@/lib/formatDate'
 
 
 
@@ -105,7 +105,7 @@ const SearchInputBox: React.FC<Props> = ({
                 <div className="relative">
                     <Input
                         className="text-[#FFFFFF] placeholder:text-[#6B7280] w-[98%] md:w-[90%] mx-auto md:mx-0 placeholder:truncate placeholder:text-ellipsis font-satoshi bg-[#1A1A1A] backdrop-blur-sm border text-[1rem] md:text-xl! p-6 pl-10 pr-12 md:pr-6 border-[#FF9933] placeholder:text-[1rem] md:placeholder:text-xl! placeholder:font-satoshi rounded-none"
-                        placeholder={TranslateText[language].INPUT_PLACEHOLDER}
+                        placeholder={TranslateText[language].SEARCH_ANNOUNCEMENTS}
                         value={SearchInput}
                         onChange={(e) => SetSearchInput(e.target.value)}
                         onKeyDown={(e) => {
@@ -141,7 +141,11 @@ const SearchInputBox: React.FC<Props> = ({
                         autoSize
                         resetOnDefaultValueChange={true}
                     />
-                    <Select value={CategorySelected} onValueChange={SetCategorySelected}>
+                    <Select
+                        value={CategorySelected}
+                        onValueChange={SetCategorySelected}
+                        defaultValue={TranslateText[language].ALL_DEPARMENTS}
+                    >
                         <SelectTrigger className='rounded-none px-4 py-4.5 border border-[#FF9933] text-[#FFFFFF]!  w-fit font-satoshi bg-[#1A1A1A] font-medium'>
                             <SelectValue placeholder={TranslateText[language].ALL_DEPARMENTS} />
                         </SelectTrigger>
@@ -164,7 +168,7 @@ const SearchInputBox: React.FC<Props> = ({
                             <Button
                                 className="w-fit text-multiselect bg-[#1A1A1A]  border border-[#FF9933] text-[#FFFFFF]! text-[11px] md:text-[12px]  font-satoshi   font-semibold rounded-none"
                             >
-                                {format(startdate, "PPP")}
+                                {formatDateInLanguage(startdate, language)}
                                 <CalenderIcon className="ml-1 text-[#FF9933]" size={14} />
                             </Button>
                         </PopoverTrigger>
@@ -184,7 +188,7 @@ const SearchInputBox: React.FC<Props> = ({
                             <Button
                                 className="w-fit text-multiselect bg-[#1A1A1A]  border border-[#FF9933] text-[#FFFFFF]! text-[11px] md:text-[12px]  font-satoshi   font-semibold rounded-none"
                             >
-                                {format(endDate, "PPP")}
+                                {formatDateInLanguage(endDate, language)}
                                 <CalenderIcon className="ml-1 text-[#FF9933]" size={14} />
                             </Button>
                         </PopoverTrigger>

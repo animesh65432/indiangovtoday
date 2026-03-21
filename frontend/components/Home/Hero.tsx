@@ -1,13 +1,16 @@
-import React from "react";
+import React, { useContext } from "react";
 import { motion } from "framer-motion";
 import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
+import { LanguageContext } from "@/context/Lan";
+import { TranslateText } from "@/lib/translatetext";
 
 const Hero: React.FC = () => {
+    const { language } = useContext(LanguageContext)
     return (
         <div className="ml-4">
             <div className="space-y-1 flex flex-col">
                 <TextGenerateEffect
-                    words="All government announcements in one place"
+                    words={TranslateText[language].ALL_GOVERNMENT_ANNOUNCEMENTS_IN_ONE_PLACE}
                     className="text-2xl md:text-3xl font-satoshi font-semibold text-[#FF9933]"
                     duration={0.6}
                 />
@@ -18,7 +21,7 @@ const Hero: React.FC = () => {
                     transition={{ duration: 0.5, delay: 0.15, ease: "easeOut" }}
                     className="text-sm md:text-base text-[#EAEAEA] font-satoshi"
                 >
-                    Every ministry. Every state. Plain language.
+                    {TranslateText[language].EVERY_MINISTRY_EVERY_STATE_PLAIN_LANGUAGE}
                 </motion.span>
             </div>
         </div>

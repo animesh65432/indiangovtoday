@@ -12,6 +12,7 @@ import Hero from './Hero';
 import { buildCacheKey, withCache } from "@/lib/lsCache";
 import ShowAnnouncements from './ShowAnnouncements';
 import dynamic from "next/dynamic";
+import Loading from "./Loading"
 
 const IndiaMap = dynamic(() => import("@/components/IndiaMap"), {
     ssr: false,
@@ -28,6 +29,8 @@ const Main: React.FC = () => {
     const [IsLoading, SetIsLoading] = useState<boolean>(false)
     const [IsLoadingMore, SetIsLoadingMore] = useState<boolean>(false)
     const firstLoad = useRef(true);
+    const [IsMapLoading, SetIsMapLoading] = useState(false);
+    const [IsAnnouncementsLoading, SetIsAnnouncementsLoading] = useState(false);
     const [Announcements, SetAnnouncements] = useState<AnnouncementTypes[]>([])
     const [page, Setpage] = useState<number>(1)
     const [limit] = useState<number>(10)
@@ -51,6 +54,7 @@ const Main: React.FC = () => {
 
         if (append) SetIsLoadingMore(true);
         else SetIsLoading(true);
+        SetIsAnnouncementsLoading(true);
 
         if (StatesSelected.length === 0) {
             SetIsLoading(false);
@@ -62,6 +66,9 @@ const Main: React.FC = () => {
             const key = buildCacheKey("announcements", { language, startdate, endDate, page, states: StatesSelected, search: SearchInput, category: CategorySelected });
 
             const SelectedCategory = CategorySelected === TranslateText[language].ALL_DEPARMENTS ? "" : CategorySelected;
+
+            console.log(SelectedCategory, "SelectedCategory", TranslateText[language].ALL_DEPARMENTS)
+
 
             const response = await withCache(key, "announcements", async () => (
                 await getAllAnnouncements(
@@ -83,6 +90,7 @@ const Main: React.FC = () => {
             if (!signal.aborted) {
                 SetIsLoading(false);
                 SetIsLoadingMore(false);
+                SetIsAnnouncementsLoading(false);
             }
         }
     }
@@ -157,6 +165,10 @@ const Main: React.FC = () => {
     }
 
     useEffect(() => {
+        SetCategorySelected(TranslateText[language].ALL_DEPARMENTS);
+    }, [language]);
+
+    useEffect(() => {
         if (firstLoad.current) return;
         const timer = setTimeout(() => handleSearch(), 500);
         return () => clearTimeout(timer);
@@ -196,6 +208,12 @@ const Main: React.FC = () => {
         setSheetOpen(false)
     }
 
+    const isGlobalLoading = IsLoading && IsMapLoading && StatesSelected.length > 0;
+
+    if (isGlobalLoading) {
+        return <Loading />
+    }
+
     return (
         <section className="flex flex-col gap-0 h-screen w-screen overflow-hidden">
             <AnnoucementsHeader />
@@ -230,6 +248,8 @@ const Main: React.FC = () => {
                         announcements={Announcements}
                         selectedStates={StatesSelected}
                         onStateClick={handleStateClick}
+                        IsMapLoading={IsMapLoading}
+                        SetIsMapLoading={SetIsMapLoading}
                     />
                 </div>
 

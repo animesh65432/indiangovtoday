@@ -53,7 +53,7 @@ export default function ShowAnnouncements({
         <div className="w-full">
             <div className="grid grid-cols-1 lg:grid-cols-2  xl:grid-cols-3 px-5 gap-5">
                 {Announcements.map((announcement) => (
-                    <div key={announcement.announcementId} >
+                    <div key={announcement.announcementId} className="h-full">
                         <AnnouncementCard Announcement={announcement} />
                     </div>
                 ))}

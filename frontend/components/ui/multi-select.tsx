@@ -26,6 +26,8 @@ import {
     CommandList,
     CommandSeparator,
 } from "@/components/ui/command";
+import { LanguageContext } from "@/context/Lan";
+import { TranslateText } from "@/lib/translatetext";
 
 /**
  * Animation types and configurations
@@ -163,6 +165,7 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
         const [isPopoverOpen, setIsPopoverOpen] = React.useState(false);
         const [isAnimating, setIsAnimating] = React.useState(false);
         const [searchValue, setSearchValue] = React.useState("");
+        const { language } = React.useContext(LanguageContext)
 
         const [politeMessage, setPoliteMessage] = React.useState("");
         const [assertiveMessage, setAssertiveMessage] = React.useState("");
@@ -621,7 +624,7 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                                                     animationDuration: `${animationConfig?.duration || animation}s`,
                                                     animationDelay: `${animationConfig?.delay || 0}s`,
                                                 }}>
-                                                {`+ ${selectedValues.length - responsiveSettings.maxCount} more`}
+                                                {`+ ${selectedValues.length - responsiveSettings.maxCount} ${TranslateText[language].MORE}`}
                                                 <XCircle
                                                     className={cn("ml-2 h-4 w-4 cursor-pointer text-[#FF9933]", responsiveSettings.compactMode && "ml-1 h-3 w-3")}
                                                     onClick={(event) => { event.stopPropagation(); clearExtraOptions(); }}
@@ -815,7 +818,7 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                                                 <CommandItem
                                                     onSelect={handleClear}
                                                     className="flex-1 justify-center cursor-pointer text-white hover:bg-[#FF9933]/10">
-                                                    Clear
+                                                    {TranslateText[language].CLEAR}
                                                 </CommandItem>
                                                 <Separator orientation="vertical" className="flex min-h-6 h-full bg-[#FF9933]" />
                                             </>
@@ -823,7 +826,7 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                                         <CommandItem
                                             onSelect={() => setIsPopoverOpen(false)}
                                             className="flex-1 justify-center cursor-pointer text-white hover:bg-[#FF9933]/10 max-w-full">
-                                            Close
+                                            {TranslateText[language].CLOSE}
                                         </CommandItem>
                                     </div>
                                 </CommandGroup>

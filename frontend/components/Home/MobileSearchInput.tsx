@@ -12,6 +12,7 @@ import {
     SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select"
 import { MultiSelect } from "../ui/multi-select"
+import { formatDateInLanguage } from '@/lib/formatDate'
 
 
 type Props = {
@@ -64,7 +65,7 @@ const MobileSearchInput: React.FC<Props> = ({
             <div className="flex items-center gap-3 mb-7">
                 <div className="w-0.75 h-5 bg-[#FF9933] rounded-full" />
                 <span className="text-[#FF9933] font-satoshi text-xs font-semibold tracking-widest uppercase">
-                    Filters
+                    {TranslateText[language].FILTERS}
                 </span>
             </div>
 
@@ -73,9 +74,13 @@ const MobileSearchInput: React.FC<Props> = ({
                 {/* Types */}
                 <div className="flex flex-col gap-2">
                     <span className="text-[#FF9933] text-[11px] font-semibold tracking-widest uppercase">
-                        Types
+                        {TranslateText[language].TYPES}
                     </span>
-                    <Select value={localCategory} onValueChange={setLocalCategory}>
+                    <Select
+                        value={localCategory}
+                        onValueChange={setLocalCategory}
+                        defaultValue={TranslateText[language].ALL_DEPARMENTS}
+                    >
                         <SelectTrigger className="h-12 text-white placeholder:text-white border border-[#FF9933] rounded-none text-sm px-4 ">
                             <SelectValue className='placeholder:font-satoshi font-satoshi' placeholder="All Types" />
                         </SelectTrigger>
@@ -94,7 +99,7 @@ const MobileSearchInput: React.FC<Props> = ({
                 {/* State / Region */}
                 <div className="flex flex-col gap-2">
                     <span className="font-satoshi text-[11px] text-[#FF9933]  font-semibold tracking-widest uppercase">
-                        State / Region
+                        {TranslateText[language].REGION}
                     </span>
                     <MultiSelect
                         options={stateOptions}
@@ -113,7 +118,7 @@ const MobileSearchInput: React.FC<Props> = ({
                 {/* Date Range */}
                 <div className="flex flex-col gap-2">
                     <span className="font-satoshi text-[#FF9933]  text-[11px] font-semibold tracking-widest uppercase">
-                        Date Range
+                        {TranslateText[language].DATE_RANGE}
                     </span>
                     <div className="flex items-center gap-3">
 
@@ -121,7 +126,7 @@ const MobileSearchInput: React.FC<Props> = ({
                         <Popover>
                             <PopoverTrigger asChild>
                                 <Button className="w-fit p-5 bg-[#1A1A1A] text-white border border-[#FF9933]  text-[11px] md:text-[12px]  font-satoshi   font-semibold rounded-none">
-                                    {localStartDate ? format(localStartDate, "dd MMM yyyy") : "Start date"}
+                                    {localStartDate ? formatDateInLanguage(localStartDate, "dd MMM yyyy") : "Start date"}
                                     <CalendarIcon size={14} className="text-[#FF9933]" />
                                 </Button>
                             </PopoverTrigger>
@@ -142,7 +147,7 @@ const MobileSearchInput: React.FC<Props> = ({
                         <Popover>
                             <PopoverTrigger asChild>
                                 <Button className="w-fit p-5 bg-[#1A1A1A] text-white border border-[#FF9933]  text-[11px] md:text-[12px]  font-satoshi   font-semibold rounded-none">
-                                    {localEndDate ? format(localEndDate, "dd MMM yyyy") : "End date"}
+                                    {localEndDate ? formatDateInLanguage(localEndDate, language) : "End date"}
                                     <CalendarIcon size={14} className="text-[#FF9933]" />
                                 </Button>
                             </PopoverTrigger>
@@ -166,13 +171,13 @@ const MobileSearchInput: React.FC<Props> = ({
                         onClick={handleReset}
                         className="flex-1 w-fit p-5 bg-[#1A1A1A] text-white border border-[#FF9933]  text-[14px]  font-satoshi   font-semibold rounded-none"
                     >
-                        Reset
+                        {TranslateText[language].RESET}
                     </Button>
                     <Button
                         onClick={handleApply}
                         className="flex-1 w-fit p-5 bg-[#1A1A1A] text-white border border-[#FF9933]  text-[14px]  font-satoshi   font-semibold rounded-none"
                     >
-                        Apply Filters
+                        {TranslateText[language].APPLY_FILTERS}
                     </Button>
                 </div>
 

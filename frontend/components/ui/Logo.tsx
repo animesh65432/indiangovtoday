@@ -1,6 +1,11 @@
 import React from 'react'
 
-const Logo: React.FC = () => {
+type LogoProps = {
+    fst: string,
+    snd: string
+}
+
+const Logo: React.FC<LogoProps> = ({ fst, snd }) => {
     return (
         <svg
             viewBox="0 0 280 80"
@@ -24,11 +29,11 @@ const Logo: React.FC = () => {
 
             {/* Text */}
             <text x="92" y="32" fontSize="10" fill="#FFD699" letterSpacing="3">
-                INDIAN
+                {fst.toUpperCase()}
             </text>
 
             <text x="92" y="56" fontSize="26" fill="#FFFFFF" fontWeight="600">
-                GovToday
+                {snd.toUpperCase()}
             </text>
 
             {/* Accent line */}

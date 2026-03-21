@@ -5,22 +5,19 @@ import { TranslateText } from "@/lib/translatetext"
 import { LanguageContext } from "@/context/Lan"
 import { formatDateInLanguage } from "@/lib/formatDate"
 import { useRouter } from "next/navigation"
-import { getCat, TileSize } from "@/lib/categoryStyles"
-import Image from "next/image"
+import { getCat } from "@/lib/categoryStyles"
 import { cn } from "@/lib/utils"
 
 type Props = {
     Announcement: Announcement
-    size?: TileSize
 }
 
-const AnnouncementCard: React.FC<Props> = ({ Announcement, size = "small" }) => {
+const AnnouncementCard: React.FC<Props> = ({ Announcement }) => {
     const { language } = React.useContext(LanguageContext)
     const router = useRouter()
     const { SEE_DETAILS } = TranslateText[language]
 
     const cat = getCat(Announcement.category)
-    const isBig = size === "big"
 
     const handleClick = () => {
         router.push(`/announcement?id=${Announcement.announcementId}&lan=${language}`)
@@ -32,30 +29,17 @@ const AnnouncementCard: React.FC<Props> = ({ Announcement, size = "small" }) => 
                 "group relative hover:-translate-y-[2px] flex flex-col overflow-hidden rounded-lg cursor-pointer",
                 "bg-[#1A1A1A] border border-white/[0.07]",
                 "transition-all duration-150 hover:border-[#FF9933]/40 hover:bg-[#1f1f1f]",
-                isBig ? "min-h-[210px]" : "min-h-[140px]"
+                "h-full"
             )}
+            onClick={handleClick}
         >
-            {/* Image — big tiles only */}
-            {isBig && Announcement.image && (
-                <div className="relative w-full h-[100px] flex-shrink-0 bg-black overflow-hidden">
-                    <Image
-                        src={Announcement.image}
-                        alt={Announcement.title}
-                        fill
-                        className="object-cover opacity-75 group-hover:opacity-90 transition-opacity duration-200"
-                        sizes="(max-width: 640px) 100vw, 50vw"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-b from-black/10 to-[#1A1A1A]" />
-                </div>
-            )}
-
             {/* Body */}
-            <div className="flex flex-1 flex-col gap-[6px] p-[14px]">
+            <div className="flex flex-1 flex-col gap-[6px] md:gap-[8px] p-[14px] md:p-[18px]">
 
                 {/* Row 1: category badge + state */}
                 <div className="flex items-center justify-between gap-2">
                     <span
-                        className="font-satoshi inline-flex items-center gap-[5px] rounded-[4px] px-[8px] py-[3px] text-[10px] font-bold tracking-[0.06em] uppercase whitespace-nowrap"
+                        className="font-satoshi inline-flex items-center gap-[5px] rounded-[4px] px-[8px] py-[3px] text-[10px] md:text-[11px] font-bold tracking-[0.06em] uppercase whitespace-nowrap"
                         style={{
                             color: cat.dot,
                             background: `${cat.dot}15`,
@@ -69,56 +53,46 @@ const AnnouncementCard: React.FC<Props> = ({ Announcement, size = "small" }) => 
                         {Announcement.category || "Other"}
                     </span>
 
-                    <span className="font-satoshi text-[10px] text-white/25 truncate max-w-[110px] text-right">
+                    <span className="font-satoshi text-[10px] md:text-[11px] text-white/25 truncate max-w-[110px] md:max-w-[140px] text-right">
                         {Announcement.state}
                     </span>
                 </div>
 
                 {/* Row 2: Department */}
-                <p className="font-satoshi text-[10.5px] font-medium text-white/35 truncate leading-none">
+                <p className="font-satoshi text-[10.5px] md:text-[12px] font-medium text-white/35 truncate leading-none">
                     {Announcement.department}
                 </p>
 
-                {/* Row 3: Title — more lines on big, fewer on small */}
-                <p
-                    className={cn(
-                        "font-satoshi font-semibold text-white leading-[1.45]",
-                        isBig ? "text-[14px]" : "text-[13px]"
-                    )}
-                >
+                {/* Row 3: Title — always fully shown, no clamp */}
+                <p className="font-satoshi font-semibold text-white leading-[1.45] text-[13px] md:text-[15.5px]">
                     {Announcement.title}
                 </p>
 
-                {/* Row 4: Description — shown on all cards, fewer lines on small */}
+                {/* Row 4: Description — clamped to 4 lines so cards stay balanced */}
                 {Announcement.description && (
-                    <p
-                        className={cn(
-                            "font-satoshi leading-[1.55] text-white/40",
-                            isBig ? "text-[12px]" : "text-[11.5px]"
-                        )}
-                    >
+                    <p className="font-satoshi leading-[1.55] text-white/40 text-[11.5px] md:text-[13px] line-clamp-4">
                         {Announcement.description}
                     </p>
                 )}
 
-                {/* Footer: date + button */}
-                <div className="mt-auto flex items-center justify-between pt-[8px] border-t border-white/[0.06]">
-                    <span className="font-satoshi text-[10px] text-white/20">
+                {/* Footer pinned to bottom */}
+                <div className="mt-auto flex items-center justify-between pt-[8px] md:pt-[10px] border-t border-white/[0.06]">
+                    <span className="font-satoshi text-[10px] md:text-[11.5px] text-white/20">
                         {formatDateInLanguage(Announcement.date, language)}
                     </span>
 
                     <button
                         className={cn(
                             "font-satoshi flex items-center gap-[2px]",
-                            "text-[10.5px] font-semibold text-[#FF9933]",
-                            "border border-[#FF9933]/25 rounded-[4px] px-[9px] py-[4px]",
+                            "text-[10.5px] md:text-[12px] font-semibold text-[#FF9933]",
+                            "border border-[#FF9933]/25 rounded-[4px] px-[9px] md:px-[11px] py-[4px] md:py-[5px]",
                             "bg-transparent hover:cursor-pointer transition",
                             "hover:bg-[#FF9933]/10 hover:border-[#FF9933]/50"
                         )}
                         onClick={(e) => { e.stopPropagation(); handleClick() }}
                     >
                         {SEE_DETAILS}
-                        <ChevronRight className="h-[11px] w-[11px]" />
+                        <ChevronRight className="h-[11px] w-[11px] md:h-[13px] md:w-[13px]" />
                     </button>
                 </div>
             </div>

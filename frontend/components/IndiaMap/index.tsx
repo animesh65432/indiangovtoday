@@ -13,6 +13,7 @@ import {
 import { LanguageContext } from "@/context/Lan";
 import { Currentdate } from "@/context/Currentdate";
 import { ChevronDown, ChevronUp } from "lucide-react";
+import { buildCacheKey, withCache } from "@/lib/lsCache";
 
 const GEOJSON_URL = "/india_states.geojson";
 
@@ -22,9 +23,11 @@ type Props = {
     announcements: Announcement[];
     selectedStates: string[];
     onStateClick: (state: string | null) => void;
+    IsMapLoading: boolean;
+    SetIsMapLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export default function IndiaMap({ SetShowIndiaMap, ShowIndiaMap, selectedStates, onStateClick }: Props) {
+export default function IndiaMap({ SetIsMapLoading, SetShowIndiaMap, ShowIndiaMap, selectedStates, onStateClick }: Props) {
     const { language } = useContext(LanguageContext);
     const { startdate, endDate } = useContext(Currentdate);
 
@@ -109,6 +112,7 @@ export default function IndiaMap({ SetShowIndiaMap, ShowIndiaMap, selectedStates
         fetch(GEOJSON_URL)
             .then(r => r.json())
             .then(data => {
+                if (!mapInstanceRef.current) return;
                 geoDataRef.current = data;
                 const geojsonLayer = L.geoJSON(data, {
                     style: (feature: any) => {
@@ -169,13 +173,24 @@ export default function IndiaMap({ SetShowIndiaMap, ShowIndiaMap, selectedStates
         setTimeout(() => mapInstanceRef.current?.invalidateSize(), 310);
     }, [ShowIndiaMap]);
 
+    async function initGetAllCountAnnouncements(lan: string, start: Date, end: Date) {
+        SetIsMapLoading(true);
+        try {
+            const key = buildCacheKey("GetAllCountAnnouncements", { language: lan, startdate: start, endDate: end });
+            const res = await withCache(key, "GetAllCountAnnouncements", async () => (
+                await GetAllCountAnnouncements(lan, start, end) as ResponseCountAnnouncementTypes
+            ));
+            countAnnouncementsRef.current = res.data;
+            updateLayerStylesRef.current();
+        } catch (error) {
+            console.error("Error initializing map:", error);
+        } finally {
+            SetIsMapLoading(false);
+        }
+    }
+
     useEffect(() => {
-        GetAllCountAnnouncements(language, startdate, endDate)
-            .then(res => {
-                countAnnouncementsRef.current = (res as ResponseCountAnnouncementTypes).data;
-                updateLayerStylesRef.current();
-            })
-            .catch(err => console.error("Error fetching count:", err));
+        initGetAllCountAnnouncements(language, startdate, endDate);
     }, [language, startdate, endDate]);
 
     const selectedCount = selectedStates.filter(
@@ -189,14 +204,14 @@ export default function IndiaMap({ SetShowIndiaMap, ShowIndiaMap, selectedStates
             {/* Legend */}
             <div className="hidden md:flex flex-col gap-1 px-3 py-2 flex-shrink-0">
                 <span className="font-inter uppercase tracking-[0.14em] font-black" style={{ fontSize: 11, color: "#FF9933" }}>
-                    India Map
+                    {TranslateText[language].INDIA_MAP}
                 </span>
                 <div className="flex items-center gap-2 flex-wrap">
                     <span className="font-inter uppercase font-bold" style={{ fontSize: 11, letterSpacing: "0.08em", color: "#FF9933" }}>
-                        Announcements:
+                        {TranslateText[language].ANNOUNCEMENTS}:
                     </span>
                     {[
-                        { label: "None", color: "#2A2A2A", border: "#555" },
+                        { label: `${TranslateText[language].NONE}`, color: "#2A2A2A", border: "#555" },
                         { label: "1", color: "#FDE68A", border: "#D97706" },
                         { label: "2", color: "#FBBF24", border: "#D97706" },
                         { label: "3+", color: "#F59E0B", border: "#D97706" },
@@ -214,7 +229,7 @@ export default function IndiaMap({ SetShowIndiaMap, ShowIndiaMap, selectedStates
                 style={{ background: "#1A1A1A", borderColor: "#FF9933" }}>
                 <span style={{ fontSize: 13 }}>👆</span>
                 <span className="font-satoshi font-semibold" style={{ fontSize: 11, color: "#FF9933" }}>
-                    Click any state on the map to filter announcements for that state
+                    {TranslateText[language].CLICK_ANY_STATE_ON_THE_MAP_TO_FILTER_ANNOUNCEMENTS_FOR_THAT_STATE}
                 </span>
             </div>
             <button
@@ -224,7 +239,7 @@ export default function IndiaMap({ SetShowIndiaMap, ShowIndiaMap, selectedStates
                 <div className="flex items-center gap-2">
                     {/* <Map className="w-4 h-4 text-[#FF9933]" /> */}
                     <span className="font-satoshi text-[13px] font-semibold text-white">
-                        Filter by State
+                        {TranslateText[language].FILTER_BY_STATE}
                     </span>
                     {/* Badge showing how many states are selected */}
                     {selectedCount > 0 && (
@@ -235,7 +250,7 @@ export default function IndiaMap({ SetShowIndiaMap, ShowIndiaMap, selectedStates
                 </div>
                 <div className="flex items-center gap-2">
                     <span className="font-satoshi text-[11px] text-white/40">
-                        {ShowIndiaMap ? "Tap to hide" : "Tap to show map"}
+                        {ShowIndiaMap ? `${TranslateText[language].TAP_TO_HIDE}` : `${TranslateText[language].TAP_TO_SHOW_MAP}`}
                     </span>
                     {ShowIndiaMap
                         ? <ChevronUp className="w-4 h-4 text-[#FF9933]" />
