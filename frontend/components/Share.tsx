@@ -10,9 +10,7 @@ interface ShareOption {
     name: string
     icon: React.ReactNode
     url: string
-    className: string
-    bgColor: string
-    hoverColor: string
+    color: string
 }
 
 type Props = {
@@ -32,104 +30,90 @@ export default function ShareSection({ Announcement, setisShareOPen }: Props) {
     const shareOptions: ShareOption[] = [
         {
             name: "WhatsApp",
-            icon: <MessageCircle className="w-5 h-5 sm:w-6 sm:h-6" />,
+            icon: <MessageCircle className="w-4 h-4" />,
             url: `https://wa.me/?text=${encodedMessageWithUrl}`,
-            className: "text-yellow-700",
-            bgColor: "bg-[#ffff]",
-            hoverColor: "hover:bg-[#ffff]"
+            color: "#25D366",
         },
         {
             name: "X (Twitter)",
-            icon: <Twitter className="w-5 h-5 sm:w-6 sm:h-6" />,
+            icon: <Twitter className="w-4 h-4" />,
             url: `https://twitter.com/intent/tweet?text=${encodedMessage}&url=${encodedUrl}`,
-            className: "text-yellow-700",
-            bgColor: "bg-[#ffff]",
-            hoverColor: "hover:bg-[#ffff]"
+            color: "#ffffff",
         },
         {
             name: "Email",
-            icon: <Mail className="w-5 h-5 sm:w-6 sm:h-6" />,
-            url: `mailto:?subject=${encodeURIComponent("Check this amazing recipe!")}&body=${encodedMessageWithUrl}`,
-            className: "text-yellow-700",
-            bgColor: "bg-[#ffff]",
-            hoverColor: "hover:bg-[#ffff]"
+            icon: <Mail className="w-4 h-4" />,
+            url: `mailto:?subject=${encodeURIComponent("Check this announcement!")}&body=${encodedMessageWithUrl}`,
+            color: "#FF9933",
         },
     ]
 
-    useClickOutside(modalRef, () => {
-        setisShareOPen(false)
-    })
-
-    const handleShare = (url: string) => {
-        window.open(url, "_blank", "noopener,noreferrer")
-    }
-
-    const handleClose = () => {
-        setisShareOPen(false)
-    }
+    useClickOutside(modalRef, () => setisShareOPen(false))
 
     return (
-        <div className="fixed h-screen inset-0 z-50 flex items-center justify-center  p-4 animate-in fade-in duration-300">
+        <div className="fixed font-satoshi inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
             <div
                 ref={modalRef}
-                className="bg-white rounded-2xl shadow-2xl max-w-md w-full mx-4 transform animate-in slide-in-from-bottom-4 duration-300"
+                className="relative w-full max-w-md mx-4 overflow-hidden rounded-xl
+                           bg-[#111111] border border-white/[0.08]
+                           shadow-[0_24px_60px_rgba(0,0,0,0.8)]
+                           animate-in slide-in-from-bottom-4 duration-300"
             >
+                {/* Top accent line */}
+                <div className="h-[2px] w-full bg-gradient-to-r from-transparent via-[#FF9933] to-transparent" />
+
+                {/* Close */}
                 <button
-                    onClick={handleClose}
-                    className="ml-auto pt-3 pr-3  block"
-                    aria-label="Close modal"
-                    style={{ border: 0 }}
+                    onClick={() => setisShareOPen(false)}
+                    className="absolute top-4 right-4 text-white/30 hover:text-white/70 transition-colors"
                 >
-                    <X
-                        className="text-black w-5 h-5 sm:w-6 sm:h-6"
-                        id="closeShareModal"
-                    />
+                    <X size={18} />
                 </button>
-                {/* Header */}
-                <div className="relative p-4 sm:p-6 pb-3 sm:pb-4 border-b border-gray-100">
 
-                    <div className="flex items-center gap-3 mb-2">
-                        <div >
-                            <Share2 className="w-5 h-5 sm:w-6 sm:h-6 text-black" />
+                <div className="p-8 flex flex-col gap-6">
+
+                    {/* Header */}
+                    <div className="flex flex-col gap-2">
+                        <div className="flex items-center gap-2">
+                            <Share2 size={13} className="text-[#FF9933]" />
+                            <span className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#FF9933]">
+                                {TranslateText[language].SHARE_ANNOUNCEMENT}
+                            </span>
                         </div>
-                        <h3 className="text-lg sm:text-xl font-semibold text-black">{TranslateText[language].SHARE_ANNOUNCEMENT}</h3>
+                        <p className="text-white/40 text-[12px] leading-relaxed">
+                            {TranslateText[language].HELP_OTHERS_DISCOVER}
+                        </p>
                     </div>
-                    <p className="text-gray-800 text-sm sm:text-base">{TranslateText[language].HELP_OTHERS_DISCOVER}</p>
-                </div>
 
-                {/* Share Preview */}
-                <div className="p-4 sm:p-6 py-3 sm:py-4 bg-gray-50 border-b border-gray-100">
-                    <div className="bg-white p-3 sm:p-4 rounded-lg border border-gray-200 shadow-sm">
-                        <p className="text-sm sm:text-base font-medium text-gray-900 mb-2 leading-relaxed">
+                    {/* Preview box */}
+                    <div className="bg-white/[0.04] border border-white/[0.07] rounded-lg p-4 flex flex-col gap-2">
+                        <p className="text-white/70 text-[12px] leading-relaxed line-clamp-2">
                             {shareMessage}
                         </p>
-                        <p className="text-xs sm:text-sm text-gray-800 underline truncate font-mono  px-2 py-1 rounded">
+                        <p className="text-[#FF9933]/60 text-[11px] font-mono truncate">
                             {shareUrl}
                         </p>
                     </div>
-                </div>
 
-                {/* Share Options */}
-                <div className="p-4 sm:p-6 pt-3 sm:pt-4 ">
-                    <div className="grid gap-2 sm:gap-3">
+                    {/* Share buttons */}
+                    <div className="flex flex-col gap-2">
                         {shareOptions.map((option) => (
                             <button
                                 key={option.name}
-                                onClick={() => handleShare(option.url)}
-                                className={`flex items-center gap-3 border  border-slate-200 sm:gap-4 p-3 sm:p-4 rounded-xl transition-all duration-200 transform hover:scale-[1.02] ${option.bgColor} ${option.hoverColor} ${option.className} shadow-md hover:shadow-lg`}
-                                aria-label={`Share on ${option.name}`}
+                                onClick={() => window.open(option.url, "_blank", "noopener,noreferrer")}
+                                className="flex items-center gap-3 px-4 py-3 rounded-lg
+                                           bg-white/[0.04] border border-white/[0.07]
+                                           hover:bg-white/[0.08] hover:border-white/[0.14]
+                                           transition-all duration-200 hover:scale-[1.01]
+                                           active:scale-[0.99]"
                             >
-                                <div className="flex-shrink-0">
+                                <span style={{ color: option.color }}>
                                     {option.icon}
-                                </div>
-                                <div className="flex-1 text-left">
-                                    <span className="font-medium sm:font-semibold text-sm sm:text-base">
-                                        {TranslateText[language].SHARE_ON} {option.name}
-                                    </span>
-                                </div>
-                                <div className="flex-shrink-0">
-                                    <div className="w-2 h-2 bg-white bg-opacity-30 rounded-full"></div>
-                                </div>
+                                </span>
+                                <span className="text-white/70 text-[13px] font-medium flex-1 text-left">
+                                    {TranslateText[language].SHARE_ON} {option.name}
+                                </span>
+                                <span className="text-white/20 text-[11px]">↗</span>
                             </button>
                         ))}
                     </div>

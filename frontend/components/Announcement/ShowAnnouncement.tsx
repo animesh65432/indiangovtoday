@@ -5,7 +5,6 @@ import Title from './Title'
 import Details from './Details'
 import TextDiv from "./TextDiv"
 import KeyInforMation from './KeyInforMation'
-import Image from 'next/image'
 
 type Props = {
     title: string
@@ -25,7 +24,7 @@ type Props = {
 const ShowAnnouncement: React.FC<Props> = ({ image, toggle, setToggle, title, source, lan, date, state, sections, department, category }) => {
     console.log(image)
     return (
-        <section className='w-[82%] mx-auto  flex flex-col gap-10 pt-7  pb-8'>
+        <section className='w-[90%] sm:w-[82%] mx-auto  flex flex-col gap-10 pt-7  pb-8'>
             <Header
                 title={title}
                 sections={sections}
@@ -35,37 +34,18 @@ const ShowAnnouncement: React.FC<Props> = ({ image, toggle, setToggle, title, so
             <Title
                 title={title}
             />
-            <div className='flex justify-between'>
-                <Image
-                    src={image}
-                    alt={title}
-                    width={500}
-                    height={300}
-                    className="object-cover"
-                />
-                <div className=' hidden lg:block'>
-                    <Details
-                        date={date}
-                        state={state}
-                        category={category}
-                        department={department}
-                        source={source}
-                        lan={lan}
-                    />
-                </div>
-            </div>
 
             <div className='flex flex-col  gap-10'>
-                <div className='lg:hidden block'>
-                    <Details
-                        date={date}
-                        state={state}
-                        category={category}
-                        department={department}
-                        source={source}
-                        lan={lan}
-                    />
-                </div>
+
+                <Details
+                    date={date}
+                    state={state}
+                    category={category}
+                    department={department}
+                    source={source}
+                    lan={lan}
+                />
+
                 <div className='w-[65%] hidden xl:block'>
                     <TextDiv
                         heading={sections[0].heading}

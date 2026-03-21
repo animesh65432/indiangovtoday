@@ -6,17 +6,15 @@ import { Currentdate } from "@/context/Currentdate";
 import AnnoucementsHeader from '@/components/AnnoucementsHeader';
 import { GetStateCode } from "@/lib/GetStateCode"
 import { LocationContext } from "@/context/LocationProvider"
-import SerchInputbox from './SearchInputbox';
 import { TranslateText } from "@/lib/translatetext"
-import { toast } from "react-toastify"
-import dynamic from 'next/dynamic';
-import RightSide from './RightSide';
-import { ChevronDown, ChevronUp } from "lucide-react"
-import MobileShowAnnoucments from './MobileShowAnnoucments';
+import SearchInputBox from './SearchInputbox';
+import Hero from './Hero';
 import { buildCacheKey, withCache } from "@/lib/lsCache";
+import ShowAnnouncements from './ShowAnnouncements';
+import dynamic from "next/dynamic";
+import Loading from "./Loading"
 
-
-const IndiaMap = dynamic(() => import("../IndiaMap"), {
+const IndiaMap = dynamic(() => import("@/components/IndiaMap"), {
     ssr: false,
 });
 
@@ -25,15 +23,14 @@ const Main: React.FC = () => {
     const [SearchInput, SetSearchInput] = useState<string>("")
     const [StatesSelected, SetStatesSelected] = useState<string[]>([]);
     const [sheetOpen, setSheetOpen] = useState(false)
-    const [AnnouncementsType, SetAnnouncementsType] = useState<"All" | "Central Govt" | "States Govt">(`All`);
-    const [DeparmentsSelected, SetDeparmentsSelected] = useState<string>(``);
-    const [CategoriesSelected, SetCategoriesSelected] = useState<string>(``);
+    const [CategorySelected, SetCategorySelected] = useState<string>(`${TranslateText[language].ALL_DEPARMENTS}`);
     const [totalPages, settotalPages] = useState<number>(0)
-    const [departmentOptions, setDepartmentOptions] = useState<string[]>([])
     const [categoryOptions, setCategoryOptions] = useState<string[]>([])
     const [IsLoading, SetIsLoading] = useState<boolean>(false)
     const [IsLoadingMore, SetIsLoadingMore] = useState<boolean>(false)
     const firstLoad = useRef(true);
+    const [IsMapLoading, SetIsMapLoading] = useState(false);
+    const [IsAnnouncementsLoading, SetIsAnnouncementsLoading] = useState(false);
     const [Announcements, SetAnnouncements] = useState<AnnouncementTypes[]>([])
     const [page, Setpage] = useState<number>(1)
     const [limit] = useState<number>(10)
@@ -57,6 +54,7 @@ const Main: React.FC = () => {
 
         if (append) SetIsLoadingMore(true);
         else SetIsLoading(true);
+        SetIsAnnouncementsLoading(true);
 
         if (StatesSelected.length === 0) {
             SetIsLoading(false);
@@ -65,26 +63,17 @@ const Main: React.FC = () => {
 
         try {
 
-            const INDIA_GOVT_CODE = TranslateText[language]["MULTISELECT_OPTIONS"][
-                TranslateText[language]["MULTISELECT_OPTIONS"].length - 1
-            ].value;
+            const key = buildCacheKey("announcements", { language, startdate, endDate, page, states: StatesSelected, search: SearchInput, category: CategorySelected });
 
+            const SelectedCategory = CategorySelected === TranslateText[language].ALL_DEPARMENTS ? "" : CategorySelected;
 
-            const filteredStates =
-                AnnouncementsType === "Central Govt"
-                    ? StatesSelected.filter(s => s === INDIA_GOVT_CODE)
-                    : AnnouncementsType === "States Govt"
-                        ? StatesSelected.filter(s => s !== INDIA_GOVT_CODE)
-                        : StatesSelected;
+            console.log(SelectedCategory, "SelectedCategory", TranslateText[language].ALL_DEPARMENTS)
 
-            const DeparMentsPayload = TranslateText[language].ALL_DEPARMENTS === DeparmentsSelected ? "" : DeparmentsSelected;
-
-            const key = buildCacheKey("announcements", { language, startdate, endDate, page, states: filteredStates, dept: DeparMentsPayload, search: SearchInput })
 
             const response = await withCache(key, "announcements", async () => (
                 await getAllAnnouncements(
                     language, startdate, endDate, pageNumber, limit,
-                    filteredStates, DeparMentsPayload, SearchInput, signal
+                    StatesSelected, SelectedCategory, SearchInput, signal
                 ) as AnnouncementsResponse
             ));
 
@@ -101,6 +90,7 @@ const Main: React.FC = () => {
             if (!signal.aborted) {
                 SetIsLoading(false);
                 SetIsLoadingMore(false);
+                SetIsAnnouncementsLoading(false);
             }
         }
     }
@@ -117,12 +107,10 @@ const Main: React.FC = () => {
 
         return () => controller.abort();
     }, [
-        CategoriesSelected,
+        CategorySelected,
         language,
         state_ut,
         trigger,
-        DeparmentsSelected,
-        AnnouncementsType,
         startdate,
         endDate,
         StatesSelected
@@ -139,7 +127,6 @@ const Main: React.FC = () => {
             SetStatesSelected([INDIA_GOVT_CODE]);
             SetDefaultsStatesApplied([INDIA_GOVT_CODE]);
         }
-        SetDeparmentsSelected("")
     }, [state_ut, language]);
 
     useEffect(() => {
@@ -150,11 +137,9 @@ const Main: React.FC = () => {
         }
     }, [page]);
 
-
-
     const handleSearch = () => {
-        if (StatesSelected.length === 0) {
-            toast.error(`${TranslateText[language].NO_STATE_SELECTED}`);
+        if (StatesSelected.length === 0 && DefaultsStatesApplied.length === 0) {
+            return;
         }
         else {
             Setpage(1);
@@ -180,12 +165,14 @@ const Main: React.FC = () => {
     }
 
     useEffect(() => {
-        if (!SearchInput) return;
+        SetCategorySelected(TranslateText[language].ALL_DEPARMENTS);
+    }, [language]);
+
+    useEffect(() => {
+        if (firstLoad.current) return;
         const timer = setTimeout(() => handleSearch(), 500);
         return () => clearTimeout(timer);
     }, [SearchInput]);
-
-    const shouldShowMap = ShowIndiaMap && AnnouncementsType !== "Central Govt";
 
     const handleMobileApply = (
         dept: string,
@@ -194,8 +181,7 @@ const Main: React.FC = () => {
         startDate: Date | null,
         endDate: Date | null
     ) => {
-        SetDeparmentsSelected(dept)
-        SetCategoriesSelected(category)
+        SetCategorySelected(category)
         SetStatesSelected(states)
         if (startDate) onChangeStartDate(startDate)
         if (endDate) onChangeEndDate(endDate)
@@ -203,8 +189,7 @@ const Main: React.FC = () => {
     }
 
     const handleMobileReset = () => {
-        SetDeparmentsSelected("")
-        SetCategoriesSelected("")
+        SetCategorySelected("")
         const today = new Date();
         const ThirteenDaysAgo = new Date();
         ThirteenDaysAgo.setDate(today.getDate() - 30);
@@ -223,29 +208,29 @@ const Main: React.FC = () => {
         setSheetOpen(false)
     }
 
-    return (
+    const isGlobalLoading = IsLoading && IsMapLoading && StatesSelected.length > 0;
 
-        <section className="flex flex-col md:flex-row w-full h-screen md:min-h-screen overflow-hidden md:overflow-visible  ">
-            <div className='block md:hidden'>
-                <AnnoucementsHeader />
+    if (isGlobalLoading) {
+        return <Loading />
+    }
+
+    return (
+        <section className="flex flex-col gap-0 h-screen w-screen overflow-hidden">
+            <AnnoucementsHeader />
+            <div className='md:hidden block'>
+                <Hero />
             </div>
-            <div className='block md:hidden'>
-                <SerchInputbox
+            <div className='md:hidden block mt-2 md:mt-0'>
+                <SearchInputBox
+                    StatesSelected={StatesSelected}
+                    SetStatesSelected={SetStatesSelected}
                     SearchInput={SearchInput}
                     SetSearchInput={SetSearchInput}
                     onSearch={handleSearch}
-                    DeparmentsSelected={DeparmentsSelected}
-                    SetDeparmentsSelected={SetDeparmentsSelected}
-                    StatesSelected={StatesSelected}
-                    SetStatesSelected={SetStatesSelected}
-                    AnnouncementsType={AnnouncementsType}
-                    SetAnnouncementsType={SetAnnouncementsType}
-                    departmentOptions={departmentOptions}
-                    setDepartmentOptions={setDepartmentOptions}
                     categoryOptions={categoryOptions}
                     setCategoryOptions={setCategoryOptions}
-                    CategoriesSelected={CategoriesSelected}
-                    SetCategoriesSelected={SetCategoriesSelected}
+                    CategorySelected={CategorySelected}
+                    SetCategorySelected={SetCategorySelected}
                     handleMobileApply={handleMobileApply}
                     handleMobileReset={handleMobileReset}
                     sheetOpen={sheetOpen}
@@ -253,68 +238,59 @@ const Main: React.FC = () => {
                 />
             </div>
 
-            <div className="flex mt-2 md:mt-0 items-center justify-between md:hidden px-3 py-1 border border-[#E5E2D8]">
-                <span className="flex items-center gap-1">
-                    <span>🗺️ </span>
-                    <span className="text-[13px] font-inter font-semibold text-[#555555]">Indian Map</span>
-                </span>
-                {ShowIndiaMap ? (
-                    <ChevronUp onClick={() => SetShowIndiaMap(false)} className="w-4 h-4 text-[#555]" />
-                ) : (
-                    <ChevronDown onClick={() => SetShowIndiaMap(true)} className="w-4 h-4 text-[#555]" />
-                )}
-            </div>
 
-            {shouldShowMap &&
-                <div className="h-[30vh] md:w-[40vw] xl:w-[25vw] md:shrink-0">
+            <div className="flex flex-col md:flex-row flex-1 min-h-0 overflow-hidden mt-2 md:mt-0">
+
+                <div className={`flex-shrink-0 w-[98%] mx-auto md:0 md:w-[380px] ${ShowIndiaMap ? "h-[35vh] md:h-full" : "h-auto"}  overflow-hidden`}>
                     <IndiaMap
+                        ShowIndiaMap={ShowIndiaMap}
+                        SetShowIndiaMap={SetShowIndiaMap}
                         announcements={Announcements}
                         selectedStates={StatesSelected}
                         onStateClick={handleStateClick}
-                        ShowIndiaMap={ShowIndiaMap}
-                        SetShowIndiaMap={SetShowIndiaMap}
+                        IsMapLoading={IsMapLoading}
+                        SetIsMapLoading={SetIsMapLoading}
                     />
                 </div>
-            }
 
-            <div className="hidden md:flex-1 md:block">
-                <RightSide
-                    StatesSelected={StatesSelected}
-                    SetStatesSelected={SetStatesSelected}
-                    DeparmentsSelected={DeparmentsSelected}
-                    SetDeparmentsSelected={SetDeparmentsSelected}
-                    SearchInput={SearchInput}
-                    SetSearchInput={SetSearchInput}
-                    onSearch={handleSearch}
-                    announcements={Announcements}
-                    IsLoading={IsLoading}
-                    IsLoadingMore={IsLoadingMore}
-                    LoadMoreData={OnLoadMoredata}
-                    page={page}
-                    totalpages={totalPages}
-                    AnnouncementsType={AnnouncementsType}
-                    SetAnnouncementsType={SetAnnouncementsType}
-                    departmentOptions={departmentOptions}
-                    setDepartmentOptions={setDepartmentOptions}
-                    categoryOptions={categoryOptions}
-                    setCategoryOptions={setCategoryOptions}
-                    CategoriesSelected={CategoriesSelected}
-                    SetCategoriesSelected={SetCategoriesSelected}
-                    sheetOpen={sheetOpen}
-                    setSheetOpen={setSheetOpen}
-                    handleMobileApply={handleMobileApply}
-                    handleMobileReset={handleMobileReset}
-                />
+
+                <div className="flex-1 flex flex-col gap-4 min-h-0 overflow-hidden">
+                    <div className='md:block hidden'>
+                        <Hero />
+                    </div>
+                    <div className='md:block hidden'>
+                        <SearchInputBox
+                            StatesSelected={StatesSelected}
+                            SetStatesSelected={SetStatesSelected}
+                            SearchInput={SearchInput}
+                            SetSearchInput={SetSearchInput}
+                            onSearch={handleSearch}
+                            categoryOptions={categoryOptions}
+                            setCategoryOptions={setCategoryOptions}
+                            CategorySelected={CategorySelected}
+                            SetCategorySelected={SetCategorySelected}
+                            handleMobileApply={handleMobileApply}
+                            handleMobileReset={handleMobileReset}
+                            sheetOpen={sheetOpen}
+                            setSheetOpen={setSheetOpen}
+                        />
+                    </div>
+
+                    {/* ── Only this div scrolls ── */}
+                    <div className="flex-1 min-h-0 overflow-y-auto">
+                        <ShowAnnouncements
+                            Announcements={Announcements}
+                            LoadMoreData={OnLoadMoredata}
+                            page={page}
+                            totalpage={totalPages}
+                            IsLoading={IsLoading}
+                            IsLoadingMore={IsLoadingMore}
+                        />
+                    </div>
+
+                </div>
             </div>
-            <MobileShowAnnoucments
-                announcements={Announcements}
-                IsLoading={IsLoading}
-                IsLoadingMore={IsLoadingMore}
-                LoadMoreData={OnLoadMoredata}
-                page={page}
-                totalpages={totalPages}
-            />
-        </section >
+        </section>
 
     );
 };

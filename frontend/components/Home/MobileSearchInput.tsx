@@ -11,15 +11,14 @@ import {
     Select, SelectContent, SelectGroup,
     SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select"
-import { MultiSelect } from "@/components/ui/multi-select"
-import { cn } from "@/lib/utils"
+import { MultiSelect } from "../ui/multi-select"
+import { formatDateInLanguage } from '@/lib/formatDate'
+
 
 type Props = {
-    departmentOptions: string[]
     categoryOptions: string[]
     setCategoryOptions: React.Dispatch<React.SetStateAction<string[]>>
-    CategoriesSelected: string
-    DeparmentsSelected: string
+    CategorySelected: string
     StatesSelected: string[]
     onApply: (
         dept: string,
@@ -33,17 +32,14 @@ type Props = {
 
 const MobileSearchInput: React.FC<Props> = ({
     categoryOptions,
-    DeparmentsSelected,
-    CategoriesSelected,
-    departmentOptions,
+    CategorySelected,
     StatesSelected,
     onApply,
     onReset,
 }) => {
     const { language } = useContext(LanguageContext)
     const { startdate, endDate } = useContext(Currentdate)
-    const [localDept, setLocalDept] = useState(DeparmentsSelected)
-    const [localCategory, setLocalCategory] = useState(CategoriesSelected)
+    const [localCategory, setLocalCategory] = useState(CategorySelected)
     const [localStates, setLocalStates] = useState<string[]>(StatesSelected)
     const [localStartDate, setLocalStartDate] = useState<Date | null>(startdate)
     const [localEndDate, setLocalEndDate] = useState<Date | null>(endDate)
@@ -51,11 +47,10 @@ const MobileSearchInput: React.FC<Props> = ({
     const stateOptions = TranslateText[language].MULTISELECT_OPTIONS
 
     const handleApply = () => {
-        onApply(localDept, localCategory, localStates, localStartDate, localEndDate)
+        onApply("", localCategory, localStates, localStartDate, localEndDate)
     }
 
     const handleReset = () => {
-        setLocalDept("")
         setLocalCategory("")
         setLocalStates(StatesSelected)
         setLocalStartDate(startdate)
@@ -64,52 +59,35 @@ const MobileSearchInput: React.FC<Props> = ({
     }
 
     return (
-        <div className="bg-white min-h-screen p-6 mobile-filter-panel">
+        <div className="bg-[#111111] min-h-screen p-6 mobile-filter-panel">
 
             {/* Header */}
             <div className="flex items-center gap-3 mb-7">
-                <div className="w-0.75 h-5 bg-[#FFD600] rounded-full" />
-                <span className="text-[#111] text-xs font-semibold tracking-widest uppercase">
-                    Filters
+                <div className="w-0.75 h-5 bg-[#FF9933] rounded-full" />
+                <span className="text-[#FF9933] font-satoshi text-xs font-semibold tracking-widest uppercase">
+                    {TranslateText[language].FILTERS}
                 </span>
             </div>
 
             <div className="flex flex-col gap-5">
 
-                {/* Department */}
-                <div className="flex flex-col gap-2">
-                    <span className="text-[#999] text-[11px] font-semibold tracking-widest uppercase">
-                        {TranslateText[language].DEPTARTMENT}
-                    </span>
-                    <Select value={localDept} onValueChange={setLocalDept}>
-                        <SelectTrigger className="h-12 bg-[#F5F5F5] border border-[#E8E8E8] rounded-xl text-[#888] text-sm px-4 focus:ring-1 focus:ring-[#FFD600]">
-                            <SelectValue placeholder={TranslateText[language].ALL_DEPARMENTS} />
-                        </SelectTrigger>
-                        <SelectContent className="bg-white border-[#E8E8E8] z-[9999]">
-                            <SelectGroup>
-                                {departmentOptions.map((dept) => (
-                                    <SelectItem key={dept} value={dept}>
-                                        {dept}
-                                    </SelectItem>
-                                ))}
-                            </SelectGroup>
-                        </SelectContent>
-                    </Select>
-                </div>
-
                 {/* Types */}
                 <div className="flex flex-col gap-2">
-                    <span className="text-[#999] text-[11px] font-semibold tracking-widest uppercase">
-                        Types
+                    <span className="text-[#FF9933] text-[11px] font-semibold tracking-widest uppercase">
+                        {TranslateText[language].TYPES}
                     </span>
-                    <Select value={localCategory} onValueChange={setLocalCategory}>
-                        <SelectTrigger className="h-12 bg-[#F5F5F5] border border-[#E8E8E8] rounded-xl text-[#888] text-sm px-4 focus:ring-1 focus:ring-[#FFD600]">
-                            <SelectValue placeholder="All Types" />
+                    <Select
+                        value={localCategory}
+                        onValueChange={setLocalCategory}
+                        defaultValue={TranslateText[language].ALL_DEPARMENTS}
+                    >
+                        <SelectTrigger className="h-12 text-white placeholder:text-white border border-[#FF9933] rounded-none text-sm px-4 ">
+                            <SelectValue className='placeholder:font-satoshi font-satoshi' placeholder="All Types" />
                         </SelectTrigger>
-                        <SelectContent className="bg-white border-[#E8E8E8] z-[9999]">
+                        <SelectContent className=" font-satoshi z-[9999] bg-[#1A1A1A] border border-[#FF9933]/30  ">
                             <SelectGroup>
                                 {categoryOptions.map((cat) => (
-                                    <SelectItem key={cat} value={cat}>
+                                    <SelectItem key={cat} value={cat} className='font-satoshi text-[#EAEAEA] hover:bg-[#FF9933]/10 focus:bg-[#FF9933]/20 cursor-pointer'>
                                         {cat}
                                     </SelectItem>
                                 ))}
@@ -120,40 +98,36 @@ const MobileSearchInput: React.FC<Props> = ({
 
                 {/* State / Region */}
                 <div className="flex flex-col gap-2">
-                    <span className="text-[#999] text-[11px] font-semibold tracking-widest uppercase">
-                        State / Region
+                    <span className="font-satoshi text-[11px] text-[#FF9933]  font-semibold tracking-widest uppercase">
+                        {TranslateText[language].REGION}
                     </span>
                     <MultiSelect
                         options={stateOptions}
                         defaultValue={localStates}
                         onValueChange={setLocalStates}
                         placeholder="Select states"
-                        maxCount={2}
+                        maxCount={1}
                         mobile={true}
                         modalPopover={true}
                         searchable={true}
-                        popoverClassName="z-[9999] border-[#E8E8E8]"
-                        className={cn(
-                            "min-h-12 bg-[#F5F5F5] border border-[#E8E8E8] rounded-xl",
-                            "text-[#888] text-sm px-4",
-                            "focus-within:ring-1 focus-within:ring-[#FFD600]",
-                        )}
+                        popoverClassName="z-[9999] border-[#FF9933]"
+                        className='rounded-none '
                     />
                 </div>
 
                 {/* Date Range */}
                 <div className="flex flex-col gap-2">
-                    <span className="text-[#999] text-[11px] font-semibold tracking-widest uppercase">
-                        Date Range
+                    <span className="font-satoshi text-[#FF9933]  text-[11px] font-semibold tracking-widest uppercase">
+                        {TranslateText[language].DATE_RANGE}
                     </span>
                     <div className="flex items-center gap-3">
 
                         {/* Start Date */}
                         <Popover>
                             <PopoverTrigger asChild>
-                                <Button className="flex-1 h-12 bg-[#F5F5F5] border border-[#E8E8E8] rounded-xl text-[#888] text-sm font-normal justify-between px-4 hover:bg-[#EFEFEF] hover:border-[#e2680a]">
-                                    {localStartDate ? format(localStartDate, "dd MMM yyyy") : "Start date"}
-                                    <CalendarIcon size={14} className="text-[#111]" />
+                                <Button className="w-fit p-5 bg-[#1A1A1A] text-white border border-[#FF9933]  text-[11px] md:text-[12px]  font-satoshi   font-semibold rounded-none">
+                                    {localStartDate ? formatDateInLanguage(localStartDate, "dd MMM yyyy") : "Start date"}
+                                    <CalendarIcon size={14} className="text-[#FF9933]" />
                                 </Button>
                             </PopoverTrigger>
                             <PopoverContent className="w-auto p-0 z-[9999] bg-white border-[#E8E8E8]" align="start">
@@ -167,14 +141,14 @@ const MobileSearchInput: React.FC<Props> = ({
                             </PopoverContent>
                         </Popover>
 
-                        <div className="w-3 h-px bg-[#ccc] shrink-0" />
+                        <div className="w-3 h-px bg-[#FF9933] shrink-0" />
 
                         {/* End Date */}
                         <Popover>
                             <PopoverTrigger asChild>
-                                <Button className="flex-1 h-12 bg-[#F5F5F5] border border-[#E8E8E8] rounded-xl text-[#888] text-sm font-normal justify-between px-4 hover:bg-[#EFEFEF] hover:border-[#e2680a]">
-                                    {localEndDate ? format(localEndDate, "dd MMM yyyy") : "End date"}
-                                    <CalendarIcon size={14} className="text-[#111]" />
+                                <Button className="w-fit p-5 bg-[#1A1A1A] text-white border border-[#FF9933]  text-[11px] md:text-[12px]  font-satoshi   font-semibold rounded-none">
+                                    {localEndDate ? formatDateInLanguage(localEndDate, language) : "End date"}
+                                    <CalendarIcon size={14} className="text-[#FF9933]" />
                                 </Button>
                             </PopoverTrigger>
                             <PopoverContent className="w-auto p-0 z-[9999] bg-white border-[#E8E8E8]" align="start">
@@ -195,15 +169,15 @@ const MobileSearchInput: React.FC<Props> = ({
                 <div className="flex gap-3 mt-2">
                     <Button
                         onClick={handleReset}
-                        className="flex-1 h-12 bg-white border border-[#E8E8E8] text-[#555] rounded-xl text-sm hover:bg-[#F5F5F5]"
+                        className="flex-1 w-fit p-5 bg-[#1A1A1A] text-white border border-[#FF9933]  text-[14px]  font-satoshi   font-semibold rounded-none"
                     >
-                        Reset
+                        {TranslateText[language].RESET}
                     </Button>
                     <Button
                         onClick={handleApply}
-                        className="flex-2 h-12 bg-[#FEF3C7] border border-[#e2680a] text-black font-semibold rounded-xl text-sm hover:bg-[#FFD600]"
+                        className="flex-1 w-fit p-5 bg-[#1A1A1A] text-white border border-[#FF9933]  text-[14px]  font-satoshi   font-semibold rounded-none"
                     >
-                        Apply Filters
+                        {TranslateText[language].APPLY_FILTERS}
                     </Button>
                 </div>
 

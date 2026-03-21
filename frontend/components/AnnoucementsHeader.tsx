@@ -8,22 +8,24 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 import { optionsforLanguages } from "@/lib/lan"
+import Logo from './ui/Logo';
 import { TranslateText } from '@/lib/translatetext';
-import { TextGenerateEffect } from "@/components/ui/text-generate-effect"
 
 const AnnoucementsHeader: React.FC = () => {
     const { language, onSelectLanguage } = useContext(LanguageContext)
 
     return (
-        <header className='h-14 flex items-center justify-between  w-[97%] mx-auto mt-2'>
-            <nav className='flex flex-col gap-1'>
-                <span className='text-[1.3rem] font-poppins  font-bold  text-black'>
-                    IndanGovtToday
-                </span>
-                <span className='font-poppins text-xs uppercase text-[#aaaaaa] font-medium'>
-                    <TextGenerateEffect words={TranslateText[language].DIRECT_ACCESS_TO_VERIFIED_GOVT_CIRCULARS} />
-                </span>
+        <header className='h-16 flex items-center justify-between w-[98%] mx-auto mt-4 px-2'>
+
+            {/* Logo */}
+            <nav className='flex items-center'>
+                <Logo
+                    fst={TranslateText[language].INDIAN}
+                    snd={TranslateText[language].GOVTODAY}
+                />
             </nav>
+
+            {/* Language Selector */}
             <nav>
                 <Select
                     onValueChange={onSelectLanguage}
@@ -31,20 +33,46 @@ const AnnoucementsHeader: React.FC = () => {
                 >
                     <SelectTrigger
                         IsLanguageSelect={true}
-                        className="text-[#555555] bg-[#FBF7F2] uppercase text-[0.7rem] font-inter  rounded-md font-semibold"
+                        className="
+                        text-[#EAEAEA]
+                        bg-[#1A1A1A] 
+                        backdrop-blur-md
+                        border border-[#FF9933]/30
+                        uppercase text-[0.65rem]
+                        font-inter font-semibold tracking-wider
+                        rounded-none
+                        px-3 py-2
+
+                        hover:border-[#FF9933]
+                        hover:bg-[#1A1A1A]
+                        transition-all duration-200
+
+                        focus:ring-1 focus:ring-[#FF9933]
+                    "
                     >
                         <SelectValue placeholder="Language" />
                     </SelectTrigger>
-                    <SelectContent className='z-999' >
+
+                    <SelectContent className='z-[999] bg-[#1A1A1A]  border border-[#FF9933]/30 rounded-md'>
                         {optionsforLanguages.map((lan) => (
-                            <SelectItem key={lan.label} value={lan.label} className='font-poppins hover:bg-amber-100'>
+                            <SelectItem
+                                key={lan.label}
+                                value={lan.label}
+                                className="
+                                font-satoshi
+                                text-[#EAEAEA]
+                                hover:bg-[#FF9933]/10
+                                focus:bg-[#FF9933]/20
+                                cursor-pointer
+                            "
+                            >
                                 {lan.label}
                             </SelectItem>
                         ))}
                     </SelectContent>
                 </Select>
             </nav>
-        </header >
+        </header>
     )
 }
 
