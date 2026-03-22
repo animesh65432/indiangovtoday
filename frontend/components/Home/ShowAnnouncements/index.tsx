@@ -15,6 +15,7 @@ type Props = {
     totalpage: number;
     IsLoading: boolean;
     IsLoadingMore: boolean;
+    handleMobileReset: () => void;
 };
 
 
@@ -25,6 +26,7 @@ export default function ShowAnnouncements({
     totalpage,
     IsLoading,
     IsLoadingMore,
+    handleMobileReset
 }: Props) {
     const { language } = useContext(LanguageContext);
 
@@ -44,7 +46,12 @@ export default function ShowAnnouncements({
                 <h3 className="text-white font-satoshi text-base font-semibold ">
                     {TranslateText[language].NO_ANNOUNCEMENTS_FOUND}
                 </h3>
-                <p className="text-slate-400 font-satoshi text-sm text-center">Try changing your filters or date range</p>
+                <Button
+                    onClick={handleMobileReset}
+                    className="w-fit hover:cursor-pointer h-fit p-2 bg-[#1A1A1A] text-white border border-[#FF9933]  text-[14px]  font-satoshi   font-semibold rounded-none"
+                >
+                    {TranslateText[language].RESET}
+                </Button>
             </div>
         );
     }

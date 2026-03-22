@@ -5,7 +5,7 @@ import { Currentdate } from '@/context/Currentdate'
 import { Button } from '../ui/button'
 import { Calendar } from "@/components/ui/calendar"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
-import { Calendar as CalendarIcon } from "lucide-react"
+import { Calendar as CalendarIcon, X } from "lucide-react"
 import {
     Select, SelectContent, SelectGroup,
     SelectItem, SelectTrigger, SelectValue,
@@ -26,7 +26,8 @@ type Props = {
         startDate: Date | null,
         endDate: Date | null
     ) => void
-    onReset: () => void
+    onReset: () => void,
+    setSheetOpen: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 const MobileSearchInput: React.FC<Props> = ({
@@ -35,6 +36,7 @@ const MobileSearchInput: React.FC<Props> = ({
     StatesSelected,
     onApply,
     onReset,
+    setSheetOpen
 }) => {
     const { language } = useContext(LanguageContext)
     const { startdate, endDate } = useContext(Currentdate)
@@ -61,12 +63,20 @@ const MobileSearchInput: React.FC<Props> = ({
         <div className="bg-[#111111] min-h-screen p-6 mobile-filter-panel">
 
             {/* Header */}
-            <div className='mt-10'>
-                <div className="flex items-center gap-3 mb-7">
-                    <div className="w-0.75 h-5 bg-[#FF9933] rounded-full" />
-                    <span className="text-[#FF9933] font-satoshi text-xs font-semibold tracking-widest uppercase">
-                        {TranslateText[language].FILTERS}
-                    </span>
+            <div className='mt-20'>
+                <div className="flex items-center justify-between mb-7 pt-4"> {/* pt-4 instead of mt-20 */}
+                    <div className="flex items-center gap-3">
+                        <div className="w-0.75 h-5 bg-[#FF9933] rounded-full" />
+                        <span className="text-[#FF9933] font-satoshi text-xs font-semibold tracking-widest uppercase">
+                            {TranslateText[language].FILTERS}
+                        </span>
+                    </div>
+                    <button
+                        onClick={() => setSheetOpen(false)}
+                        className="text-[#FF9933] hover:text-white transition-colors p-1"
+                    >
+                        <X size={24} />
+                    </button>
                 </div>
 
                 <div className="flex flex-col gap-5">

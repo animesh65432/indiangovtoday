@@ -119,7 +119,10 @@ const SearchInputBox: React.FC<Props> = ({
                         <SheetTrigger className="w-fit text-multiselect  bg-white/50 text-[11px] md:text-[12px]  font-satoshi  border border-[#a8c0e0]/40 font-semibold rounded-none absolute right-3 top-1/2 -translate-y-1/2 block md:hidden">
                             <FunnelPlus className='absolute right-3 top-1/2 -translate-y-1/2 text-[#FF9933] block md:hidden' />
                         </SheetTrigger>
-                        <SheetContent className='p-0 z-[9999]  [&>button]:top-10' side="bottom">
+                        <SheetContent
+                            className='p-0 z-[9999]'
+                            side="bottom"
+                        >
                             <MobileSearchInput
                                 categoryOptions={categoryOptions}
                                 CategorySelected={CategorySelected}
@@ -127,6 +130,7 @@ const SearchInputBox: React.FC<Props> = ({
                                 onApply={handleMobileApply}
                                 onReset={handleMobileReset}
                                 setCategoryOptions={setCategoryOptions}
+                                setSheetOpen={setSheetOpen}
                             />
                         </SheetContent>
                     </Sheet>
