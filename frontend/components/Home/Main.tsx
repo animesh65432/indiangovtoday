@@ -193,6 +193,7 @@ const Main: React.FC = () => {
     }
 
     const handleMobileReset = () => {
+        SetSearchInput("")
         SetCategorySelected("")
         const today = new Date();
         const ThirteenDaysAgo = new Date();
@@ -289,6 +290,7 @@ const Main: React.FC = () => {
                             totalpage={totalPages}
                             IsLoading={IsLoading}
                             IsLoadingMore={IsLoadingMore}
+                            handleMobileReset={handleMobileReset}
                         />
                     </div>
 
