@@ -5,40 +5,19 @@ type LogoProps = {
     snd: string
 }
 
-const Logo: React.FC<LogoProps> = ({ fst, snd }) => {
+const Logo = ({ fst, snd }: { fst: string; snd: string }) => {
     return (
-        <svg
-            viewBox="0 0 280 80"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            style={{ width: 'clamp(160px, 30vw, 280px)' }}
-        >
-            {/* Chakra */}
-            <g>
-                <circle cx="40" cy="40" r="30" stroke="#FF9933" strokeWidth="1.5" />
-
-                {/* Spokes */}
-                <line x1="40" y1="10" x2="40" y2="70" stroke="#FF9933" />
-                <line x1="10" y1="40" x2="70" y2="40" stroke="#FF9933" />
-                <line x1="18" y1="18" x2="62" y2="62" stroke="#FF9933" />
-                <line x1="62" y1="18" x2="18" y2="62" stroke="#FF9933" />
-
-                {/* Center */}
-                <circle cx="40" cy="40" r="6" fill="#FF9933" />
-            </g>
-
-            {/* Text */}
-            <text x="92" y="32" fontSize="10" fill="#FFD699" letterSpacing="3">
+        <div className="flex flex-col leading-none select-none">
+            <span className="text-[10px] tracking-[0.3em] text-[#FFB366] font-medium">
                 {fst.toUpperCase()}
-            </text>
+            </span>
 
-            <text x="92" y="56" fontSize="26" fill="#FFFFFF" fontWeight="600">
+            <span className="text-xl sm:text-2xl font-semibold text-white">
                 {snd.toUpperCase()}
-            </text>
+            </span>
 
-            {/* Accent line */}
-            <line x1="92" y1="62" x2="250" y2="62" stroke="#FF9933" />
-        </svg>
+            <div className="h-0.5 w-full bg-[#FF9933] mt-1" />
+        </div>
     )
 }
 
