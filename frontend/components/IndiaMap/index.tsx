@@ -30,7 +30,8 @@ type Props = {
 export default function IndiaMap({ SetIsMapLoading, SetShowIndiaMap, ShowIndiaMap, selectedStates, onStateClick }: Props) {
     const { language } = useContext(LanguageContext);
     const { startdate, endDate } = useContext(Currentdate);
-
+    const geoReadyRef = useRef(false);
+    const countsReadyRef = useRef(false);
     const mapRef = useRef<HTMLDivElement>(null);
     const mapInstanceRef = useRef<any>(null);
     const geojsonLayerRef = useRef<any>(null);
@@ -75,8 +76,14 @@ export default function IndiaMap({ SetIsMapLoading, SetShowIndiaMap, ShowIndiaMa
             const marker = L.marker(center, { icon: makeStateLabel(displayName, count), interactive: false, zIndexOffset: 500 });
             labelLayerRef.current?.addLayer(marker);
         });
-        SetIsMapLoading(false);
     }, [language]);
+
+    const tryFinalize = useCallback(() => {
+        if (geoReadyRef.current && countsReadyRef.current) {
+            updateLayerStylesRef.current();
+            SetIsMapLoading(false);
+        }
+    }, []);
 
     const updateLayerStyles = useCallback(() => {
         if (!geojsonLayerRef.current) return;
@@ -142,7 +149,8 @@ export default function IndiaMap({ SetIsMapLoading, SetShowIndiaMap, ShowIndiaMa
                 }).addTo(map);
 
                 geojsonLayerRef.current = geojsonLayer;
-                redrawLabels();
+                geoReadyRef.current = true;
+                tryFinalize();
 
                 const selLayers: any[] = [];
                 geojsonLayer.eachLayer((layer: any) => {
@@ -181,7 +189,8 @@ export default function IndiaMap({ SetIsMapLoading, SetShowIndiaMap, ShowIndiaMa
                 await GetAllCountAnnouncements(lan, start, end) as ResponseCountAnnouncementTypes
             ));
             countAnnouncementsRef.current = res.data;
-            updateLayerStylesRef.current();
+            countsReadyRef.current = true;
+            tryFinalize();
         } catch (error) {
             SetIsMapLoading(false);
             console.error("Error initializing map:", error);
@@ -189,6 +198,8 @@ export default function IndiaMap({ SetIsMapLoading, SetShowIndiaMap, ShowIndiaMa
     }
 
     useEffect(() => {
+        geoReadyRef.current = false;
+        countsReadyRef.current = false;
         initGetAllCountAnnouncements(language, startdate, endDate);
     }, [language, startdate, endDate]);
 

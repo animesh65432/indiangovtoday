@@ -29,6 +29,7 @@ const Main: React.FC = () => {
     const [IsLoading, SetIsLoading] = useState<boolean>(false)
     const [IsLoadingMore, SetIsLoadingMore] = useState<boolean>(false)
     const firstLoad = useRef(true);
+    const [DefaultsReady, SetDefaultsReady] = useState(false);
     const [IsMapLoading, SetIsMapLoading] = useState(true);
     const [IsAnnouncementsLoading, SetIsAnnouncementsLoading] = useState(true);
     const [Announcements, SetAnnouncements] = useState<AnnouncementTypes[]>([])
@@ -126,6 +127,7 @@ const Main: React.FC = () => {
             SetStatesSelected([INDIA_GOVT_CODE]);
             SetDefaultsStatesApplied([INDIA_GOVT_CODE]);
         }
+        SetDefaultsReady(true);
     }, [state_ut, language]);
 
     useEffect(() => {
@@ -213,7 +215,7 @@ const Main: React.FC = () => {
         setSheetOpen(false)
     }
 
-    const isGlobalLoading = IsAnnouncementsLoading && IsMapLoading && StatesSelected.length > 0;
+    const isGlobalLoading = !DefaultsReady || (IsAnnouncementsLoading && IsMapLoading);
 
     if (isGlobalLoading) {
         return <Loading />
