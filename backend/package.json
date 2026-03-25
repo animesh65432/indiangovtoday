@@ -22,7 +22,8 @@
     "jsonwebtoken": "^9.0.3",
     "mongodb": "^6.20.0",
     "nodemailer": "^7.0.9",
-    "sarvamai": "^0.1.9"
+    "sarvamai": "^0.1.9",
+    "swiper": "^12.1.2"
   },
   "devDependencies": {
     "@types/cors": "^2.8.19",

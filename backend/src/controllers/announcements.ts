@@ -442,9 +442,7 @@ export const GetallAnnoucementsDepartments = asyncErrorHandler(async (req: Reque
 
 
 export const GetAllTrendingTitles = asyncErrorHandler(async (req: Request, res: Response) => {
-    const { target_lan, states } = req.query;
-
-    console.log("Received request for trending announcements with target_lan:", target_lan, "and states:", states);
+    const { target_lan } = req.query;
 
     if (!target_lan || typeof target_lan !== "string") {
         res.status(400).json({ message: "Missing or invalid target_lan" });
@@ -453,11 +451,8 @@ export const GetAllTrendingTitles = asyncErrorHandler(async (req: Request, res: 
 
     const targetLanguage = LANGUAGE_CODES[target_lan as string] || "en";
 
-    const selectedStates = PrasePayloadArray(states as string);
 
-    const StateCachePart = selectedStates.sort().join(",");
-
-    const redis_key = `Trending_Announcements_${targetLanguage}-${StateCachePart}`;
+    const redis_key = `Trending_Announcements_${targetLanguage}`;
 
     const cached_data = await redis.get(redis_key);
 
@@ -478,7 +473,6 @@ export const GetAllTrendingTitles = asyncErrorHandler(async (req: Request, res: 
                 $match: {
                     date: { $gte: fifteenDaysAgo },
                     language: targetLanguage,
-                    ...(selectedStates.length > 0 && { state: { $in: selectedStates } })
                 },
             },
             {

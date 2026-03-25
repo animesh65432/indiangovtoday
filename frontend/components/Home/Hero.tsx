@@ -1,31 +1,28 @@
-import React, { useContext } from "react";
-import { motion } from "framer-motion";
-import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
-import { LanguageContext } from "@/context/Lan";
-import { TranslateText } from "@/lib/translatetext";
+import React from 'react'
+import AnnoucementsHeader from '../AnnoucementsHeader'
+import CategoryOptions from './CategoryOptions'
+import Herotitle from './Herotitle'
+import InputBox from './InputBox'
+import HeroAnnoucments from './HeroAnnoucments'
 
-const Hero: React.FC = () => {
-    const { language } = useContext(LanguageContext)
+type Props = {
+    categoryOptions: string[]
+    setCategoryOptions: React.Dispatch<React.SetStateAction<string[]>>
+}
+
+const Hero: React.FC<Props> = ({ categoryOptions, setCategoryOptions }) => {
     return (
-        <div className="ml-4">
-            <div className="space-y-1 flex flex-col">
-                <TextGenerateEffect
-                    words={TranslateText[language].ALL_GOVERNMENT_ANNOUNCEMENTS_IN_ONE_PLACE}
-                    className="text-2xl md:text-3xl font-satoshi font-semibold text-[#FF9933]"
-                    duration={0.6}
-                />
-
-                <motion.span
-                    initial={{ opacity: 0, y: 16 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: 0.15, ease: "easeOut" }}
-                    className="text-sm md:text-base text-[#EAEAEA] font-satoshi"
-                >
-                    {TranslateText[language].EVERY_MINISTRY_EVERY_STATE_PLAIN_LANGUAGE}
-                </motion.span>
-            </div>
+        <div className='h-dvh flex flex-col gap-3 md:gap-6  w-full bg-[url(/bg.png)] bg-cover bg-center'>
+            <AnnoucementsHeader />
+            <CategoryOptions
+                categoryOptions={categoryOptions}
+                setCategoryOptions={setCategoryOptions}
+            />
+            <Herotitle />
+            <InputBox />
+            <HeroAnnoucments />
         </div>
-    );
-};
+    )
+}
 
-export default Hero;
+export default Hero

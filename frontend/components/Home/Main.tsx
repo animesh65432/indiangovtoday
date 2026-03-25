@@ -7,12 +7,13 @@ import AnnoucementsHeader from '@/components/AnnoucementsHeader';
 import { GetStateCode } from "@/lib/GetStateCode"
 import { LocationContext } from "@/context/LocationProvider"
 import { TranslateText } from "@/lib/translatetext"
-import SearchInputBox from './SearchInputbox';
-import Hero from './Hero';
 import { buildCacheKey, withCache } from "@/lib/lsCache";
 import ShowAnnouncements from './ShowAnnouncements';
 import dynamic from "next/dynamic";
 import Loading from "./Loading"
+import TrendingTitle from './TrendingTitle';
+import Hero from './Hero';
+import Herotitle from './Herotitle';
 
 const IndiaMap = dynamic(() => import("@/components/IndiaMap"), {
     ssr: false,
@@ -221,83 +222,14 @@ const Main: React.FC = () => {
         return <Loading />
     }
 
+    console.log(Announcements, "Announcements in Main")
+
     return (
-        <section className="flex flex-col gap-0 h-screen w-screen overflow-hidden">
-            <AnnoucementsHeader />
-            <div className='md:hidden block'>
-                <Hero />
-            </div>
-            <div className='md:hidden block mt-2 md:mt-0'>
-                <SearchInputBox
-                    StatesSelected={StatesSelected}
-                    SetStatesSelected={SetStatesSelected}
-                    SearchInput={SearchInput}
-                    SetSearchInput={SetSearchInput}
-                    onSearch={handleSearch}
-                    categoryOptions={categoryOptions}
-                    setCategoryOptions={setCategoryOptions}
-                    CategorySelected={CategorySelected}
-                    SetCategorySelected={SetCategorySelected}
-                    handleMobileApply={handleMobileApply}
-                    handleMobileReset={handleMobileReset}
-                    sheetOpen={sheetOpen}
-                    setSheetOpen={setSheetOpen}
-                />
-            </div>
-
-
-            <div className="flex flex-col md:flex-row flex-1 min-h-0 overflow-hidden mt-2 md:mt-0">
-
-                <div className={`flex-shrink-0 w-[98%] mx-auto md:0 md:w-[380px] ${ShowIndiaMap ? "h-[35vh] md:h-full" : "h-auto"}  overflow-hidden`}>
-                    <IndiaMap
-                        ShowIndiaMap={ShowIndiaMap}
-                        SetShowIndiaMap={SetShowIndiaMap}
-                        announcements={Announcements}
-                        selectedStates={StatesSelected}
-                        onStateClick={handleStateClick}
-                        IsMapLoading={IsMapLoading}
-                        SetIsMapLoading={SetIsMapLoading}
-                    />
-                </div>
-
-
-                <div className="flex-1 flex flex-col gap-4 min-h-0 overflow-hidden">
-                    <div className='md:block hidden'>
-                        <Hero />
-                    </div>
-                    <div className='md:block hidden'>
-                        <SearchInputBox
-                            StatesSelected={StatesSelected}
-                            SetStatesSelected={SetStatesSelected}
-                            SearchInput={SearchInput}
-                            SetSearchInput={SetSearchInput}
-                            onSearch={handleSearch}
-                            categoryOptions={categoryOptions}
-                            setCategoryOptions={setCategoryOptions}
-                            CategorySelected={CategorySelected}
-                            SetCategorySelected={SetCategorySelected}
-                            handleMobileApply={handleMobileApply}
-                            handleMobileReset={handleMobileReset}
-                            sheetOpen={sheetOpen}
-                            setSheetOpen={setSheetOpen}
-                        />
-                    </div>
-
-                    {/* ── Only this div scrolls ── */}
-                    <div className="flex-1 min-h-0 overflow-y-auto">
-                        <ShowAnnouncements
-                            Announcements={Announcements}
-                            LoadMoreData={OnLoadMoredata}
-                            page={page}
-                            totalpage={totalPages}
-                            IsLoading={IsLoading}
-                            IsLoadingMore={IsLoadingMore}
-                            handleMobileReset={handleMobileReset}
-                        />
-                    </div>
-
-                </div>
-            </div>
+        <section className="flex flex-col gap-3 min-h-screen overflow-y-hidden">
+            <Hero
+                categoryOptions={categoryOptions}
+                setCategoryOptions={setCategoryOptions}
+            />
         </section>
 
     );

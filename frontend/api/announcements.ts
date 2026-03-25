@@ -56,17 +56,16 @@ export const GetallAnnoucementsDepartments = (target_lan: string, startdate: Dat
     });
 }
 
-export const GetTrendingIndiaAnnnouncements = (target_lan: string, states: string[], signal?: AbortSignal) => {
+export const GetTrendingIndiaAnnnouncements = (target_lan: string, signal?: AbortSignal) => {
 
     const params = new URLSearchParams({
         target_lan,
     });
 
-    states.forEach(state => params.append('states', state));
-
     return Call({
         method: "GET",
         path: `/GetTrendingIndiaAnnnouncements?${params.toString()}`,
+        signal
     });
 }
 
