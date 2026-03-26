@@ -1,26 +1,21 @@
 import React from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import AnnoucementsHeader from '../AnnoucementsHeader'
-import CategoryOptions from './CategoryOptions'
-import InputBox from './InputBox'
+import InputBox from '../Home/InputBox'
 
 
 type Props = {
     scrolled: boolean
-    categoryOptions: string[]
-    setCategoryOptions: React.Dispatch<React.SetStateAction<string[]>>
     StatesSelected: string[]
     onApply: () => void
     onReset: () => void
     setSheetOpen: React.Dispatch<React.SetStateAction<boolean>>
     SetStatesSelected: React.Dispatch<React.SetStateAction<string[]>>
     sheetOpen: boolean
-    CategorySelected: string
-    SetCategorySelected: React.Dispatch<React.SetStateAction<string>>
 
 }
 
-const StickyNav: React.FC<Props> = ({ CategorySelected, SetCategorySelected, scrolled, StatesSelected, onApply, onReset, setSheetOpen, SetStatesSelected, sheetOpen, categoryOptions, setCategoryOptions }) => {
+const StickyNav: React.FC<Props> = ({ scrolled, StatesSelected, onApply, onReset, setSheetOpen, SetStatesSelected, sheetOpen }) => {
     return (
         <motion.div
             className="fixed top-0 left-0 right-0 z-50 flex flex-col border-b transition-colors duration-300"
@@ -33,12 +28,6 @@ const StickyNav: React.FC<Props> = ({ CategorySelected, SetCategorySelected, scr
             transition={{ duration: 0.3, ease: 'easeInOut' }}
         >
             <AnnoucementsHeader scrolled={scrolled} />
-            <CategoryOptions
-                categoryOptions={categoryOptions}
-                setCategoryOptions={setCategoryOptions}
-                CategorySelected={CategorySelected}
-                SetCategorySelected={SetCategorySelected}
-            />
 
             <AnimatePresence>
                 {scrolled && (

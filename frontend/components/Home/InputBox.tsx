@@ -21,9 +21,7 @@ type Props = {
     onReset: () => void
     setSheetOpen: React.Dispatch<React.SetStateAction<boolean>>
     SetStatesSelected: React.Dispatch<React.SetStateAction<string[]>>
-    sheetOpen: boolean,
-    categoryOptions: string[]
-    setCategoryOptions: React.Dispatch<React.SetStateAction<string[]>>
+    sheetOpen: boolean
 }
 
 const InputBox: React.FC<Props> = ({
@@ -33,8 +31,6 @@ const InputBox: React.FC<Props> = ({
     setSheetOpen,
     SetStatesSelected,
     sheetOpen,
-    categoryOptions,
-    setCategoryOptions
 }) => {
     const [searchQuery, setSearchQuery] = React.useState<string>("")
     const { language } = React.useContext(LanguageContext)
@@ -44,7 +40,7 @@ const InputBox: React.FC<Props> = ({
 
     const handleSearch = () => {
         if (pathname === "/") {
-            router.push(`/search?query${startdate ? `&startDate=${startdate.toISOString().split('T')[0]}` : ""}${endDate ? `&endDate=${endDate.toISOString().split('T')[0]}` : ""}${StatesSelected.length ? StatesSelected.map(state => `&states=${state}`).join("") : ""}&query=${encodeURIComponent(searchQuery)}`)
+            router.push(`/search?query=${searchQuery}${startdate ? `&startDate=${startdate.toISOString().split('T')[0]}` : ""}${endDate ? `&endDate=${endDate.toISOString().split('T')[0]}` : ""}${StatesSelected.length ? StatesSelected.map(state => `&states=${state}`).join("") : ""}`)
         }
     }
 
@@ -68,8 +64,6 @@ const InputBox: React.FC<Props> = ({
                             onApply={onApply}
                             onReset={onReset}
                             setSheetOpen={setSheetOpen}
-                            categoryOptions={categoryOptions}
-                            setCategoryOptions={setCategoryOptions}
                             searchQuery={searchQuery}
                             setSearchQuery={setSearchQuery}
                         />

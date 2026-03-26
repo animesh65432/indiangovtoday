@@ -13,8 +13,6 @@ type Props = {
     setSheetOpen: React.Dispatch<React.SetStateAction<boolean>>
     SetStatesSelected: React.Dispatch<React.SetStateAction<string[]>>
     sheetOpen: boolean
-    categoryOptions: string[]
-    setCategoryOptions: React.Dispatch<React.SetStateAction<string[]>>
     Announcements: Announcement[],
     IsLoading: boolean
 }
@@ -26,8 +24,6 @@ const Hero: React.FC<Props> = ({
     setSheetOpen,
     SetStatesSelected,
     sheetOpen,
-    categoryOptions,
-    setCategoryOptions,
     Announcements,
     IsLoading
 }) => {
@@ -53,8 +49,6 @@ const Hero: React.FC<Props> = ({
                     setSheetOpen={setSheetOpen}
                     SetStatesSelected={SetStatesSelected}
                     sheetOpen={sheetOpen}
-                    categoryOptions={categoryOptions}
-                    setCategoryOptions={setCategoryOptions}
                 />
             </motion.div>
 

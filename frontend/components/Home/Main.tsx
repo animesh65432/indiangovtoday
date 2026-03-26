@@ -23,7 +23,6 @@ const Main: React.FC = () => {
     const [IsLoading, SetIsLoading] = useState<boolean>(false)
     const [IsLoadingMore, SetIsLoadingMore] = useState<boolean>(false)
     const firstLoad = useRef(true);
-    const [DefaultsReady, SetDefaultsReady] = useState(false);
     const [Announcements, SetAnnouncements] = useState<AnnouncementTypes[]>([])
     const [page, Setpage] = useState<number>(1)
     const [limit] = useState<number>(10)
@@ -105,7 +104,6 @@ const Main: React.FC = () => {
             SetStatesSelected([INDIA_GOVT_CODE]);
             SetDefaultsStatesApplied([INDIA_GOVT_CODE]);
         }
-        SetDefaultsReady(true);
     }, [state_ut, language]);
 
     useEffect(() => {
@@ -193,8 +191,6 @@ const Main: React.FC = () => {
                 setSheetOpen={setSheetOpen}
                 SetStatesSelected={SetStatesSelected}
                 sheetOpen={sheetOpen}
-                categoryOptions={categoryOptions}
-                setCategoryOptions={setCategoryOptions}
                 Announcements={Announcements}
                 IsLoading={IsLoading}
             />

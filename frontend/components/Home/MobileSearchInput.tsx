@@ -10,8 +10,6 @@ import { Input } from '../ui/input'
 import { Search } from "lucide-react"
 
 type Props = {
-    categoryOptions: string[]
-    setCategoryOptions: React.Dispatch<React.SetStateAction<string[]>>
     StatesSelected: string[]
     onApply: (
         dept: string,
@@ -27,7 +25,6 @@ type Props = {
 }
 
 const MobileSearchInput: React.FC<Props> = ({
-    categoryOptions,
     StatesSelected,
     onApply,
     onReset,
