@@ -7,7 +7,27 @@ import InputBox from './InputBox'
 import HeroAnnoucments from './HeroAnnoucments'
 import { useHeroScroll } from '@/hooks/useHeroScroll'
 
-const Hero: React.FC = () => {
+type Props = {
+    StatesSelected: string[]
+    onApply: () => void
+    onReset: () => void
+    setSheetOpen: React.Dispatch<React.SetStateAction<boolean>>
+    SetStatesSelected: React.Dispatch<React.SetStateAction<string[]>>
+    sheetOpen: boolean
+    categoryOptions: string[]
+    setCategoryOptions: React.Dispatch<React.SetStateAction<string[]>>
+}
+
+const Hero: React.FC<Props> = ({
+    StatesSelected,
+    onApply,
+    onReset,
+    setSheetOpen,
+    SetStatesSelected,
+    sheetOpen,
+    categoryOptions,
+    setCategoryOptions
+}) => {
     const { titleOpacity, titleBlur, titleY, inputOpacity, inputY } = useHeroScroll()
 
     return (
@@ -23,7 +43,16 @@ const Hero: React.FC = () => {
                 style={{ opacity: inputOpacity, y: inputY }}
                 className="will-change-transform px-6"
             >
-                <InputBox />
+                <InputBox
+                    StatesSelected={StatesSelected}
+                    onApply={onApply}
+                    onReset={onReset}
+                    setSheetOpen={setSheetOpen}
+                    SetStatesSelected={SetStatesSelected}
+                    sheetOpen={sheetOpen}
+                    categoryOptions={categoryOptions}
+                    setCategoryOptions={setCategoryOptions}
+                />
             </motion.div>
 
             <HeroAnnoucments />

@@ -6,22 +6,61 @@ import { LanguageContext } from '@/context/Lan'
 import { DateRangePicker } from '../ui/DateRangePicker'
 import { Currentdate } from "@/context/Currentdate"
 import { MultiSelect } from '../ui/multi-select'
+import {
+    Sheet,
+    SheetContent,
+    SheetTrigger,
+} from "@/components/ui/sheet"
+import MobileSearchInput from './MobileSearchInput'
 
-const InputBox = () => {
-    const [StatesSelected, SetStatesSelected] = React.useState<string[]>([])
+type Props = {
+    StatesSelected: string[]
+    onApply: () => void
+    onReset: () => void
+    setSheetOpen: React.Dispatch<React.SetStateAction<boolean>>
+    SetStatesSelected: React.Dispatch<React.SetStateAction<string[]>>
+    sheetOpen: boolean,
+    categoryOptions: string[]
+    setCategoryOptions: React.Dispatch<React.SetStateAction<string[]>>
+}
+
+const InputBox: React.FC<Props> = ({
+    StatesSelected,
+    onApply,
+    onReset,
+    setSheetOpen,
+    SetStatesSelected,
+    sheetOpen,
+    categoryOptions,
+    setCategoryOptions
+}) => {
     const { language } = React.useContext(LanguageContext)
     const { startdate, endDate, onChangeStartDate, onChangeEndDate } = React.useContext(Currentdate)
     return (
         <div className="w-full px-4 sm:px-6 md:px-0 mt-3">
-            <div className='flex'>
-                <div className="relative w-full max-w-xl md:max-w-2xl mx-auto block lg:hidden">
-                    <Search className="absolute text-[#ff3333] z-10 left-3 sm:left-4 top-1/2 -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5" />
-                    <Input
-                        type="text"
-                        placeholder={TranslateText[language].SEARCH_ANNOUNCEMENTS}
-                        className="w-full text-[1rem] hover:shadow-md  text-[#321F1F] placeholder:text-[#321F1F]  placeholder:font-satoshi placeholder:font-semibold pl-10 sm:pl-12 pr-4 py-5 sm:py-6  bg-white/90 border border-gray-200 rounded-xl sm:rounded-2xl shadow-md  font-satoshi"
-                    />
-                </div>
+            <div className='flex '>
+                <Sheet open={sheetOpen} onOpenChange={(open) => setSheetOpen(open)}>
+                    <SheetTrigger className="w-full block lg:hidden">
+                        <div className="relative w-full max-w-xl md:max-w-2xl mx-auto block lg:hidden">
+                            <Search className="absolute text-[#ff3333] z-10 left-3 sm:left-4 top-1/2 -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5" />
+                            <Input
+                                type="text"
+                                placeholder={TranslateText[language].SEARCH_ANNOUNCEMENTS}
+                                className="w-full text-[1rem] hover:shadow-md  text-[#321F1F] placeholder:text-[#321F1F]  placeholder:font-satoshi placeholder:font-semibold pl-10 sm:pl-12 pr-4 py-5 sm:py-6  bg-white/90 border border-gray-200 rounded-xl sm:rounded-2xl shadow-md  font-satoshi"
+                            />
+                        </div>
+                    </SheetTrigger>
+                    <SheetContent side='bottom' className='h-dvh'>
+                        <MobileSearchInput
+                            StatesSelected={StatesSelected}
+                            onApply={onApply}
+                            onReset={onReset}
+                            setSheetOpen={setSheetOpen}
+                            categoryOptions={categoryOptions}
+                            setCategoryOptions={setCategoryOptions}
+                        />
+                    </SheetContent>
+                </Sheet>
 
                 <div className="w-fit hover:shadow-md px-5 py-1.5 border border-[#e5dfdf] rounded-xl bg-white   mx-auto hidden lg:flex items-center">
                     <Input

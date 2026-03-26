@@ -7,6 +7,7 @@ import { GetStateCode } from "@/lib/GetStateCode"
 import { LocationContext } from "@/context/LocationProvider"
 import { TranslateText } from "@/lib/translatetext"
 import { buildCacheKey, withCache } from "@/lib/lsCache";
+import MobileSearchInput from './MobileSearchInput';
 import ShowAnnouncements from './ShowAnnouncements';
 import Loading from "./Loading"
 import Hero from './Hero';
@@ -205,11 +206,25 @@ const Main: React.FC = () => {
         <section className="flex flex-col min-h-screen">
             <StickyNav
                 scrolled={scrolled}
+                StatesSelected={StatesSelected}
+                onApply={handleSearch}
+                onReset={handleMobileReset}
+                setSheetOpen={setSheetOpen}
+                SetStatesSelected={SetStatesSelected}
+                sheetOpen={sheetOpen}
                 categoryOptions={categoryOptions}
                 setCategoryOptions={setCategoryOptions}
             />
-            <Hero />
-
+            <Hero
+                StatesSelected={StatesSelected}
+                onApply={handleSearch}
+                onReset={handleMobileReset}
+                setSheetOpen={setSheetOpen}
+                SetStatesSelected={SetStatesSelected}
+                sheetOpen={sheetOpen}
+                categoryOptions={categoryOptions}
+                setCategoryOptions={setCategoryOptions}
+            />
             <ShowAnnouncements
                 Announcements={Announcements}
                 IsLoading={IsLoading}
