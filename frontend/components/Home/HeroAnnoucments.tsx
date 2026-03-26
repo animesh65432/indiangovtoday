@@ -43,21 +43,21 @@ const announcements = [
 const HeroAnnoucments: React.FC = () => {
     const { language } = useContext(LanguageContext)
     return (
-        <div className='w-[95%] md:w-[80%] mx-auto grid  grid-cols-7 mt-7 gap-10'>
-            <article className='col-span-7 xl:col-span-5 flex  justify-between'>
+        <div className='w-[95%] md:w-[80%] mx-auto hidden md:grid  grid-cols-7 mt-7 gap-10'>
+            <article className='col-span-7 hover:cursor-pointer xl:col-span-5 flex  gap-2'>
                 <main className='flex-1 flex flex-col gap-2 text-wrap'>
                     <span className='font-literata uppercase red-color'>
                         {announcements[0].category}
                     </span>
 
-                    <span className='font-literata xl:line-clamp-4 leading-relaxed text-[1.1rem] lg:text-xl text-color'>
+                    <span className='font-literata font-semibold line-clamp-4 leading-relaxed text-[1.1rem] lg:text-xl text-color'>
                         {announcements[0].title}
                     </span>
 
                     <div className='flex gap-3 items-start'>
 
                         <div className='flex flex-col gap-2 flex-1'>
-                            <span className='leading-relaxed xl:line-clamp-4 font-satoshi text-color'>
+                            <span className='leading-relaxed line-clamp-4 font-satoshi text-color'>
                                 {announcements[0].description}
                             </span>
 
@@ -88,7 +88,7 @@ const HeroAnnoucments: React.FC = () => {
             </article>
             <div className='col-span-2  hidden xl:flex flex-col gap-5'>
                 {announcements.slice(1).map((announcement) =>
-                    <article key={announcement.announcementId} className='flex gap-2'>
+                    <article key={announcement.announcementId} className='flex gap-2 hover:cursor-pointer'>
                         <header className='relative w-24 h-24'>
                             <Image
                                 src={announcement.image}

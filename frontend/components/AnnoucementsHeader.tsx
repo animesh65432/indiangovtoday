@@ -11,7 +11,11 @@ import { optionsforLanguages } from "@/lib/lan"
 import Logo from './ui/Logo';
 import { TranslateText } from '@/lib/translatetext';
 
-const AnnoucementsHeader: React.FC = () => {
+type Props = {
+    scrolled: boolean,
+}
+
+const AnnoucementsHeader: React.FC<Props> = ({ scrolled }) => {
     const { language, onSelectLanguage } = useContext(LanguageContext)
 
     return (

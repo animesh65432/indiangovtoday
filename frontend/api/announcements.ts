@@ -1,18 +1,13 @@
 import { Call } from "@/service/call"
 
-export const getAllAnnouncements = (target_lan: string, startdate: Date, endDate: Date, page: number, limit: number, states: string[], category: string, SearchInput: string, signal?: AbortSignal) => {
+export const getAllAnnouncements = (target_lan: string, startdate: Date, endDate: Date, page: number, limit: number, signal?: AbortSignal) => {
     const params = new URLSearchParams({
         target_lan,
         startDate: startdate.toISOString().split('T')[0],
         endDate: endDate.toISOString().split('T')[0],
         page: page.toString(),
         limit: limit.toString(),
-        SearchInput: SearchInput.toString(),
-        category: category.toString(),
     });
-
-    states.forEach(state => params.append('states', state));
-
 
     return Call({
         method: "GET",

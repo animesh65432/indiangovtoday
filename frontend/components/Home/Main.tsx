@@ -3,25 +3,18 @@ import { getAllAnnouncements } from "@/api/announcements";
 import { Announcement as AnnouncementTypes, AnnouncementsResponse } from "@/types";
 import { LanguageContext } from '@/context/Lan';
 import { Currentdate } from "@/context/Currentdate";
-import AnnoucementsHeader from '@/components/AnnoucementsHeader';
 import { GetStateCode } from "@/lib/GetStateCode"
 import { LocationContext } from "@/context/LocationProvider"
 import { TranslateText } from "@/lib/translatetext"
 import { buildCacheKey, withCache } from "@/lib/lsCache";
 import ShowAnnouncements from './ShowAnnouncements';
-import dynamic from "next/dynamic";
 import Loading from "./Loading"
-import TrendingTitle from './TrendingTitle';
 import Hero from './Hero';
-import Herotitle from './Herotitle';
-
-const IndiaMap = dynamic(() => import("@/components/IndiaMap"), {
-    ssr: false,
-});
+import StickyNav from './StickyNav';
+import { useHeroScroll } from '@/hooks/useHeroScroll';
 
 const Main: React.FC = () => {
     const { language } = useContext(LanguageContext);
-    const [SearchInput, SetSearchInput] = useState<string>("")
     const [StatesSelected, SetStatesSelected] = useState<string[]>([]);
     const [sheetOpen, setSheetOpen] = useState(false)
     const [CategorySelected, SetCategorySelected] = useState<string>(`${TranslateText[language].ALL_DEPARMENTS}`);
@@ -36,6 +29,7 @@ const Main: React.FC = () => {
     const [Announcements, SetAnnouncements] = useState<AnnouncementTypes[]>([])
     const [page, Setpage] = useState<number>(1)
     const [limit] = useState<number>(10)
+    const { scrolled } = useHeroScroll();
 
     const { startdate, endDate, onChangeEndDate, onChangeStartDate } = useContext(Currentdate)
     const { state_ut } = useContext(LocationContext)
@@ -64,17 +58,11 @@ const Main: React.FC = () => {
 
         try {
 
-            const key = buildCacheKey("announcements", { language, startdate, endDate, page, states: StatesSelected, search: SearchInput, category: CategorySelected });
-
-            const SelectedCategory = CategorySelected === TranslateText[language].ALL_DEPARMENTS ? "" : CategorySelected;
-
-            console.log(SelectedCategory, "SelectedCategory", TranslateText[language].ALL_DEPARMENTS)
-
+            const key = buildCacheKey("announcements", { language, startdate, endDate, page, limit });
 
             const response = await withCache(key, "announcements", async () => (
                 await getAllAnnouncements(
-                    language, startdate, endDate, pageNumber, limit,
-                    StatesSelected, SelectedCategory, SearchInput, signal
+                    language, startdate, endDate, pageNumber, limit, signal
                 ) as AnnouncementsResponse
             ));
 
@@ -114,7 +102,6 @@ const Main: React.FC = () => {
         trigger,
         startdate,
         endDate,
-        StatesSelected
     ]);
 
     useEffect(() => {
@@ -175,12 +162,6 @@ const Main: React.FC = () => {
         SetCategorySelected(TranslateText[language].ALL_DEPARMENTS);
     }, [language]);
 
-    useEffect(() => {
-        if (firstLoad.current) return;
-        const timer = setTimeout(() => handleSearch(), 500);
-        return () => clearTimeout(timer);
-    }, [SearchInput]);
-
     const handleMobileApply = (
         dept: string,
         category: string,
@@ -196,7 +177,6 @@ const Main: React.FC = () => {
     }
 
     const handleMobileReset = () => {
-        SetSearchInput("")
         SetCategorySelected("")
         const today = new Date();
         const ThirteenDaysAgo = new Date();
@@ -221,18 +201,26 @@ const Main: React.FC = () => {
     if (isGlobalLoading) {
         return <Loading />
     }
-
-    console.log(Announcements, "Announcements in Main")
-
     return (
-        <section className="flex flex-col gap-3 min-h-screen overflow-y-hidden">
-            <Hero
+        <section className="flex flex-col min-h-screen">
+            <StickyNav
+                scrolled={scrolled}
                 categoryOptions={categoryOptions}
                 setCategoryOptions={setCategoryOptions}
             />
-        </section>
+            <Hero />
 
-    );
+            <ShowAnnouncements
+                Announcements={Announcements}
+                IsLoading={IsLoading}
+                IsLoadingMore={IsLoadingMore}
+                LoadMoreData={OnLoadMoredata}
+                page={page}
+                totalpage={totalPages}
+                handleMobileReset={handleMobileReset}
+            />
+        </section>
+    )
 };
 
 export default Main;

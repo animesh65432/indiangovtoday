@@ -499,6 +499,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   background-size: cover;
   background-position: center;
+  background-color: #f7f2f2;
 }
 
 h1 {
@@ -691,14 +692,6 @@ input {
 }
 
 
-/* ─── MultiSelect popover text color ─── */
-.multiselect-popover [cmdk-item],
-.multiselect-popover [cmdk-input],
-.multiselect-popover [cmdk-group-heading],
-.multiselect-popover [cmdk-empty] {
-  color: white !important;
-}
-
 .multiselect-popover [cmdk-input]::placeholder {
   color: #FF9933 !important;
   opacity: 0.5;
@@ -713,5 +706,9 @@ input {
 }
 
 .text-color {
+  color: #321F1F;
+}
+
+.CommandItem {
   color: #321F1F;
 }
