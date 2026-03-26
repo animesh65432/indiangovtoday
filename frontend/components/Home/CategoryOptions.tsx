@@ -11,11 +11,15 @@ import "swiper/css";
 type Props = {
     categoryOptions: string[]
     setCategoryOptions: React.Dispatch<React.SetStateAction<string[]>>
+    CategorySelected: string
+    SetCategorySelected: React.Dispatch<React.SetStateAction<string>>
 }
 
 const CategoryOptions: React.FC<Props> = ({
     categoryOptions,
-    setCategoryOptions
+    setCategoryOptions,
+    CategorySelected,
+    SetCategorySelected
 }) => {
     const { SetIsLoading } = useContext(IsLoadingContext)
     const { language } = useContext(LanguageContext)
@@ -71,6 +75,7 @@ const CategoryOptions: React.FC<Props> = ({
                     <SwiperSlide
                         key={category}
                         className="w-auto! flex items-center py-2"
+                        onClick={() => SetCategorySelected(category)}
                     >
                         <div
                             className={`
@@ -82,7 +87,7 @@ const CategoryOptions: React.FC<Props> = ({
           text-[0.75rem] md:text-[0.9rem]
           uppercase font-medium tracking-wide
 
-          ${index === 0
+          ${CategorySelected === category
                                     ? "bg-[#321F1F] text-white shadow-sm"
                                     : "text-[#321F1F] hover:bg-[#321F1F]/10"
                                 }

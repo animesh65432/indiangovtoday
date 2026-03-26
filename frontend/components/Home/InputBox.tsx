@@ -12,6 +12,8 @@ import {
     SheetTrigger,
 } from "@/components/ui/sheet"
 import MobileSearchInput from './MobileSearchInput'
+import { useRouter, usePathname } from 'next/navigation'
+import { Button } from '../ui/button'
 
 type Props = {
     StatesSelected: string[]
@@ -34,14 +36,24 @@ const InputBox: React.FC<Props> = ({
     categoryOptions,
     setCategoryOptions
 }) => {
+    const [searchQuery, setSearchQuery] = React.useState<string>("")
     const { language } = React.useContext(LanguageContext)
     const { startdate, endDate, onChangeStartDate, onChangeEndDate } = React.useContext(Currentdate)
+    const router = useRouter()
+    const pathname = usePathname()
+
+    const handleSearch = () => {
+        if (pathname === "/") {
+            router.push(`/search?query${startdate ? `&startDate=${startdate.toISOString().split('T')[0]}` : ""}${endDate ? `&endDate=${endDate.toISOString().split('T')[0]}` : ""}${StatesSelected.length ? StatesSelected.map(state => `&states=${state}`).join("") : ""}&query=${encodeURIComponent(searchQuery)}`)
+        }
+    }
+
     return (
         <div className="w-full px-4 sm:px-6 md:px-0 mt-3">
             <div className='flex '>
                 <Sheet open={sheetOpen} onOpenChange={(open) => setSheetOpen(open)}>
                     <SheetTrigger className="w-full block lg:hidden">
-                        <div className="relative w-full max-w-xl md:max-w-2xl mx-auto block lg:hidden">
+                        <div onClick={() => setSheetOpen(true)} className="relative w-full max-w-xl md:max-w-2xl mx-auto block lg:hidden">
                             <Search className="absolute text-[#ff3333] z-10 left-3 sm:left-4 top-1/2 -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5" />
                             <Input
                                 type="text"
@@ -58,6 +70,8 @@ const InputBox: React.FC<Props> = ({
                             setSheetOpen={setSheetOpen}
                             categoryOptions={categoryOptions}
                             setCategoryOptions={setCategoryOptions}
+                            searchQuery={searchQuery}
+                            setSearchQuery={setSearchQuery}
                         />
                     </SheetContent>
                 </Sheet>
@@ -65,6 +79,8 @@ const InputBox: React.FC<Props> = ({
                 <div className="w-fit hover:shadow-md px-5 py-1.5 border border-[#e5dfdf] rounded-xl bg-white   mx-auto hidden lg:flex items-center">
                     <Input
                         type="text"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
                         placeholder={TranslateText[language].SEARCH_ANNOUNCEMENTS}
                         className="border-0 border-none shadow-none outline-none ring-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-0 placeholder:text-nowrap text-[1rem] rounded-none text-[#321F1F] placeholder:text-[#321F1F] placeholder:font-satoshi placeholder:font-semibold pl-10 sm:pl-12 pr-4 py-5 sm:py-6 font-satoshi bg-transparent"
                     />
@@ -89,9 +105,12 @@ const InputBox: React.FC<Props> = ({
                         autoSize
                         resetOnDefaultValueChange={true}
                     />
-                    <div className='bg-[#ff3333] p-2 rounded-2xl hover:cursor-pointer'>
+                    <Button
+                        className='bg-[#ff3333] p-2 rounded-2xl hover:cursor-pointer'
+                        onClick={() => handleSearch()}
+                    >
                         <Search className="  text-white " />
-                    </div>
+                    </Button>
                 </div>
             </div>
         </div>

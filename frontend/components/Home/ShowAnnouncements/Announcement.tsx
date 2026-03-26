@@ -8,9 +8,10 @@ import Image from "next/image"
 
 type Props = {
     Announcement: Announcement,
+    className?: string
 }
 
-const AnnouncementCard: React.FC<Props> = ({ Announcement }) => {
+const AnnouncementCard: React.FC<Props> = ({ Announcement, className }) => {
     const { language } = React.useContext(LanguageContext)
     const router = useRouter()
     const { SEE_DETAILS } = TranslateText[language]
@@ -20,7 +21,7 @@ const AnnouncementCard: React.FC<Props> = ({ Announcement }) => {
     }
 
     return (
-        <div className="flex flex-col  gap-4 hover:cursor-pointer" onClick={handleClick}>
+        <div className={`flex flex-col  gap-4 hover:cursor-pointer ${className}`} onClick={handleClick}>
             <div className="flex gap-2 w-full lg:w-[80%]">
                 <div className="flex flex-col gap-2 ">
                     <span className="font-literata uppercase red-color ">{Announcement.category}</span>

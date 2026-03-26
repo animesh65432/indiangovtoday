@@ -1,11 +1,10 @@
-'use client'
-
 import React from 'react'
 import { motion } from 'framer-motion'
 import Herotitle from './Herotitle'
 import InputBox from './InputBox'
 import HeroAnnoucments from './HeroAnnoucments'
 import { useHeroScroll } from '@/hooks/useHeroScroll'
+import { Announcement } from "@/types"
 
 type Props = {
     StatesSelected: string[]
@@ -16,6 +15,8 @@ type Props = {
     sheetOpen: boolean
     categoryOptions: string[]
     setCategoryOptions: React.Dispatch<React.SetStateAction<string[]>>
+    Announcements: Announcement[],
+    IsLoading: boolean
 }
 
 const Hero: React.FC<Props> = ({
@@ -26,7 +27,9 @@ const Hero: React.FC<Props> = ({
     SetStatesSelected,
     sheetOpen,
     categoryOptions,
-    setCategoryOptions
+    setCategoryOptions,
+    Announcements,
+    IsLoading
 }) => {
     const { titleOpacity, titleBlur, titleY, inputOpacity, inputY } = useHeroScroll()
 
@@ -55,7 +58,10 @@ const Hero: React.FC<Props> = ({
                 />
             </motion.div>
 
-            <HeroAnnoucments />
+            <HeroAnnoucments
+                announcements={Announcements}
+                IsLoading={IsLoading}
+            />
         </div>
     )
 }

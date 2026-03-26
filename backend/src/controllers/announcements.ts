@@ -8,11 +8,14 @@ import { PrasePayloadArray } from "../utils/translatePayloadAnnoucements"
 
 export const GetIndiaAnnouncements = asyncErrorHandler(async (req: Request, res: Response) => {
 
-    const { category, target_lan, startDate, endDate, page, limit } = req.query;
+    const { category, target_lan, startDate, endDate, page, limit, states } = req.query;
 
     const pageNumber = parseInt(page as string) || 1;
     const pageSize = parseInt(limit as string) || 10;
     const skip = (pageNumber - 1) * pageSize;
+    const selectedStates = PrasePayloadArray(states as string);
+    const sortedStates = [...selectedStates].sort();
+    const stateCachePart = sortedStates.join(",");
 
     const Category = category ? category.toString().trim() : "";
 
@@ -24,7 +27,7 @@ export const GetIndiaAnnouncements = asyncErrorHandler(async (req: Request, res:
 
     const targetLanguage = LANGUAGE_CODES[target_lan as string] || "en";
 
-    const redis_key = `Announcements_${targetLanguage}_${announcementsStartDate.toISOString().split('T')[0]}_${announcementsEndDate.toISOString().split('T')[0]}_page${page}_limit${limit}_${Category}`;
+    const redis_key = `Announcements_${targetLanguage}_${announcementsStartDate.toISOString().split('T')[0]}_${announcementsEndDate.toISOString().split('T')[0]}_page${page}_limit${limit}_${Category}_${stateCachePart}`;
     const cached_data = await redis.get(redis_key);
 
     if (cached_data && typeof cached_data === "string") {
@@ -47,6 +50,7 @@ export const GetIndiaAnnouncements = asyncErrorHandler(async (req: Request, res:
     const filter: any = {
         date: { $gte: start, $lte: end },
         language: targetLanguage,
+        state: sortedStates.length ? { $in: sortedStates } : { $exists: true },
     };
 
     const collationOptions = { collation: { locale: 'simple', strength: 1 } };

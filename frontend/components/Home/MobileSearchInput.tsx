@@ -22,6 +22,8 @@ type Props = {
     ) => void
     onReset: () => void,
     setSheetOpen: React.Dispatch<React.SetStateAction<boolean>>
+    searchQuery: string,
+    setSearchQuery: React.Dispatch<React.SetStateAction<string>>
 }
 
 const MobileSearchInput: React.FC<Props> = ({

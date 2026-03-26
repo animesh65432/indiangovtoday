@@ -7,12 +7,11 @@ import { GetStateCode } from "@/lib/GetStateCode"
 import { LocationContext } from "@/context/LocationProvider"
 import { TranslateText } from "@/lib/translatetext"
 import { buildCacheKey, withCache } from "@/lib/lsCache";
-import MobileSearchInput from './MobileSearchInput';
 import ShowAnnouncements from './ShowAnnouncements';
-import Loading from "./Loading"
 import Hero from './Hero';
 import StickyNav from './StickyNav';
 import { useHeroScroll } from '@/hooks/useHeroScroll';
+
 
 const Main: React.FC = () => {
     const { language } = useContext(LanguageContext);
@@ -25,8 +24,6 @@ const Main: React.FC = () => {
     const [IsLoadingMore, SetIsLoadingMore] = useState<boolean>(false)
     const firstLoad = useRef(true);
     const [DefaultsReady, SetDefaultsReady] = useState(false);
-    const [IsMapLoading, SetIsMapLoading] = useState(true);
-    const [IsAnnouncementsLoading, SetIsAnnouncementsLoading] = useState(true);
     const [Announcements, SetAnnouncements] = useState<AnnouncementTypes[]>([])
     const [page, Setpage] = useState<number>(1)
     const [limit] = useState<number>(10)
@@ -38,9 +35,6 @@ const Main: React.FC = () => {
     const [DefaultsStatesApplied, SetDefaultsStatesApplied] = useState<string[]>([])
 
     const [trigger, setTrigger] = useState(0);
-
-    const [ShowIndiaMap, SetShowIndiaMap] = useState<boolean>(true)
-
     const userStateCode = GetStateCode(state_ut, language);
 
     const fetchGetIndiaAnnouncements = async (
@@ -51,19 +45,16 @@ const Main: React.FC = () => {
 
         if (append) SetIsLoadingMore(true);
         else SetIsLoading(true);
-        if (StatesSelected.length === 0) {
-            SetIsLoading(false);
-            SetIsAnnouncementsLoading(false);
-            return;
-        }
 
         try {
 
-            const key = buildCacheKey("announcements", { language, startdate, endDate, page, limit });
+            const category = CategorySelected === TranslateText[language].ALL_DEPARMENTS ? "" : CategorySelected;
+
+            const key = buildCacheKey("announcements", { language, startdate, endDate, page, limit, category });
 
             const response = await withCache(key, "announcements", async () => (
                 await getAllAnnouncements(
-                    language, startdate, endDate, pageNumber, limit, signal
+                    language, startdate, endDate, pageNumber, limit, category, StatesSelected, signal
                 ) as AnnouncementsResponse
             ));
 
@@ -80,7 +71,6 @@ const Main: React.FC = () => {
             if (!signal.aborted) {
                 SetIsLoading(false);
                 SetIsLoadingMore(false);
-                SetIsAnnouncementsLoading(false);
             }
         }
     }
@@ -101,8 +91,7 @@ const Main: React.FC = () => {
         language,
         state_ut,
         trigger,
-        startdate,
-        endDate,
+        DefaultsStatesApplied
     ]);
 
     useEffect(() => {
@@ -127,11 +116,6 @@ const Main: React.FC = () => {
         }
     }, [page]);
 
-    useEffect(() => {
-        SetIsAnnouncementsLoading(true);
-        SetIsMapLoading(true);
-    }, [language])
-
     const handleSearch = () => {
         if (StatesSelected.length === 0 && DefaultsStatesApplied.length === 0) {
             return;
@@ -146,17 +130,6 @@ const Main: React.FC = () => {
         if (page < totalPages) {
             Setpage(prev => prev + 1);
         }
-    }
-
-    const handleStateClick = (state: string | null) => {
-        if (!state) return;
-        SetStatesSelected((prev) => {
-            if (prev.includes(state)) {
-                return prev.filter((s) => s !== state);
-            } else {
-                return [...prev, state];
-            }
-        })
     }
 
     useEffect(() => {
@@ -197,11 +170,7 @@ const Main: React.FC = () => {
         setSheetOpen(false)
     }
 
-    const isGlobalLoading = !DefaultsReady || (IsAnnouncementsLoading && IsMapLoading);
 
-    if (isGlobalLoading) {
-        return <Loading />
-    }
     return (
         <section className="flex flex-col min-h-screen">
             <StickyNav
@@ -214,6 +183,8 @@ const Main: React.FC = () => {
                 sheetOpen={sheetOpen}
                 categoryOptions={categoryOptions}
                 setCategoryOptions={setCategoryOptions}
+                CategorySelected={CategorySelected}
+                SetCategorySelected={SetCategorySelected}
             />
             <Hero
                 StatesSelected={StatesSelected}
@@ -224,6 +195,8 @@ const Main: React.FC = () => {
                 sheetOpen={sheetOpen}
                 categoryOptions={categoryOptions}
                 setCategoryOptions={setCategoryOptions}
+                Announcements={Announcements}
+                IsLoading={IsLoading}
             />
             <ShowAnnouncements
                 Announcements={Announcements}
