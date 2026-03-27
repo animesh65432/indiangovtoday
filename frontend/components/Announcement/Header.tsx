@@ -33,18 +33,21 @@ export default function Header({ sections, title, toggle, setToggle }: Props) {
     }
 
     const getAudioIcon = () => {
-        if (IsLoading) return <AudioLines className="animate-spin text-[#FF9933] w-4 h-4" />
-        if (isPlaying) return <Pause className="text-[#FF9933] w-4 h-4" />
-        if (isPaused) return <Play className="text-[#FF9933] w-4 h-4" />
-        return <Volume2 className="text-[#FF9933] w-4 h-4" />
+        if (IsLoading) return <AudioLines className="animate-spin w-4 h-4 text-[#ff3333]" />
+        if (isPlaying) return <Pause className="w-4 h-4 text-[#ff3333]" />
+        if (isPaused) return <Play className="w-4 h-4 text-[#ff3333]" />
+        return <Volume2 className="w-4 h-4 text-[#ff3333]" />
     }
 
+    const iconBtn = "flex items-center justify-center w-9 h-9 rounded border border-[#ff3333]/25 bg-transparent text-[#ff3333]/60 hover:text-[#ff3333] hover:border-[#ff3333]/60 hover:bg-[#ff3333]/5 transition-all duration-150"
+
     return (
-        <header className="flex items-center justify-between">
+        <header className="flex items-center justify-between font-satoshi">
+
             {/* Back button */}
             <button
                 onClick={() => router.push("/#announcements")}
-                className="flex items-center gap-2 font-satoshi text-[11px] md:text-[12px] font-semibold text-white/70 border border-[#FF9933]/25 bg-transparent px-4 py-2 rounded hover:text-[#FF9933] hover:border-[#FF9933]/60 hover:bg-[#FF9933]/5 transition-all duration-150"
+                className="flex items-center gap-2 text-[11px] md:text-[12px] font-semibold text-[#321F1F] border border-[#ff3333]/25 bg-transparent px-4 py-2 rounded hover:text-[#ff3333] hover:border-[#ff3333]/60 hover:bg-[#ff3333]/5 transition-all duration-150"
             >
                 <ArrowLeft className="w-3.5 h-3.5" />
                 {TranslateText[language].BACK}
@@ -52,11 +55,12 @@ export default function Header({ sections, title, toggle, setToggle }: Props) {
 
             {/* Right controls */}
             <nav className="flex items-center gap-4">
+
                 {/* Share */}
                 <button
                     onClick={() => setToggle(prev => !prev)}
                     aria-label="Share announcement"
-                    className="flex items-center justify-center w-9 h-9 rounded border border-[#FF9933]/25 bg-transparent text-[#FF9933]/60 hover:text-[#FF9933] hover:border-[#FF9933]/60 hover:bg-[#FF9933]/5 transition-all duration-150"
+                    className={iconBtn}
                 >
                     <Share2 className="w-4 h-4" />
                 </button>
@@ -68,7 +72,7 @@ export default function Header({ sections, title, toggle, setToggle }: Props) {
                         <button
                             onClick={stop}
                             aria-label="Stop audio"
-                            className="flex items-center justify-center w-9 h-9 rounded border border-red-500/30 bg-transparent text-red-500/70 hover:text-red-500 hover:border-red-500/60 hover:bg-red-500/5 transition-all duration-150"
+                            className="flex items-center justify-center w-9 h-9 rounded border border-red-600/30 bg-transparent text-red-600/70 hover:text-red-600 hover:border-red-600/60 hover:bg-red-600/5 transition-all duration-150"
                         >
                             <Square className="w-4 h-4" />
                         </button>
@@ -77,15 +81,12 @@ export default function Header({ sections, title, toggle, setToggle }: Props) {
                         onClick={IsLoading ? undefined : handleAudioAction}
                         disabled={IsLoading}
                         aria-label={isPlaying ? "Pause audio" : "Play audio"}
-                        className={`flex items-center justify-center w-9 h-9 rounded border border-[#FF9933]/25 bg-transparent transition-all duration-150
-                            ${IsLoading
-                                ? 'opacity-50 cursor-not-allowed'
-                                : 'hover:text-[#FF9933] hover:border-[#FF9933]/60 hover:bg-[#FF9933]/5'
-                            }`}
+                        className={`${iconBtn} disabled:opacity-50 disabled:cursor-not-allowed`}
                     >
                         {getAudioIcon()}
                     </button>
                 </div>
+
             </nav>
         </header>
     )

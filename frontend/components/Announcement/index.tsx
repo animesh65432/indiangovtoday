@@ -56,10 +56,10 @@ const Announcement = ({ id, lan }: Props) => {
                         setToggle={setToggle}
                         image={announcement.image}
                     /> :
-                    <main className='h-[100vh] flex justify-center items-center'>
+                    <main className='h-screen flex justify-center items-center'>
                         <div className='flex items-center gap-2'>
-                            <Inbox className="w-10 h-10 mb-2 text-[#E0614B]" />
-                            <p className="text-[1rem] sm:text-lg text-[#E0614B]">
+                            <Inbox className="w-10 h-10 mb-2 text-[#ff3333]" />
+                            <p className="text-[1rem] sm:text-lg text-[#ff3333]">
                                 {TranslateText[lan].NO_ANNOUNCEMENTS_FOUND}
                             </p>
                         </div>

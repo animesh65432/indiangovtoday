@@ -98,7 +98,7 @@ export const GetIndiaAnnouncements = asyncErrorHandler(async (req: Request, res:
 });
 
 export const SerachallIndiaAnnouncements = asyncErrorHandler(async (req: Request, res: Response) => {
-    const { target_lan, startdate, endDate, page, limit, SearchInput } = req.query;
+    const { target_lan, startdate, endDate, page, limit, SearchInput, states } = req.query;
 
     const announcementsStartDate = startdate
         ? new Date(startdate as string)
@@ -112,10 +112,12 @@ export const SerachallIndiaAnnouncements = asyncErrorHandler(async (req: Request
     const pageSize = parseInt(limit as string) || 10;
     const skip = (pageNumber - 1) * pageSize;
 
-    if (!SearchInput || (typeof SearchInput === 'string' && SearchInput.trim().length < 3)) {
-        res.status(400).json({ error: "Search query must be at least 3 characters long" });
-        return;
-    }
+    const selectedStates = PrasePayloadArray(states as string);
+    const sortedStates = [...selectedStates].sort();
+    const stateCachePart = sortedStates.join(",");
+
+
+    let searchInputValue = typeof SearchInput === "string" && SearchInput.length > 0 ? SearchInput : "";
 
     if (isNaN(announcementsStartDate.getTime()) || isNaN(announcementsEndDate.getTime())) {
         res.status(400).json({ error: "Invalid date format" });
@@ -130,7 +132,7 @@ export const SerachallIndiaAnnouncements = asyncErrorHandler(async (req: Request
     const end = new Date(announcementsEndDate);
     end.setUTCHours(23, 59, 59, 999);
 
-    const redis_key = `AllGroupsIndiaAnnouncements_${targetLanguage}_${announcementsStartDate.toISOString().split('T')[0]}_${announcementsEndDate.toISOString().split('T')[0]}_page${page}_limit${limit}_search${SearchInput}`;
+    const redis_key = `AllGroupsIndiaAnnouncements_${targetLanguage}_${announcementsStartDate.toISOString().split('T')[0]}_${announcementsEndDate.toISOString().split('T')[0]}_page${page}_limit${limit}_search${searchInputValue}-${stateCachePart}`;
 
 
     const cached_data = await redis.get(redis_key);
@@ -149,14 +151,17 @@ export const SerachallIndiaAnnouncements = asyncErrorHandler(async (req: Request
     let indiaAnnouncements: any[] = [];
     let totalCount: number = 0;
 
-    if (SearchInput) {
-        const searchRegex = new RegExp(SearchInput as string, "i");
+    const stateFilter = selectedStates.length > 0 ? { state: { $in: selectedStates } } : {}
+
+    if (searchInputValue.length > 0) {
+        const searchRegex = new RegExp(searchInputValue as string, "i");
 
         const pipeline = [
             {
                 $match: {
                     date: { $gte: start, $lte: end },
                     language: targetLanguage,
+                    ...stateFilter,
                     $or: [
                         { title: searchRegex },
                         { state: searchRegex },
@@ -200,6 +205,7 @@ export const SerachallIndiaAnnouncements = asyncErrorHandler(async (req: Request
         const countFilter = {
             date: { $gte: start, $lte: end },
             language: targetLanguage,
+            ...stateFilter,
             $or: [
                 { title: searchRegex },
                 { state: searchRegex },
@@ -214,7 +220,8 @@ export const SerachallIndiaAnnouncements = asyncErrorHandler(async (req: Request
         // NO SEARCH - Just date/language filter
         const filter = {
             date: { $gte: start, $lte: end },
-            language: targetLanguage
+            language: targetLanguage,
+            ...stateFilter
         };
 
         indiaAnnouncements = await db

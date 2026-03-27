@@ -11,16 +11,17 @@ type Props = {
     setCategoryOptions: React.Dispatch<React.SetStateAction<string[]>>
     StatesSelected: string[]
     onApply: () => void
-    onReset: () => void
     setSheetOpen: React.Dispatch<React.SetStateAction<boolean>>
     SetStatesSelected: React.Dispatch<React.SetStateAction<string[]>>
     sheetOpen: boolean
     CategorySelected: string
-    SetCategorySelected: React.Dispatch<React.SetStateAction<string>>
+    SetCategorySelected: React.Dispatch<React.SetStateAction<string>>;
+    SearchQuery: string;
+    SetSearchQuery: React.Dispatch<React.SetStateAction<string>>;
 
 }
 
-const StickyNav: React.FC<Props> = ({ CategorySelected, SetCategorySelected, scrolled, StatesSelected, onApply, onReset, setSheetOpen, SetStatesSelected, sheetOpen, categoryOptions, setCategoryOptions }) => {
+const StickyNav: React.FC<Props> = ({ CategorySelected, SetCategorySelected, scrolled, StatesSelected, onApply, setSheetOpen, SetStatesSelected, sheetOpen, categoryOptions, setCategoryOptions, SearchQuery, SetSearchQuery }) => {
     return (
         <motion.div
             className="fixed top-0 left-0 right-0 z-50 flex flex-col border-b transition-colors duration-300"
@@ -52,11 +53,11 @@ const StickyNav: React.FC<Props> = ({ CategorySelected, SetCategorySelected, scr
                     >
                         <InputBox
                             StatesSelected={StatesSelected}
-                            onApply={onApply}
-                            onReset={onReset}
                             setSheetOpen={setSheetOpen}
                             SetStatesSelected={SetStatesSelected}
                             sheetOpen={sheetOpen}
+                            SearchQuery={SearchQuery}
+                            SetSearchQuery={SetSearchQuery}
                         />
                     </motion.div>
                 )}

@@ -10,19 +10,34 @@ import {
 import { optionsforLanguages } from "@/lib/lan"
 import Logo from './ui/Logo';
 import { TranslateText } from '@/lib/translatetext';
+import { Button } from './ui/button';
+import { useRouter } from "next/navigation"
 
 type Props = {
     scrolled: boolean,
+    IsBackButton?: boolean
 }
 
-const AnnoucementsHeader: React.FC<Props> = ({ scrolled }) => {
+const AnnoucementsHeader: React.FC<Props> = ({ IsBackButton = false, scrolled }) => {
     const { language, onSelectLanguage } = useContext(LanguageContext)
+    const router = useRouter()
+
+    const handlePushback = () => {
+        router.back()
+    }
 
     return (
         <header className="flex items-center w-[95%] md:w-[80%] mx-auto mt-4">
 
             {/* Left (empty spacer) */}
-            <div className="flex-1 md:block hidden" />
+            {!IsBackButton && <div className="flex-1 md:block hidden" />}
+            {IsBackButton && <div className='flex-1'>
+                <Button
+                    onClick={handlePushback}
+                    className='font-tanker text-[#321F1F] px-5 border  border-[#321F1F] hover:cursor-pointer'>
+                    {TranslateText[language].BACK}
+                </Button>
+            </div>}
 
             {/* Center Logo */}
             <div className="flex justify-start md:justify-center flex-1">

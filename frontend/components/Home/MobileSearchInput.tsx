@@ -8,53 +8,38 @@ import { MultiSelect } from "../ui/multi-select"
 import { DateRangePicker } from '../ui/DateRangePicker'
 import { Input } from '../ui/input'
 import { Search } from "lucide-react"
+import { usePathname } from "next/navigation"
+import { toast } from "react-toastify"
 
 type Props = {
     StatesSelected: string[]
-    onApply: (
-        dept: string,
-        category: string,
-        states: string[],
-        startDate: Date | null,
-        endDate: Date | null
-    ) => void
-    onReset: () => void,
     setSheetOpen: React.Dispatch<React.SetStateAction<boolean>>
     searchQuery: string,
-    setSearchQuery: React.Dispatch<React.SetStateAction<string>>
+    setSearchQuery: React.Dispatch<React.SetStateAction<string>>;
+    handleSearch: () => void;
+    SetStatesSelected: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
 const MobileSearchInput: React.FC<Props> = ({
     StatesSelected,
-    onApply,
-    onReset,
-    setSheetOpen
+    setSheetOpen,
+    handleSearch,
+    searchQuery,
+    setSearchQuery,
+    SetStatesSelected
 }) => {
     const { language } = useContext(LanguageContext)
-    const { startdate, endDate } = useContext(Currentdate)
-    const [localStates, setLocalStates] = useState<string[]>(StatesSelected)
-    const [localStartDate, setLocalStartDate] = useState<Date>(startdate)
-    const [localEndDate, setLocalEndDate] = useState<Date>(endDate)
-    const [LocalserchQuery, setLocalSearchQuery] = useState<string>("")
+    const { startdate, endDate, onChangeEndDate, onChangeStartDate } = useContext(Currentdate)
+    const pathname = usePathname()
     const stateOptions = TranslateText[language].MULTISELECT_OPTIONS
 
     const handleApply = () => {
-        onApply("", "", localStates, localStartDate, localEndDate)
-    }
-
-    const handleReset = () => {
-        setLocalStates(StatesSelected)
-        setLocalStartDate(startdate)
-        setLocalEndDate(endDate)
-        onReset()
-    }
-
-    function onChangeStartDate(from: Date) {
-        throw new Error('Function not implemented.')
-    }
-
-    function onChangeEndDate(to: Date) {
-        throw new Error('Function not implemented.')
+        handleSearch()
+        if (StatesSelected.length === 0) {
+            toast(TranslateText[language].NO_STATE_SELECTED, { type: "error" })
+            return;
+        }
+        setSheetOpen(false)
     }
 
     return (
@@ -84,8 +69,8 @@ const MobileSearchInput: React.FC<Props> = ({
 
                         {/* Input */}
                         <Input
-                            value={LocalserchQuery}
-                            onChange={(e) => setLocalSearchQuery(e.target.value)}
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
                             placeholder={TranslateText[language].SEARCH_ANNOUNCEMENTS}
                             className="w-full pl-12 pr-12 py-5 rounded-2xl bg-white/90 border border-gray-200 text-[#321F1F] placeholder:text-[#321F1F]/60 placeholder:font-medium shadow-sm hover:shadow-md"
                         />
@@ -99,8 +84,8 @@ const MobileSearchInput: React.FC<Props> = ({
                         </span>
                         <MultiSelect
                             options={stateOptions}
-                            defaultValue={localStates}
-                            onValueChange={setLocalStates}
+                            defaultValue={StatesSelected}
+                            onValueChange={SetStatesSelected}
                             placeholder="Select states"
                             maxCount={1}
                             mobile={true}
@@ -118,12 +103,12 @@ const MobileSearchInput: React.FC<Props> = ({
                         </span>
                         <div className="w-fit border boder-[#321F1F] bg-white">
                             <DateRangePicker
-                                initialDateFrom={localStartDate}
-                                initialDateTo={localEndDate}
+                                initialDateFrom={startdate}
+                                initialDateTo={endDate}
                                 onUpdate={({ range }) => {
-                                    setLocalStartDate(range.from)
+                                    onChangeStartDate(range.from)
                                     if (range.to) {
-                                        setLocalEndDate(range.to)
+                                        onChangeEndDate(range.to)
                                     }
                                 }}
                             />
@@ -131,20 +116,26 @@ const MobileSearchInput: React.FC<Props> = ({
                     </div>
 
                     {/* Action Buttons */}
-                    <div className="flex gap-3 mt-2">
-                        <Button
-                            onClick={handleReset}
-                            className="flex-1 w-fit p-5 bg-[#ff3333] text-white   text-[14px]  font-satoshi   font-semibold rounded-none"
-                        >
-                            {TranslateText[language].RESET}
-                        </Button>
-                        <Button
-                            onClick={handleApply}
-                            className="flex-1 w-fit p-5 bg-[#ff3333] text-white   text-[14px]  font-satoshi   font-semibold rounded-none"
-                        >
-                            {TranslateText[language].APPLY_FILTERS}
-                        </Button>
-                    </div>
+                    {pathname === "/search" &&
+                        <div className="flex gap-3 mt-2">
+                            <Button
+                                onClick={handleApply}
+                                className="flex-1 w-fit p-5 bg-[#ff3333] text-white   text-[14px]  font-satoshi   font-semibold rounded-none"
+                            >
+                                {TranslateText[language].APPLY_FILTERS}
+                            </Button>
+                        </div>
+                    }
+                    {pathname !== "/search" &&
+                        <div className="flex gap-3 mt-2">
+                            <Button
+                                onClick={handleApply}
+                                className="flex-1 w-fit p-5 bg-[#ff3333] text-white   text-[14px]  font-satoshi   font-semibold rounded-none"
+                            >
+                                {TranslateText[language].SEARCH}
+                            </Button>
+                        </div>
+                    }
 
                 </div>
             </div>

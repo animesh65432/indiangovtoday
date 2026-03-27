@@ -16,6 +16,7 @@ import { useHeroScroll } from '@/hooks/useHeroScroll';
 const Main: React.FC = () => {
     const { language } = useContext(LanguageContext);
     const [StatesSelected, SetStatesSelected] = useState<string[]>([]);
+    const [SearchQuery, SetSearchQuery] = useState<string>("");
     const [sheetOpen, setSheetOpen] = useState(false)
     const [CategorySelected, SetCategorySelected] = useState<string>(`${TranslateText[language].ALL_DEPARMENTS}`);
     const [totalPages, settotalPages] = useState<number>(0)
@@ -134,40 +135,6 @@ const Main: React.FC = () => {
         SetCategorySelected(TranslateText[language].ALL_DEPARMENTS);
     }, [language]);
 
-    const handleMobileApply = (
-        dept: string,
-        category: string,
-        states: string[],
-        startDate: Date | null,
-        endDate: Date | null
-    ) => {
-        SetCategorySelected(category)
-        SetStatesSelected(states)
-        if (startDate) onChangeStartDate(startDate)
-        if (endDate) onChangeEndDate(endDate)
-        setSheetOpen(false)
-    }
-
-    const handleMobileReset = () => {
-        SetCategorySelected("")
-        const today = new Date();
-        const ThirteenDaysAgo = new Date();
-        ThirteenDaysAgo.setDate(today.getDate() - 30);
-        onChangeStartDate(ThirteenDaysAgo);
-        onChangeEndDate(today);
-        if (state_ut) {
-            const INDIA_GOVT_CODE = TranslateText[language]["MULTISELECT_OPTIONS"][TranslateText[language]["MULTISELECT_OPTIONS"].length - 1].value;
-            SetStatesSelected([INDIA_GOVT_CODE, userStateCode]);
-            SetDefaultsStatesApplied([INDIA_GOVT_CODE, userStateCode]);
-        }
-        else {
-            const INDIA_GOVT_CODE = TranslateText[language]["MULTISELECT_OPTIONS"][TranslateText[language]["MULTISELECT_OPTIONS"].length - 1].value;
-            SetStatesSelected([INDIA_GOVT_CODE]);
-            SetDefaultsStatesApplied([INDIA_GOVT_CODE]);
-        }
-        setSheetOpen(false)
-    }
-
 
     return (
         <section className="flex flex-col min-h-screen">
@@ -175,7 +142,6 @@ const Main: React.FC = () => {
                 scrolled={scrolled}
                 StatesSelected={StatesSelected}
                 onApply={handleSearch}
-                onReset={handleMobileReset}
                 setSheetOpen={setSheetOpen}
                 SetStatesSelected={SetStatesSelected}
                 sheetOpen={sheetOpen}
@@ -183,16 +149,18 @@ const Main: React.FC = () => {
                 setCategoryOptions={setCategoryOptions}
                 CategorySelected={CategorySelected}
                 SetCategorySelected={SetCategorySelected}
+                SearchQuery={SearchQuery}
+                SetSearchQuery={SetSearchQuery}
             />
             <Hero
                 StatesSelected={StatesSelected}
-                onApply={handleSearch}
-                onReset={handleMobileReset}
                 setSheetOpen={setSheetOpen}
                 SetStatesSelected={SetStatesSelected}
                 sheetOpen={sheetOpen}
                 Announcements={Announcements}
                 IsLoading={IsLoading}
+                SearchQuery={SearchQuery}
+                SetSearchQuery={SetSearchQuery}
             />
             <ShowAnnouncements
                 Announcements={Announcements}
@@ -201,7 +169,6 @@ const Main: React.FC = () => {
                 LoadMoreData={OnLoadMoredata}
                 page={page}
                 totalpage={totalPages}
-                handleMobileReset={handleMobileReset}
             />
         </section>
     )

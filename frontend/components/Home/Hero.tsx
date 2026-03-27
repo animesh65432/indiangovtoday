@@ -8,24 +8,24 @@ import { Announcement } from "@/types"
 
 type Props = {
     StatesSelected: string[]
-    onApply: () => void
-    onReset: () => void
     setSheetOpen: React.Dispatch<React.SetStateAction<boolean>>
     SetStatesSelected: React.Dispatch<React.SetStateAction<string[]>>
     sheetOpen: boolean
     Announcements: Announcement[],
-    IsLoading: boolean
+    IsLoading: boolean,
+    SearchQuery: string,
+    SetSearchQuery: React.Dispatch<React.SetStateAction<string>>
 }
 
 const Hero: React.FC<Props> = ({
     StatesSelected,
-    onApply,
-    onReset,
     setSheetOpen,
     SetStatesSelected,
     sheetOpen,
     Announcements,
-    IsLoading
+    IsLoading,
+    SearchQuery,
+    SetSearchQuery
 }) => {
     const { titleOpacity, titleBlur, titleY, inputOpacity, inputY } = useHeroScroll()
 
@@ -44,11 +44,11 @@ const Hero: React.FC<Props> = ({
             >
                 <InputBox
                     StatesSelected={StatesSelected}
-                    onApply={onApply}
-                    onReset={onReset}
                     setSheetOpen={setSheetOpen}
                     SetStatesSelected={SetStatesSelected}
                     sheetOpen={sheetOpen}
+                    SearchQuery={SearchQuery}
+                    SetSearchQuery={SetSearchQuery}
                 />
             </motion.div>
 

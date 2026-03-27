@@ -1,6 +1,5 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Announcement as AnnouncementTypes } from "@/types/index";
-import { LanguageContext } from "@/context/Lan";
 import AnnouncementCard from "./Announcement";
 import AnnouncementSkeleton from "./AnnouncementSkeleton";
 
@@ -11,7 +10,7 @@ type Props = {
     totalpage: number;
     IsLoading: boolean;
     IsLoadingMore: boolean;
-    handleMobileReset: () => void;
+    IsItHomePage?: boolean;
 };
 
 
@@ -22,9 +21,8 @@ export default function ShowAnnouncements({
     totalpage,
     IsLoading,
     IsLoadingMore,
-    handleMobileReset,
+    IsItHomePage = true
 }: Props) {
-    const { language } = useContext(LanguageContext);
     const sentinelRef = React.useRef<HTMLDivElement>(null);
 
     React.useEffect(() => {
@@ -56,26 +54,36 @@ export default function ShowAnnouncements({
 
     return (
         <div className="mt-8 md:mt-0 w-[95%] md:w-[80%] mx-auto grid grid-cols-1 gap-x-8 gap-y-12">
-            <div className="md:hidden">
-                {Announcements.map((a) => (
-                    <AnnouncementCard key={a.announcementId} Announcement={a} />
-                ))}
-            </div>
+            {IsItHomePage &&
+                <>
+                    <div className="md:hidden">
+                        {Announcements.map((a) => (
+                            <AnnouncementCard key={a.announcementId} Announcement={a} />
+                        ))}
+                    </div>
 
-            {/* md → xl: skip first 1 */}
-            <div className="hidden md:grid xl:hidden grid-cols-1 gap-x-8 gap-y-12">
-                {Announcements.slice(1).map((a) => (
-                    <AnnouncementCard key={a.announcementId} Announcement={a} />
-                ))}
-            </div>
+                    {/* md → xl: skip first 1 */}
+                    <div className="hidden md:grid xl:hidden grid-cols-1 gap-x-8 gap-y-12">
+                        {Announcements.slice(1).map((a) => (
+                            <AnnouncementCard key={a.announcementId} Announcement={a} />
+                        ))}
+                    </div>
 
-            {/* xl+: skip first 3 */}
-            <div className="hidden xl:grid grid-cols-1 gap-x-8 gap-y-12">
-                {Announcements.slice(3).map((a) => (
-                    <AnnouncementCard key={a.announcementId} Announcement={a} />
-                ))}
-            </div>
-
+                    {/* xl+: skip first 3 */}
+                    <div className="hidden xl:grid grid-cols-1 gap-x-8 gap-y-12">
+                        {Announcements.slice(3).map((a) => (
+                            <AnnouncementCard key={a.announcementId} Announcement={a} />
+                        ))}
+                    </div>
+                </>
+            }
+            {
+                !IsItHomePage && <div>
+                    {Announcements.map((a) => (
+                        <AnnouncementCard key={a.announcementId} Announcement={a} />
+                    ))}
+                </div>
+            }
             {IsLoadingMore && (
                 [...Array(5)].map((_, index) => (
                     <AnnouncementSkeleton key={`more-${index}`} />

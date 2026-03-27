@@ -26,10 +26,27 @@ export const getAnnouncement = (target_lan: string, id: string) => Call({
 
 })
 
-export const SerachallIndiaAnnouncements = (target_lan: string, startdate: Date, endDate: Date, page: number, limit: number, SearchInput: string) => Call({
-    method: "GET",
-    path: `/SerachallIndiaAnnouncements?target_lan=${target_lan}&startdate=${startdate}&endDate=${endDate}&page=${page}&limit=${limit}&SearchInput=${SearchInput}`
-})
+export const SerachallIndiaAnnouncements = (target_lan: string, startdate: Date, endDate: Date, page: number, limit: number, SearchInput: string, states: string[], signal?: AbortSignal) => {
+
+    const params = new URLSearchParams({
+        target_lan,
+        startDate: startdate.toISOString().split('T')[0],
+        endDate: endDate.toISOString().split('T')[0],
+        page: page.toString(),
+        limit: limit.toString(),
+        SearchInput
+    });
+
+    states.forEach(state => params.append('states', state));
+
+    console.log(params.toString())
+
+    return Call({
+        method: "GET",
+        path: `/SerachallIndiaAnnouncements?${params.toString()}`,
+        signal
+    })
+}
 
 
 export const GetGroupIndiaAnnouncements = (target_lan: string, startdate: Date, endDate: Date, typeofGroup: string) => Call({

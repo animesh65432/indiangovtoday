@@ -5,7 +5,6 @@ import { useSearchParams } from 'next/navigation'
 
 const SearchPage = () => {
     const searchParams = useSearchParams()
-
     const query = searchParams.get('query') || ''
     const startDate = searchParams.get('startDate') || ''
     const endDate = searchParams.get('endDate') || ''
@@ -14,8 +13,8 @@ const SearchPage = () => {
     return (
         <Search
             query={query}
-            startDate={startDate}
-            endDate={endDate}
+            startdate={startDate}
+            enddate={endDate}
             states={states}
         />
     )

@@ -7,15 +7,16 @@ import InputBox from '../Home/InputBox'
 type Props = {
     scrolled: boolean
     StatesSelected: string[]
-    onApply: () => void
-    onReset: () => void
     setSheetOpen: React.Dispatch<React.SetStateAction<boolean>>
     SetStatesSelected: React.Dispatch<React.SetStateAction<string[]>>
     sheetOpen: boolean
+    SearchQuery: string
+    SetSearchQuery: React.Dispatch<React.SetStateAction<string>>
+    IsBackButton?: boolean
 
 }
 
-const StickyNav: React.FC<Props> = ({ scrolled, StatesSelected, onApply, onReset, setSheetOpen, SetStatesSelected, sheetOpen }) => {
+const StickyNav: React.FC<Props> = ({ IsBackButton, scrolled, StatesSelected, setSheetOpen, SetStatesSelected, sheetOpen, SearchQuery, SetSearchQuery }) => {
     return (
         <motion.div
             className="fixed top-0 left-0 right-0 z-50 flex flex-col border-b transition-colors duration-300"
@@ -27,7 +28,10 @@ const StickyNav: React.FC<Props> = ({ scrolled, StatesSelected, onApply, onReset
             }}
             transition={{ duration: 0.3, ease: 'easeInOut' }}
         >
-            <AnnoucementsHeader scrolled={scrolled} />
+            <AnnoucementsHeader
+                scrolled={scrolled}
+                IsBackButton={IsBackButton}
+            />
 
             <AnimatePresence>
                 {scrolled && (
@@ -41,11 +45,11 @@ const StickyNav: React.FC<Props> = ({ scrolled, StatesSelected, onApply, onReset
                     >
                         <InputBox
                             StatesSelected={StatesSelected}
-                            onApply={onApply}
-                            onReset={onReset}
                             setSheetOpen={setSheetOpen}
                             SetStatesSelected={SetStatesSelected}
                             sheetOpen={sheetOpen}
+                            SearchQuery={SearchQuery}
+                            SetSearchQuery={SetSearchQuery}
                         />
                     </motion.div>
                 )}
