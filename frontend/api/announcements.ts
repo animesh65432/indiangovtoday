@@ -3,8 +3,8 @@ import { Call } from "@/service/call"
 export const getAllAnnouncements = (target_lan: string, startdate: Date, endDate: Date, page: number, limit: number, category: string, states: string[], signal?: AbortSignal) => {
     const params = new URLSearchParams({
         target_lan,
-        startDate: startdate.toISOString().split('T')[0],
-        endDate: endDate.toISOString().split('T')[0],
+        startDate: startdate.toISOString().split("T")[0],
+        endDate: endDate.toISOString().split("T")[0],
         page: page.toString(),
         limit: limit.toString(),
         category: category.toString()
@@ -30,8 +30,8 @@ export const SerachallIndiaAnnouncements = (target_lan: string, startdate: Date,
 
     const params = new URLSearchParams({
         target_lan,
-        startDate: startdate.toISOString().split('T')[0],
-        endDate: endDate.toISOString().split('T')[0],
+        startDate: startdate.toISOString().split("T")[0],
+        endDate: endDate.toISOString().split("T")[0],
         page: page.toString(),
         limit: limit.toString(),
         SearchInput

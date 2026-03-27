@@ -15,6 +15,10 @@ import MobileSearchInput from './MobileSearchInput'
 import { useRouter, usePathname } from 'next/navigation'
 import { Button } from '../ui/button'
 
+const toUTCDateString = (date: Date) => {
+    return new Date(date.getTime() + (5.5 * 60 * 60 * 1000)).toISOString().split("T")[0];
+}
+
 type Props = {
     StatesSelected: string[]
     setSheetOpen: React.Dispatch<React.SetStateAction<boolean>>
@@ -41,7 +45,13 @@ const InputBox: React.FC<Props> = ({
 
     const handleSearch = () => {
         if (pathname === "/") {
-            router.push(`/search?query=${SearchQuery}${startdate ? `&startDate=${startdate.toISOString().split('T')[0]}` : ""}${endDate ? `&endDate=${endDate.toISOString().split('T')[0]}` : ""}${StatesSelected.length ? StatesSelected.map(state => `&states=${state}`).join("") : ""}`)
+
+            router.push(
+                `/search?query=${SearchQuery}` +
+                `${startdate ? `&startDate=${toUTCDateString(startdate)}` : ""}` +
+                `${endDate ? `&endDate=${toUTCDateString(endDate)}` : ""}` +
+                `${StatesSelected.length ? StatesSelected.map(state => `&states=${state}`).join("") : ""}`
+            )
         }
         else {
             if (handleClick) {

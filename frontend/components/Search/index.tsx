@@ -9,6 +9,7 @@ import { LanguageContext } from '@/context/Lan'
 import { SerachallIndiaAnnouncements } from "@/api/announcements"
 import ShowAnnouncements from '../Home/ShowAnnouncements'
 import { buildCacheKey, withCache } from '@/lib/lsCache'
+import EmptyAnnouncements from '../Home/EmptyAnnoucments'
 
 type Props = {
     query: string
@@ -43,7 +44,6 @@ const Search: React.FC<Props> = ({ query, startdate, enddate, states }) => {
     const [trigger, setTrigger] = useState(0)
     const [totalPages, settotalPages] = useState<number>(0)
     const [limit] = useState<number>(10)
-    const firstLoad = useRef<boolean>(true)
 
     useEffect(() => {
         if (query && typeof query === "string" && query.length > 0) {
@@ -56,25 +56,16 @@ const Search: React.FC<Props> = ({ query, startdate, enddate, states }) => {
             setStatesSelected(states);
         }
 
-        const handleDate = (
-            date: string | undefined,
-            setter: (d: Date) => void,
-            label: string
-        ): void => {
+        const handleDate = (date: string | undefined, setter: (d: Date) => void, label: string): void => {
             if (!date) return;
-
             const parsedDate = new Date(date);
             if (!isNaN(parsedDate.getTime())) {
                 setter(parsedDate);
-            } else {
-                console.error(`Invalid ${label}:`, date);
-            }
-
-            if (label === "start date") {
-                onChangeStartDate(parsedDate);
-            }
-            else {
-                onChangeEndDate(parsedDate);
+                if (label === "start date") {
+                    SetDefaultFilters(prev => ({ ...prev, startDate: parsedDate }));
+                } else {
+                    SetDefaultFilters(prev => ({ ...prev, endDate: parsedDate }));
+                }
             }
         };
 
@@ -94,10 +85,20 @@ const Search: React.FC<Props> = ({ query, startdate, enddate, states }) => {
     async function SearchInit(page: number, append: boolean, signal: AbortSignal) {
         if (append) SetIsLoadingMore(true);
         else SetIsLoading(true);
-
-        if (firstLoad) { }
+        if (statesSelected.length === 0) {
+            SetAnnouncements([]);
+            return;
+        }
         try {
-            const key = buildCacheKey("Searchannouncements", { language, contextStartDate, contextEndDate, page, limit, SearchQuery, statesSelected });
+            const key = buildCacheKey("Searchannouncements", {
+                language,
+                contextStartDate,
+                contextEndDate,
+                page,
+                limit,
+                SearchQuery,
+                statesSelected
+            });
             const response = await withCache(key, "announcements", async () => (
                 await SerachallIndiaAnnouncements(language, contextStartDate, contextEndDate, page, 10, SearchQuery, statesSelected, signal) as AnnouncementsResponse
             ));
@@ -127,7 +128,7 @@ const Search: React.FC<Props> = ({ query, startdate, enddate, states }) => {
         SearchInit(1, false, controller.signal);
 
         return () => controller.abort();
-    }, [trigger, language]);
+    }, [trigger, language, DefaultsFilters]);
 
 
     useEffect(() => {
@@ -142,10 +143,8 @@ const Search: React.FC<Props> = ({ query, startdate, enddate, states }) => {
         setTrigger((prev) => prev + 1)
     }
 
-    console.log(Announcements, trigger)
-
     return (
-        <section className="w-full flex flex-col pt-20 gap-16">
+        <section className="w-full flex flex-col pt-20 gap-0 sm:gap-10 lg:gap-16">
             <StickyNav
                 scrolled={scrolled}
                 StatesSelected={statesSelected}
@@ -170,16 +169,16 @@ const Search: React.FC<Props> = ({ query, startdate, enddate, states }) => {
                     handleClick={handleClick}
                 />
             </motion.div>
-
-            <ShowAnnouncements
-                Announcements={Announcements}
-                IsLoading={IsLoading}
-                IsLoadingMore={IsLoadingMore}
-                LoadMoreData={OnLoadMoredata}
-                page={page}
-                totalpage={limit}
-                IsItHomePage={false}
-            />
+            {Announcements.length === 0 && !IsLoading ? <EmptyAnnouncements /> :
+                <ShowAnnouncements
+                    Announcements={Announcements}
+                    IsLoading={IsLoading}
+                    IsLoadingMore={IsLoadingMore}
+                    LoadMoreData={OnLoadMoredata}
+                    page={page}
+                    totalpage={limit}
+                    IsItHomePage={false}
+                />}
         </section>
     )
 }

@@ -29,7 +29,7 @@ const Main: React.FC = () => {
     const [limit] = useState<number>(10)
     const { scrolled } = useHeroScroll();
 
-    const { startdate, endDate, onChangeEndDate, onChangeStartDate } = useContext(Currentdate)
+    const { startdate, endDate } = useContext(Currentdate)
     const { state_ut } = useContext(LocationContext)
 
     const [DefaultsStatesApplied, SetDefaultsStatesApplied] = useState<string[]>([])

@@ -1,4 +1,3 @@
-"use client"
 import React from 'react'
 import Search from '@/components/Search'
 import { useSearchParams } from 'next/navigation'

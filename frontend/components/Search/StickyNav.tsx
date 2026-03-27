@@ -13,10 +13,11 @@ type Props = {
     SearchQuery: string
     SetSearchQuery: React.Dispatch<React.SetStateAction<string>>
     IsBackButton?: boolean
+    handleClick?: () => void
 
 }
 
-const StickyNav: React.FC<Props> = ({ IsBackButton, scrolled, StatesSelected, setSheetOpen, SetStatesSelected, sheetOpen, SearchQuery, SetSearchQuery }) => {
+const StickyNav: React.FC<Props> = ({ IsBackButton, scrolled, StatesSelected, setSheetOpen, SetStatesSelected, sheetOpen, SearchQuery, SetSearchQuery, handleClick }) => {
     return (
         <motion.div
             className="fixed top-0 left-0 right-0 z-50 flex flex-col border-b transition-colors duration-300"
@@ -50,6 +51,7 @@ const StickyNav: React.FC<Props> = ({ IsBackButton, scrolled, StatesSelected, se
                             sheetOpen={sheetOpen}
                             SearchQuery={SearchQuery}
                             SetSearchQuery={SetSearchQuery}
+                            handleClick={handleClick}
                         />
                     </motion.div>
                 )}

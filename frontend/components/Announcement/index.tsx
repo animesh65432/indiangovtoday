@@ -4,10 +4,9 @@ import { getAnnouncement } from "@/api/announcements"
 import ShowAnnouncement from './ShowAnnouncement'
 import { ShowAnnouncementsTypes } from "@/types"
 import AnnouncementSkeleton from './AnnouncementSkeleton'
-import { TranslateText } from "@/lib/translatetext"
-import { Inbox } from 'lucide-react'
 import { LanguageContext } from "@/context/Lan"
 import Subscribe from '@/components/Subscribe'
+import EmptyAnnouncements from '../Home/EmptyAnnoucments'
 
 type Props = {
     id: string
@@ -56,14 +55,7 @@ const Announcement = ({ id, lan }: Props) => {
                         setToggle={setToggle}
                         image={announcement.image}
                     /> :
-                    <main className='h-screen flex justify-center items-center'>
-                        <div className='flex items-center gap-2'>
-                            <Inbox className="w-10 h-10 mb-2 text-[#ff3333]" />
-                            <p className="text-[1rem] sm:text-lg text-[#ff3333]">
-                                {TranslateText[lan].NO_ANNOUNCEMENTS_FOUND}
-                            </p>
-                        </div>
-                    </main>) :
+                    <EmptyAnnouncements />) :
                 <div className='h-screen'>
                     <AnnouncementSkeleton />
                 </div>

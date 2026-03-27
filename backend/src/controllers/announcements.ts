@@ -98,10 +98,10 @@ export const GetIndiaAnnouncements = asyncErrorHandler(async (req: Request, res:
 });
 
 export const SerachallIndiaAnnouncements = asyncErrorHandler(async (req: Request, res: Response) => {
-    const { target_lan, startdate, endDate, page, limit, SearchInput, states } = req.query;
+    const { target_lan, startDate, endDate, page, limit, SearchInput, states } = req.query;
 
-    const announcementsStartDate = startdate
-        ? new Date(startdate as string)
+    const announcementsStartDate = startDate
+        ? new Date(startDate as string)
         : new Date(new Date().setDate(new Date().getDate() - 7));
 
     const announcementsEndDate = endDate
