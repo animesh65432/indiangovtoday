@@ -43,9 +43,9 @@ export interface AnimationConfig {
 const multiSelectVariants = cva("m-1 transition-all duration-300 ease-in-out", {
     variants: {
         variant: {
-            default: "border-[#FF9933]/40 text-white bg-black hover:bg-black/80",
+            default: "border-[#321F1F]/30 text-[#321F1F] bg-white hover:bg-[#f0eaea]",
             secondary:
-                "border-[#FF9933]/40 bg-black text-white hover:bg-black/80",
+                "border-[#321F1F]/30 bg-white text-[#321F1F] hover:bg-[#f0eaea]",
             destructive:
                 "border-transparent bg-destructive text-destructive-foreground hover:bg-destructive/80",
             inverted: "inverted",
@@ -237,7 +237,7 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                         buttonRef.current.focus();
                         const originalOutline = buttonRef.current.style.outline;
                         const originalOutlineOffset = buttonRef.current.style.outlineOffset;
-                        buttonRef.current.style.outline = "2px solid #FF9933";
+                        buttonRef.current.style.outline = "2px solid #321F1F";
                         buttonRef.current.style.outlineOffset = "2px";
                         setTimeout(() => {
                             if (buttonRef.current) {
@@ -530,9 +530,8 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                             aria-describedby={`${triggerDescriptionId} ${selectedCountId}`}
                             aria-label={`Multi-select: ${selectedValues.length} of ${getAllOptions().length} options selected. ${placeholder}`}
                             className={cn(
-                                // ── KEY CHANGE: black bg, saffron border, saffron text ──
-                                "flex p-1 rounded-md border border-[#FF9933] min-h-10 h-auto items-center justify-between",
-                                "bg-[#1A1A1A]  text-white",
+                                "flex p-1 bg-white  min-h-10 h-auto items-center justify-between",
+                                "text-[#321F1F]",
                                 "[&_svg]:pointer-events-auto",
                                 autoSize ? "w-auto" : "w-full",
                                 responsiveSettings.compactMode && "min-h-8 text-sm",
@@ -560,7 +559,7 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                                                 const badgeStyle: React.CSSProperties = {
                                                     animationDuration: `${animation}s`,
                                                     ...(customStyle?.badgeColor && { backgroundColor: customStyle.badgeColor }),
-                                                    ...(customStyle?.gradient && { background: customStyle.gradient, color: "white" }),
+                                                    ...(customStyle?.gradient && { background: customStyle.gradient, color: "#321F1F" }),
                                                 };
                                                 return (
                                                     <Badge
@@ -568,8 +567,8 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                                                         className={cn(
                                                             getBadgeAnimationClass(),
                                                             multiSelectVariants({ variant }),
-                                                            // badge: black bg, saffron border + text
-                                                            "bg-[#1A1A1A]  border border-[#FF9933] text-white py-1",
+                                                            // badge: white bg, dark border + text, rose hover
+                                                            "bg-white border border-[#321F1F]/30 text-[#321F1F] py-1 hover:bg-[#f0eaea]",
                                                             responsiveSettings.compactMode && "text-xs px-1.5",
                                                             screenSize === "mobile" && "max-w-[120px] truncate",
                                                             singleLine && "flex-shrink-0 whitespace-nowrap",
@@ -583,7 +582,7 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                                                         {IconComponent && !responsiveSettings.hideIcons && (
                                                             <IconComponent
                                                                 className={cn(
-                                                                    "h-4 w-4 mr-2 text-[#FF9933]",
+                                                                    "h-4 w-4 mr-2 text-[#321F1F]",
                                                                     responsiveSettings.compactMode && "h-3 w-3 mr-1",
                                                                 )}
                                                                 {...(customStyle?.iconColor && { style: { color: customStyle.iconColor } })}
@@ -604,8 +603,8 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                                                                 }
                                                             }}
                                                             aria-label={`Remove ${option.label} from selection`}
-                                                            className="ml-2 h-4 w-4 cursor-pointer hover:bg-[#FF9933]/20 rounded-sm p-0.5 -m-0.5 focus:outline-none focus:ring-1 focus:ring-[#FF9933]/50">
-                                                            <XCircle className={cn("h-3 w-3 text-[#FF9933]", responsiveSettings.compactMode && "h-2.5 w-2.5")} />
+                                                            className="ml-2 h-4 w-4 cursor-pointer hover:bg-[#321F1F]/10 rounded-sm p-0.5 -m-0.5 focus:outline-none focus:ring-1 focus:ring-[#321F1F]/30">
+                                                            <XCircle className={cn("h-3 w-3 text-[#321F1F]/60", responsiveSettings.compactMode && "h-2.5 w-2.5")} />
                                                         </div>
                                                     </Badge>
                                                 );
@@ -614,7 +613,7 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                                         {selectedValues.length > responsiveSettings.maxCount && (
                                             <Badge
                                                 className={cn(
-                                                    "bg-[#1A1A1A]  border border-[#FF9933] text-white flex items-center py-1",
+                                                    "bg-[#f0eaea] border border-[#321F1F]/20 text-[#321F1F] flex items-center py-1",
                                                     getBadgeAnimationClass(),
                                                     responsiveSettings.compactMode && "text-xs px-2",
                                                     singleLine && "flex-shrink-0 whitespace-nowrap",
@@ -626,7 +625,7 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                                                 }}>
                                                 {`+ ${selectedValues.length - responsiveSettings.maxCount} ${TranslateText[language].MORE}`}
                                                 <XCircle
-                                                    className={cn("ml-2 h-4 w-4 cursor-pointer text-[#FF9933]", responsiveSettings.compactMode && "ml-1 h-3 w-3")}
+                                                    className={cn("ml-2 h-4 w-4 cursor-pointer text-[#321F1F]/60", responsiveSettings.compactMode && "ml-1 h-3 w-3")}
                                                     onClick={(event) => { event.stopPropagation(); clearExtraOptions(); }}
                                                 />
                                             </Badge>
@@ -645,18 +644,17 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                                                 }
                                             }}
                                             aria-label={`Clear all ${selectedValues.length} selected options`}
-                                            className="flex items-center justify-center h-4 w-4 mx-2 cursor-pointer text-[#FF9933] hover:text-[#FF9933]/70 focus:outline-none focus:ring-2 focus:ring-[#FF9933] focus:ring-offset-1 rounded-sm">
-                                            <XIcon className="h-4 w-4 text-[#FF9933]" />
+                                            className="flex items-center justify-center h-4 w-4 mx-2 cursor-pointer text-[#321F1F]/50 hover:text-[#321F1F] focus:outline-none focus:ring-2 focus:ring-[#321F1F]/30 focus:ring-offset-1 rounded-sm">
+                                            <XIcon className="h-4 w-4" />
                                         </div>
-                                        <Separator orientation="vertical" className="flex min-h-6 h-full bg-[#FF9933]" />
-                                        <ChevronDown className="h-4 mx-2 text-[#FF9933] cursor-pointer" aria-hidden="true" />
+                                        <ChevronDown className="h-4 mx-2 text-[#321F1F]/60 cursor-pointer" aria-hidden="true" />
                                     </div>
                                 </div>
                             ) : (
                                 <div className="flex items-center justify-between w-full mx-auto">
-                                    {/* placeholder in saffron */}
-                                    <span className="text-sm text-white/50 mx-3">{placeholder}</span>
-                                    <ChevronDown className="h-4 cursor-pointer text-[#FF9933] mx-2" />
+                                    {/* placeholder */}
+                                    <span className="text-sm text-[#321F1F]/40 mx-3">{placeholder}</span>
+                                    <ChevronDown className="h-4 cursor-pointer text-[#321F1F]/50 mx-2" />
                                 </div>
                             )}
                         </Button>
@@ -668,13 +666,14 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                         aria-multiselectable="true"
                         aria-label="Available options"
                         className={cn(
-                            // popover: black bg, saffron border, saffron text
+                            // popover: white bg, soft dark border, dark text
                             "w-auto p-0 font-satoshi multiselect-popover",
-                            "bg-[#1A1A1A]  z-[999] border border-[#FF9933] text-[#FF9933]",
+                            "bg-white z-999  text-[#321F1F]",
+                            "shadow-md",
                             getPopoverAnimationClass(),
-                            screenSize === "mobile" && "w-[85vw] max-w-[280px]",
+                            screenSize === "mobile" && "w-[85vw] max-w-70",
                             screenSize === "tablet" && "w-[70vw] max-w-md",
-                            screenSize === "desktop" && "min-w-[100px]",
+                            screenSize === "desktop" && "min-w-25",
                             popoverClassName
                         )}
                         style={{
@@ -683,12 +682,11 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                             maxWidth: `min(${widthConstraints.maxWidth}, 85vw)`,
                             maxHeight: screenSize === "mobile" ? "70vh" : "60vh",
                             touchAction: "manipulation",
-                            // cascade white text into all shadcn children
-                            color: "white",
+                            color: "#321F1F",
                         }}
                         align="start"
                         onEscapeKeyDown={() => setIsPopoverOpen(false)}>
-                        <Command className="bg-[#1A1A1A]  text-white [&_[cmdk-input]]:text-white [&_[cmdk-input]::placeholder]:text-white/50 [&_[cmdk-item]]:text-white [&_[cmdk-group-heading]]:text-white/50 [&_[cmdk-item][aria-selected=true]]:bg-[#FF9933]/10 [&_[cmdk-item]:hover]:bg-[#FF9933]/10">
+                        <Command className="bg-white text-[#321F1F] [&_[cmdk-input]]:text-[#321F1F] [&_[cmdk-input]::placeholder]:text-[#321F1F]/40 [&_[cmdk-item]]:text-[#321F1F] [&_[cmdk-group-heading]]:text-[#321F1F]/50 [&_[cmdk-item][aria-selected=true]]:bg-[#f0eaea] [&_[cmdk-item]:hover]:bg-[#f0eaea]">
                             {searchable && (
                                 <CommandInput
                                     placeholder="Search options..."
@@ -697,7 +695,7 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                                     onValueChange={setSearchValue}
                                     aria-label="Search through available options"
                                     aria-describedby={`${multiSelectId}-search-help`}
-                                    className="text-white placeholder:text-white/50 border-b border-[#FF9933]/30"
+                                    className="text-[#321F1F]! placeholder:text-[#321F1F]! border-b border-[#321F1F]/10"
                                 />
                             )}
                             {searchable && (
@@ -711,7 +709,7 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                                     screenSize === "mobile" && "max-h-[50vh]",
                                     "overscroll-behavior-y-contain"
                                 )}>
-                                <CommandEmpty className="text-white/50 py-4 text-center text-sm">
+                                <CommandEmpty className="text-[#321F1F]/40 py-4 text-center text-sm">
                                     {emptyIndicator || "No results found."}
                                 </CommandEmpty>
                                 {!hideSelectAll && !searchValue && (
@@ -724,16 +722,16 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                                                 selectedValues.length === getAllOptions().filter((opt) => !opt.disabled).length
                                             }
                                             aria-label={`Select all ${getAllOptions().length} options`}
-                                            className="cursor-pointer text-white hover:bg-[#FF9933]/10 data-[selected=true]:bg-[#FF9933]/10">
+                                            className="cursor-pointer text-[#321F1F]! hover:bg-[#f0eaea] data-[selected=true]:bg-[#f0eaea]">
                                             <div
                                                 className={cn(
-                                                    "mr-2 flex h-4 w-4 items-center justify-center rounded-sm border border-[#FF9933]",
+                                                    "mr-2 flex h-4 w-4 items-center justify-center rounded-sm border border-[#321F1F]/40",
                                                     selectedValues.length === getAllOptions().filter((opt) => !opt.disabled).length
-                                                        ? "bg-[#FF9933] text-black"
-                                                        : "opacity-50 [&_svg]:invisible"
+                                                        ? "bg-[#321F1F] text-[#321F1F]"
+                                                        : "opacity-40 [&_svg]:invisible"
                                                 )}
                                                 aria-hidden="true">
-                                                <CheckIcon className="h-4 w-4 text-black" />
+                                                <CheckIcon className="h-4 w-4 text-white" />
                                             </div>
                                             <span>
                                                 (Select All{getAllOptions().length > 20 ? ` - ${getAllOptions().length} options` : ""})
@@ -743,7 +741,7 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                                 )}
                                 {isGroupedOptions(filteredOptions) ? (
                                     filteredOptions.map((group) => (
-                                        <CommandGroup key={group.heading} heading={group.heading} className="[&_[cmdk-group-heading]]:text-white/50">
+                                        <CommandGroup key={group.heading} heading={group.heading} className="[&_[cmdk-group-heading]]:text-[#321F1F]/50">
                                             {group.options.map((option) => {
                                                 const isSelected = selectedValues.includes(option.value);
                                                 return (
@@ -755,20 +753,20 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                                                         aria-disabled={option.disabled}
                                                         aria-label={`${option.label}${isSelected ? ", selected" : ", not selected"}${option.disabled ? ", disabled" : ""}`}
                                                         className={cn(
-                                                            "cursor-pointer text-white hover:bg-[#FF9933]/10 data-[selected=true]:bg-[#FF9933]/10",
+                                                            "cursor-pointer text-[#321F1F]! hover:bg-[#f0eaea] data-[selected=true]:bg-[#f0eaea]",
                                                             option.disabled && "opacity-50 cursor-not-allowed"
                                                         )}
                                                         disabled={option.disabled}>
                                                         <div
                                                             className={cn(
-                                                                "mr-2 flex h-4 w-4 items-center justify-center rounded-sm border border-[#FF9933]",
-                                                                isSelected ? "bg-[#FF9933] text-black" : "opacity-50 [&_svg]:invisible"
+                                                                "mr-2 flex h-4 w-4 items-center justify-center rounded-sm border border-[#321F1F]/40",
+                                                                isSelected ? "bg-[#321F1F] text-white" : "opacity-40 [&_svg]:invisible"
                                                             )}
                                                             aria-hidden="true">
-                                                            <CheckIcon className="h-4 w-4 text-black" />
+                                                            <CheckIcon className="h-4 w-4 text-white" />
                                                         </div>
                                                         {option.icon && (
-                                                            <option.icon className="mr-2 h-4 w-4 text-white" aria-hidden="true" />
+                                                            <option.icon className="mr-2 h-4 w-4 text-[#321F1F]" aria-hidden="true" />
                                                         )}
                                                         <span>{option.label}</span>
                                                     </CommandItem>
@@ -789,20 +787,20 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                                                     aria-disabled={option.disabled}
                                                     aria-label={`${option.label}${isSelected ? ", selected" : ", not selected"}${option.disabled ? ", disabled" : ""}`}
                                                     className={cn(
-                                                        "cursor-pointer text-white hover:bg-[#FF9933]/10 data-[selected=true]:bg-[#FF9933]/10",
+                                                        "cursor-pointer text-[#321F1F] hover:bg-[#f0eaea] data-[selected=true]:bg-[#f0eaea]",
                                                         option.disabled && "opacity-50 cursor-not-allowed"
                                                     )}
                                                     disabled={option.disabled}>
                                                     <div
                                                         className={cn(
-                                                            "mr-2 flex h-4 w-4 items-center justify-center rounded-sm border border-[#FF9933]",
-                                                            isSelected ? "bg-[#FF9933] text-black" : "opacity-50 [&_svg]:invisible"
+                                                            "mr-2 flex h-4 w-4 items-center justify-center rounded-sm border border-[#321F1F]/40",
+                                                            isSelected ? "bg-[#321F1F] text-white" : "opacity-40 [&_svg]:invisible"
                                                         )}
                                                         aria-hidden="true">
-                                                        <CheckIcon className="h-4 w-4 text-black" />
+                                                        <CheckIcon className="h-4 w-4 text-white" />
                                                     </div>
                                                     {option.icon && (
-                                                        <option.icon className="mr-2 h-4 w-4 text-white" aria-hidden="true" />
+                                                        <option.icon className="mr-2 h-4 w-4 text-[#321F1F]" aria-hidden="true" />
                                                     )}
                                                     <span>{option.label}</span>
                                                 </CommandItem>
@@ -810,22 +808,22 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                                         })}
                                     </CommandGroup>
                                 )}
-                                <CommandSeparator className="bg-[#FF9933]" />
+                                <CommandSeparator className="bg-[#321F1F]/10" />
                                 <CommandGroup>
                                     <div className="flex items-center justify-between">
                                         {selectedValues.length > 0 && (
                                             <>
                                                 <CommandItem
                                                     onSelect={handleClear}
-                                                    className="flex-1 justify-center cursor-pointer text-white hover:bg-[#FF9933]/10">
+                                                    className="flex-1 font-semibold justify-center cursor-pointer text-[#321F1F] hover:bg-[#f0eaea]">
                                                     {TranslateText[language].CLEAR}
                                                 </CommandItem>
-                                                <Separator orientation="vertical" className="flex min-h-6 h-full bg-[#FF9933]" />
+                                                <Separator orientation="vertical" className="flex min-h-6 h-full bg-[#321F1F]/10" />
                                             </>
                                         )}
                                         <CommandItem
                                             onSelect={() => setIsPopoverOpen(false)}
-                                            className="flex-1 justify-center cursor-pointer text-white hover:bg-[#FF9933]/10 max-w-full">
+                                            className="flex-1 CommandItem font-semibold justify-center cursor-pointer text-[#321F1F] hover:bg-[#f0eaea] max-w-full">
                                             {TranslateText[language].CLOSE}
                                         </CommandItem>
                                     </div>
@@ -837,8 +835,8 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                     {animation > 0 && selectedValues.length > 0 && (
                         <WandSparkles
                             className={cn(
-                                "cursor-pointer my-2 w-3 h-3 text-[#FF9933]",
-                                isAnimating ? "" : "text-[#FF9933]/50"
+                                "cursor-pointer my-2 w-3 h-3 text-[#321F1F]",
+                                isAnimating ? "" : "text-[#321F1F]/30"
                             )}
                             onClick={() => setIsAnimating(!isAnimating)}
                         />

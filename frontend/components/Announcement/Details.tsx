@@ -1,5 +1,4 @@
 import { formatDateInLanguage } from '@/lib/formatDate'
-import { LANGUAGE_CODES } from '@/lib/lan'
 import { Calendar, Landmark, LayoutGrid, Link, MapPin } from 'lucide-react'
 import { TranslateText } from "@/lib/translatetext"
 import { getCat } from '@/lib/categoryStyles'
@@ -15,8 +14,8 @@ type Props = {
 }
 
 const Row = ({ icon, children }: { icon: React.ReactNode; children: React.ReactNode }) => (
-    <div className="flex items-start gap-3 font-satoshi text-[13px] text-white/65 leading-snug">
-        <span className="mt-[1px] text-[#FF9933]/60 flex-shrink-0">{icon}</span>
+    <div className="flex items-start gap-3 font-satoshi text-[13px] text-[#321F1F]/60 leading-snug">
+        <span className="mt-[1px] text-[#ff3333]/50 flex-shrink-0">{icon}</span>
         <span>{children}</span>
     </div>
 )
@@ -25,7 +24,8 @@ const Details: React.FC<Props> = ({ lan, date, source, state, department, catego
     const cat = getCat(category)
 
     return (
-        <div className="w-fit min-w-[300px] border border-[#FF9933]/20 bg-[#1A1A1A] rounded-lg p-5 flex flex-col gap-3">
+        <div className="w-fit min-w-[300px] bg-white border border-[#ff3333]/15 rounded-xl p-5 flex flex-col gap-3">
+
             {/* Category badge */}
             <span
                 className="font-satoshi inline-flex items-center gap-[5px] self-start rounded px-[8px] py-[3px] text-[10px] font-bold tracking-[0.06em] uppercase"
@@ -39,7 +39,7 @@ const Details: React.FC<Props> = ({ lan, date, source, state, department, catego
                 {category}
             </span>
 
-            <div className="h-px bg-[#FF9933]/10" />
+            <div className="h-px bg-[#321F1F]/8" />
 
             <Row icon={<Calendar className="w-4 h-4" />}>
                 {formatDateInLanguage(date, lan)}
@@ -54,18 +54,19 @@ const Details: React.FC<Props> = ({ lan, date, source, state, department, catego
                 {category}
             </Row>
 
-            <div className="h-px bg-[#FF9933]/10" />
+            <div className="h-px bg-[#321F1F]/8" />
+
 
             <a
                 href={source}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="font-satoshi flex items-center gap-2 text-[13px] text-[#FF9933]/70 hover:text-[#FF9933] transition-colors duration-150"
+                className="font-satoshi flex items-center gap-2 text-[13px] text-[#ff3333]/60 hover:text-[#ff3333] transition-colors duration-150"
             >
                 <Link className="w-4 h-4 flex-shrink-0" />
                 {TranslateText[lan].VIEW_OFFICIAL_SOURCE}
             </a>
-        </div>
+        </div >
     )
 }
 

@@ -1,31 +1,63 @@
-import React, { useContext } from "react";
-import { motion } from "framer-motion";
-import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
-import { LanguageContext } from "@/context/Lan";
-import { TranslateText } from "@/lib/translatetext";
+import React from 'react'
+import { motion } from 'framer-motion'
+import Herotitle from './Herotitle'
+import InputBox from './InputBox'
+import HeroAnnoucments from './HeroAnnoucments'
+import { useHeroScroll } from '@/hooks/useHeroScroll'
+import { Announcement } from "@/types"
 
-const Hero: React.FC = () => {
-    const { language } = useContext(LanguageContext)
+type Props = {
+    StatesSelected: string[]
+    setSheetOpen: React.Dispatch<React.SetStateAction<boolean>>
+    SetStatesSelected: React.Dispatch<React.SetStateAction<string[]>>
+    sheetOpen: boolean
+    Announcements: Announcement[],
+    IsLoading: boolean,
+    SearchQuery: string,
+    SetSearchQuery: React.Dispatch<React.SetStateAction<string>>
+}
+
+const Hero: React.FC<Props> = ({
+    StatesSelected,
+    setSheetOpen,
+    SetStatesSelected,
+    sheetOpen,
+    Announcements,
+    IsLoading,
+    SearchQuery,
+    SetSearchQuery
+}) => {
+    const { titleOpacity, titleBlur, titleY, inputOpacity, inputY } = useHeroScroll()
+
     return (
-        <div className="ml-4">
-            <div className="space-y-1 flex flex-col">
-                <TextGenerateEffect
-                    words={TranslateText[language].ALL_GOVERNMENT_ANNOUNCEMENTS_IN_ONE_PLACE}
-                    className="text-2xl md:text-3xl font-satoshi font-semibold text-[#FF9933]"
-                    duration={0.6}
+        <div className="w-full h-auto md:h-screen bg-[url(/bg.png)] bg-cover bg-center flex flex-col gap-3 md:gap-6 pt-30">
+            <motion.div
+                style={{ opacity: titleOpacity, filter: titleBlur, y: titleY }}
+                className="will-change-transform"
+            >
+                <Herotitle />
+            </motion.div>
+
+            <motion.div
+                style={{ opacity: inputOpacity, y: inputY }}
+                className="will-change-transform px-6"
+            >
+                <InputBox
+                    StatesSelected={StatesSelected}
+                    setSheetOpen={setSheetOpen}
+                    SetStatesSelected={SetStatesSelected}
+                    sheetOpen={sheetOpen}
+                    SearchQuery={SearchQuery}
+                    SetSearchQuery={SetSearchQuery}
                 />
+            </motion.div>
 
-                <motion.span
-                    initial={{ opacity: 0, y: 16 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: 0.15, ease: "easeOut" }}
-                    className="text-sm md:text-base text-[#EAEAEA] font-satoshi"
-                >
-                    {TranslateText[language].EVERY_MINISTRY_EVERY_STATE_PLAIN_LANGUAGE}
-                </motion.span>
-            </div>
+            <HeroAnnoucments
+                announcements={Announcements}
+                IsLoading={IsLoading}
+            />
         </div>
-    );
-};
+    )
+}
 
-export default Hero;
+export default Hero

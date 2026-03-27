@@ -6,12 +6,9 @@ import { LanguageContext } from "@/context/Lan"
 import { GetTrendingIndiaAnnnouncements } from "@/api/announcements"
 import { IsLoadingContext } from "@/context/IsLoading"
 
-type Props = {
-    StatesSelected: string[],
-    DefaultsStatesApplied: string[]
-}
 
-const TrendingTitle: React.FC<Props> = ({ StatesSelected, DefaultsStatesApplied }) => {
+
+const TrendingTitle: React.FC = () => {
     const router = useRouter()
     const { SetIsLoading } = useContext(IsLoadingContext)
     const [TrendingAnnouncements, SetTrendingAnnouncements] = useState<TrendingAnnouncementTypes[]>([]);
@@ -23,9 +20,8 @@ const TrendingTitle: React.FC<Props> = ({ StatesSelected, DefaultsStatesApplied 
         const fetchTrendingAnnouncements = async () => {
             SetIsLoading(true);
             try {
-                const states = StatesSelected.length === 0 ? DefaultsStatesApplied : StatesSelected;
                 const response = await GetTrendingIndiaAnnnouncements(
-                    language, states, controller.signal
+                    language, controller.signal
                 ) as ResponseTrendingAnnouncementTypes;
 
                 if (!controller.signal.aborted) {
@@ -46,10 +42,10 @@ const TrendingTitle: React.FC<Props> = ({ StatesSelected, DefaultsStatesApplied 
         fetchTrendingAnnouncements();
         return () => controller.abort();
 
-    }, [language, StatesSelected, DefaultsStatesApplied]);
+    }, [language]);
 
     return (
-        <div className="w-[93vw] xl:w-[85vw] mx-auto border-t border-b border-black overflow-hidden">
+        <div className="w-[93vw] xl:w-[90%] mx-auto border-t border-b border-black overflow-hidden">
 
             <motion.div
                 className="flex whitespace-nowrap p-2"

@@ -1,10 +1,5 @@
-"use client";
-import React, { useContext } from "react";
+import React from "react";
 import { Announcement as AnnouncementTypes } from "@/types/index";
-import { Button } from "../../ui/button";
-import { LoaderCircle } from "lucide-react";
-import { LanguageContext } from "@/context/Lan";
-import { TranslateText } from "@/lib/translatetext";
 import AnnouncementCard from "./Announcement";
 import AnnouncementSkeleton from "./AnnouncementSkeleton";
 
@@ -15,7 +10,7 @@ type Props = {
     totalpage: number;
     IsLoading: boolean;
     IsLoadingMore: boolean;
-    handleMobileReset: () => void;
+    IsItHomePage?: boolean;
 };
 
 
@@ -26,60 +21,78 @@ export default function ShowAnnouncements({
     totalpage,
     IsLoading,
     IsLoadingMore,
-    handleMobileReset
+    IsItHomePage = true
 }: Props) {
-    const { language } = useContext(LanguageContext);
+    const sentinelRef = React.useRef<HTMLDivElement>(null);
+
+    React.useEffect(() => {
+        if (!sentinelRef.current) return;
+
+        const observer = new IntersectionObserver(
+            (entries) => {
+                const entry = entries[0];
+                if (entry.isIntersecting && page < totalpage && !IsLoadingMore) {
+                    LoadMoreData();
+                }
+            },
+            { threshold: 0.1 }
+        );
+
+        observer.observe(sentinelRef.current);
+        return () => observer.disconnect();
+    }, [page, totalpage, IsLoadingMore, LoadMoreData]);
 
     if (IsLoading) {
         return (
-            <div className="grid grid-cols-1 lg:grid-cols-2  xl:grid-cols-3 px-5 gap-5">
-                {Array.from({ length: 6 }).map((_, index) => (
+            <div className="mt-8 md:mt-0 w-[95%] md:w-[80%] mx-auto grid grid-cols-1 gap-x-8 gap-y-12">
+                {[...Array(10)].map((_, index) => (
                     <AnnouncementSkeleton key={index} />
                 ))}
             </div>
         );
     }
 
-    if (Announcements.length === 0 && !IsLoading) {
-        return (
-            <div className="p-8 h-full flex flex-col justify-center items-center gap-3">
-                <h3 className="text-white font-satoshi text-base font-semibold ">
-                    {TranslateText[language].NO_ANNOUNCEMENTS_FOUND}
-                </h3>
-                <Button
-                    onClick={handleMobileReset}
-                    className="w-fit hover:cursor-pointer h-fit p-2 bg-[#1A1A1A] text-white border border-[#FF9933]  text-[14px]  font-satoshi   font-semibold rounded-none"
-                >
-                    {TranslateText[language].RESET}
-                </Button>
-            </div>
-        );
-    }
-
     return (
-        <div className="w-full">
-            <div className="grid grid-cols-1 lg:grid-cols-2  xl:grid-cols-3 px-5 gap-5">
-                {Announcements.map((announcement) => (
-                    <div key={announcement.announcementId} className="h-full">
-                        <AnnouncementCard Announcement={announcement} />
+        <div className="mt-8 md:mt-0 w-[95%] md:w-[80%] mx-auto grid grid-cols-1 gap-x-8 gap-y-12">
+            {IsItHomePage &&
+                <>
+                    <div className="md:hidden">
+                        {Announcements.map((a) => (
+                            <AnnouncementCard key={a.announcementId} Announcement={a} />
+                        ))}
                     </div>
-                ))}
-            </div>
-            {page < totalpage && (
-                <div className="w-full flex justify-center mt-6 mb-10">
-                    <Button
-                        className="w-fit  text-[#FF9933]  p-6 hover:cursor-pointer hover:bg-[#FF9933]/10 font-satoshi  border border-[#FF9933] font-semibold rounded-none"
-                        disabled={IsLoadingMore}
-                        onClick={LoadMoreData}
-                        aria-label={IsLoadingMore ? "Loading more announcements" : "Load more announcements"}
-                    >
-                        {IsLoadingMore
-                            ? <LoaderCircle className="h-5 w-5 animate-spin text-[#FF9933]" />
-                            : TranslateText[language].LOAD_MORE
-                        }
-                    </Button>
+
+                    {/* md → xl: skip first 1 */}
+                    <div className="hidden md:grid xl:hidden grid-cols-1 gap-x-8 gap-y-12">
+                        {Announcements.slice(1).map((a) => (
+                            <AnnouncementCard key={a.announcementId} Announcement={a} />
+                        ))}
+                    </div>
+
+                    {/* xl+: skip first 3 */}
+                    <div className="hidden xl:grid grid-cols-1 gap-x-8 gap-y-12">
+                        {Announcements.slice(3).map((a) => (
+                            <AnnouncementCard key={a.announcementId} Announcement={a} />
+                        ))}
+                    </div>
+                </>
+            }
+            {
+                !IsItHomePage && <div>
+                    {Announcements.map((a) => (
+                        <AnnouncementCard key={a.announcementId} Announcement={a} />
+                    ))}
                 </div>
+            }
+            {IsLoadingMore && (
+                [...Array(5)].map((_, index) => (
+                    <AnnouncementSkeleton key={`more-${index}`} />
+                ))
+            )}
+            {page < totalpage && (
+                <div ref={sentinelRef} className="h-1 col-span-1" />
             )}
         </div>
+
     );
 }

@@ -3,25 +3,20 @@ import { getAllAnnouncements } from "@/api/announcements";
 import { Announcement as AnnouncementTypes, AnnouncementsResponse } from "@/types";
 import { LanguageContext } from '@/context/Lan';
 import { Currentdate } from "@/context/Currentdate";
-import AnnoucementsHeader from '@/components/AnnoucementsHeader';
 import { GetStateCode } from "@/lib/GetStateCode"
 import { LocationContext } from "@/context/LocationProvider"
 import { TranslateText } from "@/lib/translatetext"
-import SearchInputBox from './SearchInputbox';
-import Hero from './Hero';
 import { buildCacheKey, withCache } from "@/lib/lsCache";
 import ShowAnnouncements from './ShowAnnouncements';
-import dynamic from "next/dynamic";
-import Loading from "./Loading"
+import Hero from './Hero';
+import StickyNav from './StickyNav';
+import { useHeroScroll } from '@/hooks/useHeroScroll';
 
-const IndiaMap = dynamic(() => import("@/components/IndiaMap"), {
-    ssr: false,
-});
 
 const Main: React.FC = () => {
     const { language } = useContext(LanguageContext);
-    const [SearchInput, SetSearchInput] = useState<string>("")
     const [StatesSelected, SetStatesSelected] = useState<string[]>([]);
+    const [SearchQuery, SetSearchQuery] = useState<string>("");
     const [sheetOpen, setSheetOpen] = useState(false)
     const [CategorySelected, SetCategorySelected] = useState<string>(`${TranslateText[language].ALL_DEPARMENTS}`);
     const [totalPages, settotalPages] = useState<number>(0)
@@ -29,22 +24,17 @@ const Main: React.FC = () => {
     const [IsLoading, SetIsLoading] = useState<boolean>(false)
     const [IsLoadingMore, SetIsLoadingMore] = useState<boolean>(false)
     const firstLoad = useRef(true);
-    const [DefaultsReady, SetDefaultsReady] = useState(false);
-    const [IsMapLoading, SetIsMapLoading] = useState(true);
-    const [IsAnnouncementsLoading, SetIsAnnouncementsLoading] = useState(true);
     const [Announcements, SetAnnouncements] = useState<AnnouncementTypes[]>([])
     const [page, Setpage] = useState<number>(1)
     const [limit] = useState<number>(10)
+    const { scrolled } = useHeroScroll();
 
-    const { startdate, endDate, onChangeEndDate, onChangeStartDate } = useContext(Currentdate)
+    const { startdate, endDate } = useContext(Currentdate)
     const { state_ut } = useContext(LocationContext)
 
     const [DefaultsStatesApplied, SetDefaultsStatesApplied] = useState<string[]>([])
 
     const [trigger, setTrigger] = useState(0);
-
-    const [ShowIndiaMap, SetShowIndiaMap] = useState<boolean>(true)
-
     const userStateCode = GetStateCode(state_ut, language);
 
     const fetchGetIndiaAnnouncements = async (
@@ -55,25 +45,16 @@ const Main: React.FC = () => {
 
         if (append) SetIsLoadingMore(true);
         else SetIsLoading(true);
-        if (StatesSelected.length === 0) {
-            SetIsLoading(false);
-            SetIsAnnouncementsLoading(false);
-            return;
-        }
 
         try {
 
-            const key = buildCacheKey("announcements", { language, startdate, endDate, page, states: StatesSelected, search: SearchInput, category: CategorySelected });
+            const category = CategorySelected === TranslateText[language].ALL_DEPARMENTS ? "" : CategorySelected;
 
-            const SelectedCategory = CategorySelected === TranslateText[language].ALL_DEPARMENTS ? "" : CategorySelected;
-
-            console.log(SelectedCategory, "SelectedCategory", TranslateText[language].ALL_DEPARMENTS)
-
+            const key = buildCacheKey("announcements", { language, startdate, endDate, page, limit, category });
 
             const response = await withCache(key, "announcements", async () => (
                 await getAllAnnouncements(
-                    language, startdate, endDate, pageNumber, limit,
-                    StatesSelected, SelectedCategory, SearchInput, signal
+                    language, startdate, endDate, pageNumber, limit, category, StatesSelected, signal
                 ) as AnnouncementsResponse
             ));
 
@@ -90,7 +71,6 @@ const Main: React.FC = () => {
             if (!signal.aborted) {
                 SetIsLoading(false);
                 SetIsLoadingMore(false);
-                SetIsAnnouncementsLoading(false);
             }
         }
     }
@@ -111,9 +91,7 @@ const Main: React.FC = () => {
         language,
         state_ut,
         trigger,
-        startdate,
-        endDate,
-        StatesSelected
+        DefaultsStatesApplied
     ]);
 
     useEffect(() => {
@@ -127,7 +105,6 @@ const Main: React.FC = () => {
             SetStatesSelected([INDIA_GOVT_CODE]);
             SetDefaultsStatesApplied([INDIA_GOVT_CODE]);
         }
-        SetDefaultsReady(true);
     }, [state_ut, language]);
 
     useEffect(() => {
@@ -137,11 +114,6 @@ const Main: React.FC = () => {
             return () => controller.abort();
         }
     }, [page]);
-
-    useEffect(() => {
-        SetIsAnnouncementsLoading(true);
-        SetIsMapLoading(true);
-    }, [language])
 
     const handleSearch = () => {
         if (StatesSelected.length === 0 && DefaultsStatesApplied.length === 0) {
@@ -159,148 +131,47 @@ const Main: React.FC = () => {
         }
     }
 
-    const handleStateClick = (state: string | null) => {
-        if (!state) return;
-        SetStatesSelected((prev) => {
-            if (prev.includes(state)) {
-                return prev.filter((s) => s !== state);
-            } else {
-                return [...prev, state];
-            }
-        })
-    }
-
     useEffect(() => {
         SetCategorySelected(TranslateText[language].ALL_DEPARMENTS);
     }, [language]);
 
-    useEffect(() => {
-        if (firstLoad.current) return;
-        const timer = setTimeout(() => handleSearch(), 500);
-        return () => clearTimeout(timer);
-    }, [SearchInput]);
-
-    const handleMobileApply = (
-        dept: string,
-        category: string,
-        states: string[],
-        startDate: Date | null,
-        endDate: Date | null
-    ) => {
-        SetCategorySelected(category)
-        SetStatesSelected(states)
-        if (startDate) onChangeStartDate(startDate)
-        if (endDate) onChangeEndDate(endDate)
-        setSheetOpen(false)
-    }
-
-    const handleMobileReset = () => {
-        SetSearchInput("")
-        SetCategorySelected("")
-        const today = new Date();
-        const ThirteenDaysAgo = new Date();
-        ThirteenDaysAgo.setDate(today.getDate() - 30);
-        onChangeStartDate(ThirteenDaysAgo);
-        onChangeEndDate(today);
-        if (state_ut) {
-            const INDIA_GOVT_CODE = TranslateText[language]["MULTISELECT_OPTIONS"][TranslateText[language]["MULTISELECT_OPTIONS"].length - 1].value;
-            SetStatesSelected([INDIA_GOVT_CODE, userStateCode]);
-            SetDefaultsStatesApplied([INDIA_GOVT_CODE, userStateCode]);
-        }
-        else {
-            const INDIA_GOVT_CODE = TranslateText[language]["MULTISELECT_OPTIONS"][TranslateText[language]["MULTISELECT_OPTIONS"].length - 1].value;
-            SetStatesSelected([INDIA_GOVT_CODE]);
-            SetDefaultsStatesApplied([INDIA_GOVT_CODE]);
-        }
-        setSheetOpen(false)
-    }
-
-    const isGlobalLoading = !DefaultsReady || (IsAnnouncementsLoading && IsMapLoading);
-
-    if (isGlobalLoading) {
-        return <Loading />
-    }
 
     return (
-        <section className="flex flex-col gap-0 h-screen w-screen overflow-hidden">
-            <AnnoucementsHeader />
-            <div className='md:hidden block'>
-                <Hero />
-            </div>
-            <div className='md:hidden block mt-2 md:mt-0'>
-                <SearchInputBox
-                    StatesSelected={StatesSelected}
-                    SetStatesSelected={SetStatesSelected}
-                    SearchInput={SearchInput}
-                    SetSearchInput={SetSearchInput}
-                    onSearch={handleSearch}
-                    categoryOptions={categoryOptions}
-                    setCategoryOptions={setCategoryOptions}
-                    CategorySelected={CategorySelected}
-                    SetCategorySelected={SetCategorySelected}
-                    handleMobileApply={handleMobileApply}
-                    handleMobileReset={handleMobileReset}
-                    sheetOpen={sheetOpen}
-                    setSheetOpen={setSheetOpen}
-                />
-            </div>
-
-
-            <div className="flex flex-col md:flex-row flex-1 min-h-0 overflow-hidden mt-2 md:mt-0">
-
-                <div className={`flex-shrink-0 w-[98%] mx-auto md:0 md:w-[380px] ${ShowIndiaMap ? "h-[35vh] md:h-full" : "h-auto"}  overflow-hidden`}>
-                    <IndiaMap
-                        ShowIndiaMap={ShowIndiaMap}
-                        SetShowIndiaMap={SetShowIndiaMap}
-                        announcements={Announcements}
-                        selectedStates={StatesSelected}
-                        onStateClick={handleStateClick}
-                        IsMapLoading={IsMapLoading}
-                        SetIsMapLoading={SetIsMapLoading}
-                    />
-                </div>
-
-
-                <div className="flex-1 flex flex-col gap-4 min-h-0 overflow-hidden">
-                    <div className='md:block hidden'>
-                        <Hero />
-                    </div>
-                    <div className='md:block hidden'>
-                        <SearchInputBox
-                            StatesSelected={StatesSelected}
-                            SetStatesSelected={SetStatesSelected}
-                            SearchInput={SearchInput}
-                            SetSearchInput={SetSearchInput}
-                            onSearch={handleSearch}
-                            categoryOptions={categoryOptions}
-                            setCategoryOptions={setCategoryOptions}
-                            CategorySelected={CategorySelected}
-                            SetCategorySelected={SetCategorySelected}
-                            handleMobileApply={handleMobileApply}
-                            handleMobileReset={handleMobileReset}
-                            sheetOpen={sheetOpen}
-                            setSheetOpen={setSheetOpen}
-                        />
-                    </div>
-
-                    {/* ── Only this div scrolls ── */}
-                    <div className="flex-1 min-h-0 overflow-y-auto">
-                        <ShowAnnouncements
-                            Announcements={Announcements}
-                            LoadMoreData={OnLoadMoredata}
-                            page={page}
-                            totalpage={totalPages}
-                            IsLoading={IsLoading}
-                            IsLoadingMore={IsLoadingMore}
-                            handleMobileReset={handleMobileReset}
-                        />
-                    </div>
-
-                </div>
-            </div>
+        <section className="flex flex-col min-h-screen">
+            <StickyNav
+                scrolled={scrolled}
+                StatesSelected={StatesSelected}
+                onApply={handleSearch}
+                setSheetOpen={setSheetOpen}
+                SetStatesSelected={SetStatesSelected}
+                sheetOpen={sheetOpen}
+                categoryOptions={categoryOptions}
+                setCategoryOptions={setCategoryOptions}
+                CategorySelected={CategorySelected}
+                SetCategorySelected={SetCategorySelected}
+                SearchQuery={SearchQuery}
+                SetSearchQuery={SetSearchQuery}
+            />
+            <Hero
+                StatesSelected={StatesSelected}
+                setSheetOpen={setSheetOpen}
+                SetStatesSelected={SetStatesSelected}
+                sheetOpen={sheetOpen}
+                Announcements={Announcements}
+                IsLoading={IsLoading}
+                SearchQuery={SearchQuery}
+                SetSearchQuery={SetSearchQuery}
+            />
+            <ShowAnnouncements
+                Announcements={Announcements}
+                IsLoading={IsLoading}
+                IsLoadingMore={IsLoadingMore}
+                LoadMoreData={OnLoadMoredata}
+                page={page}
+                totalpage={totalPages}
+            />
         </section>
-
-    );
+    )
 };
 
 export default Main;

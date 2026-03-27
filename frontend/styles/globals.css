@@ -6,9 +6,9 @@
 
 @font-face {
   font-family: 'Satoshi-Light';
-  src: url('/fonts/Satoshi-Light.woff2') format('woff2'),
-    url('/fonts/Satoshi-Light.woff') format('woff'),
-    url('/fonts/Satoshi-Light.ttf') format('truetype');
+  src: url('/fonts/santhosi/Satoshi-Light.woff2') format('woff2'),
+    url('/fonts/santhosi/Satoshi-Light.woff') format('woff'),
+    url('/fonts/santhosi/Satoshi-Light.ttf') format('truetype');
   font-weight: 300;
   font-display: swap;
   font-style: normal;
@@ -16,9 +16,9 @@
 
 @font-face {
   font-family: 'Satoshi-LightItalic';
-  src: url('/fonts/Satoshi-LightItalic.woff2') format('woff2'),
-    url('/fonts/Satoshi-LightItalic.woff') format('woff'),
-    url('/fonts/Satoshi-LightItalic.ttf') format('truetype');
+  src: url('/fonts/santhosi/Satoshi-LightItalic.woff2') format('woff2'),
+    url('/fonts/santhosi/Satoshi-LightItalic.woff') format('woff'),
+    url('/fonts/santhosi/Satoshi-LightItalic.ttf') format('truetype');
   font-weight: 300;
   font-display: swap;
   font-style: italic;
@@ -26,9 +26,9 @@
 
 @font-face {
   font-family: 'Satoshi-Regular';
-  src: url('/fonts/Satoshi-Regular.woff2') format('woff2'),
-    url('/fonts/Satoshi-Regular.woff') format('woff'),
-    url('/fonts/Satoshi-Regular.ttf') format('truetype');
+  src: url('/fonts/santhosi/Satoshi-Regular.woff2') format('woff2'),
+    url('/fonts/santhosi/Satoshi-Regular.woff') format('woff'),
+    url('/fonts/santhosi/Satoshi-Regular.ttf') format('truetype');
   font-weight: 400;
   font-display: swap;
   font-style: normal;
@@ -36,9 +36,9 @@
 
 @font-face {
   font-family: 'Satoshi-Italic';
-  src: url('/fonts/Satoshi-Italic.woff2') format('woff2'),
-    url('/fonts/Satoshi-Italic.woff') format('woff'),
-    url('/fonts/Satoshi-Italic.ttf') format('truetype');
+  src: url('/fonts/santhosi/Satoshi-Italic.woff2') format('woff2'),
+    url('/fonts/santhosi/Satoshi-Italic.woff') format('woff'),
+    url('/fonts/santhosi/Satoshi-Italic.ttf') format('truetype');
   font-weight: 400;
   font-display: swap;
   font-style: italic;
@@ -46,9 +46,9 @@
 
 @font-face {
   font-family: 'Satoshi-Medium';
-  src: url('/fonts/Satoshi-Medium.woff2') format('woff2'),
-    url('/fonts/Satoshi-Medium.woff') format('woff'),
-    url('/fonts/Satoshi-Medium.ttf') format('truetype');
+  src: url('/fonts/santhosi/Satoshi-Medium.woff2') format('woff2'),
+    url('/fonts/santhosi/Satoshi-Medium.woff') format('woff'),
+    url('/fonts/santhosi/Satoshi-Medium.ttf') format('truetype');
   font-weight: 500;
   font-display: swap;
   font-style: normal;
@@ -56,9 +56,9 @@
 
 @font-face {
   font-family: 'Satoshi-MediumItalic';
-  src: url('/fonts/Satoshi-MediumItalic.woff2') format('woff2'),
-    url('/fonts/Satoshi-MediumItalic.woff') format('woff'),
-    url('/fonts/Satoshi-MediumItalic.ttf') format('truetype');
+  src: url('/fonts/santhosi/Satoshi-MediumItalic.woff2') format('woff2'),
+    url('/fonts/santhosi/Satoshi-MediumItalic.woff') format('woff'),
+    url('/fonts/santhosi/Satoshi-MediumItalic.ttf') format('truetype');
   font-weight: 500;
   font-display: swap;
   font-style: italic;
@@ -66,9 +66,9 @@
 
 @font-face {
   font-family: 'Satoshi-Bold';
-  src: url('/fonts/Satoshi-Bold.woff2') format('woff2'),
-    url('/fonts/Satoshi-Bold.woff') format('woff'),
-    url('/fonts/Satoshi-Bold.ttf') format('truetype');
+  src: url('/fonts/santhosi/Satoshi-Bold.woff2') format('woff2'),
+    url('/fonts/santhosi/Satoshi-Bold.woff') format('woff'),
+    url('/fonts/santhosi/Satoshi-Bold.ttf') format('truetype');
   font-weight: 700;
   font-display: swap;
   font-style: normal;
@@ -76,9 +76,9 @@
 
 @font-face {
   font-family: 'Satoshi-BoldItalic';
-  src: url('/fonts/Satoshi-BoldItalic.woff2') format('woff2'),
-    url('/fonts/Satoshi-BoldItalic.woff') format('woff'),
-    url('/fonts/Satoshi-BoldItalic.ttf') format('truetype');
+  src: url('/fonts/santhosi/Satoshi-BoldItalic.woff2') format('woff2'),
+    url('/fonts/santhosi/Satoshi-BoldItalic.woff') format('woff'),
+    url('/fonts/santhosi/Satoshi-BoldItalic.ttf') format('truetype');
   font-weight: 700;
   font-display: swap;
   font-style: italic;
@@ -86,9 +86,9 @@
 
 @font-face {
   font-family: 'Satoshi-Black';
-  src: url('/fonts/Satoshi-Black.woff2') format('woff2'),
-    url('/fonts/Satoshi-Black.woff') format('woff'),
-    url('/fonts/Satoshi-Black.ttf') format('truetype');
+  src: url('/fonts/santhosi/Satoshi-Black.woff2') format('woff2'),
+    url('/fonts/santhosi/Satoshi-Black.woff') format('woff'),
+    url('/fonts/santhosi/Satoshi-Black.ttf') format('truetype');
   font-weight: 900;
   font-display: swap;
   font-style: normal;
@@ -96,9 +96,9 @@
 
 @font-face {
   font-family: 'Satoshi-BlackItalic';
-  src: url('/fonts/Satoshi-BlackItalic.woff2') format('woff2'),
-    url('/fonts/Satoshi-BlackItalic.woff') format('woff'),
-    url('/fonts/Satoshi-BlackItalic.ttf') format('truetype');
+  src: url('/fonts/santhosi/Satoshi-BlackItalic.woff2') format('woff2'),
+    url('/fonts/santhosi/Satoshi-BlackItalic.woff') format('woff'),
+    url('/fonts/santhosi/Satoshi-BlackItalic.ttf') format('truetype');
   font-weight: 900;
   font-display: swap;
   font-style: italic;
@@ -107,9 +107,9 @@
 
 @font-face {
   font-family: 'Satoshi-Variable';
-  src: url('/fonts/Satoshi-Variable.woff2') format('woff2'),
-    url('/fonts/Satoshi-Variable.woff') format('woff'),
-    url('/fonts/Satoshi-Variable.ttf') format('truetype');
+  src: url('/fonts/santhosi/Satoshi-Variable.woff2') format('woff2'),
+    url('/fonts/santhosi/Satoshi-Variable.woff') format('woff'),
+    url('/fonts/santhosi/Satoshi-Variable.ttf') format('truetype');
   font-weight: 300 900;
   font-display: swap;
   font-style: normal;
@@ -117,13 +117,220 @@
 
 @font-face {
   font-family: 'Satoshi-VariableItalic';
-  src: url('/fonts/Satoshi-VariableItalic.woff2') format('woff2'),
-    url('/fonts/Satoshi-VariableItalic.woff') format('woff'),
-    url('/fonts/Satoshi-VariableItalic.ttf') format('truetype');
+  src: url('/fonts/santhosi/Satoshi-VariableItalic.woff2') format('woff2'),
+    url('/fonts/santhosi/Satoshi-VariableItalic.woff') format('woff'),
+    url('/fonts/santhosi/Satoshi-VariableItalic.ttf') format('truetype');
   font-weight: 300 900;
   font-display: swap;
   font-style: italic;
 }
+
+@font-face {
+  font-family: 'Tanker-Regular';
+  src: url('/fonts/Tanker/Tanker-Regular.woff2') format('woff2'),
+    url('/fonts/Tanker/Tanker-Regular.woff') format('woff'),
+    url('/fonts/Tanker/Tanker-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-display: swap;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Literata-ExtraLight';
+  src: url('/fonts/Literata/Literata-ExtraLight.woff2') format('woff2'),
+    url('/fonts/Literata/Literata-ExtraLight.woff') format('woff'),
+    url('/fonts/Literata/Literata-ExtraLight.ttf') format('truetype');
+  font-weight: 200;
+  font-display: swap;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Literata-ExtraLightItalic';
+  src: url('/fonts/Literata/Literata-ExtraLightItalic.woff2') format('woff2'),
+    url('/fonts/Literata/Literata-ExtraLightItalic.woff') format('woff'),
+    url('/fonts/Literata/Literata-ExtraLightItalic.ttf') format('truetype');
+  font-weight: 200;
+  font-display: swap;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Literata-Light';
+  src: url('/fonts/Literata/Literata-Light.woff2') format('woff2'),
+    url('/fonts/Literata/Literata-Light.woff') format('woff'),
+    url('/fonts/Literata/Literata-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-display: swap;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Literata-LightItalic';
+  src: url('/fonts/Literata/Literata-LightItalic.woff2') format('woff2'),
+    url('/fonts/Literata/Literata-LightItalic.woff') format('woff'),
+    url('/fonts/Literata/Literata-LightItalic.ttf') format('truetype');
+  font-weight: 300;
+  font-display: swap;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Literata-Regular';
+  src: url('/fonts/Literata/Literata-Regular.woff2') format('woff2'),
+    url('/fonts/Literata/Literata-Regular.woff') format('woff'),
+    url('/fonts/Literata/Literata-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-display: swap;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Literata-Italic';
+  src: url('/fonts/Literata/Literata-Italic.woff2') format('woff2'),
+    url('/fonts/Literata/Literata-Italic.woff') format('woff'),
+    url('/fonts/Literata/Literata-Italic.ttf') format('truetype');
+  font-weight: 400;
+  font-display: swap;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Literata-Medium';
+  src: url('/fonts/Literata/Literata-Medium.woff2') format('woff2'),
+    url('/fonts/Literata/Literata-Medium.woff') format('woff'),
+    url('/fonts/Literata/Literata-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-display: swap;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Literata-MediumItalic';
+  src: url('/fonts/Literata/Literata-MediumItalic.woff2') format('woff2'),
+    url('/fonts/Literata/Literata-MediumItalic.woff') format('woff'),
+    url('/fonts/Literata/Literata-MediumItalic.ttf') format('truetype');
+  font-weight: 500;
+  font-display: swap;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Literata-SemiBold';
+  src: url('/fonts/Literata/Literata-SemiBold.woff2') format('woff2'),
+    url('/fonts/Literata/Literata-SemiBold.woff') format('woff'),
+    url('/fonts/Literata/Literata-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-display: swap;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Literata-SemiBoldItalic';
+  src: url('/fonts/Literata/Literata-SemiBoldItalic.woff2') format('woff2'),
+    url('/fonts/Literata/Literata-SemiBoldItalic.woff') format('woff'),
+    url('/fonts/Literata/Literata-SemiBoldItalic.ttf') format('truetype');
+  font-weight: 600;
+  font-display: swap;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Literata-Bold';
+  src: url('/fonts/Literata/Literata-Bold.woff2') format('woff2'),
+    url('/fonts/Literata/Literata-Bold.woff') format('woff'),
+    url('/fonts/Literata/Literata-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-display: swap;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Literata-BoldItalic';
+  src: url('/fonts/Literata/Literata-BoldItalic.woff2') format('woff2'),
+    url('/fonts/Literata/Literata-BoldItalic.woff') format('woff'),
+    url('/fonts/Literata/Literata-BoldItalic.ttf') format('truetype');
+  font-weight: 700;
+  font-display: swap;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Literata-ExtraBold';
+  src: url('/fonts/Literata/Literata-ExtraBold.woff2') format('woff2'),
+    url('/fonts/Literata/Literata-ExtraBold.woff') format('woff'),
+    url('/fonts/Literata/Literata-ExtraBold.ttf') format('truetype');
+  font-weight: 800;
+  font-display: swap;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Literata-ExtraBoldItalic';
+  src: url('/fonts/Literata/Literata-ExtraBoldItalic.woff2') format('woff2'),
+    url('/fonts/Literata/Literata-ExtraBoldItalic.woff') format('woff'),
+    url('/fonts/Literata/Literata-ExtraBoldItalic.ttf') format('truetype');
+  font-weight: 800;
+  font-display: swap;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Literata-Black';
+  src: url('/fonts/Literata/Literata-Black.woff2') format('woff2'),
+    url('/fonts/Literata/Literata-Black.woff') format('woff'),
+    url('/fonts/Literata/Literata-Black.ttf') format('truetype');
+  font-weight: 900;
+  font-display: swap;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Literata-BlackItalic';
+  src: url('/fonts/Literata/Literata-BlackItalic.woff2') format('woff2'),
+    url('/fonts/Literata/Literata-BlackItalic.woff') format('woff'),
+    url('/fonts/Literata/Literata-BlackItalic.ttf') format('truetype');
+  font-weight: 900;
+  font-display: swap;
+  font-style: italic;
+}
+
+/**
+* This is a variable font
+* You can control variable axes as shown below:
+* font-variation-settings: wght 900.0opsz 7.0;
+*
+* available axes:
+'wght' (range from 200.0 to 900.0'opsz' (range from 7.0 to 72.0
+*/
+@font-face {
+  font-family: 'Literata-Variable';
+  src: url('/fonts/Literata/Literata-Variable.woff2') format('woff2'),
+    url('/fonts/Literata/Literata-Variable.woff') format('woff'),
+    url('/fonts/Literata/Literata-Variable.ttf') format('truetype');
+  font-weight: 200 900;
+  font-display: swap;
+  font-style: normal;
+}
+
+/**
+* This is a variable font
+* You can control variable axes as shown below:
+* font-variation-settings: wght 900.0opsz 7.0;
+*
+* available axes:
+'wght' (range from 200.0 to 900.0'opsz' (range from 7.0 to 72.0
+*/
+@font-face {
+  font-family: 'Literata-VariableItalic';
+  src: url('/fonts/Literata/Literata-VariableItalic.woff2') format('woff2'),
+    url('/fonts/Literata/Literata-VariableItalic.woff') format('woff'),
+    url('/fonts/Literata/Literata-VariableItalic.ttf') format('truetype');
+  font-weight: 200 900;
+  font-display: swap;
+  font-style: italic;
+}
+
 
 
 @custom-variant dark (&:is(.dark *));
@@ -171,6 +378,8 @@
   --font-mono: 'Courier New', Courier, monospace;
   --font-anton: 'Anton', sans-serif;
   --font-satoshi: 'Satoshi-Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-tanker: 'Tanker-Regular', serif;
+  --font-literata: 'Literata-Variable', serif;
 }
 
 /* ─── Tailwind v4 theme — generates font-* utility classes ─── */
@@ -223,6 +432,8 @@
   --font-mono: var(--font-mono);
   --font-anton: var(--font-anton);
   --font-satoshi: var(--font-satoshi);
+  --font-tanker: var(--font-tanker);
+  --font-literata: var(--font-literata);
 }
 
 /* ─── Dark mode ─── */
@@ -288,21 +499,17 @@ body {
   -moz-osx-font-smoothing: grayscale;
   background-size: cover;
   background-position: center;
-  background: radial-gradient(circle at 20% 20%, rgba(255, 153, 51, 0.08), transparent 40%),
-    radial-gradient(circle at 80% 0%, rgba(255, 153, 51, 0.05), transparent 40%),
-    #050505;
+  background-color: #f7f2f2;
 }
 
 h1 {
   font-size: 2.2rem;
-  font-family: var(--font-display);
   font-weight: 700;
   line-height: 1.2;
 }
 
 h2 {
   font-size: 1.2rem;
-  font-family: var(--font-display);
   font-weight: 700;
   line-height: 1.3;
 }
@@ -310,7 +517,6 @@ h2 {
 
 h4 {
   font-size: 1.8rem;
-  font-family: var(--font-display);
   font-weight: 700;
   line-height: 1.4;
   color: black;
@@ -318,7 +524,6 @@ h4 {
 
 h5 {
   font-size: 1.4rem;
-  font-family: var(--font-body);
   font-weight: 700;
   line-height: 1.4;
   color: #464646;
@@ -326,7 +531,6 @@ h5 {
 
 h6 {
   font-size: 1rem;
-  font-family: var(--font-body);
   font-weight: 700;
   line-height: 1.4;
 }
@@ -488,14 +692,6 @@ input {
 }
 
 
-/* ─── MultiSelect popover text color ─── */
-.multiselect-popover [cmdk-item],
-.multiselect-popover [cmdk-input],
-.multiselect-popover [cmdk-group-heading],
-.multiselect-popover [cmdk-empty] {
-  color: white !important;
-}
-
 .multiselect-popover [cmdk-input]::placeholder {
   color: #FF9933 !important;
   opacity: 0.5;
@@ -503,4 +699,16 @@ input {
 
 .text-multiselect {
   color: #355b95;
+}
+
+.red-color {
+  color: #ff3333;
+}
+
+.text-color {
+  color: #321F1F;
+}
+
+.CommandItem {
+  color: #321F1F;
 }

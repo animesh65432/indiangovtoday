@@ -10,23 +10,45 @@ import {
 import { optionsforLanguages } from "@/lib/lan"
 import Logo from './ui/Logo';
 import { TranslateText } from '@/lib/translatetext';
+import { Button } from './ui/button';
+import { useRouter } from "next/navigation"
 
-const AnnoucementsHeader: React.FC = () => {
+type Props = {
+    scrolled: boolean,
+    IsBackButton?: boolean
+}
+
+const AnnoucementsHeader: React.FC<Props> = ({ IsBackButton = false, scrolled }) => {
     const { language, onSelectLanguage } = useContext(LanguageContext)
+    const router = useRouter()
+
+    const handlePushback = () => {
+        router.back()
+    }
 
     return (
-        <header className='h-16 flex items-center justify-between w-[98%] mx-auto mt-4 px-2'>
+        <header className="flex items-center w-[95%] md:w-[80%] mx-auto mt-4">
 
-            {/* Logo */}
-            <nav className='flex items-center'>
+            {/* Left (empty spacer) */}
+            {!IsBackButton && <div className="flex-1 md:block hidden" />}
+            {IsBackButton && <div className='flex-1'>
+                <Button
+                    onClick={handlePushback}
+                    className='font-tanker text-[#321F1F] px-5 border  border-[#321F1F] hover:cursor-pointer'>
+                    {TranslateText[language].BACK}
+                </Button>
+            </div>}
+
+            {/* Center Logo */}
+            <div className="flex justify-start md:justify-center flex-1">
                 <Logo
                     fst={TranslateText[language].INDIAN}
                     snd={TranslateText[language].GOVTODAY}
                 />
-            </nav>
+            </div>
 
-            {/* Language Selector */}
-            <nav>
+            {/* Right Select */}
+            <div className="flex justify-end flex-1">
                 <Select
                     onValueChange={onSelectLanguage}
                     value={language}
@@ -34,44 +56,37 @@ const AnnoucementsHeader: React.FC = () => {
                     <SelectTrigger
                         IsLanguageSelect={true}
                         className="
-                        text-[#EAEAEA]
-                        bg-[#1A1A1A] 
-                        backdrop-blur-md
-                        border border-[#FF9933]/30
-                        uppercase text-[0.65rem]
-                        font-inter font-semibold tracking-wider
-                        rounded-none
-                        px-3 py-2
-
-                        hover:border-[#FF9933]
-                        hover:bg-[#1A1A1A]
-                        transition-all duration-200
-
-                        focus:ring-1 focus:ring-[#FF9933]
-                    "
+          backdrop-blur-md
+          border border-[#321F1F]
+          uppercase text-[0.7rem] md:text-[0.8rem]
+          font-tanker tracking-wider
+          rounded-none
+          px-3 py-2
+          text-[#321F1F]
+        "
                     >
                         <SelectValue placeholder="Language" />
                     </SelectTrigger>
 
-                    <SelectContent className='z-[999] bg-[#1A1A1A]  border border-[#FF9933]/30 rounded-md'>
+                    <SelectContent className='z-[999] [&_svg]:text-[#321F1F] border border-[#321F1F] rounded-md'>
                         {optionsforLanguages.map((lan) => (
                             <SelectItem
                                 key={lan.label}
                                 value={lan.label}
                                 className="
-                                font-satoshi
-                                text-[#EAEAEA]
-                                hover:bg-[#FF9933]/10
-                                focus:bg-[#FF9933]/20
-                                cursor-pointer
-                            "
+              font-satoshi
+              text-[#321F1F]
+              hover:bg-gray-100
+              cursor-pointer
+            "
                             >
                                 {lan.label}
                             </SelectItem>
                         ))}
                     </SelectContent>
                 </Select>
-            </nav>
+            </div>
+
         </header>
     )
 }

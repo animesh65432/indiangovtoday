@@ -6,7 +6,7 @@ type Props = {
 
 const Title: React.FC<Props> = ({ title }) => {
     return (
-        <h1 className="font-satoshi text-xl md:text-2xl font-bold text-white leading-snug">
+        <h1 className="font-satoshi leading-snug text-2xl md:text-3xl font-bold text-[#ff3333]">
             {title}
         </h1>
     )

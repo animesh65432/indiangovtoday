@@ -38,34 +38,33 @@ export default function ShareSection({ Announcement, setisShareOPen }: Props) {
             name: "X (Twitter)",
             icon: <Twitter className="w-4 h-4" />,
             url: `https://twitter.com/intent/tweet?text=${encodedMessage}&url=${encodedUrl}`,
-            color: "#ffffff",
+            color: "#321F1F",
         },
         {
             name: "Email",
             icon: <Mail className="w-4 h-4" />,
             url: `mailto:?subject=${encodeURIComponent("Check this announcement!")}&body=${encodedMessageWithUrl}`,
-            color: "#FF9933",
+            color: "#ff3333",
         },
     ]
 
     useClickOutside(modalRef, () => setisShareOPen(false))
 
     return (
-        <div className="fixed font-satoshi inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm"
+            style={{ fontFamily: "var(--font-satoshi)" }}>
             <div
                 ref={modalRef}
-                className="relative w-full max-w-md mx-4 overflow-hidden rounded-xl
-                           bg-[#111111] border border-white/[0.08]
-                           shadow-[0_24px_60px_rgba(0,0,0,0.8)]
-                           animate-in slide-in-from-bottom-4 duration-300"
+                className="relative w-full max-w-md mx-4 overflow-hidden rounded-2xl bg-white shadow-2xl animate-in slide-in-from-bottom-4 duration-300"
             >
-                {/* Top accent line */}
-                <div className="h-[2px] w-full bg-gradient-to-r from-transparent via-[#FF9933] to-transparent" />
+                {/* Top red accent bar */}
+                <div className="h-1 w-full" style={{ backgroundColor: "#ff3333" }} />
 
                 {/* Close */}
                 <button
                     onClick={() => setisShareOPen(false)}
-                    className="absolute top-4 right-4 text-white/30 hover:text-white/70 transition-colors"
+                    className="absolute top-4 right-4 transition-opacity opacity-40 hover:opacity-80"
+                    style={{ color: "#321F1F" }}
                 >
                     <X size={18} />
                 </button>
@@ -74,23 +73,35 @@ export default function ShareSection({ Announcement, setisShareOPen }: Props) {
 
                     {/* Header */}
                     <div className="flex flex-col gap-2">
-                        <div className="flex items-center gap-2">
-                            <Share2 size={13} className="text-[#FF9933]" />
-                            <span className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#FF9933]">
+                        <div className="flex items-center gap-2 mb-1">
+                            <Share2 size={13} style={{ color: "#ff3333" }} />
+                            <span className="text-[10px] font-bold uppercase tracking-[0.18em]"
+                                style={{ color: "#ff3333" }}>
                                 {TranslateText[language].SHARE_ANNOUNCEMENT}
                             </span>
                         </div>
-                        <p className="text-white/40 text-[12px] leading-relaxed">
+                        <h3 className="text-2xl font-bold leading-snug"
+                            style={{ color: "#ff3333", fontFamily: "var(--font-literata)" }}>
+                            {TranslateText[language].SHARE_ANNOUNCEMENT}
+                        </h3>
+                        <p className="text-[13px] leading-relaxed mt-1"
+                            style={{ color: "#321F1F", opacity: 0.6 }}>
                             {TranslateText[language].HELP_OTHERS_DISCOVER}
                         </p>
                     </div>
 
+                    {/* Divider */}
+                    <div className="h-px w-full" style={{ backgroundColor: "#321F1F", opacity: 0.08 }} />
+
                     {/* Preview box */}
-                    <div className="bg-white/[0.04] border border-white/[0.07] rounded-lg p-4 flex flex-col gap-2">
-                        <p className="text-white/70 text-[12px] leading-relaxed line-clamp-2">
+                    <div className="rounded-lg p-4 flex flex-col gap-2"
+                        style={{ backgroundColor: "#fafafa", border: "1.5px solid rgba(50,31,31,0.1)" }}>
+                        <p className="text-[12px] leading-relaxed line-clamp-2"
+                            style={{ color: "#321F1F", opacity: 0.7 }}>
                             {shareMessage}
                         </p>
-                        <p className="text-[#FF9933]/60 text-[11px] font-mono truncate">
+                        <p className="text-[11px] font-mono truncate"
+                            style={{ color: "#ff3333", opacity: 0.7 }}>
                             {shareUrl}
                         </p>
                     </div>
@@ -101,19 +112,23 @@ export default function ShareSection({ Announcement, setisShareOPen }: Props) {
                             <button
                                 key={option.name}
                                 onClick={() => window.open(option.url, "_blank", "noopener,noreferrer")}
-                                className="flex items-center gap-3 px-4 py-3 rounded-lg
-                                           bg-white/[0.04] border border-white/[0.07]
-                                           hover:bg-white/[0.08] hover:border-white/[0.14]
-                                           transition-all duration-200 hover:scale-[1.01]
-                                           active:scale-[0.99]"
+                                className="flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 hover:scale-[1.01] active:scale-[0.99]"
+                                style={{
+                                    backgroundColor: "#fafafa",
+                                    border: "1.5px solid rgba(50,31,31,0.1)",
+                                }}
+                                onMouseEnter={e => (e.currentTarget.style.borderColor = "rgba(50,31,31,0.25)")}
+                                onMouseLeave={e => (e.currentTarget.style.borderColor = "rgba(50,31,31,0.1)")}
                             >
                                 <span style={{ color: option.color }}>
                                     {option.icon}
                                 </span>
-                                <span className="text-white/70 text-[13px] font-medium flex-1 text-left">
+                                <span className="text-[13px] font-medium flex-1 text-left"
+                                    style={{ color: "#321F1F" }}>
                                     {TranslateText[language].SHARE_ON} {option.name}
                                 </span>
-                                <span className="text-white/20 text-[11px]">↗</span>
+                                <span className="text-[11px]"
+                                    style={{ color: "#321F1F", opacity: 0.3 }}>↗</span>
                             </button>
                         ))}
                     </div>

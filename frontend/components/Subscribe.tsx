@@ -54,18 +54,18 @@ const Subscribe: React.FC = () => {
     };
 
     const popup = (
-        <div className="fixed inset-0 z-50 font-satoshi flex items-center justify-center bg-black/60 backdrop-blur-sm">
-            <div className="relative w-full max-w-md mx-4 overflow-hidden rounded-xl
-                            bg-[#111111] border border-white/[0.08]
-                            shadow-[0_24px_60px_rgba(0,0,0,0.8)]">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm"
+            style={{ fontFamily: "var(--font-satoshi)" }}>
+            <div className="relative w-full max-w-md mx-4 overflow-hidden rounded-2xl bg-white shadow-2xl">
 
-                {/* Top orange accent line */}
-                <div className="h-[2px] w-full bg-gradient-to-r from-transparent via-[#FF9933] to-transparent" />
+                {/* Top red accent bar */}
+                <div className="h-1 w-full" style={{ backgroundColor: "#ff3333" }} />
 
                 {/* Close button */}
                 <button
                     onClick={handleClose}
-                    className="absolute top-4 right-4 text-white/30 hover:text-white/70 transition-colors"
+                    className="absolute top-4 right-4 transition-opacity opacity-40 hover:opacity-80"
+                    style={{ color: "#321F1F" }}
                 >
                     <X size={18} />
                 </button>
@@ -73,20 +73,31 @@ const Subscribe: React.FC = () => {
                 <div className="p-8 flex flex-col gap-6">
 
                     {/* Icon + Heading */}
-                    <div className="flex flex-col gap-3">
-                        <div className="flex items-center gap-2">
-                            <Bell size={14} className="text-[#FF9933]" />
-                            <span className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#FF9933]">
+                    <div className="flex flex-col gap-2">
+                        <div className="flex items-center gap-2 mb-1">
+                            <Bell size={13} style={{ color: "#ff3333" }} />
+                            <span
+                                className="text-[10px] font-bold uppercase tracking-[0.18em]"
+                                style={{ color: "#ff3333" }}
+                            >
                                 {TranslateText[language].NEVER_MISS_AN_UPDATE}
                             </span>
                         </div>
-                        <h3 className="text-white text-xl font-bold leading-snug">
+
+                        <h3
+                            className="text-2xl font-bold leading-snug"
+                            style={{ color: "#ff3333", fontFamily: "var(--font-literata)" }}
+                        >
                             {TranslateText[language].SUBSCRIBE_TO_ALERTS}
                         </h3>
-                        <p className="text-white/40 text-[12px] leading-relaxed">
+
+                        <p className="text-[13px] leading-relaxed mt-1" style={{ color: "#321F1F", opacity: 0.6 }}>
                             Get notified when new government announcements are published — filtered to what matters to you.
                         </p>
                     </div>
+
+                    {/* Divider */}
+                    <div className="h-px w-full" style={{ backgroundColor: "#321F1F", opacity: 0.08 }} />
 
                     {/* Input + Button */}
                     <div className="flex flex-col gap-3">
@@ -96,30 +107,33 @@ const Subscribe: React.FC = () => {
                             onKeyDown={(e) => e.key === "Enter" && handlesubscribe()}
                             type="email"
                             placeholder={`${TranslateText[language].PLEASE_ENTER_YOUR_EMAIL}`}
-                            className="bg-white/[0.05] border border-white/[0.08] rounded-lg
-                                       text-white text-sm placeholder:text-white/25
-                                       px-4 py-3 w-full outline-none
-                                       focus:border-[#FF9933]/50 focus:ring-1 focus:ring-[#FF9933]/20
-                                       transition-all duration-200"
+                            className="rounded-lg text-sm px-4 py-3 w-full outline-none transition-all duration-200"
+                            style={{
+                                border: "1.5px solid",
+                                borderColor: "rgba(50,31,31,0.15)",
+                                color: "#321F1F",
+                                backgroundColor: "#fafafa",
+                            }}
+                            onFocus={e => (e.currentTarget.style.borderColor = "#ff3333")}
+                            onBlur={e => (e.currentTarget.style.borderColor = "rgba(50,31,31,0.15)")}
                         />
+
                         <button
                             type="button"
                             onClick={handlesubscribe}
-                            className="bg-[#FF9933] hover:bg-[#e88820]
-                                       text-black font-bold text-[11px] uppercase tracking-[0.14em]
-                                       py-3 px-4 rounded-lg w-full
-                                       transition-all duration-200
-                                       hover:shadow-[0_0_20px_rgba(255,153,51,0.3)]
-                                       active:scale-[0.98]"
+                            className="font-bold text-[11px] uppercase tracking-[0.16em] py-3 px-4 rounded-lg w-full transition-all duration-200 active:scale-[0.98] text-white"
+                            style={{ backgroundColor: "#ff3333" }}
+                            onMouseEnter={e => (e.currentTarget.style.backgroundColor = "#e02020")}
+                            onMouseLeave={e => (e.currentTarget.style.backgroundColor = "#ff3333")}
                         >
                             {IsLoading
                                 ? <LoaderCircle className="animate-spin h-4 w-4 mx-auto" />
-                                : `${TranslateText[language].SUBSCRIBE}`}
+                                : TranslateText[language].SUBSCRIBE}
                         </button>
                     </div>
 
                     {/* Footer note */}
-                    <p className="text-white/20 text-[11px] text-center tracking-wide">
+                    <p className="text-[11px] text-center tracking-wide" style={{ color: "#321F1F", opacity: 0.35 }}>
                         No spam. Unsubscribe anytime.
                     </p>
                 </div>

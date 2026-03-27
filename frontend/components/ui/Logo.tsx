@@ -5,18 +5,16 @@ type LogoProps = {
     snd: string
 }
 
-const Logo = ({ fst, snd }: { fst: string; snd: string }) => {
+const Logo = ({ fst, snd }: LogoProps) => {
     return (
-        <div className="flex flex-col leading-none select-none">
-            <span className="text-[10px] tracking-[0.3em] text-[#FFB366] font-medium">
+        <div className="flex  gap-2 select-none font-tanker text-color">
+            <span className="text-xl sm:text-2xl font-medium">
                 {fst.toUpperCase()}
             </span>
 
-            <span className="text-xl sm:text-2xl font-semibold text-white">
+            <span className="text-xl sm:text-2xl  ">
                 {snd.toUpperCase()}
             </span>
-
-            <div className="h-0.5 w-full bg-[#FF9933] mt-1" />
         </div>
     )
 }
