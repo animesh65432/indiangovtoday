@@ -1,18 +1,7 @@
 import React, { useState } from 'react'
-import { buildSrc } from "@imagekit/next"
-import NextImage from 'next/image'
 import ImageFallback from './ImageFallback'
-import { NEXT_PUBLIC_IMAGEKIT_URL } from '@/config'
 
-const SmartImage = ({
-    src,
-    alt,
-    category,
-    fill,
-    className,
-    transformation,
-    onError
-}: {
+const SmartImage = ({ src, alt, category, fill, className, transformation, onError }: {
     src: string
     alt: string
     category?: string
@@ -21,28 +10,18 @@ const SmartImage = ({
     transformation?: any[]
     onError?: () => void
 }) => {
-    const [broken, setBroken] = useState(false)
+    const [broken, setBroken] = useState(!src)
 
     if (broken) return <ImageFallback category={category || ''} />
 
-    // ✅ Use buildSrc — official utility for generating ImageKit URLs
-    const optimizedSrc = buildSrc({
-        urlEndpoint: NEXT_PUBLIC_IMAGEKIT_URL,
-        src: src,  // pass raw external URL directly — buildSrc handles encoding
-        transformation: transformation
-    })
-
     return (
-        <NextImage  // ✅ use next/image directly — no SDK component issues
-            src={optimizedSrc}
+        <img
+            src={src}
             alt={alt}
-            fill={fill}
-            className={className}
-            unoptimized  // ✅ already optimized by ImageKit
-            onError={() => {
-                setBroken(true)
-                onError?.()
-            }}
+            className={`${fill ? 'absolute inset-0 w-full h-full object-cover' : ''} ${className ?? ''}`}
+            onError={() => { setBroken(true); onError?.() }}
+            loading="lazy"
+            referrerPolicy="no-referrer"
         />
     )
 }
