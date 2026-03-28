@@ -34,7 +34,7 @@ const HeroAnnoucments: React.FC<Props> = ({ announcements, IsLoading }) => {
 
             {/* ── Featured article ── */}
             <article
-                className='col-span-7 xl:col-span-5 flex gap-2 hover:cursor-pointer'
+                className='col-span-7  hover:scale-[1.01] xl:col-span-5 flex gap-2 hover:cursor-pointer'
                 onClick={() => handleClick(featured.announcementId)}
             >
                 <main className='flex-1 flex flex-col gap-2 text-wrap'>
@@ -84,7 +84,7 @@ const HeroAnnoucments: React.FC<Props> = ({ announcements, IsLoading }) => {
                 {sideList.map((announcement) => (
                     <article
                         key={announcement.announcementId}
-                        className='flex gap-2 hover:cursor-pointer'
+                        className='flex  hover:scale-[1.01] gap-2 hover:cursor-pointer'
                         onClick={() => handleClick(announcement.announcementId)}
                     >
                         <header className='relative w-24 h-24 shrink-0'>

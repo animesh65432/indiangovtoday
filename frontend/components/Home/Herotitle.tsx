@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
 import { LanguageContext } from "@/context/Lan";
 import { motion } from "framer-motion";
+import { TranslateText } from "@/lib/translatetext";
 
 const Herotitle: React.FC = () => {
     const { language } = useContext(LanguageContext);
@@ -18,17 +19,17 @@ const Herotitle: React.FC = () => {
         >
             <h1 className="font-satoshi text-3xl md:text-5xl font-bold leading-[1.15] tracking-tight text-[#321F1F]">
                 <span className="block md:inline">
-                    Find Government{" "}
+                    {TranslateText[language].FIND_GOVERNMENT}{" "}
                 </span>
 
                 {/* subtle hover effect instead of animation */}
                 <span className="block md:inline text-[#ff3333] transition-all duration-300 hover:tracking-wide">
-                    Updates That Matter
+                    {TranslateText[language].UPDATES_THAT_MATTER}
                 </span>
             </h1>
 
             <TextGenerateEffect
-                words={"to You"}
+                words={TranslateText[language].TO_YOU}
                 className="text-center font-bold text-2xl md:text-4xl font-satoshi text-[#ff3333]"
                 duration={0.6}
             />
