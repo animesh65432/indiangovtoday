@@ -7,7 +7,6 @@ import { Calendar } from './calendar'
 import { DateInput } from './DateInput'
 import { CheckIcon } from '@radix-ui/react-icons'
 import { cn } from '@/lib/utils'
-import Image from 'next/image'
 import { LanguageContext } from "@/context/Lan"
 import { Calendar as CalendarIcon } from "lucide-react"
 import { Locale } from 'date-fns'

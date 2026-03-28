@@ -1,6 +1,5 @@
 import React from "react"
 import { Announcement } from "@/types"
-import { TranslateText } from "@/lib/translatetext"
 import { LanguageContext } from "@/context/Lan"
 import { formatDateInLanguage } from "@/lib/formatDate"
 import { useRouter } from "next/navigation"
@@ -14,14 +13,12 @@ type Props = {
 const AnnouncementCard: React.FC<Props> = ({ Announcement, className }) => {
     const { language } = React.useContext(LanguageContext)
     const router = useRouter()
-    const { SEE_DETAILS } = TranslateText[language]
-
     const handleClick = () => {
         router.push(`/announcement?id=${Announcement.announcementId}&lan=${language}`)
     }
 
     return (
-        <div className={`flex flex-col  gap-4 hover:cursor-pointer ${className}`} onClick={handleClick}>
+        <div className={`flex flex-col hover:scale-[1.01]  gap-4 hover:cursor-pointer ${className}`} onClick={handleClick}>
             <div className="flex gap-2 w-full lg:w-[80%]">
                 <div className="flex flex-col gap-2 ">
                     <span className="font-literata uppercase red-color ">{Announcement.category}</span>

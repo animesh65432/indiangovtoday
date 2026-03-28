@@ -510,7 +510,7 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                     </div>
                     <div id={selectedCountId} className="sr-only" aria-live="polite">
                         {selectedValues.length === 0
-                            ? "No options selected"
+                            ? `${TranslateText[language].NO_STATE_SELECTED}`
                             : `${selectedValues.length} option${selectedValues.length === 1 ? "" : "s"} selected: ${selectedValues
                                 .map((v) => getOptionByValue(v)?.label)
                                 .filter(Boolean)
@@ -689,7 +689,7 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                         <Command className="bg-white text-[#321F1F] [&_[cmdk-input]]:text-[#321F1F] [&_[cmdk-input]::placeholder]:text-[#321F1F]/40 [&_[cmdk-item]]:text-[#321F1F] [&_[cmdk-group-heading]]:text-[#321F1F]/50 [&_[cmdk-item][aria-selected=true]]:bg-[#f0eaea] [&_[cmdk-item]:hover]:bg-[#f0eaea]">
                             {searchable && (
                                 <CommandInput
-                                    placeholder="Search options..."
+                                    placeholder={`${TranslateText[language].SEARCH_OPTIONS_PLACEHOLDER}...`}
                                     onKeyDown={handleInputKeyDown}
                                     value={searchValue}
                                     onValueChange={setSearchValue}
@@ -710,7 +710,7 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                                     "overscroll-behavior-y-contain"
                                 )}>
                                 <CommandEmpty className="text-[#321F1F]/40 py-4 text-center text-sm">
-                                    {emptyIndicator || "No results found."}
+                                    {emptyIndicator || `${TranslateText[language].NO_RESULTS_FOUND}`}
                                 </CommandEmpty>
                                 {!hideSelectAll && !searchValue && (
                                     <CommandGroup>
@@ -734,7 +734,7 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                                                 <CheckIcon className="h-4 w-4 text-white" />
                                             </div>
                                             <span>
-                                                (Select All{getAllOptions().length > 20 ? ` - ${getAllOptions().length} options` : ""})
+                                                ( {`${TranslateText[language].SELECT_ALL}`}{getAllOptions().length > 20 ? ` - ${getAllOptions().length} ${TranslateText[language].ANNOUNCEMENTS}` : ""})
                                             </span>
                                         </CommandItem>
                                     </CommandGroup>
