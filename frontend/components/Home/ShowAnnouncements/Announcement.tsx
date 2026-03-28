@@ -3,7 +3,7 @@ import { Announcement } from "@/types"
 import { LanguageContext } from "@/context/Lan"
 import { formatDateInLanguage } from "@/lib/formatDate"
 import { useRouter } from "next/navigation"
-import Image from "next/image"
+import SmartImage from "../SmartImage"
 
 type Props = {
     Announcement: Announcement,
@@ -13,48 +13,73 @@ type Props = {
 const AnnouncementCard: React.FC<Props> = ({ Announcement, className }) => {
     const { language } = React.useContext(LanguageContext)
     const router = useRouter()
+
     const handleClick = () => {
         router.push(`/announcement?id=${Announcement.announcementId}&lan=${language}`)
     }
 
     return (
-        <div className={`flex flex-col hover:scale-[1.01]  gap-4 hover:cursor-pointer ${className}`} onClick={handleClick}>
-            <div className="flex gap-2 w-full lg:w-[80%]">
-                <div className="flex flex-col gap-2 ">
-                    <span className="font-literata uppercase red-color ">{Announcement.category}</span>
-                    <span className="text-xl line-clamp-3 md:line-clamp-none text-color leading-relaxed font-literata font-semibold  ">
+        <div
+            className={`flex flex-col hover:scale-[1.01] gap-4 hover:cursor-pointer transition-transform duration-200 ${className}`}
+            onClick={handleClick}
+        >
+            <div className="flex gap-4 w-full lg:w-[80%]">
+
+                {/* ── Text content ── */}
+                <div className="flex flex-col gap-2 flex-1">
+                    <span className="font-literata uppercase red-color">
+                        {Announcement.category}
+                    </span>
+                    <span className="text-xl line-clamp-3 md:line-clamp-none text-color leading-relaxed font-literata font-semibold">
                         {Announcement.title}
                     </span>
+
+                    {/* Desktop */}
                     <span className="text-color hidden lg:block font-satoshi leading-relaxed lg:line-clamp-4">
                         {Announcement.description}
                     </span>
-                    <span className="font-literata hidden lg:block">{formatDateInLanguage(Announcement.date, language)} , {Announcement.state}</span>
-                    <div className="lg:hidden flex gap-10 items-center">
-                        <div className="flex flex-col gap-2">
-                            <span className="text-color line-clamp-4 md:line-clamp-none font-satoshi leading-relaxed lg:line-clamp-4">
+                    <span className="font-literata hidden lg:block text-color">
+                        {formatDateInLanguage(Announcement.date, language)} , {Announcement.state}
+                    </span>
+
+                    {/* Mobile */}
+                    <div className="lg:hidden flex gap-4 items-start">
+                        <div className="flex flex-col gap-2 flex-1">
+                            <span className="text-color line-clamp-4 font-satoshi leading-relaxed">
                                 {Announcement.description}
                             </span>
-                            <span className="font-literata">{formatDateInLanguage(Announcement.date, language)} , {Announcement.state}</span>
+                            <span className="font-literata text-color">
+                                {formatDateInLanguage(Announcement.date, language)} , {Announcement.state}
+                            </span>
                         </div>
-                        <div className='lg:hidden block relative h-24 w-24 shrink-0'>
-                            <Image
+
+                        {/* ✅ Mobile image */}
+                        <div className='relative h-32 w-32 shrink-0'>
+                            <SmartImage
                                 src={Announcement.image}
                                 alt={Announcement.title.substring(0, 20)}
+                                category={Announcement.category}
                                 fill
                                 className='object-fill'
+                                transformation={[{ width: 112, height: 112, focus: 'auto', quality: 80 }]}
                             />
                         </div>
                     </div>
                 </div>
-                <div className=" hidden lg:block relative w-[55vw] h-[30vh] xl:w-[35vw] xl:h-[25vh]">
-                    <Image
+
+                {/* ✅ Desktop image — bigger */}
+                <div className="hidden lg:block relative w-[25vw] h-[28vh] xl:w-[24vw] xl:h-[24vh] shrink-0">
+                    <SmartImage
                         src={Announcement.image}
                         alt={Announcement.title.substring(0, 20)}
+                        category={Announcement.category}
                         fill
-                        className="object-contain"
+                        className='object-fill'
+                        transformation={[{ width: 700, height: 300, focus: 'auto', quality: 85 }]}
                     />
                 </div>
             </div>
+
             <div className="border border-gray-200 w-full lg:w-[80%]"></div>
         </div>
     )
