@@ -53,7 +53,7 @@ const AnnouncementCard: React.FC<Props> = ({ Announcement, className }) => {
                             </span>
                         </div>
 
-                        {/* ✅ Mobile image */}
+
                         <div className='relative h-32 w-32 shrink-0'>
                             <SmartImage
                                 src={Announcement.image}
@@ -67,7 +67,6 @@ const AnnouncementCard: React.FC<Props> = ({ Announcement, className }) => {
                     </div>
                 </div>
 
-                {/* ✅ Desktop image — bigger */}
                 <div className="hidden lg:block relative w-[25vw] h-[28vh] xl:w-[24vw] xl:h-[24vh] shrink-0">
                     <SmartImage
                         src={Announcement.image}

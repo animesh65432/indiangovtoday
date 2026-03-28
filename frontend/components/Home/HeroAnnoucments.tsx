@@ -59,7 +59,7 @@ const HeroAnnoucments: React.FC<Props> = ({ announcements, IsLoading }) => {
                         alt={featured.title}
                         category={featured.category}
                         fill
-                        className='object-cover rounded-md'
+                        className='object-cover'
                         transformation={[{ width: 800, height: 400, focus: 'auto', quality: 85 }]}
                         onError={() => {
                             if (featuredIndex + 1 < announcements.length) {
@@ -84,7 +84,7 @@ const HeroAnnoucments: React.FC<Props> = ({ announcements, IsLoading }) => {
                                 alt={announcement.title}
                                 category={announcement.category}
                                 fill
-                                className='object-cover rounded-md'
+                                className='object-fill'
                                 transformation={[{ width: 128, height: 128, focus: 'auto', quality: 80 }]}
                             />
                         </header>
