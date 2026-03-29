@@ -1,9 +1,10 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Announcement } from "@/types"
 import HeroAnnoucmentsSkelton from './HeroAnnoucmentsSkelton'
 import { formatDateInLanguage } from "@/lib/formatDate"
 import { LanguageContext } from '@/context/Lan'
 import { useRouter } from 'next/navigation'
+import { GetStats } from "@/api/announcements"
 import EmptyAnnouncements from './EmptyAnnoucments'
 import SmartImage from './SmartImage'
 
@@ -53,7 +54,7 @@ const HeroAnnoucments: React.FC<Props> = ({ announcements, IsLoading }) => {
                 </main>
 
 
-                <header className='relative hidden md:block w-[40%] md:w-[45%] h-64 md:h-80 shrink-0'>
+                <header className='relative hidden md:block w-[40%] md:w-[45%] h-64 shrink-0'>
                     <SmartImage
                         src={featured.image}
                         alt={featured.title}

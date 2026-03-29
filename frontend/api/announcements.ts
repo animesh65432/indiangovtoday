@@ -111,3 +111,8 @@ export const GetAllCategoriesAnnouncements = (target_lan: string, startdate: Dat
         path: `/GetAllCategoriesAnnouncements?${params.toString()}`
     });
 }
+
+export const GetStats = () => Call({
+    method: "GET",
+    path: `/GetStats`,
+})

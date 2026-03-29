@@ -1,38 +1,86 @@
-import React, { useContext } from "react";
-import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
+import React, { useContext, useEffect, useState } from "react";
 import { LanguageContext } from "@/context/Lan";
 import { motion } from "framer-motion";
+import { GetStats } from "@/api/announcements";
+import { floatingIcons } from "@/lib/floatingIcons"
+import AnimatedCounter from "./AnimatedCounter";
 import { TranslateText } from "@/lib/translatetext";
+
 
 const Herotitle: React.FC = () => {
     const { language } = useContext(LanguageContext);
+    const [totalDepartments, setTotalDepartments] = useState<number>(0);
+    const [totalAnnouncements, setTotal] = useState<number>(0);
+
+    useEffect(() => {
+        (async () => {
+            try {
+                const res = await GetStats() as { data: { totalAnnouncements: number, totalDepartments: number } };
+                console.log("Stats fetched:", res.data);
+                setTotal(res.data.totalAnnouncements);
+                setTotalDepartments(res.data.totalDepartments);
+            } catch (err) {
+                console.error("Failed to fetch stats:", err);
+            }
+        })();
+    }, []);
 
     return (
         <motion.div
-            initial={{ opacity: 0, y: 24 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{
-                duration: 0.7,
-                ease: [0.22, 1, 0.36, 1], // very smooth (easeOutExpo feel)
-            }}
-            className="flex flex-col items-center gap-2 sm:gap-3 w-[95%] md:w-[80%] mx-auto mt-6 text-center"
+            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            className="relative flex flex-col items-center gap-1.5 w-[95%] md:w-[80%] lg:w-[70%] mx-auto mt-3 text-center px-4"
         >
-            <h1 className="font-satoshi text-3xl md:text-5xl font-bold leading-[1.15] tracking-tight text-[#321F1F]">
-                <span className="block md:inline">
-                    {TranslateText[language].FIND_GOVERNMENT}{" "}
-                </span>
 
-                {/* subtle hover effect instead of animation */}
-                <span className="block md:inline text-[#ff3333] transition-all duration-300 hover:tracking-wide">
-                    {TranslateText[language].UPDATES_THAT_MATTER}
-                </span>
+            {floatingIcons.map((icon, i) => (
+                <motion.img
+                    key={i}
+                    src={icon.src}
+                    className={`absolute ${icon.className} opacity-[0.09] pointer-events-none select-none ${icon.desktopOnly ? "hidden sm:block" : "block"
+                        }`}
+                    style={{
+                        filter:
+                            "invert(27%) sepia(95%) saturate(700%) hue-rotate(330deg) brightness(85%)",
+                    }}
+                    animate={{ y: [0, -8, 0] }}
+                    transition={{
+                        duration: 3.5 + i * 0.5,
+                        repeat: Infinity,
+                        ease: "easeInOut",
+                        delay: i * 0.45,
+                    }}
+                />
+            ))}
+
+            <h1 className="font-satoshi text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold leading-[1.12] tracking-tight text-[#321F1F]">
+                {TranslateText[language].EVERY_INDIAN_GOVERNMENT}{" "}
+                <span className="text-[#ff3333] transition-all duration-300 hover:tracking-wide">
+                    {TranslateText[language].ANNOUNCEMENT},
+                </span>{" "}
+                <span className="italic text-[#ff3333]">{TranslateText[language].ONE_PLACE}</span>
             </h1>
 
-            <TextGenerateEffect
-                words={TranslateText[language].TO_YOU}
-                className="text-center font-bold text-2xl md:text-4xl font-satoshi text-[#ff3333]"
-                duration={0.6}
-            />
+            <p className="hidden sm:block text-[#888] font-satoshi max-w-xs leading-relaxed">
+                {TranslateText[language].TRACKING_ANNOUNCEMENTS_FROM}{" "}
+                <span className="text-[#321F1F] font-medium">{totalDepartments} {TranslateText[language].DEPARTMENTS}</span>{" "}
+                {TranslateText[language].ACROSS_INDIA}.
+            </p>
+
+            {totalAnnouncements > 0 && (
+                <motion.div
+                    initial={{ opacity: 0, y: 6 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.2, duration: 0.4 }}
+                    className="flex  font-satoshi items-center gap-2 px-4 py-1.5 rounded-full border border-red-100 bg-white shadow-sm text-[#e74c3c] text-xs sm:text-sm font-semibold"
+                >
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#e74c3c] animate-pulse" />
+                    <AnimatedCounter target={totalAnnouncements} />
+                    <span className="text-[#888] font-normal text-xs">
+                        {TranslateText[language].ANNOUNCEMENTS_TRACKED}
+                    </span>
+                </motion.div>
+            )}
         </motion.div>
     );
 };
