@@ -595,3 +595,23 @@ export const GetAllCategoriesAnnouncements = asyncErrorHandler(async (req: Reque
     res.status(200).json(response);
     return;
 })
+
+export const GetStats = asyncErrorHandler(async (req: Request, res: Response) => {
+    const db = await connectDB();
+
+    const totalAnnouncements = await db.collection("Translated_Announcements").countDocuments({
+        language: "en"
+    });
+
+    const totalDepartments = await db.collection("Translated_Announcements").distinct("department", {
+        language: "en"
+    });
+
+    res.status(200).json({
+        success: true,
+        data: {
+            totalAnnouncements,
+            totalDepartments: totalDepartments.length,
+        }
+    });
+});

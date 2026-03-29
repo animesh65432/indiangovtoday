@@ -77,7 +77,13 @@ export type TranslationKeys = {
     SEARCH_OPTIONS_PLACEHOLDER: string,
     NO_RESULTS_FOUND: string,
     SELECT_ALL_STATES: string,
-
+    EVERY_INDIAN_GOVERNMENT: string,
+    ANNOUNCEMENT: string,
+    ONE_PLACE: string,
+    TRACKING_ANNOUNCEMENTS_FROM: string,
+    ACROSS_INDIA: string,
+    ANNOUNCEMENTS_TRACKED: string,
+    DEPARTMENTS: string
 };
 export const STATES_CODES: Record<string, Record<string, string>> = {
     "Andhra Pradesh": {
@@ -1090,6 +1096,13 @@ export const TranslateText: Record<string, TranslationKeys> = {
         SEARCH_OPTIONS_PLACEHOLDER: "Search states...",
         NO_RESULTS_FOUND: "No results found.",
         SELECT_ALL_STATES: "Select All States",
+        EVERY_INDIAN_GOVERNMENT: "Every Indian Government",
+        ANNOUNCEMENT: "Announcement",
+        ONE_PLACE: "One Place.",
+        TRACKING_ANNOUNCEMENTS_FROM: "Tracking announcements from",
+        ACROSS_INDIA: "across India.",
+        ANNOUNCEMENTS_TRACKED: "announcements tracked",
+        DEPARTMENTS: "departments"
     },
     हिन्दी: {
         TITLE: "एक एकीकृत पोर्टल में सभी आधिकारिक सरकारी घोषणाओं तक पहुंचें।",
@@ -1208,6 +1221,13 @@ export const TranslateText: Record<string, TranslationKeys> = {
         SEARCH_OPTIONS_PLACEHOLDER: "राज्य खोजें...",
         NO_RESULTS_FOUND: "कोई परिणाम नहीं मिला।",
         SELECT_ALL_STATES: "सभी राज्य चुनें",
+        EVERY_INDIAN_GOVERNMENT: "हर भारतीय सरकार",
+        ANNOUNCEMENT: "घोषणा",
+        ONE_PLACE: "एक जगह।",
+        TRACKING_ANNOUNCEMENTS_FROM: "इनसे घोषणाएं ट्रैक कर रहे हैं",
+        ACROSS_INDIA: "पूरे भारत में।",
+        ANNOUNCEMENTS_TRACKED: "घोषणाएं ट्रैक की गईं",
+        DEPARTMENTS: "विभाग",
     },
     বাংলা: {
         TITLE: "একটি একীভূত পোর্টালে সমস্ত সরকারি ঘোষণা অ্যাক্সেস করুন।",
@@ -1326,6 +1346,13 @@ export const TranslateText: Record<string, TranslationKeys> = {
         SEARCH_OPTIONS_PLACEHOLDER: "রাজ্য খুঁজুন...",
         NO_RESULTS_FOUND: "কোনো ফলাফল পাওয়া যায়নি।",
         SELECT_ALL_STATES: "সব রাজ্য নির্বাচন করুন",
+        EVERY_INDIAN_GOVERNMENT: "প্রতিটি ভারতীয় সরকার",
+        ANNOUNCEMENT: "ঘোষণা",
+        ONE_PLACE: "এক জায়গায়।",
+        TRACKING_ANNOUNCEMENTS_FROM: "থেকে ঘোষণা ট্র্যাক করা হচ্ছে",
+        ACROSS_INDIA: "সারা ভারতে।",
+        ANNOUNCEMENTS_TRACKED: "ঘোষণা ট্র্যাক করা হয়েছে",
+        DEPARTMENTS: "দপ্তর",
     },
     தமிழ்: {
         TITLE: "ஒரே ஒருங்கிணைந்த போர்ட்டலில் அனைத்து அதிகாரபூர்வ அரசு அறிவிப்புகளையும் அணுகவும்.",
@@ -1444,6 +1471,13 @@ export const TranslateText: Record<string, TranslationKeys> = {
         SEARCH_OPTIONS_PLACEHOLDER: "மாநிலங்களை தேடுங்கள்...",
         NO_RESULTS_FOUND: "முடிவுகள் எதுவும் இல்லை.",
         SELECT_ALL_STATES: "அனைத்து மாநிலங்களையும் தேர்ந்தெடு",
+        EVERY_INDIAN_GOVERNMENT: "ஒவ்வொரு இந்திய அரசும்",
+        ANNOUNCEMENT: "அறிவிப்பு",
+        ONE_PLACE: "ஒரே இடத்தில்.",
+        TRACKING_ANNOUNCEMENTS_FROM: "இருந்து அறிவிப்புகளை கண்காணிக்கிறோம்",
+        ACROSS_INDIA: "இந்தியா முழுவதும்.",
+        ANNOUNCEMENTS_TRACKED: "அறிவிப்புகள் கண்காணிக்கப்பட்டன",
+        DEPARTMENTS: "துறைகள்"
     },
     తెలుగు: {
         TITLE: "ఒకే ఏకీకృత పోర్టల్‌లో అన్ని అధికారిక ప్రభుత్వ ప్రకటనలను యాక్సెస్ చేయండి.",
@@ -1563,6 +1597,13 @@ export const TranslateText: Record<string, TranslationKeys> = {
         SEARCH_OPTIONS_PLACEHOLDER: "రాష్ట్రాలు వెతకండి...",
         NO_RESULTS_FOUND: "ఫలితాలు కనుగొనబడలేదు.",
         SELECT_ALL_STATES: "అన్ని రాష్ట్రాలు ఎంచుకోండి",
+        EVERY_INDIAN_GOVERNMENT: "ప్రతి భారత ప్రభుత్వం",
+        ANNOUNCEMENT: "ప్రకటన",
+        ONE_PLACE: "ఒకే చోట.",
+        TRACKING_ANNOUNCEMENTS_FROM: "నుండి ప్రకటనలను ట్రాక్ చేయడం",
+        ACROSS_INDIA: "భారతదేశం అంతటా.",
+        ANNOUNCEMENTS_TRACKED: "ప్రకటనలు ట్రాక్ చేయబడ్డాయి",
+        DEPARTMENTS: "విభాగాలు",
     },
     മലയാളം: {
         TITLE: "ഒരൊറ്റ ഏകീകൃത പോർട്ടലിൽ എല്ലാ ഔദ്യോഗിക സർക്കാർ അറിയിപ്പുകളും ആക്സസ് ചെയ്യുക.",
@@ -1682,6 +1723,13 @@ export const TranslateText: Record<string, TranslationKeys> = {
         SEARCH_OPTIONS_PLACEHOLDER: "സംസ്ഥാനങ്ങൾ തിരയുക...",
         NO_RESULTS_FOUND: "ഫലങ്ങൾ ഒന്നും കണ്ടെത്തിയില്ല.",
         SELECT_ALL_STATES: "എല്ലാ സംസ്ഥാനങ്ങളും തിരഞ്ഞെടുക്കുക",
+        EVERY_INDIAN_GOVERNMENT: "എല്ലാ ഇന്ത്യൻ സർക്കാരും",
+        ANNOUNCEMENT: "അറിയിപ്പ്",
+        ONE_PLACE: "ഒരിടത്ത്.",
+        TRACKING_ANNOUNCEMENTS_FROM: "ഇതിൽ നിന്ന് അറിയിപ്പുകൾ ട്രാക്ക് ചെയ്യുന്നു",
+        ACROSS_INDIA: "ഭാരതം മുഴുവൻ.",
+        ANNOUNCEMENTS_TRACKED: "അറിയിപ്പുകൾ ട്രാക്ക് ചെയ്തു",
+        DEPARTMENTS: "വകുപ്പുകൾ",
 
     },
     मराठी: {
@@ -1802,7 +1850,14 @@ export const TranslateText: Record<string, TranslationKeys> = {
         SELECT_ALL: "सर्व निवडा",
         SEARCH_OPTIONS_PLACEHOLDER: "राज्य शोधा...",
         NO_RESULTS_FOUND: "कोणतेही निकाल आढळले नाहीत.",
-        SELECT_ALL_STATES: "सर्व राज्ये निवडा"
+        SELECT_ALL_STATES: "सर्व राज्ये निवडा",
+        EVERY_INDIAN_GOVERNMENT: "प्रत्येक भारतीय सरकार",
+        ANNOUNCEMENT: "घोषणा",
+        ONE_PLACE: "एकाच ठिकाणी.",
+        TRACKING_ANNOUNCEMENTS_FROM: "येथून घोषणांचा मागोवा घेत आहोत",
+        ACROSS_INDIA: "संपूर्ण भारतात.",
+        ANNOUNCEMENTS_TRACKED: "घोषणांचा मागोवा घेतला",
+        DEPARTMENTS: "विभाग",
     },
     ગુજરાતી: {
         TITLE: "એક એકીકૃત પોર્ટલમાં તમામ અધિકૃત સરકારી જાહેરાતોને ઍક્સેસ કરો.",
@@ -1923,6 +1978,13 @@ export const TranslateText: Record<string, TranslationKeys> = {
         SEARCH_OPTIONS_PLACEHOLDER: "રાજ્ય શોધો...",
         NO_RESULTS_FOUND: "કોઈ પરિણામ મળ્યું નથી.",
         SELECT_ALL_STATES: "બધા રાજ્ય પસંદ કરો",
+        EVERY_INDIAN_GOVERNMENT: "દરેક ભારતીય સરકાર",
+        ANNOUNCEMENT: "જાહેરાત",
+        ONE_PLACE: "એક જ જગ્યાએ.",
+        TRACKING_ANNOUNCEMENTS_FROM: "માંથી જાહેરાતો ટ્રૅક કરી રહ્યા છીએ",
+        ACROSS_INDIA: "સમગ્ર ભારતમાં.",
+        ANNOUNCEMENTS_TRACKED: "જાહેરાતો ટ્રૅક કરી",
+        DEPARTMENTS: "વિભાગો",
     },
     ಕನ್ನಡ: {
         TITLE: "ಒಂದೇ ಏಕೀಕೃತ ಪೋರ್ಟಲ್‌ನಲ್ಲಿ ಎಲ್ಲಾ ಅಧಿಕೃತ ಸರ್ಕಾರಿ ಪ್ರಕಟಣೆಗಳನ್ನು ಪ್ರವೇಶಿಸಿ.",
@@ -2043,6 +2105,13 @@ export const TranslateText: Record<string, TranslationKeys> = {
         SEARCH_OPTIONS_PLACEHOLDER: "ರಾಜ್ಯಗಳನ್ನು ಹುಡುಕಿ...",
         NO_RESULTS_FOUND: "ಯಾವುದೇ ಫಲಿತಾಂಶ ಕಂಡುಬಂದಿಲ್ಲ.",
         SELECT_ALL_STATES: "ಎಲ್ಲಾ ರಾಜ್ಯಗಳನ್ನು ಆಯ್ಕೆ ಮಾಡಿ",
+        EVERY_INDIAN_GOVERNMENT: "ಪ್ರತಿಯೊಂದು ಭಾರತೀಯ ಸರ್ಕಾರ",
+        ANNOUNCEMENT: "ಪ್ರಕಟಣೆ",
+        ONE_PLACE: "ಒಂದೇ ಸ್ಥಳದಲ್ಲಿ.",
+        TRACKING_ANNOUNCEMENTS_FROM: "ಇಲ್ಲಿಂದ ಪ್ರಕಟಣೆಗಳನ್ನು ಟ್ರ್ಯಾಕ್ ಮಾಡಲಾಗುತ್ತಿದೆ",
+        ACROSS_INDIA: "ಭಾರತಾದ್ಯಂತ.",
+        ANNOUNCEMENTS_TRACKED: "ಪ್ರಕಟಣೆಗಳು ಟ್ರ್ಯಾಕ್ ಆಗಿವೆ",
+        DEPARTMENTS: "ಇಲಾಖೆಗಳು",
 
     },
     اردو: {
@@ -2164,6 +2233,13 @@ export const TranslateText: Record<string, TranslationKeys> = {
         SEARCH_OPTIONS_PLACEHOLDER: "ریاستیں تلاش کریں...",
         NO_RESULTS_FOUND: "کوئی نتیجہ نہیں ملا۔",
         SELECT_ALL_STATES: "تمام ریاستیں منتخب کریں",
+        EVERY_INDIAN_GOVERNMENT: "ہر ہندوستانی حکومت",
+        ANNOUNCEMENT: "اعلان",
+        ONE_PLACE: "ایک جگہ۔",
+        TRACKING_ANNOUNCEMENTS_FROM: "سے اعلانات ٹریک کر رہے ہیں",
+        ACROSS_INDIA: "پورے ہندوستان میں۔",
+        ANNOUNCEMENTS_TRACKED: "اعلانات ٹریک کیے گئے",
+        DEPARTMENTS: "محکمے"
     },
     অসমীয়া: {
         TITLE: "এটা একীভূত পৰ্টেলত সকলো চৰকাৰী ঘোষণা প্ৰৱেশ কৰক।",
@@ -2282,6 +2358,13 @@ export const TranslateText: Record<string, TranslationKeys> = {
         SEARCH_OPTIONS_PLACEHOLDER: "ৰাজ্য বিচাৰক...",
         NO_RESULTS_FOUND: "কোনো ফলাফল পোৱা নগ'ল।",
         SELECT_ALL_STATES: "সকলো ৰাজ্য বাছক",
+        EVERY_INDIAN_GOVERNMENT: "প্ৰতিটো ভাৰতীয় চৰকাৰ",
+        ANNOUNCEMENT: "ঘোষণা",
+        ONE_PLACE: "এটা ঠাইত।",
+        TRACKING_ANNOUNCEMENTS_FROM: "পৰা ঘোষণা ট্ৰেক কৰা হৈছে",
+        ACROSS_INDIA: "সমগ্ৰ ভাৰততে।",
+        ANNOUNCEMENTS_TRACKED: "ঘোষণা ট্ৰেক কৰা হৈছে",
+        DEPARTMENTS: "বিভাগসমূহ"
     },
     बर: {
         TITLE: "मोनसे एकीकृत पोर्टलआव गासै सरकारी फोसावनायफोरखौ मोननो हागोन।",
@@ -2400,6 +2483,13 @@ export const TranslateText: Record<string, TranslationKeys> = {
         SEARCH_OPTIONS_PLACEHOLDER: "ओनसोल नायगिर...",
         NO_RESULTS_FOUND: "जेबो फलाफल मोनखायेनाय।",
         SELECT_ALL_STATES: "गासै ओनसोल बाछो",
+        EVERY_INDIAN_GOVERNMENT: "गासै इन्डियान सरकारआ",
+        ANNOUNCEMENT: "फोसावनाय",
+        ONE_PLACE: "मोनसे जायगाआव।",
+        TRACKING_ANNOUNCEMENTS_FROM: "फोसावनायफोर ट्रेक खालामनाय जादों",
+        ACROSS_INDIA: "गासै भारतआव।",
+        ANNOUNCEMENTS_TRACKED: "फोसावनायफोर ट्रेक खालामनाय",
+        DEPARTMENTS: "बिफानफोर"
     },
     डोगरी: {
         TITLE: "इक्क एकीकृत पोर्टल च सारे सरकारी घोषणाएं गी एक्सेस करो।",
@@ -2521,6 +2611,13 @@ export const TranslateText: Record<string, TranslationKeys> = {
         SEARCH_OPTIONS_PLACEHOLDER: "राज्य तलाश करो...",
         NO_RESULTS_FOUND: "कोई नतीजा नेईं मिल्ला।",
         SELECT_ALL_STATES: "सारे राज्य चुनो",
+        EVERY_INDIAN_GOVERNMENT: "हर भारती सरकार",
+        ANNOUNCEMENT: "घोषणा",
+        ONE_PLACE: "इक्क जगह पर।",
+        TRACKING_ANNOUNCEMENTS_FROM: "थों घोषणाएं ट्रैक कीतियां जा रियां न",
+        ACROSS_INDIA: "पूरे भारत च।",
+        ANNOUNCEMENTS_TRACKED: "घोषणाएं ट्रैक कीतियां",
+        DEPARTMENTS: "महकमे"
 
     },
     कॉशुर: {
@@ -2643,6 +2740,13 @@ export const TranslateText: Record<string, TranslationKeys> = {
         SEARCH_OPTIONS_PLACEHOLDER: "صوبہ تلاش کرِو...",
         NO_RESULTS_FOUND: "کانٛہہ نتیجہٕ میلہٕ نہٕ۔",
         SELECT_ALL_STATES: "تمامی صوبہ چُنِو",
+        EVERY_INDIAN_GOVERNMENT: "ہر ہِندوستأنی سرکأر",
+        ANNOUNCEMENT: "اعلان",
+        ONE_PLACE: "یکھ جایہ منز۔",
+        TRACKING_ANNOUNCEMENTS_FROM: "کھٲنیۍ اعلانات ٹریک کران چھِ",
+        ACROSS_INDIA: "پورِ ہِندوستانس منز۔",
+        ANNOUNCEMENTS_TRACKED: "اعلانات ٹریک کرنہ آمتۍ",
+        DEPARTMENTS: "محکمہ جات",
     },
     मैथिली: {
         TITLE: "एकटा एकीकृत पोर्टल मे सब सरकारी घोषणा सभ केँ एक्सेस करू।",
@@ -2761,6 +2865,13 @@ export const TranslateText: Record<string, TranslationKeys> = {
         SEARCH_OPTIONS_PLACEHOLDER: "राज्य खोजू...",
         NO_RESULTS_FOUND: "कोनो परिणाम नहि भेटल।",
         SELECT_ALL_STATES: "सभ राज्य चुनू",
+        EVERY_INDIAN_GOVERNMENT: "हरेक भारतीय सरकार",
+        ANNOUNCEMENT: "घोषणा",
+        ONE_PLACE: "एकटा ठाम पर।",
+        TRACKING_ANNOUNCEMENTS_FROM: "सँ घोषणाक अनुसरण कयल जा रहल अछि",
+        ACROSS_INDIA: "पूरा भारत मे।",
+        ANNOUNCEMENTS_TRACKED: "घोषणा अनुसरण कयल",
+        DEPARTMENTS: "विभाग सभ"
     },
     ꯃꯩꯇꯩꯂꯣꯟ: {
         TITLE: "ꯑꯃꯇ꯭ꯇꯥ ꯏꯟꯇꯦꯒ꯭ꯔꯦꯇꯦꯗ ꯄꯣꯔꯇꯦꯜꯗꯥ ꯁꯔꯀꯥꯔꯅ ꯑꯅꯥꯎꯟꯁꯃꯦꯟꯇꯁꯤꯡ ꯄꯨꯝꯅꯃꯛ ꯑꯦꯛꯁꯦꯁ ꯇꯧꯕꯥ꯫",
@@ -2879,6 +2990,13 @@ export const TranslateText: Record<string, TranslationKeys> = {
         SEARCH_OPTIONS_PLACEHOLDER: "ꯂꯃꯗꯝꯁꯤꯡ ꯊꯤꯕꯥ...",
         NO_RESULTS_FOUND: "ꯐꯪꯕꯥ ꯑꯃꯇ꯭ꯇꯥ ꯂꯩꯇꯦ꯫",
         SELECT_ALL_STATES: "ꯂꯃꯗꯝ ꯄꯨꯝꯅꯃꯛ ꯍꯦꯛꯇꯅꯥ ꯂꯩꯕꯤꯌꯨ",
+        EVERY_INDIAN_GOVERNMENT: "ꯏꯟꯗꯤꯌꯟ ꯒꯚꯔꯅꯃꯦꯟꯇ ꯄꯨꯝꯅꯃꯛ",
+        ANNOUNCEMENT: "ꯑꯅꯥꯎꯟꯁꯃꯦꯟꯇ",
+        ONE_PLACE: "ꯑꯃꯠꯇꯥ ꯃꯐꯝꯗꯥ꯫",
+        TRACKING_ANNOUNCEMENTS_FROM: "ꯑꯅꯥꯎꯟꯁꯃꯦꯟꯇꯁꯤꯡ ꯇ꯭ꯔꯦꯛ ꯇꯧꯔꯤ",
+        ACROSS_INDIA: "ꯏꯟꯗꯤꯌꯥ ꯄꯨꯝꯅꯃꯛꯇꯥ꯫",
+        ANNOUNCEMENTS_TRACKED: "ꯑꯅꯥꯎꯟꯁꯃꯦꯟꯇꯁꯤꯡ ꯇ꯭ꯔꯦꯛ ꯇꯧꯔꯦ",
+        DEPARTMENTS: "ꯁꯪꯂꯦꯟꯁꯤꯡ"
 
     },
     नेपाली: {
@@ -2998,6 +3116,13 @@ export const TranslateText: Record<string, TranslationKeys> = {
         SEARCH_OPTIONS_PLACEHOLDER: "राज्य खोज्नुहोस्...",
         NO_RESULTS_FOUND: "कोई परिणाम भेटिएन।",
         SELECT_ALL_STATES: "सबै राज्य छान्नुहोस्",
+        EVERY_INDIAN_GOVERNMENT: "हरेक भारतीय सरकार",
+        ANNOUNCEMENT: "घोषणा",
+        ONE_PLACE: "एउटै ठाउँमा।",
+        TRACKING_ANNOUNCEMENTS_FROM: "बाट घोषणाहरू ट्र्याक गरिँदै",
+        ACROSS_INDIA: "भारतभर।",
+        ANNOUNCEMENTS_TRACKED: "घोषणाहरू ट्र्याक गरियो",
+        DEPARTMENTS: "विभागहरू"
     },
     ଓଡ଼ିଆ: {
         TITLE: "ଗୋଟିଏ ଏକୀକୃତ ପୋର୍ଟାଲରେ ସମସ୍ତ ସରକାରୀ ଘୋଷଣାକୁ ଆକ୍ସେସ କରନ୍ତୁ।",
@@ -3116,6 +3241,13 @@ export const TranslateText: Record<string, TranslationKeys> = {
         SEARCH_OPTIONS_PLACEHOLDER: "ରାଜ୍ୟ ଖୋଜନ୍ତୁ...",
         NO_RESULTS_FOUND: "କୌଣସି ଫଳାଫଳ ମିଳିଲା ନାହିଁ।",
         SELECT_ALL_STATES: "ସବୁ ରାଜ୍ୟ ବାଛନ୍ତୁ",
+        EVERY_INDIAN_GOVERNMENT: "ପ୍ରତ୍ୟେକ ଭାରତୀୟ ସରକାର",
+        ANNOUNCEMENT: "ଘୋଷଣା",
+        ONE_PLACE: "ଏକ ଜାଗାରେ।",
+        TRACKING_ANNOUNCEMENTS_FROM: "ଠାରୁ ଘୋଷଣା ଟ୍ରାକ୍ ହେଉଛି",
+        ACROSS_INDIA: "ସମଗ୍ର ଭାରତରେ।",
+        ANNOUNCEMENTS_TRACKED: "ଘୋଷଣା ଟ୍ରାକ୍ ହୋଇଛି",
+        DEPARTMENTS: "ବିଭାଗଗୁଡ଼ିକ"
     },
     ਪੰਜਾਬੀ: {
         TITLE: "ਇੱਕ ਇਕੱਠੇ ਪੋਰਟਲ ਵਿੱਚ ਸਾਰੇ ਸਰਕਾਰੀ ਐਲਾਨਾਂ ਤੱਕ ਪਹੁੰਚ ਪ੍ਰਾਪਤ ਕਰੋ।",
@@ -3234,6 +3366,13 @@ export const TranslateText: Record<string, TranslationKeys> = {
         SEARCH_OPTIONS_PLACEHOLDER: "ਰਾਜ ਖੋਜੋ...",
         NO_RESULTS_FOUND: "ਕੋਈ ਨਤੀਜਾ ਨਹੀਂ ਮਿਲਿਆ।",
         SELECT_ALL_STATES: "ਸਾਰੇ ਰਾਜ ਚੁਣੋ",
+        EVERY_INDIAN_GOVERNMENT: "ਹਰ ਭਾਰਤੀ ਸਰਕਾਰ",
+        ANNOUNCEMENT: "ਐਲਾਨ",
+        ONE_PLACE: "ਇੱਕੋ ਜਗ੍ਹਾ।",
+        TRACKING_ANNOUNCEMENTS_FROM: "ਤੋਂ ਐਲਾਨਾਂ ਦਾ ਟ੍ਰੈਕ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ",
+        ACROSS_INDIA: "ਪੂਰੇ ਭਾਰਤ ਵਿੱਚ।",
+        ANNOUNCEMENTS_TRACKED: "ਐਲਾਨ ਟ੍ਰੈਕ ਕੀਤੇ",
+        DEPARTMENTS: "ਵਿਭਾਗ"
     },
     संस्कृतम्: {
         TITLE: "एकस्मिन् एकीकृते द्वारे सर्वाणि शासकीयघोषणानि प्राप्नुवन्तु।",
@@ -3352,6 +3491,13 @@ export const TranslateText: Record<string, TranslationKeys> = {
         SEARCH_OPTIONS_PLACEHOLDER: "राज्यानि अन्विष्यतु...",
         NO_RESULTS_FOUND: "कापि परिणामाः न प्राप्ताः।",
         SELECT_ALL_STATES: "सर्वाणि राज्यानि चिनोतु",
+        EVERY_INDIAN_GOVERNMENT: "प्रत्येकं भारतीयशासनम्",
+        ANNOUNCEMENT: "घोषणा",
+        ONE_PLACE: "एकस्मिन् स्थाने।",
+        TRACKING_ANNOUNCEMENTS_FROM: "इतः घोषणाः अनुवर्त्यन्ते",
+        ACROSS_INDIA: "भारतं व्यापिन्।",
+        ANNOUNCEMENTS_TRACKED: "घोषणाः अनुवृत्ताः",
+        DEPARTMENTS: "विभागाः",
 
     },
     ᱥᱟᱱᱛᱟᱲᱤ: {
@@ -3471,6 +3617,13 @@ export const TranslateText: Record<string, TranslationKeys> = {
         SEARCH_OPTIONS_PLACEHOLDER: "ᱥᱟᱱᱛᱟ ᱯᱟᱱᱛᱮ ᱢᱮ...",
         NO_RESULTS_FOUND: "ᱠᱟᱛᱷᱟ ᱵᱟᱹᱱᱩᱜ-ᱟ।",
         SELECT_ALL_STATES: "ᱡᱷᱚᱛᱚ ᱥᱟᱱᱛᱟ ᱵᱟᱪᱷᱟᱣ ᱢᱮ",
+        EVERY_INDIAN_GOVERNMENT: "ᱵᱷᱟᱨᱚᱛᱤᱭᱚ ᱥᱚᱨᱠᱟᱨ ᱡᱷᱚᱛᱚ",
+        ANNOUNCEMENT: "ᱠᱷᱚᱵᱚᱨ",
+        ONE_PLACE: "ᱢᱤᱫ ᱡᱟᱭᱜᱟ ᱨᱮ᱾",
+        TRACKING_ANNOUNCEMENTS_FROM: "ᱠᱷᱚᱱ ᱠᱷᱚᱵᱚᱨ ᱠᱚ ᱴᱨᱮᱠ ᱦᱩᱭ ᱟᱠᱟᱱ",
+        ACROSS_INDIA: "ᱵᱷᱟᱨᱚᱛ ᱯᱩᱨᱩ ᱨᱮ᱾",
+        ANNOUNCEMENTS_TRACKED: "ᱠᱷᱚᱵᱚᱨ ᱠᱚ ᱴᱨᱮᱠ ᱦᱩᱭ ᱠᱟᱱᱟ",
+        DEPARTMENTS: "ᱵᱤᱵᱷᱟᱜᱽ ᱠᱚ"
     },
     سنڌي: {
         TITLE: "هڪ متحد پورٽل ۾ سڀني سرڪاري اعلانن تائين رسائي حاصل ڪريو.",
@@ -3589,5 +3742,12 @@ export const TranslateText: Record<string, TranslationKeys> = {
         SEARCH_OPTIONS_PLACEHOLDER: "رياستون ڳوليو...",
         NO_RESULTS_FOUND: "ڪو به نتيجو نه مليو۔",
         SELECT_ALL_STATES: "سڀ رياستون چونڊيو",
+        EVERY_INDIAN_GOVERNMENT: "هر هندستاني حڪومت",
+        ANNOUNCEMENT: "اعلان",
+        ONE_PLACE: "هڪ هنڌ تي.",
+        TRACKING_ANNOUNCEMENTS_FROM: "کان اعلانن جو سراغ لڳائي رهيا آهيون",
+        ACROSS_INDIA: "سڄي هندستان ۾.",
+        ANNOUNCEMENTS_TRACKED: "اعلان ٽريڪ ڪيا ويا",
+        DEPARTMENTS: "محڪما"
     }
 };
