@@ -5,6 +5,7 @@ import { GetStats } from "@/api/announcements";
 import { floatingIcons } from "@/lib/floatingIcons"
 import AnimatedCounter from "./AnimatedCounter";
 import { TranslateText } from "@/lib/translatetext";
+import { buildCacheKey, withCache } from "@/lib/lsCache"
 
 
 const Herotitle: React.FC = () => {
@@ -15,10 +16,13 @@ const Herotitle: React.FC = () => {
     useEffect(() => {
         (async () => {
             try {
-                const res = await GetStats() as { data: { totalAnnouncements: number, totalDepartments: number } };
-                console.log("Stats fetched:", res.data);
-                setTotal(res.data.totalAnnouncements);
-                setTotalDepartments(res.data.totalDepartments);
+                const cacheKey = buildCacheKey("Stats_Announcements", {});
+                const response = await withCache(cacheKey, "Stats_Announcements", async () => {
+                    return await GetStats() as { data: { totalAnnouncements: number, totalDepartments: number } };
+                });
+                console.log("Stats fetched:", response.data);
+                setTotal(response.data.totalAnnouncements);
+                setTotalDepartments(response.data.totalDepartments);
             } catch (err) {
                 console.error("Failed to fetch stats:", err);
             }

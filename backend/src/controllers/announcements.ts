@@ -599,6 +599,15 @@ export const GetAllCategoriesAnnouncements = asyncErrorHandler(async (req: Reque
 export const GetStats = asyncErrorHandler(async (req: Request, res: Response) => {
     const db = await connectDB();
 
+    const redis_key = `Stats_Announcements_en`;
+    const cached_data = await redis.get(redis_key);
+
+    if (cached_data) {
+        const parsedData = typeof cached_data === "string" ? JSON.parse(cached_data) : cached_data;
+        res.status(200).json(parsedData);
+        return;
+    }
+
     const totalAnnouncements = await db.collection("Translated_Announcements").countDocuments({
         language: "en"
     });
@@ -606,6 +615,14 @@ export const GetStats = asyncErrorHandler(async (req: Request, res: Response) =>
     const totalDepartments = await db.collection("Translated_Announcements").distinct("department", {
         language: "en"
     });
+
+    await redis.set(redis_key, JSON.stringify({
+        success: true,
+        data: {
+            totalAnnouncements,
+            totalDepartments: totalDepartments.length,
+        }
+    }), { ex: 300 });
 
     res.status(200).json({
         success: true,
