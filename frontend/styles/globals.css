@@ -712,3 +712,100 @@ input {
 .CommandItem {
   color: #321F1F;
 }
+
+.light-state-label-name {
+  color: #321F1F;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.dark-state-label-name {
+  color: #f7f4f4;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+/* Hidden by default (low zoom) */
+.dark-state-label-name,
+.light-state-label-name {
+  font-weight: 700;
+  text-transform: uppercase;
+  white-space: nowrap;
+  pointer-events: none;
+  display: none;
+  font-size: 7px;
+}
+
+.dark-state-label-name {
+  color: #f7f4f4;
+  font-family: var(--font-satoshi);
+}
+
+.light-state-label-name {
+  color: #737070;
+  font-family: var(--font-satoshi);
+}
+
+/* Show and scale based on zoom */
+[data-zoom="5"] .dark-state-label-name,
+[data-zoom="5"] .light-state-label-name {
+  display: block;
+  font-size: 7px;
+}
+
+[data-zoom="6"] .dark-state-label-name,
+[data-zoom="6"] .light-state-label-name {
+  display: block;
+  font-size: 8px;
+}
+
+[data-zoom="7"] .dark-state-label-name,
+[data-zoom="7"] .light-state-label-name {
+  display: block;
+  font-size: 9px;
+}
+
+[data-zoom="8"] .dark-state-label-name,
+[data-zoom="8"] .light-state-label-name {
+  display: block;
+  font-size: 10px;
+}
+
+[data-zoom="9"] .dark-state-label-name,
+[data-zoom="9"] .light-state-label-name {
+  display: block;
+  font-size: 11px;
+}
+
+[data-zoom="10"] .dark-state-label-name,
+[data-zoom="10"] .light-state-label-name {
+  display: block;
+  font-size: 12px;
+}
+
+@keyframes dotRipple {
+  0% {
+    transform: scale(1);
+    opacity: 0.65;
+  }
+
+  100% {
+    transform: scale(2.8);
+    opacity: 0;
+  }
+}
+
+/* Core dot — subtle scale + glow pulse */
+@keyframes dotPulse {
+
+  0%,
+  100% {
+    transform: scale(1);
+    filter: brightness(1);
+  }
+
+  50% {
+    transform: scale(1.12);
+    filter: brightness(1.2);
+  }
+}

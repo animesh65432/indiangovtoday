@@ -1,5 +1,5 @@
-
 import { STATES_CODES } from "@/lib/translatetext";
+import { categoryStyles } from "@/lib/categoryStyles"
 import L from "leaflet";
 
 const GEO_NAME_MAP: Record<string, string> = {
@@ -23,22 +23,17 @@ export function normalizeGeoName(name: string): string {
     return GEO_NAME_MAP[name] || name;
 }
 
-export function getStateColor(count: number, isSelected: boolean): string {
-    if (isSelected) return "#FEF08A";
-    if (count === 0) return "#E8E4DA";
-    if (count === 1) return "#FDE68A";
-    if (count === 2) return "#FBBF24";
-    return "#F59E0B";
+export function getStateColor(count: number, isSelected: boolean, theme: string): string {
+    return "transparent";
 }
 
-export function getStateBorder(count: number, isSelected: boolean): string {
-    if (isSelected) return "#D97706";
-    if (count === 0) return "#C9C3B5";
-    return "#D97706";
+export function getStateBorder(count: number, isSelected: boolean, theme: string): string {
+    if (isSelected) return "#4a4a4a";
+    return "#C9C3B5";
 }
 
 export function getStateWeight(isSelected: boolean): number {
-    return isSelected ? 3 : 1;
+    return isSelected ? 2 : 1;
 }
 
 export function getStateFillOpacity(count: number, isSelected: boolean): number {
@@ -55,6 +50,24 @@ export const UNION_TERRITORIES = [
 ];
 
 
+export function makeStateDot(count: number, theme: string): L.DivIcon {
+    const size = Math.min(8 + count * 1.5, 32); // scale dot by count, cap at 32px
+    const color = count > 20 ? "#e63946" : count > 10 ? "#f4a261" : "#2a9d8f";
+    return L.divIcon({
+        className: "",
+        html: `<div style="
+            width:${size}px; height:${size}px;
+            background:${color};
+            border-radius:50%;
+            border:2px solid ${theme === "dark" ? "#222" : "#fff"};
+            box-shadow:0 1px 4px rgba(0,0,0,0.3);
+            opacity:0.85;
+        "></div>`,
+        iconSize: [size, size],
+        iconAnchor: [size / 2, size / 2],
+    });
+}
+
 export const getTranslatedStateName = (
     englishName: string,
     language: string
@@ -64,59 +77,80 @@ export const getTranslatedStateName = (
     return stateEntry[language] ?? stateEntry["English"] ?? englishName;
 };
 
-export const getTooltipHTML = (
-    name: string,
-    count: number,
-    language: string
-): string => {
-    const displayName = getTranslatedStateName(name, language);
-    const hasCounts = count > 0;
-    const countLabel = hasCounts
-        ? `${count} announcement${count !== 1 ? "s" : ""}`
-        : "No announcements";
-
-    return `<div style="font-family:'Inter',-apple-system,sans-serif;min-width:155px;color:#141414;">
-<span style="font-size:13px;font-weight:700;line-height:1.45;letter-spacing:-0.01em;color:#141414;margin-bottom:4px;">${displayName}</span>
-<div style="font-size:13px;font-weight:700;color:#AAA;letter-spacing:0.08em; ${hasCounts ? "text-gray-500" : "text-red-500"}">${countLabel}</div>
-<div style="font-size:12px;font-weight:700;color:#AAA;letter-spacing:0.08em;">${hasCounts ? "Click to filter" : "Click to select"}</div>
-</div>`;
-};
 
 export const checkIfStateSelected = (state: string, selectedStates: string[]): boolean => {
     const normalizedState = normalizeGeoName(state);
     return selectedStates.some(selected => normalizeGeoName(selected) === normalizedState);
 }
 
-export const DARK_MAP_STYLE = `
-.leaflet-top.leaflet-left { left: 10px !important; top: 10px !important; }
-.leaflet-control-zoom .leaflet-bar { border: 1px solid #FF9933 !important; border-radius: 6px !important; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.6) !important; }
-.leaflet-control-zoom a { background: #1A1A1A !important; color: #FF9933 !important; border-bottom: 1px solid #FF9933 !important; width: 26px !important; height: 26px !important; line-height: 26px !important; font-size: 15px !important; display: flex !important; align-items: center !important; justify-content: center !important; transition: background 0.15s; }
-.leaflet-control-zoom a:hover { background: #FF9933 !important; color: #000 !important; }
-.leaflet-control-zoom a:last-child { border-bottom: none !important; }
-.leaflet-control-attribution { display: none !important; }
-.state-label { background: transparent !important; border: none !important; box-shadow: none !important; pointer-events: none !important; }
-.state-label-inner { display: flex; flex-direction: column; align-items: center; gap: 1px; transform: translate(-50%, -50%); white-space: nowrap; }
-.state-label-name { font-size: 8px; font-weight: 700; color: #fff; letter-spacing: 0.03em; text-shadow: 0 1px 3px rgba(0,0,0,0.9), 0 0 6px rgba(0,0,0,0.8); line-height: 1.1; text-transform: uppercase; }
-.state-label-count { font-size: 9px; font-weight: 800; color: #FF9933; background: rgba(0,0,0,0.55); border: 1px solid #FF9933; border-radius: 10px; padding: 0px 5px; line-height: 1.5; }
-.govtrack-tooltip { background: #1A1A1A !important; border: 1px solid #FF9933 !important; border-radius: 8px !important; box-shadow: 0 2px 12px rgba(0,0,0,0.6) !important; padding: 6px 10px !important; color: white !important; font-size: 12px !important; pointer-events: none !important; }
-.govtrack-tooltip::before { display: none !important; }
-`;
-
 export function injectMapStyles() {
     if (typeof document === "undefined") return;
     if (document.getElementById("dark-map-styles")) return;
     const el = document.createElement("style");
     el.id = "dark-map-styles";
-    el.textContent = DARK_MAP_STYLE;
     document.head.appendChild(el);
 }
 
-export function makeStateLabel(name: string, count: number): L.DivIcon {
-    const countHtml = count > 0 ? `<div class="state-label-count">${count}</div>` : "";
+function makePieSlices(cats: { category: string; count: number }[], r: number, cx: number, cy: number, isDark: boolean): string {
+    const total = cats.reduce((s, c) => s + c.count, 0);
+    if (total === 0) return "";
+
+    let startAngle = -Math.PI / 2; // 12 o'clock
+    const slices: string[] = [];
+
+    cats.forEach((c) => {
+        const slice = (c.count / total) * 2 * Math.PI;
+        const endAngle = startAngle + slice;
+
+        const x1 = cx + r * Math.cos(startAngle);
+        const y1 = cy + r * Math.sin(startAngle);
+        const x2 = cx + r * Math.cos(endAngle);
+        const y2 = cy + r * Math.sin(endAngle);
+        const largeArc = slice > Math.PI ? 1 : 0;
+
+        const color = categoryStyles[c.category]?.dot ?? "#78716C";
+
+        slices.push(`
+            <path
+                d="M${cx},${cy} L${x1},${y1} A${r},${r} 0 ${largeArc},1 ${x2},${y2} Z"
+                fill="${color}"
+                opacity="0.9"
+                stroke="${isDark ? "#1a1a1a" : "#ffffff"}"
+                stroke-width="1"
+            >
+                <title>${c.category}: ${c.count}</title>
+            </path>
+        `);
+
+        startAngle = endAngle;
+    });
+
+    return slices.join("");
+}
+
+export function makeNameLabel(name: string, isDark: boolean): L.DivIcon {
     return L.divIcon({
-        className: "state-label",
-        html: `<div class="state-label-inner"><div class="state-label-name">${name}</div>${countHtml}</div>`,
+        className: "",
+        html: `<span style="
+            white-space: nowrap;
+            font-size: 8px;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: ${isDark ? "#f0f0f0" : "#1a1a1a"};
+            text-shadow:
+                -1px -1px 0 ${isDark ? "#000" : "#fff"},
+                 1px -1px 0 ${isDark ? "#000" : "#fff"},
+                -1px  1px 0 ${isDark ? "#000" : "#fff"},
+                 1px  1px 0 ${isDark ? "#000" : "#fff"};
+            pointer-events: none;
+        ">${name}</span>`,
         iconSize: [0, 0],
         iconAnchor: [0, 0],
     });
 }
+
+export const MapStyle = {
+    light: "https://{s}.basemaps.cartocdn.com/rastertiles/voyager_nolabels/{z}/{x}/{y}{r}.png",
+    dark: "https://{s}.basemaps.cartocdn.com/dark_matter_nolabels/{z}/{x}/{y}{r}.png",
+};

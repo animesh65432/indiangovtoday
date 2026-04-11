@@ -504,23 +504,51 @@ export const GetAllCountAnnouncements = asyncErrorHandler(async (req: Request, r
                 }
             },
             {
+                $sort: { date: -1 }
+            },
+            {
                 $group: {
-                    _id: "$state",
-                    count: { $sum: 1 }
+                    _id: {
+                        state: "$state",
+                        category: "$category",
+                    },
+                    count: { $sum: 1 },
+                    announcements: {
+                        $push: {
+                            title: "$title",
+                            date: "$date",
+                        }
+                    }
+                }
+            },
+            {
+                $group: {
+                    _id: "$_id.state",
+                    total: { $sum: "$count" },
+                    categories: {
+                        $push: {
+                            category: "$_id.category",
+                            count: "$count",
+                            announcements: {
+                                $slice: ["$announcements", 3]  // limit to 3 here
+                            }
+                        }
+                    }
                 }
             },
             {
                 $project: {
                     _id: 0,
                     state: "$_id",
-                    count: 1
+                    categories: 1
                 }
             },
             {
-                $sort: { count: -1 }
+                $sort: { total: -1 }
             }
         ])
         .toArray();
+
 
     await redis.set(redis_key, JSON.stringify({
         success: true,

@@ -11,10 +11,15 @@ import ShowAnnouncements from './ShowAnnouncements';
 import Hero from './Hero';
 import StickyNav from './StickyNav';
 import { useHeroScroll } from '@/hooks/useHeroScroll';
+import dynamic from 'next/dynamic'
+
+const IndiaMap = dynamic(() => import('../IndiaMap'), { ssr: false });
 
 
 const Main: React.FC = () => {
     const { language } = useContext(LanguageContext);
+    const [ShowIndiaMap, SetShowIndiaMap] = useState<boolean>(false);
+    const [IsMapLoading, SetIsMapLoading] = useState<boolean>(false);
     const [StatesSelected, SetStatesSelected] = useState<string[]>([]);
     const [SearchQuery, SetSearchQuery] = useState<string>("");
     const [sheetOpen, setSheetOpen] = useState(false)
@@ -137,38 +142,18 @@ const Main: React.FC = () => {
 
 
     return (
-        <section className="flex flex-col min-h-screen">
-            <StickyNav
-                scrolled={scrolled}
-                StatesSelected={StatesSelected}
-                onApply={handleSearch}
-                setSheetOpen={setSheetOpen}
-                SetStatesSelected={SetStatesSelected}
-                sheetOpen={sheetOpen}
-                categoryOptions={categoryOptions}
-                setCategoryOptions={setCategoryOptions}
-                CategorySelected={CategorySelected}
-                SetCategorySelected={SetCategorySelected}
-                SearchQuery={SearchQuery}
-                SetSearchQuery={SetSearchQuery}
-            />
-            <Hero
-                StatesSelected={StatesSelected}
-                setSheetOpen={setSheetOpen}
-                SetStatesSelected={SetStatesSelected}
-                sheetOpen={sheetOpen}
-                Announcements={Announcements}
-                IsLoading={IsLoading}
-                SearchQuery={SearchQuery}
-                SetSearchQuery={SetSearchQuery}
-            />
-            <ShowAnnouncements
-                Announcements={Announcements}
-                IsLoading={IsLoading}
-                IsLoadingMore={IsLoadingMore}
-                LoadMoreData={OnLoadMoredata}
-                page={page}
-                totalpage={totalPages}
+        <section className="flex flex-col  h-screen w-screen">
+            <IndiaMap
+                ShowIndiaMap={ShowIndiaMap}
+                SetShowIndiaMap={SetShowIndiaMap}
+                announcements={Announcements}
+                selectedStates={StatesSelected}
+                onStateClick={(state) => {
+                    if (!state) return;
+                    SetStatesSelected([state]);
+                }}
+                IsMapLoading={IsMapLoading}
+                SetIsMapLoading={SetIsMapLoading}
             />
         </section>
     )
