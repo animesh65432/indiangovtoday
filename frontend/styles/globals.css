@@ -1055,3 +1055,12 @@ input {
   font-weight: 500;
   margin-left: auto;
 }
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}

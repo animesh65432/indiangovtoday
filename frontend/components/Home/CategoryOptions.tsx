@@ -6,6 +6,7 @@ import { GetAllCategoriesAnnouncements } from "@/api/announcements"
 import { IsLoadingContext } from '@/context/IsLoading'
 import { withCache, buildCacheKey } from "@/lib/lsCache"
 import { Swiper, SwiperSlide } from "swiper/react";
+import { categoryStyles } from "@/lib/categoryStyles"
 import "swiper/css";
 
 type Props = {
@@ -63,7 +64,7 @@ const CategoryOptions: React.FC<Props> = ({
     }, [language]);
 
     return (
-        <div className='w-[95%] md:w-[80%] mx-auto mt-2'>
+        <div className='w-full'>
             <Swiper
                 className="w-full"
                 spaceBetween={8}
@@ -77,25 +78,18 @@ const CategoryOptions: React.FC<Props> = ({
                         className="w-auto! flex items-center py-2"
                         onClick={() => SetCategorySelected(category)}
                     >
-                        <div
-                            className={`
-          px-3 md:px-4 py-2 mx-1
-          rounded-full
-          whitespace-nowrap
-
-          font-satoshi font-semibold
-          text-[0.75rem] md:text-[0.9rem]
-          uppercase font-medium tracking-wide
-
-          ${CategorySelected === category
-                                    ? "bg-[#321F1F] text-white shadow-sm"
-                                    : "text-[#321F1F] hover:bg-[#321F1F]/10"
-                                }
-
-          transition-all duration-200
-          cursor-pointer
-        `}
+                        <div className={`px-3 md:px-4 py-2 mx-1 rounded-full whitespace-nowrap font-satoshi font-semibold text-[0.7rem]  tracking-wide flex items-center gap-1.5
+  ${CategorySelected === category
+                                ? "bg-[#321F1F]/10 text-black shadow-sm"
+                                : "text-[#321F1F] hover:bg-[#321F1F]/10"
+                            } transition-all duration-200 cursor-pointer`}
                         >
+                            {categoryStyles[category]?.dot && (
+                                <span
+                                    className="inline-block w-2 h-2 rounded-full shrink-0"
+                                    style={{ backgroundColor: categoryStyles[category].dot }}
+                                />
+                            )}
                             {category}
                         </div>
                     </SwiperSlide>

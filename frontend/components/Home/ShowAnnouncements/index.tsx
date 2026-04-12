@@ -44,7 +44,7 @@ export default function ShowAnnouncements({
 
     if (IsLoading) {
         return (
-            <div className="mt-8 md:mt-0 w-[95%] md:w-[80%] mx-auto grid grid-cols-1 gap-x-8 gap-y-12">
+            <div className="mt-8 md:mt-0 rounded-lg bg-white w-full mx-auto grid grid-cols-1 gap-x-8 gap-y-12">
                 {[...Array(10)].map((_, index) => (
                     <AnnouncementSkeleton key={index} />
                 ))}
@@ -53,32 +53,9 @@ export default function ShowAnnouncements({
     }
 
     return (
-        <div className="mt-8 md:mt-0 w-[95%] md:w-[80%] mx-auto grid grid-cols-1 gap-x-8 gap-y-12">
-            {IsItHomePage &&
-                <>
-                    <div className="md:hidden">
-                        {Announcements.map((a) => (
-                            <AnnouncementCard key={a.announcementId} Announcement={a} />
-                        ))}
-                    </div>
-
-                    {/* md → xl: skip first 1 */}
-                    <div className="hidden md:grid xl:hidden grid-cols-1 gap-x-8 gap-y-12">
-                        {Announcements.slice(1).map((a) => (
-                            <AnnouncementCard key={a.announcementId} Announcement={a} />
-                        ))}
-                    </div>
-
-                    {/* xl+: skip first 3 */}
-                    <div className="hidden xl:grid grid-cols-1 gap-x-8 gap-y-12">
-                        {Announcements.slice(3).map((a) => (
-                            <AnnouncementCard key={a.announcementId} Announcement={a} />
-                        ))}
-                    </div>
-                </>
-            }
+        <div className="mt-8 overflow-y-auto scrollbar-hide rounded-lg  md:mt-0 bg-white w-full mx-auto grid grid-cols-1 gap-x-8 gap-y-12">
             {
-                !IsItHomePage && <div>
+                <div>
                     {Announcements.map((a) => (
                         <AnnouncementCard key={a.announcementId} Announcement={a} />
                     ))}

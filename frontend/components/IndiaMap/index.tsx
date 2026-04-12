@@ -100,6 +100,9 @@ export default function IndiaMap({
     const updateLayerStylesRef = useRef<() => void>(() => { });
     const geoReadyRef = useRef(false);
     const countsReadyRef = useRef(false);
+    const panelOffset = typeof window !== "undefined" && window.innerWidth >= 768
+        ? window.innerWidth * 0.4 + 16
+        : 0;
     const satelliteMarkersRef = useRef<Map<string, { markers: L.Layer[]; lines: L.Layer[] }>>(new Map());
 
     const selectedStatesRef = useRef<string[]>(selectedStates);
@@ -516,9 +519,13 @@ export default function IndiaMap({
                         (acc, l) => acc.extend(l.getBounds()),
                         selLayers[0].getBounds()
                     );
-                    map.fitBounds(bounds, { padding: [40, 40] });
+                    map.fitBounds(bounds, {
+                        paddingTopLeft: panelOffset ? [panelOffset, 60] : [90, 90],
+                    });
                 } else {
-                    map.fitBounds(geojsonLayer.getBounds(), { padding: [8, 8] });
+                    map.fitBounds(geojsonLayer.getBounds(), {
+                        paddingTopLeft: panelOffset ? [panelOffset, 60] : [90, 90],
+                    });
                 }
             })
             .catch(err => console.error("GeoJSON fetch failed:", err));
@@ -570,7 +577,7 @@ export default function IndiaMap({
         if (!lastSelected) {
             mapInstanceRef.current.fitBounds(
                 geojsonLayerRef.current.getBounds(),
-                { padding: [8, 8] }
+                { paddingTopLeft: panelOffset ? [panelOffset, 60] : [90, 90] }
             );
             return;
         }
@@ -587,8 +594,7 @@ export default function IndiaMap({
                     layer.getBounds(),
                     {
                         duration: 1,
-                        paddingTopLeft: [620, 40],
-                        paddingBottomRight: [40, 40],
+                        paddingTopLeft: panelOffset ? [panelOffset, 60] : [90, 90]
                     }
                 );
             }

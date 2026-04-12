@@ -20,66 +20,30 @@ const AnnouncementCard: React.FC<Props> = ({ Announcement, className }) => {
 
     return (
         <div
-            className={`flex flex-col hover:scale-[1.01] gap-4 hover:cursor-pointer transition-transform duration-200 ${className}`}
+            className={`flex flex-col  hover:scale-[1.01] gap-4 hover:cursor-pointer w-full transition-transform duration-200 ${className}`}
             onClick={handleClick}
         >
-            <div className="flex gap-4 w-full lg:w-[80%]">
+            <div className="flex gap-4 w-full p-4 ">
 
-                {/* ── Text content ── */}
                 <div className="flex flex-col gap-2 flex-1">
-                    <span className="font-literata uppercase red-color">
-                        {Announcement.category}
-                    </span>
-                    <span className="text-xl line-clamp-3 md:line-clamp-none text-color leading-relaxed font-literata font-semibold">
+                    <span className="text-[1rem] line-clamp-3 md:line-clamp-none text-color leading-relaxed font-literata font-semibold">
                         {Announcement.title}
                     </span>
 
-                    {/* Desktop */}
-                    <span className="text-color hidden lg:block font-satoshi leading-relaxed lg:line-clamp-4">
-                        {Announcement.description}
-                    </span>
-                    <span className="font-literata hidden lg:block text-color">
-                        {formatDateInLanguage(Announcement.date, language)} , {Announcement.state}
-                    </span>
-
-                    {/* Mobile */}
-                    <div className="lg:hidden flex gap-4 items-start">
+                    <div className="flex gap-4 items-start">
                         <div className="flex flex-col gap-2 flex-1">
-                            <span className="text-color line-clamp-4 font-satoshi leading-relaxed">
+                            <span className="text-color text-[0.9rem] line-clamp-4 font-satoshi leading-relaxed">
                                 {Announcement.description}
                             </span>
-                            <span className="font-literata text-color">
+                            <span className="font-literata text-color text-[0.9rem]">
                                 {formatDateInLanguage(Announcement.date, language)} , {Announcement.state}
                             </span>
                         </div>
-
-
-                        <div className='relative h-32 w-32 shrink-0'>
-                            <SmartImage
-                                src={Announcement.image}
-                                alt={Announcement.title.substring(0, 20)}
-                                category={Announcement.category}
-                                fill
-                                className='object-fill'
-                                transformation={[{ width: 112, height: 112, focus: 'auto', quality: 80 }]}
-                            />
-                        </div>
                     </div>
-                </div>
-
-                <div className="hidden lg:block relative w-[25vw] h-[28vh] xl:w-[24vw] xl:h-[24vh] shrink-0">
-                    <SmartImage
-                        src={Announcement.image}
-                        alt={Announcement.title.substring(0, 20)}
-                        category={Announcement.category}
-                        fill
-                        className='object-fill'
-                        transformation={[{ width: 700, height: 300, focus: 'auto', quality: 85 }]}
-                    />
                 </div>
             </div>
 
-            <div className="border border-gray-200 w-full lg:w-[80%]"></div>
+            <div className="border border-gray-200 w-full "></div>
         </div>
     )
 }
