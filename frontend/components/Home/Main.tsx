@@ -139,6 +139,11 @@ const Main: React.FC = () => {
         SetCategorySelected(TranslateText[language].ALL_DEPARMENTS);
     }, [language]);
 
+    const onStateClick = (state: string | null) => {
+        if (!state) return;
+        SetStatesSelected([state]);
+    }
+
 
     return (
         <section className="flex h-screen w-screen relative overflow-hidden">
@@ -148,10 +153,7 @@ const Main: React.FC = () => {
                     SetShowIndiaMap={SetShowIndiaMap}
                     announcements={Announcements}
                     selectedStates={StatesSelected}
-                    onStateClick={(state) => {
-                        if (!state) return;
-                        SetStatesSelected([state]);
-                    }}
+                    onStateClick={onStateClick}
                     IsMapLoading={IsMapLoading}
                     SetIsMapLoading={SetIsMapLoading}
                 />
@@ -162,6 +164,8 @@ const Main: React.FC = () => {
                     setCategoryOptions={setCategoryOptions}
                     CategorySelected={CategorySelected}
                     SetCategorySelected={SetCategorySelected}
+                    selectedStates={StatesSelected}
+                    onStateClick={onStateClick}
                 />
                 <ShowAnnouncements
                     Announcements={Announcements}
