@@ -257,17 +257,13 @@ export default function IndiaMap({
                     interactive: true,
                 });
 
-                if (cat.count === 1 || cat.count > 10) {
+                if (cat.count === 1) {
 
                     dot.bindPopup(
-                        GetHoverContent(
-                            stateData.categories
-                                .find(c => c.category === cat.category)
-                                ?.announcements ?? [],
-                            color,
-                            cat.count,
+                        GetSingleAnnouncementContent(
+                            cat.announcements[0],
                             theme,
-                            language,
+                            language
                         ),
                         {
                             closeButton: false,
@@ -347,7 +343,7 @@ export default function IndiaMap({
                             });
 
                             satDot.bindPopup(
-                                GetSingleAnnouncementContent(announcement, color, theme, language),
+                                GetSingleAnnouncementContent(announcement, theme, language),
                                 {
                                     closeButton: false,
                                     className: "custom-map-popup",
@@ -368,6 +364,18 @@ export default function IndiaMap({
 
                         satelliteMarkersRef.current.set(satKey, { markers: newMarkers, lines: newLines });
                     });
+                }
+
+                if (cat.count > 10) {
+                    dot.bindPopup(
+                        GetHoverContent(cat.announcements, color, cat.count, theme, language),
+                        {
+                            closeButton: false,
+                            className: "custom-map-popup",
+                            maxWidth: 240,
+                            autoPan: false,
+                        }
+                    );
                 }
                 if (zoom >= 5) {
                     dotsLayerRef.current?.addLayer(dot);
@@ -473,7 +481,7 @@ export default function IndiaMap({
 
                         layer.on("mouseover", () => {
                             const isSel = checkIfStateSelected(stateCode, selectedStatesRef.current);
-                            if (!isSel) layer.setStyle({ weight: 1.5, color: "#4a4a4a" });
+                            if (!isSel) layer.setStyle({ weight: 1.5, color: theme === "dark" ? "white" : "#4a4a4a" });
                             layer.bringToFront();
                         });
 
@@ -540,11 +548,6 @@ export default function IndiaMap({
             ));
             countAnnouncementsRef.current = res.data;
             countsReadyRef.current = true;
-
-
-            if (process.env.NODE_ENV === "development") {
-                console.log("[IndiaMap] API state values:", res.data.map(d => d.state));
-            }
 
             tryFinalize();
         } catch (error) {

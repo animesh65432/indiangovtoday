@@ -29,8 +29,12 @@ export function getStateColor(count: number, isSelected: boolean, theme: string)
 }
 
 export function getStateBorder(count: number, isSelected: boolean, theme: string): string {
-    if (isSelected) return "#4a4a4a";
-    return "#C9C3B5";
+    if (theme === "dark") {
+        return isSelected ? "white" : "#4a4a4a";
+    }
+    else {
+        return isSelected ? "#4a4a4a" : "#C9C3B5";
+    }
 }
 
 export function getStateWeight(isSelected: boolean): number {
@@ -163,48 +167,75 @@ export const MapStyle = {
 };
 
 export const GetHoverContent = (
-    announcements: { id: string, title: string; date: string; }[],
+    announcements: { id: string; title: string; date: string }[],
     color: string,
     count: number,
-    theme?: string,
-    language?: string,
+    theme: string,
+    language: string,
 ) => {
     if (announcements.length === 0) return "";
 
     const top3 = announcements.slice(0, 3);
     const remaining = count - 3;
 
+    const containerClass = theme === "dark" ? "tool-bar-container" : "tool-bar-container-white";
+    const itemClass = theme === "dark" ? "top-tooltip-item-dark" : "top-tooltip-item-light";
+    const footerClass = theme === "dark" ? "tool-tip-footer" : "tool-tip-footer-white-multi";
+
     const items = top3.map(a => `
-        <div class="top-tooltip-item" onclick="window.open('announcement?id=${a.id}&lan=${language}', '_self')" style="cursor:pointer;">
+        <div class="${itemClass}"
+             onclick="window.open('announcement?id=${a.id}&lan=${language}', '_self')"
+             style="cursor:pointer;">
             <div class="top-tooltip-item-title">${a.title}</div>
             <div class="top-tooltip-item-date">${formatDateInLanguage(a.date, language ?? "English")}</div>
         </div>
     `).join("");
 
     const footer = remaining > 0
-        ? `<div class="tool-tip-footer">
-               + ${remaining} more · <span style="color:${color};cursor:pointer;" >browse all →</span>
+        ? `<div class="${footerClass}">
+               <span>+${remaining} more</span>
+               <span class="footer-browse"
+                     style="color:${color};"
+                     onclick="window.open('announcements?lan=${language}', '_self')">
+                   browse all →
+               </span>
            </div>`
         : "";
 
-    return `<div class="tool-bar-container">${items}${footer}</div>`;
+    return `<div class="${containerClass}">${items}${footer}</div>`;
 };
 
 export const GetSingleAnnouncementContent = (
-    announcement: { id: string; title: string; date: string },
-    color: string,
+    announcement: { id: string; title: string; date: string; location?: string },
     theme?: string,
     language?: string,
-): string => `
-    <div class="tool-bar-container">
-        <div
-            class="top-tooltip-item"
-            onclick="window.open('announcement?id=${announcement.id}&lan=${language}', '_self')"
-            style="cursor:pointer;"
-        >
-            <div class="top-tooltip-item-title">${announcement.title}</div>
-            <div class="top-tooltip-item-date">
-                ${formatDateInLanguage(announcement.date, language ?? "English")}
+): string => {
+    const containerClass = theme === "dark" ? "tool-bar-container" : "tool-bar-container-white";
+    const itemClass = theme === "dark" ? "top-tooltip-item-dark" : "top-tooltip-item-light";
+    const closeClass = theme === "dark" ? "top-tooltip-close" : "top-tooltip-close-white";
+    const footerClass = theme === "dark" ? "tool-tip-footer-dark" : "tool-tip-footer-white";
+
+    return `
+        <div class="${containerClass}">
+            <div class="${itemClass}"
+                 onclick="window.open('announcement?id=${announcement.id}&lan=${language}', '_self')"
+                 style="cursor:pointer;">
+                <span class="${closeClass}"
+                      onclick="event.stopPropagation(); this.closest('.tool-bar-container, .tool-bar-container-white').remove()">
+                    ×
+                </span>
+                <div class="top-tooltip-item-title">${announcement.title}</div>
+                ${announcement.location
+            ? `<div class="top-tooltip-item-location">${announcement.location}</div>`
+            : ""}
             </div>
-        </div>
-    </div>`;
+            <div class="${footerClass}">
+                <span class="top-tooltip-item-date">
+                    ${formatDateInLanguage(announcement.date, language ?? "English")}
+                </span>
+               <span class="tooltip-read-more" onclick="event.stopPropagation(); window.open('announcement?id=${announcement.id}&lan=${language}', '_self')">
+                 Read more
+               </span>
+            </div>
+        </div>`;
+};
