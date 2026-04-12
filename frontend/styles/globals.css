@@ -809,3 +809,43 @@ input {
     filter: brightness(1.2);
   }
 }
+
+.tool-bar-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 200px;
+  white-space: nowrap;
+  border-radius: 32px;
+}
+
+.top-tooltip-item {
+  font-family: var(--font-satoshi);
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  text-wrap: wrap;
+  color: #321F1F;
+  font-size: 14px;
+}
+
+.tool-tip-footer {
+  font-size: 14px;
+  color: #321F1F;
+  margin-top: 4px;
+  font-family: var(--font-satoshi);
+  border-top: 1px solid #E5E2D8;
+  padding: 10px;
+}
+
+.top-tooltip-item-title {
+  font-weight: bold;
+}
+
+.tool-tip-footer {
+  color: #321F1F;
+}
+
+.map-container {
+  font-family: var(--font-literata);
+}

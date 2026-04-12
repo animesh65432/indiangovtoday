@@ -517,6 +517,7 @@ export const GetAllCountAnnouncements = asyncErrorHandler(async (req: Request, r
                         $push: {
                             title: "$title",
                             date: "$date",
+                            id: "$_id"
                         }
                     }
                 }
@@ -530,7 +531,7 @@ export const GetAllCountAnnouncements = asyncErrorHandler(async (req: Request, r
                             category: "$_id.category",
                             count: "$count",
                             announcements: {
-                                $slice: ["$announcements", 3]  // limit to 3 here
+                                $slice: ["$announcements", 10]
                             }
                         }
                     }

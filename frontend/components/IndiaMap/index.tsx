@@ -11,7 +11,7 @@ import {
     getStateColor, getStateFillOpacity, getStateBorder,
     getStateWeight, normalizeGeoName, checkIfStateSelected,
     injectMapStyles, makeNameLabel,
-    MapStyle
+    MapStyle, GetHoverContent, GetSingleAnnouncementContent
 } from "./utils";
 import { ThemeContext } from "@/context/Theme";
 import { LanguageContext } from "@/context/Lan";
@@ -89,7 +89,6 @@ export default function IndiaMap({
     const { startdate, endDate } = useContext(Currentdate);
     const { theme } = useContext(ThemeContext);
     const dotPositionsRef = useRef<Map<string, [number, number]>>(new Map());
-
     const mapWrapperRef = useRef<HTMLDivElement>(null);
     const mapRef = useRef<HTMLDivElement>(null);
     const mapInstanceRef = useRef<any>(null);
@@ -101,6 +100,7 @@ export default function IndiaMap({
     const updateLayerStylesRef = useRef<() => void>(() => { });
     const geoReadyRef = useRef(false);
     const countsReadyRef = useRef(false);
+    const satelliteMarkersRef = useRef<Map<string, { markers: L.Layer[]; lines: L.Layer[] }>>(new Map());
 
     const selectedStatesRef = useRef<string[]>(selectedStates);
     const getStateCountRef = useRef<(stateCode: string) => number>(() => 0);
@@ -108,6 +108,18 @@ export default function IndiaMap({
 
     useEffect(() => { selectedStatesRef.current = selectedStates; }, [selectedStates]);
     useEffect(() => { onStateClickRef.current = onStateClick; }, [onStateClick]);
+
+    const clearSatellites = useCallback((key: string) => {
+        const existing = satelliteMarkersRef.current.get(key);
+        if (!existing) return;
+        existing.markers.forEach(m => dotsLayerRef.current?.removeLayer(m));
+        existing.lines.forEach(l => dotsLayerRef.current?.removeLayer(l));
+        satelliteMarkersRef.current.delete(key);
+    }, []);
+
+    const clearAllSatellites = useCallback(() => {
+        [...satelliteMarkersRef.current.keys()].forEach(clearSatellites);
+    }, [clearSatellites]);
 
     const redrawLabels = useCallback(() => {
         const map = mapInstanceRef.current;
@@ -121,27 +133,37 @@ export default function IndiaMap({
 
         const isDark = theme === "dark";
 
+        const zoom = map.getZoom();
+
+        const labeledStates = new Set<string>();
+
         L.geoJSON(geoDataRef.current).eachLayer((layer: any) => {
             const rawName =
                 layer.feature?.properties?.NAME_1 ||
                 layer.feature?.properties?.ST_NM ||
                 layer.feature?.properties?.name || "";
 
+
             const normalized = normalizeGeoName(rawName);
             const stateCode = GetStateCode(normalized, language);
             const displayName = TranslateText[language].MULTISELECT_OPTIONS
                 .find(o => o.value === stateCode)?.label ?? normalized;
 
+            if (labeledStates.has(stateCode)) return;
+            labeledStates.add(stateCode);
+
             const bounds = (layer as any).getBounds();
             const center = bounds.getCenter();
 
-            labelLayerRef.current?.addLayer(
-                L.marker(center, {
-                    icon: makeNameLabel(displayName, isDark),
-                    interactive: false,
-                    zIndexOffset: 600,
-                })
-            );
+            if (zoom <= 8) {
+                labelLayerRef.current?.addLayer(
+                    L.marker(center, {
+                        icon: makeNameLabel(displayName, isDark, zoom),
+                        interactive: false,
+                        zIndexOffset: 600,
+                    })
+                );
+            }
 
             const stateData = findStateData(
                 countAnnouncementsRef.current,
@@ -181,6 +203,7 @@ export default function IndiaMap({
 
                 const AnnouncementsNumber = cat.count > 1 ? cat.count : null;
                 const isStateSelected = selectedStatesRef.current.includes(stateCode);
+                const ShowAnimation = isStateSelected && cat.count === 1;
 
                 const getRippleHtml = (showNumber: boolean) => `
                 <div style="position: relative; width: ${radius * 2}px; height: ${radius * 2}px;">
@@ -225,7 +248,7 @@ export default function IndiaMap({
                 dot = L.marker(point, {
                     icon: L.divIcon({
                         className: "",
-                        html: isStateSelected
+                        html: ShowAnimation
                             ? getRippleHtml(isStateSelected)             // show number only if state selected
                             : getStaticHtml(),
                         iconSize: [radius * 2, radius * 2],
@@ -234,25 +257,139 @@ export default function IndiaMap({
                     interactive: true,
                 });
 
-                const spiderMarkers: L.Marker[] = [];
-                let isOpen = false;
+                if (cat.count === 1 || cat.count > 10) {
 
-                dot.on("click", () => {
-                    if (isOpen) {
-                        spiderMarkers.forEach(m => dotsLayerRef.current?.removeLayer(m));
-                        spiderMarkers.length = 0;
-                        isOpen = false;
-                        return;
-                    }
+                    dot.bindPopup(
+                        GetHoverContent(
+                            stateData.categories
+                                .find(c => c.category === cat.category)
+                                ?.announcements ?? [],
+                            color,
+                            cat.count,
+                            theme,
+                            language,
+                        ),
+                        {
+                            closeButton: false,
+                            className: "custom-map-popup",
+                            maxWidth: 260,
+                            autoPan: false,
+                        }
+                    );
+                }
 
-                    isOpen = true;
+                if (cat.count > 1 && cat.count <= 10) {
 
-                });
+                    dot.on("click", () => {
+                        const map = mapInstanceRef.current;
+                        if (!map || !point) return;
 
-                dotsLayerRef.current?.addLayer(dot);
+                        const announcements =
+                            stateData.categories.find(c => c.category === cat.category)?.announcements ?? [];
+                        const satKey = `${stateCode}-${cat.category}`;
+
+                        if (cat.count <= 1) {
+                            clearAllSatellites();
+                            map.closePopup();
+                            dot.openPopup();
+                            return;
+                        }
+
+
+                        if (satelliteMarkersRef.current.has(satKey)) {
+                            clearSatellites(satKey);
+                            return;
+                        }
+
+                        clearAllSatellites();
+                        map.closePopup();
+
+                        const mainPx = map.latLngToContainerPoint(point as L.LatLngExpression);
+                        const orbitRadius = Math.min(20 + announcements.length * 6, 50);
+                        const satR = 9;
+                        const newMarkers: L.Layer[] = [];
+                        const newLines: L.Layer[] = [];
+
+                        announcements.forEach((announcement, i) => {
+                            const angle = (2 * Math.PI * i) / announcements.length - Math.PI / 2;
+                            const px = mainPx.x + orbitRadius * Math.cos(angle);
+                            const py = mainPx.y + orbitRadius * Math.sin(angle);
+                            const latlng = map.containerPointToLatLng(L.point(px, py));
+
+                            const line = L.polyline([point as L.LatLngExpression, latlng], {
+                                color,
+                                weight: 1.2,
+                                opacity: 0.35,
+                                dashArray: "3 5",
+                            });
+                            dotsLayerRef.current?.addLayer(line);
+                            newLines.push(line);
+
+
+                            const satDot = L.marker(latlng, {
+                                icon: L.divIcon({
+                                    className: "",
+                                    html: `
+                                    <div style="
+                                        width: ${satR * 2}px; height: ${satR * 2}px;
+                                        border-radius: 50%;
+                                        background-color: ${color};
+                                        opacity: 0.52;
+                                        border: 1.5px solid ${isDark ? "rgba(0,0,0,0.3)" : "rgba(255,255,255,0.85)"};
+                                        box-sizing: border-box;
+                                        transition: opacity 0.15s;
+                                        cursor: pointer;
+                                    "></div>`,
+                                    iconSize: [satR * 2, satR * 2],
+                                    iconAnchor: [satR, satR],
+                                }),
+                                interactive: true,
+                            });
+
+                            satDot.bindPopup(
+                                GetSingleAnnouncementContent(announcement, color, theme, language),
+                                {
+                                    closeButton: false,
+                                    className: "custom-map-popup",
+                                    maxWidth: 260,
+                                    autoPan: false,
+                                }
+                            );
+
+                            satDot.on("click", (e) => {
+                                L.DomEvent.stopPropagation(e);
+                                map.closePopup();
+                                satDot.openPopup();
+                            });
+
+                            dotsLayerRef.current?.addLayer(satDot);
+                            newMarkers.push(satDot);
+                        });
+
+                        satelliteMarkersRef.current.set(satKey, { markers: newMarkers, lines: newLines });
+                    });
+                }
+                if (zoom >= 5) {
+                    dotsLayerRef.current?.addLayer(dot);
+                }
             });
         });
-    }, [language, theme]);
+    }, [language]);
+
+    useEffect(() => {
+        const map = mapInstanceRef.current;
+        if (!map) return;
+
+        map.eachLayer((layer: any) => {
+            if ((layer as any)._url) map.removeLayer(layer);
+        });
+
+        L.tileLayer(
+            theme === "dark" ? MapStyle.dark : MapStyle.light,
+            { subdomains: "abcd", maxZoom: 29 }
+        ).addTo(map);
+
+    }, [theme]);
 
     const updateLayerStyles = useCallback(() => {
         if (!geojsonLayerRef.current) return;
@@ -296,17 +433,20 @@ export default function IndiaMap({
             preferCanvas: true,
         });
 
-        L.tileLayer(MapStyle.light,
-            { subdomains: "abcd", maxZoom: 29 })
-            .addTo(map);
+        L.tileLayer(
+            theme === "dark" ? MapStyle.dark : MapStyle.light,
+            { subdomains: "abcd", maxZoom: 29 }
+        ).addTo(map);
 
         mapInstanceRef.current = map;
         labelLayerRef.current = L.layerGroup().addTo(map);
         dotsLayerRef.current = L.layerGroup().addTo(map);
 
-        map.on("zoom", () => {
-            mapWrapperRef.current?.setAttribute("data-zoom", String(Math.floor(map.getZoom())));
+        map.on("zoomend", () => {
+            updateLayerStylesRef.current();
         });
+
+        map.on("zoomstart movestart", () => clearAllSatellites());
 
         fetch(GEOJSON_URL)
             .then(r => r.json())
@@ -451,16 +591,15 @@ export default function IndiaMap({
             }
         });
 
-    }, [selectedStates]);
-
+    }, [selectedStates])
 
     return (
-        <div className={`flex flex-col h-full ${theme}`}>
+        <div className={`flex flex-col h-full `} id="map-container">
             <div
                 ref={mapWrapperRef}
                 data-zoom="4"
                 className={`flex-1 min-h-0 rounded-md md:rounded-none overflow-hidden ${ShowIndiaMap ? "flex-1" : "h-0"}`}
-                style={{ backgroundColor: theme === "dark" ? "#111111" : "#f5f3ef" }}
+                style={{ backgroundColor: theme === "dark" ? "black" : "#f5f3ef" }}
             >
                 <div ref={mapRef} className="w-full h-full" />
             </div>

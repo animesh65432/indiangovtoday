@@ -29,14 +29,22 @@ export type ResponseTrendingAnnouncementTypes = {
     data: TrendingAnnouncementTypes[],
 }
 
+type announcement = {
+    title: string,
+    date: string,
+    id: string
+}
+
 type Category = {
     category: string,
-    count: number
+    count: number,
+    announcements: announcement[],
 }
 
 export type CountAnnouncementTypes = {
     categories: Category[],
     state: string,
+    id: string
 }
 export type ResponseCountAnnouncementTypes = {
     data: CountAnnouncementTypes[],

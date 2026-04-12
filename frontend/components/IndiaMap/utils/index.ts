@@ -1,6 +1,7 @@
 import { STATES_CODES } from "@/lib/translatetext";
 import { categoryStyles } from "@/lib/categoryStyles"
 import L from "leaflet";
+import { formatDateInLanguage } from "@/lib/formatDate"
 
 const GEO_NAME_MAP: Record<string, string> = {
     "Andaman and Nicobar": "Andaman and Nicobar Islands",
@@ -128,13 +129,20 @@ function makePieSlices(cats: { category: string; count: number }[], r: number, c
     return slices.join("");
 }
 
-export function makeNameLabel(name: string, isDark: boolean): L.DivIcon {
+export function makeNameLabel(name: string, isDark: boolean, zoom: number): L.DivIcon {
+
+    const fontSize = zoom >= 7 ? 13 : zoom >= 6 ? 11 : 9;
+    const opacity = zoom >= 7 ? 1 : zoom >= 6 ? 0.85 : 0.7;
+    const visible = zoom >= 5 && zoom <= 8;
+
     return L.divIcon({
         className: "",
         html: `<span style="
+            display: ${visible ? "inline" : "none"};
             white-space: nowrap;
-            font-size: 8px;
+            font-size: ${fontSize}px;
             font-weight: 700;
+            opacity: ${opacity};
             letter-spacing: 0.05em;
             text-transform: uppercase;
             color: ${isDark ? "#f0f0f0" : "#1a1a1a"};
@@ -149,8 +157,54 @@ export function makeNameLabel(name: string, isDark: boolean): L.DivIcon {
         iconAnchor: [0, 0],
     });
 }
-
 export const MapStyle = {
     light: "https://{s}.basemaps.cartocdn.com/rastertiles/voyager_nolabels/{z}/{x}/{y}{r}.png",
-    dark: "https://{s}.basemaps.cartocdn.com/dark_matter_nolabels/{z}/{x}/{y}{r}.png",
+    dark: "https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png"
 };
+
+export const GetHoverContent = (
+    announcements: { id: string, title: string; date: string; }[],
+    color: string,
+    count: number,
+    theme?: string,
+    language?: string,
+) => {
+    if (announcements.length === 0) return "";
+
+    const top3 = announcements.slice(0, 3);
+    const remaining = count - 3;
+
+    const items = top3.map(a => `
+        <div class="top-tooltip-item" onclick="window.open('announcement?id=${a.id}&lan=${language}', '_self')" style="cursor:pointer;">
+            <div class="top-tooltip-item-title">${a.title}</div>
+            <div class="top-tooltip-item-date">${formatDateInLanguage(a.date, language ?? "English")}</div>
+        </div>
+    `).join("");
+
+    const footer = remaining > 0
+        ? `<div class="tool-tip-footer">
+               + ${remaining} more · <span style="color:${color};cursor:pointer;" >browse all →</span>
+           </div>`
+        : "";
+
+    return `<div class="tool-bar-container">${items}${footer}</div>`;
+};
+
+export const GetSingleAnnouncementContent = (
+    announcement: { id: string; title: string; date: string },
+    color: string,
+    theme?: string,
+    language?: string,
+): string => `
+    <div class="tool-bar-container">
+        <div
+            class="top-tooltip-item"
+            onclick="window.open('announcement?id=${announcement.id}&lan=${language}', '_self')"
+            style="cursor:pointer;"
+        >
+            <div class="top-tooltip-item-title">${announcement.title}</div>
+            <div class="top-tooltip-item-date">
+                ${formatDateInLanguage(announcement.date, language ?? "English")}
+            </div>
+        </div>
+    </div>`;
