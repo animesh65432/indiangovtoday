@@ -4,6 +4,7 @@ import { LanguageContext } from '@/context/Lan'
 import { TranslateText } from '@/lib/translatetext'
 import CategoryOptions from './CategoryOptions'
 import { StateSelector } from '@/components/ui/StateSelector'
+import { ThemeContext } from '@/context/Theme'
 
 type Props = {
     categoryOptions: string[]
@@ -23,13 +24,14 @@ const Header: React.FC<Props> = ({
     onStateClick
 }) => {
     const { language } = useContext(LanguageContext)
+    const { theme } = useContext(ThemeContext)
 
     const allStatesLabel = TranslateText[language].MULTISELECT_OPTIONS[
         TranslateText[language].MULTISELECT_OPTIONS.length - 1
     ].label
 
     return (
-        <div className='bg-white rounded-lg flex flex-col'>
+        <div className={`${theme === "dark" ? "bg-black" : "bg-white"} rounded-lg flex flex-col `}>
             <div className='px-2 py-2 flex items-center gap-2'>
 
                 <div className='shrink-0'>
@@ -63,6 +65,7 @@ const Header: React.FC<Props> = ({
                             <StateSelector
                                 selectedState={selectedStates[0] ?? ''}
                                 onStateClick={onStateClick}
+
                             />
                         </div>
                     )}

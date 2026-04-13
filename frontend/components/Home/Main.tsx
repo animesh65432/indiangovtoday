@@ -9,6 +9,7 @@ import { TranslateText } from "@/lib/translatetext"
 import { buildCacheKey, withCache } from "@/lib/lsCache";
 import ShowAnnouncements from './ShowAnnouncements';
 import Header from './Header';
+import MobileHeader from './MobileHeader';
 import DataTypes from './DataTypes';
 import { useHeroScroll } from '@/hooks/useHeroScroll';
 import dynamic from 'next/dynamic'
@@ -147,7 +148,7 @@ const Main: React.FC = () => {
 
 
     return (
-        <section className="flex h-screen w-screen relative overflow-hidden">
+        <section className="flex h-screen w-screen relative overflow-clip">
             <div className="absolute inset-0">
                 <IndiaMap
                     ShowIndiaMap={ShowIndiaMap}
@@ -158,6 +159,14 @@ const Main: React.FC = () => {
                     IsMapLoading={IsMapLoading}
                     SetIsMapLoading={SetIsMapLoading}
                 />
+            </div>
+            <div className="absolute top-0 left-0 right-0 z-500 md:hidden pointer-events-none">
+                <div className="pointer-events-auto">
+                    <MobileHeader
+                        selectedStates={StatesSelected}
+                        onStateClick={onStateClick}
+                    />
+                </div>
             </div>
             <div className="relative z-500 w-[40%] hidden md:flex flex-col gap-3 h-[95vh] shrink-0 m-4 pointer-events-auto">
                 <Header

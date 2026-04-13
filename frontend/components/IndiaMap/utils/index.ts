@@ -30,7 +30,7 @@ export function getStateColor(count: number, isSelected: boolean, theme: string)
 
 export function getStateBorder(count: number, isSelected: boolean, theme: string): string {
     if (theme === "dark") {
-        return isSelected ? "white" : "#4a4a4a";
+        return isSelected ? "#acb0ad" : "#4a4a4a";
     }
     else {
         return isSelected ? "#4a4a4a" : "#C9C3B5";
@@ -135,7 +135,7 @@ function makePieSlices(cats: { category: string; count: number }[], r: number, c
 
 export function makeNameLabel(name: string, isDark: boolean, zoom: number): L.DivIcon {
 
-    const fontSize = zoom >= 7 ? 13 : zoom >= 6 ? 11 : 9;
+    const fontSize = 9;
     const opacity = zoom >= 7 ? 1 : zoom >= 6 ? 0.85 : 0.7;
     const visible = zoom >= 5 && zoom <= 8;
 
@@ -149,7 +149,7 @@ export function makeNameLabel(name: string, isDark: boolean, zoom: number): L.Di
             opacity: ${opacity};
             letter-spacing: 0.05em;
             text-transform: uppercase;
-            color: ${isDark ? "#f0f0f0" : "#1a1a1a"};
+            color: ${isDark ? "#ededed" : "#757575"};
             text-shadow:
                 -1px -1px 0 ${isDark ? "#000" : "#fff"},
                  1px -1px 0 ${isDark ? "#000" : "#fff"},

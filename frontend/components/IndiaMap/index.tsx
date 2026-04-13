@@ -188,7 +188,7 @@ export default function IndiaMap({
 
             activeCats.forEach(cat => {
                 const color = categoryStyles[cat.category]?.dot ?? "#6B6963";
-                const radius = Math.min(Math.max(3 * 2.5, 5), 18);
+                const radius = Math.min(Math.max(3 * 2, 5), 18);
                 const posKey = `${stateCode}-${cat.category}`;
                 let point = dotPositionsRef.current.get(posKey) ?? null;
 
@@ -450,6 +450,7 @@ export default function IndiaMap({
         ).addTo(map);
 
         mapInstanceRef.current = map;
+        map.getContainer().style.background = theme === "dark" ? "black" : "white";
         labelLayerRef.current = L.layerGroup().addTo(map);
         dotsLayerRef.current = L.layerGroup().addTo(map);
 
@@ -484,7 +485,7 @@ export default function IndiaMap({
 
                         layer.on("mouseover", () => {
                             const isSel = checkIfStateSelected(stateCode, selectedStatesRef.current);
-                            if (!isSel) layer.setStyle({ weight: 1.5, color: theme === "dark" ? "white" : "#4a4a4a" });
+                            if (!isSel) layer.setStyle({ weight: 1.5, color: theme === "dark" ? "#acb0ad" : "#4a4a4a" });
                             layer.bringToFront();
                         });
 
@@ -603,12 +604,12 @@ export default function IndiaMap({
     }, [selectedStates])
 
     return (
-        <div className={`flex flex-col h-full `} id="map-container">
+        <div className={`flex flex-col h-full font-satoshi `} id="map-container">
             <div
                 ref={mapWrapperRef}
                 data-zoom="4"
                 className={`flex-1 min-h-0 rounded-md md:rounded-none overflow-hidden ${ShowIndiaMap ? "flex-1" : "h-0"}`}
-                style={{ backgroundColor: theme === "dark" ? "black" : "#f5f3ef" }}
+                style={{ backgroundColor: theme === "dark" ? "black" : "#f5f3ef", touchAction: "none" }}
             >
                 <div ref={mapRef} className="w-full h-full" />
             </div>

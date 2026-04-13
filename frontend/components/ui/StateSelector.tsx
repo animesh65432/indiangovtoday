@@ -53,8 +53,9 @@ export function StateSelector({ selectedState, onStateClick }: Props) {
             </SheetTrigger>
 
             <SheetContent
+                responsiveSide
                 side="center"
-                className="h-[60vh] w-[35vw] mx-auto z-500 font-satoshi border-t border-white/10 rounded-t-2xl"
+                className=" h-screen md:h-[60vh] w-screen md:w-[35vw] mx-auto z-500 font-satoshi border-t border-white/10 rounded-t-2xl"
             >
                 <Command className="bg-transparent h-full flex flex-col">
                     {/* Search */}

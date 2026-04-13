@@ -1,10 +1,12 @@
 import React from 'react'
 import { categoryStyles } from "@/lib/categoryStyles"
+import { ThemeContext } from '@/context/Theme'
 
 const DataTypes: React.FC = () => {
+    const { theme } = React.useContext(ThemeContext)
     return (
-        <div className='z-500 p-3 bg-white rounded-lg px-5 flex flex-col gap-2 font-satoshi shadow-sm'>
-            <div className='uppercase text-[0.7rem] tracking-wider text-slate-400 font-medium'>
+        <div className={`z-500 p-3 ${theme === "light" ? "bg-white" : "bg-black"} rounded-lg px-5 flex flex-col gap-2 font-satoshi shadow-sm`}>
+            <div className={`uppercase text-[0.7rem] tracking-wider ${theme === "dark" ? "text-slate-400" : "text-slate-600"} font-medium`}>
                 Data Types
             </div>
             <div className='flex flex-col gap-1.5'>
@@ -14,7 +16,7 @@ const DataTypes: React.FC = () => {
                             className='w-2 h-2 rounded-full shrink-0'
                             style={{ background: styles.dot }}
                         />
-                        <span className='text-[0.75rem] text-slate-600'>{category}</span>
+                        <span className={`text-[0.75rem] ${theme === "dark" ? "text-white" : "text-slate-600"}`}>{category}</span>
                     </div>
                 ))}
             </div>
