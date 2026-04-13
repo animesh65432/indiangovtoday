@@ -9,6 +9,7 @@ import { TranslateText } from "@/lib/translatetext"
 import { buildCacheKey, withCache } from "@/lib/lsCache";
 import ShowAnnouncements from './ShowAnnouncements';
 import Header from './Header';
+import DataTypes from './DataTypes';
 import { useHeroScroll } from '@/hooks/useHeroScroll';
 import dynamic from 'next/dynamic'
 
@@ -158,7 +159,7 @@ const Main: React.FC = () => {
                     SetIsMapLoading={SetIsMapLoading}
                 />
             </div>
-            <div className="relative z-500 w-[40%] flex flex-col gap-3 h-[95vh] shrink-0 m-4 pointer-events-auto">
+            <div className="relative z-500 w-[40%] hidden md:flex flex-col gap-3 h-[95vh] shrink-0 m-4 pointer-events-auto">
                 <Header
                     categoryOptions={categoryOptions}
                     setCategoryOptions={setCategoryOptions}
@@ -176,9 +177,12 @@ const Main: React.FC = () => {
                     page={page}
                 />
             </div>
+            <div className=" hidden md:block  absolute right-8 top-2/3 -translate-y-1/2 z-500">
+                <DataTypes />
+            </div>
 
             <div className="flex-1 pointer-events-none" />
-        </section>
+        </section >
     )
 };
 

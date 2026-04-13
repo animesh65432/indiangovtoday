@@ -7,7 +7,7 @@ type LogoProps = {
 
 const Logo = ({ fst, snd }: LogoProps) => {
     return (
-        <div className="flex  gap-1 select-none font-satoshi text-color">
+        <div className="flex-1 flex  gap-1 select-none font-satoshi text-color">
             <span>🇮🇳</span>
             <span className="text-[0.9rem] font-semibold">
                 {fst}{snd}
