@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Announcement as AnnouncementTypes } from "@/types/index";
 import AnnouncementCard from "./Announcement";
 import AnnouncementSkeleton from "./AnnouncementSkeleton";
+import { ThemeContext } from "@/context/Theme";
 
 type Props = {
     Announcements: AnnouncementTypes[];
@@ -10,9 +11,7 @@ type Props = {
     totalpage: number;
     IsLoading: boolean;
     IsLoadingMore: boolean;
-    IsItHomePage?: boolean;
 };
-
 
 export default function ShowAnnouncements({
     Announcements,
@@ -20,9 +19,11 @@ export default function ShowAnnouncements({
     page,
     totalpage,
     IsLoading,
-    IsLoadingMore,
-    IsItHomePage = true
+    IsLoadingMore
 }: Props) {
+    const { theme } = useContext(ThemeContext);
+    const isDark = theme === "dark";
+
     const sentinelRef = React.useRef<HTMLDivElement>(null);
 
     React.useEffect(() => {
@@ -42,9 +43,14 @@ export default function ShowAnnouncements({
         return () => observer.disconnect();
     }, [page, totalpage, IsLoadingMore, LoadMoreData]);
 
+    const containerStyle = `
+        mt-8 md:mt-0 rounded-lg w-full mx-auto flex flex-col gap-x-8 gap-y-12
+        ${isDark ? "bg-[#050505]" : "bg-white"}
+    `;
+
     if (IsLoading) {
         return (
-            <div className="mt-8 md:mt-0 rounded-lg bg-white w-full mx-auto grid grid-cols-1 gap-x-8 gap-y-12">
+            <div className={containerStyle}>
                 {[...Array(10)].map((_, index) => (
                     <AnnouncementSkeleton key={index} />
                 ))}
@@ -53,23 +59,21 @@ export default function ShowAnnouncements({
     }
 
     return (
-        <div className="mt-8 overflow-y-auto scrollbar-hide rounded-lg  md:mt-0 bg-white w-full mx-auto grid grid-cols-1 gap-x-8 gap-y-12">
-            {
-                <div>
-                    {Announcements.map((a) => (
-                        <AnnouncementCard key={a.announcementId} Announcement={a} />
-                    ))}
-                </div>
-            }
-            {IsLoadingMore && (
+        <div className={containerStyle}>
+            <div>
+                {Announcements.map((a) => (
+                    <AnnouncementCard key={a.announcementId} Announcement={a} />
+                ))}
+            </div>
+
+            {IsLoadingMore &&
                 [...Array(5)].map((_, index) => (
                     <AnnouncementSkeleton key={`more-${index}`} />
-                ))
-            )}
+                ))}
+
             {page < totalpage && (
                 <div ref={sentinelRef} className="h-1 col-span-1" />
             )}
         </div>
-
     );
 }

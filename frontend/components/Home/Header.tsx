@@ -31,7 +31,7 @@ const Header: React.FC<Props> = ({
     ].label
 
     return (
-        <div className={`${theme === "dark" ? "bg-black" : "bg-white"} rounded-lg flex flex-col `}>
+        <div className={`${theme === "dark" ? "bg-[#050505]" : "bg-white"} rounded-lg flex flex-col `}>
             <div className='px-2 py-2 flex items-center gap-2'>
 
                 <div className='shrink-0'>
@@ -44,8 +44,8 @@ const Header: React.FC<Props> = ({
                 <div className='border-l border-slate-200 h-6 shrink-0' />
                 <div className='min-w-0 flex items-center'>
 
-                    {/* "Indian Govt" label — fixed, never shrinks */}
-                    <div className='shrink-0 font-satoshi text-[0.9rem] p-1 px-2 rounded-md hover:bg-[#321F1F]/10'>
+
+                    <div className={`shrink-0 font-medium ${theme === "dark" ? "text-slate-400" : "text-slate-500"} font-satoshi text-[0.9rem] p-1 px-2 rounded-md hover:bg-[#321F1F]/10`}>
                         {allStatesLabel}
                     </div>
 
@@ -54,11 +54,11 @@ const Header: React.FC<Props> = ({
                     )}
 
                     {selectedStates.length > 0 && (
-                        <div className='min-w-0 flex items-center rounded-md hover:bg-[#321F1F]/10'>
-                            {/* Cap long state names at ~120px, truncate with tooltip */}
+                        <div className={`min-w-0 ${theme === "dark" ? "text-white" : "text-black"} flex items-center rounded-md hover:bg-[#321F1F]/10`}>
                             <div
                                 title={selectedStates[0]}
-                                className='font-satoshi text-[0.9rem] p-1 px-2 text-black truncate max-w-[120px]'
+                                className={`font-satoshi text-[0.9rem] p-1 px-2 truncate max-w-30 ${theme === "dark" ? "text-white" : "text-black"
+                                    }`}
                             >
                                 {selectedStates[0]}
                             </div>
@@ -82,12 +82,22 @@ const Header: React.FC<Props> = ({
 
                 <div className='border-l border-slate-200 h-6 shrink-0' />
 
-                {/* Map / Govt toggle — never shrinks */}
-                <div className='font-satoshi rounded-lg bg-[#321F1F]/10 p-1 flex gap-1 items-center text-[0.8rem]'>
-                    <div className='px-3 py-1 bg-white rounded-md shadow-sm font-medium cursor-pointer transition-all duration-200'>
+
+                <div className={`font-satoshi rounded-lg p-1 flex gap-1 items-center text-[0.8rem] ${theme === "dark" ? "bg-white/10" : "bg-[#321F1F]/10"
+                    }`}>
+
+
+                    <div className={`px-3 py-1 rounded-md shadow-sm font-medium cursor-pointer transition-all duration-200 ${theme === "dark"
+                        ? "bg-white text-black"
+                        : "bg-white text-black"
+                        }`}>
                         Map
                     </div>
-                    <div className='px-3 py-1 text-gray-600 hover:text-black rounded-md cursor-pointer transition-all duration-200 hover:bg-white/60'>
+
+                    <div className={`px-3 py-1 rounded-md cursor-pointer transition-all duration-200 ${theme === "dark"
+                        ? "text-gray-300 hover:text-white hover:bg-white/10"
+                        : "text-gray-600 hover:text-black hover:bg-white/60"
+                        }`}>
                         Govt
                     </div>
                 </div>

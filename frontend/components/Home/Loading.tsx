@@ -3,7 +3,7 @@ import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 
 const Loading: React.FC = () => {
     return (
-        <div className="w-screen h-screen flex justify-center items-center bg-black">
+        <div className="w-screen h-screen flex justify-center items-center bg-[#050505]">
             <DotLottieReact
                 autoplay
                 loop

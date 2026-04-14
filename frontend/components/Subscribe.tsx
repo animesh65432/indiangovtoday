@@ -54,7 +54,7 @@ const Subscribe: React.FC = () => {
     };
 
     const popup = (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm"
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#050505]/40 backdrop-blur-sm"
             style={{ fontFamily: "var(--font-satoshi)" }}>
             <div className="relative w-full max-w-md mx-4 overflow-hidden rounded-2xl bg-white shadow-2xl">
 

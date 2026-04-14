@@ -5,7 +5,7 @@ import { ThemeContext } from '@/context/Theme'
 const DataTypes: React.FC = () => {
     const { theme } = React.useContext(ThemeContext)
     return (
-        <div className={`z-500 p-3 ${theme === "light" ? "bg-white" : "bg-black"} rounded-lg px-5 flex flex-col gap-2 font-satoshi shadow-sm`}>
+        <div className={`z-500 p-3 ${theme === "light" ? "bg-white" : "bg-[#050505]"} rounded-lg px-5 flex flex-col gap-2 font-satoshi shadow-sm`}>
             <div className={`uppercase text-[0.7rem] tracking-wider ${theme === "dark" ? "text-slate-400" : "text-slate-600"} font-medium`}>
                 Data Types
             </div>

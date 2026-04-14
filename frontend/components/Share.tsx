@@ -51,7 +51,7 @@ export default function ShareSection({ Announcement, setisShareOPen }: Props) {
     useClickOutside(modalRef, () => setisShareOPen(false))
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm"
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#050505]/40 backdrop-blur-sm"
             style={{ fontFamily: "var(--font-satoshi)" }}>
             <div
                 ref={modalRef}

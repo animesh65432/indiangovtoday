@@ -10,7 +10,7 @@ type Props = {
 }
 
 const ThemeProvider: React.FC<Props> = ({ children }) => {
-    const [theme, setTheme] = useState("dark")
+    const [theme, setTheme] = useState("light")
 
     const onChangeTheme = (newTheme: "light" | "dark") => {
         setTheme(newTheme)

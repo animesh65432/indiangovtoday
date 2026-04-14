@@ -13,6 +13,9 @@ import MobileHeader from './MobileHeader';
 import DataTypes from './DataTypes';
 import { useHeroScroll } from '@/hooks/useHeroScroll';
 import dynamic from 'next/dynamic'
+import User from "./User"
+import CategoryOptions from './CategoryOptions';
+import MobileBottomSheet from './MobileBottomSheet';
 
 const IndiaMap = dynamic(() => import('../IndiaMap'), { ssr: false });
 
@@ -160,6 +163,7 @@ const Main: React.FC = () => {
                     SetIsMapLoading={SetIsMapLoading}
                 />
             </div>
+
             <div className="absolute top-0 left-0 right-0 z-500 md:hidden pointer-events-none">
                 <div className="pointer-events-auto">
                     <MobileHeader
@@ -168,7 +172,22 @@ const Main: React.FC = () => {
                     />
                 </div>
             </div>
-            <div className="relative z-500 w-[40%] hidden md:flex flex-col gap-3 h-[95vh] shrink-0 m-4 pointer-events-auto">
+
+            <MobileBottomSheet
+                categoryOptions={categoryOptions}
+                setCategoryOptions={setCategoryOptions}
+                CategorySelected={CategorySelected}
+                SetCategorySelected={SetCategorySelected}
+                Announcements={Announcements}
+                IsLoading={IsLoading}
+                IsLoadingMore={IsLoadingMore}
+                LoadMoreData={OnLoadMoredata}
+                totalpage={totalPages}
+                page={page}
+            />
+
+
+            <div className="relative z-500 w-[40%] hidden md:flex flex-col gap-3 h-[95vh] shrink-0 m-4 pointer-events-auto overflow-hidden">
                 <Header
                     categoryOptions={categoryOptions}
                     setCategoryOptions={setCategoryOptions}
@@ -177,21 +196,27 @@ const Main: React.FC = () => {
                     selectedStates={StatesSelected}
                     onStateClick={onStateClick}
                 />
-                <ShowAnnouncements
-                    Announcements={Announcements}
-                    IsLoading={IsLoading}
-                    IsLoadingMore={IsLoadingMore}
-                    LoadMoreData={OnLoadMoredata}
-                    totalpage={totalPages}
-                    page={page}
-                />
+                <div className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden ">
+                    <ShowAnnouncements
+                        Announcements={Announcements}
+                        IsLoading={IsLoading}
+                        IsLoadingMore={IsLoadingMore}
+                        LoadMoreData={OnLoadMoredata}
+                        totalpage={totalPages}
+                        page={page}
+                    />
+                </div>
             </div>
-            <div className=" hidden md:block  absolute right-8 top-2/3 -translate-y-1/2 z-500">
+
+            <div className="hidden md:block absolute right-8 top-2/3 -translate-y-1/2 z-500">
                 <DataTypes />
+            </div>
+            <div className="hidden md:block absolute right-8 top-8 -translate-y-1/2 z-500">
+                <User />
             </div>
 
             <div className="flex-1 pointer-events-none" />
-        </section >
+        </section>
     )
 };
 
