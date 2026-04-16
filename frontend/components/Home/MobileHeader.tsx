@@ -1,8 +1,8 @@
-import React from 'react'
 import { LanguageContext } from '@/context/Lan'
 import { TranslateText } from "@/lib/translatetext"
 import User from './User'
 import { StateSelector } from '@/components/ui/StateSelector'
+import { useContext } from 'react'
 
 type Props = {
     selectedStates: string[]
@@ -10,9 +10,10 @@ type Props = {
 }
 
 const MobileHeader: React.FC<Props> = ({ selectedStates, onStateClick }) => {
-    const { language } = React.useContext(LanguageContext)
+    const { language } = useContext(LanguageContext)
     const options = TranslateText[language].MULTISELECT_OPTIONS
     const lastOption = options[options.length - 1]
+
 
     return (
         <div className="flex items-center justify-between px-4 py-3 w-screen font-satoshi">

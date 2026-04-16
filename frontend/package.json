@@ -9,6 +9,7 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@heyputer/puter.js": "^2.2.15",
     "@imagekit/next": "^2.1.5",
     "@lottiefiles/dotlottie-react": "^0.18.7",
     "@radix-ui/react-alert-dialog": "^1.1.15",

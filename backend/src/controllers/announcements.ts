@@ -383,7 +383,6 @@ export const GetallAnnoucementsDepartments = asyncErrorHandler(async (req: Reque
 }
 );
 
-
 export const GetAllTrendingTitles = asyncErrorHandler(async (req: Request, res: Response) => {
     const { target_lan } = req.query;
 
@@ -660,4 +659,101 @@ export const GetStats = asyncErrorHandler(async (req: Request, res: Response) =>
             totalDepartments: totalDepartments.length,
         }
     });
+});
+
+export const GetBriefAnnouncements = asyncErrorHandler(async (req: Request, res: Response) => {
+    const { target_lan, states, startDate, endDate } = req.query;
+
+    if (!target_lan || typeof target_lan !== "string") {
+        res.status(400).json({ message: "Missing or invalid target_lan" });
+        return;
+    }
+
+    const selectedStates = PrasePayloadArray(states as string);
+
+    const announcementsStartDate = startDate
+        ? new Date(startDate as string)
+        : new Date(new Date().setDate(new Date().getDate() - 7));
+
+    const announcementsEndDate = endDate ? new Date(endDate as string) : new Date();
+
+    const stateCachePart = selectedStates.join(",");
+
+    const targetLanguage = LANGUAGE_CODES[target_lan as string] || "en";
+
+    const redis_key = `Brief_Announcements_${targetLanguage}_${stateCachePart}_${announcementsStartDate.toISOString().split("T")[0]}_${announcementsEndDate.toISOString().split("T")[0]}`;
+
+    const cached_data = await redis.get(redis_key);
+
+    if (cached_data) {
+        const parsedData = typeof cached_data === "string" ? JSON.parse(cached_data) : cached_data;
+        res.status(200).json(parsedData);
+        return;
+    }
+
+    const db = await connectDB();
+
+    const start = new Date(announcementsStartDate);
+    start.setUTCHours(0, 0, 0, 0);
+
+    const end = new Date(announcementsEndDate);
+    end.setUTCHours(23, 59, 59, 999);
+
+    const result = await db.aggregate([
+        {
+            $documents: selectedStates.map((s) => ({ state: s }))
+        },
+        {
+            $lookup: {
+                from: "Translated_Announcements",
+                let: { stateVar: "$state" },
+                pipeline: [
+                    {
+                        $match: {
+                            $expr: {
+                                $and: [
+                                    { $eq: ["$state", "$$stateVar"] },
+                                    { $eq: ["$language", targetLanguage] },
+                                    { $gte: ["$date", start] },
+                                    { $lte: ["$date", end] },
+                                ]
+                            }
+                        }
+                    },
+                    { $sort: { date: -1 } }
+                ],
+                as: "announcements"
+            }
+        },
+        {
+            $project: {
+                _id: 0,
+                state: 1,
+                total: { $size: "$announcements" },
+                latest: {
+                    $cond: {
+                        if: { $gt: [{ $size: "$announcements" }, 0] }, // ✅ fixed brackets here
+                        then: {
+                            title: { $first: "$announcements.title" },
+                            date: { $first: "$announcements.date" },
+                            category: { $first: "$announcements.category" },
+                            announcementId: { $first: "$announcements.announcementId" }
+                        },
+                        else: null
+                    }
+                }
+            }
+        },
+        { $sort: { total: -1 } }
+    ]).toArray();
+
+    const responseData = {
+        success: true,
+        data: result
+    };
+
+    await redis.set(redis_key, JSON.stringify(responseData), { ex: 300 });
+
+    res.status(200).json(responseData);
+    return;
 });

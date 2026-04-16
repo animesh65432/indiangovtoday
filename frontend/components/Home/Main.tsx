@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext, useRef } from 'react';
-import { getAllAnnouncements } from "@/api/announcements";
-import { Announcement as AnnouncementTypes, AnnouncementsResponse } from "@/types";
+import { getAllAnnouncements, GetBriefAnnouncements } from "@/api/announcements";
+import { Announcement as AnnouncementTypes, AnnouncementsResponse, Brief_Announcement } from "@/types";
 import { LanguageContext } from '@/context/Lan';
 import { Currentdate } from "@/context/Currentdate";
 import { GetStateCode } from "@/lib/GetStateCode"
@@ -9,6 +9,7 @@ import { TranslateText } from "@/lib/translatetext"
 import { buildCacheKey, withCache } from "@/lib/lsCache";
 import ShowAnnouncements from './ShowAnnouncements';
 import Header from './Header';
+import { Briefing_Announcement_Response } from "@/types";
 import MobileHeader from './MobileHeader';
 import DataTypes from './DataTypes';
 import { useHeroScroll } from '@/hooks/useHeroScroll';
@@ -22,6 +23,7 @@ const IndiaMap = dynamic(() => import('../IndiaMap'), { ssr: false });
 
 const Main: React.FC = () => {
     const { language } = useContext(LanguageContext);
+    const [BriefAnnouncements, SetBriefAnnouncements] = useState<Brief_Announcement[]>([])
     const [ShowIndiaMap, SetShowIndiaMap] = useState<boolean>(false);
     const [IsMapLoading, SetIsMapLoading] = useState<boolean>(false);
     const [StatesSelected, SetStatesSelected] = useState<string[]>([]);
@@ -84,6 +86,17 @@ const Main: React.FC = () => {
         }
     }
 
+    const fetchBriefAnnouncements = async () => {
+        try {
+            const response = await GetBriefAnnouncements(language, startdate, endDate, StatesSelected) as Briefing_Announcement_Response;
+            if (response.success) {
+                SetBriefAnnouncements(response.data);
+            }
+        } catch (error) {
+            console.error("Error fetching brief announcements:", error);
+        }
+    };
+
     useEffect(() => {
         if (firstLoad.current) {
             firstLoad.current = false;
@@ -93,7 +106,6 @@ const Main: React.FC = () => {
 
         Setpage(1);
         fetchGetIndiaAnnouncements(1, false, controller.signal);
-
         return () => controller.abort();
     }, [
         CategorySelected,
@@ -123,6 +135,12 @@ const Main: React.FC = () => {
             return () => controller.abort();
         }
     }, [page]);
+
+    useEffect(() => {
+        if (StatesSelected.length > 0) {
+            fetchBriefAnnouncements();
+        }
+    }, [language, startdate, endDate, StatesSelected]);
 
     const handleSearch = () => {
         if (StatesSelected.length === 0 && DefaultsStatesApplied.length === 0) {
@@ -196,7 +214,7 @@ const Main: React.FC = () => {
                     selectedStates={StatesSelected}
                     onStateClick={onStateClick}
                 />
-                <div className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden ">
+                <div className="flex-1 ">
                     <ShowAnnouncements
                         Announcements={Announcements}
                         IsLoading={IsLoading}
@@ -204,6 +222,8 @@ const Main: React.FC = () => {
                         LoadMoreData={OnLoadMoredata}
                         totalpage={totalPages}
                         page={page}
+                        userStateCode={userStateCode}
+                        BriefAnnouncements={BriefAnnouncements}
                     />
                 </div>
             </div>

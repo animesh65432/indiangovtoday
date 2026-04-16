@@ -116,3 +116,20 @@ export const GetStats = () => Call({
     method: "GET",
     path: `/GetStats`,
 })
+
+export const GetBriefAnnouncements = (target_lan: string, startdate: Date, endDate: Date, states: string[], signal?: AbortSignal) => {
+
+    const params = new URLSearchParams({
+        target_lan,
+        startDate: startdate.toISOString().split('T')[0],
+        endDate: endDate.toISOString().split('T')[0],
+    });
+
+    states.forEach(state => params.append('states', state));
+
+    return Call({
+        method: "GET",
+        path: `/GetBriefAnnouncements?${params.toString()}`,
+        signal
+    });
+}

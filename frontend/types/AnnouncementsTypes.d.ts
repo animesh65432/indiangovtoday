@@ -49,3 +49,7 @@ export type CountAnnouncementTypes = {
 export type ResponseCountAnnouncementTypes = {
     data: CountAnnouncementTypes[],
 }
+
+export type BriefingTypes = {
+    title: string,
+}

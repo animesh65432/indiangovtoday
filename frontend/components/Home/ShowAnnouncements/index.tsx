@@ -1,8 +1,9 @@
 import React, { useContext } from "react";
 import { Announcement as AnnouncementTypes } from "@/types/index";
-import AnnouncementCard from "./Announcement";
+import { Brief_Announcement } from "@/types"
 import AnnouncementSkeleton from "./AnnouncementSkeleton";
 import { ThemeContext } from "@/context/Theme";
+import Briefing from "../Briefing";
 
 type Props = {
     Announcements: AnnouncementTypes[];
@@ -11,6 +12,8 @@ type Props = {
     totalpage: number;
     IsLoading: boolean;
     IsLoadingMore: boolean;
+    BriefAnnouncements: Brief_Announcement[];
+    userStateCode: string;
 };
 
 export default function ShowAnnouncements({
@@ -19,7 +22,9 @@ export default function ShowAnnouncements({
     page,
     totalpage,
     IsLoading,
-    IsLoadingMore
+    IsLoadingMore,
+    BriefAnnouncements,
+    userStateCode,
 }: Props) {
     const { theme } = useContext(ThemeContext);
     const isDark = theme === "dark";
@@ -44,7 +49,7 @@ export default function ShowAnnouncements({
     }, [page, totalpage, IsLoadingMore, LoadMoreData]);
 
     const containerStyle = `
-        mt-8 md:mt-0 rounded-lg w-full mx-auto flex flex-col gap-x-8 gap-y-12
+        mt-8 md:mt-0 rounded-lg min-h-0 overflow-y-auto overflow-x-hidden w-full mx-auto flex flex-col gap-x-8 gap-y-12
         ${isDark ? "bg-[#050505]" : "bg-white"}
     `;
 
@@ -60,10 +65,17 @@ export default function ShowAnnouncements({
 
     return (
         <div className={containerStyle}>
-            <div>
-                {Announcements.map((a) => (
-                    <AnnouncementCard key={a.announcementId} Announcement={a} />
-                ))}
+            <div className="flex flex-col gap-6 min-h-0 overflow-y-auto overflow-x-hidden">
+                <Briefing
+                    BriefAnnouncements={BriefAnnouncements}
+                    userStateCode={userStateCode}
+                />
+                {/* {Announcements.map((a) => (
+                    <AnnouncementCard
+                        key={a.announcementId}
+                        Announcement={a}
+                    />
+                ))} */}
             </div>
 
             {IsLoadingMore &&
