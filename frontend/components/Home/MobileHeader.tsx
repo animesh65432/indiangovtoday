@@ -1,6 +1,6 @@
 import { LanguageContext } from '@/context/Lan'
 import { TranslateText } from "@/lib/translatetext"
-import User from './User'
+import Theme from "./Theme"
 import { StateSelector } from '@/components/ui/StateSelector'
 import { useContext } from 'react'
 
@@ -43,7 +43,7 @@ const MobileHeader: React.FC<Props> = ({ selectedStates, onStateClick }) => {
                 </div>
 
             </div>
-            <User />
+            <Theme />
         </div>
     )
 }

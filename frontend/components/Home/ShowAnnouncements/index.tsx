@@ -4,6 +4,7 @@ import { Brief_Announcement } from "@/types"
 import AnnouncementSkeleton from "./AnnouncementSkeleton";
 import { ThemeContext } from "@/context/Theme";
 import Briefing from "../Briefing";
+import AnnouncementCard from "./Announcement";
 
 type Props = {
     Announcements: AnnouncementTypes[];
@@ -49,9 +50,9 @@ export default function ShowAnnouncements({
     }, [page, totalpage, IsLoadingMore, LoadMoreData]);
 
     const containerStyle = `
-        mt-8 md:mt-0 rounded-lg min-h-0 overflow-y-auto overflow-x-hidden w-full mx-auto flex flex-col gap-x-8 gap-y-12
-        ${isDark ? "bg-[#050505]" : "bg-white"}
-    `;
+    mt-8 md:mt-0 rounded-md p-4 w-full mx-auto flex flex-col gap-x-8 gap-y-12
+    ${isDark ? "bg-[#050505]" : "bg-white"}
+`;
 
     if (IsLoading) {
         return (
@@ -64,28 +65,26 @@ export default function ShowAnnouncements({
     }
 
     return (
-        <div className={containerStyle}>
-            <div className="flex flex-col gap-6 min-h-0 overflow-y-auto overflow-x-hidden">
+        <div className="flex flex-col flex-1 min-h-0 overflow-y-auto scrollbar-hide">
+            <div className=" mb-0 md:mb-3">
                 <Briefing
                     BriefAnnouncements={BriefAnnouncements}
                     userStateCode={userStateCode}
                 />
-                {/* {Announcements.map((a) => (
-                    <AnnouncementCard
-                        key={a.announcementId}
-                        Announcement={a}
-                    />
-                ))} */}
             </div>
 
-            {IsLoadingMore &&
-                [...Array(5)].map((_, index) => (
+            <div className={`${containerStyle}`}>
+                <div className="flex flex-col gap-6">
+                    {Announcements.map((a) => (
+                        <AnnouncementCard key={a.announcementId} Announcement={a} />
+                    ))}
+                </div>
+                {IsLoadingMore && [...Array(5)].map((_, index) => (
                     <AnnouncementSkeleton key={`more-${index}`} />
                 ))}
+                {page < totalpage && <div ref={sentinelRef} className="h-1" />}
+            </div>
 
-            {page < totalpage && (
-                <div ref={sentinelRef} className="h-1 col-span-1" />
-            )}
         </div>
     );
 }

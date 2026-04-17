@@ -4,6 +4,8 @@ import { LanguageContext } from "@/context/Lan"
 import { formatDateInLanguage } from "@/lib/formatDate"
 import { useRouter } from "next/navigation"
 import { ThemeContext } from "@/context/Theme"
+import { TranslateText } from "@/lib/translatetext"
+import { categoryStyles } from "@/lib/categoryStyles"
 
 type Props = {
     Announcement: Announcement,
@@ -23,35 +25,53 @@ const AnnouncementCard: React.FC<Props> = ({ Announcement, className }) => {
 
     return (
         <div
-            className={`flex flex-col hover:scale-[1.01] gap-4 hover:cursor-pointer w-full transition-transform duration-200
-                ${isDark ? "bg-[#050505] text-white" : "bg-white text-gray-900"}
-                ${className}`}
             onClick={handleClick}
+            className={`relative flex gap-3 px-3 py-3 border-b transition-all duration-200 hover:bg-gray-50 dark:hover:bg-[#111]
+            ${isDark ? "border-gray-800 text-gray-200" : "border-gray-200 text-gray-900"}
+            ${className}`}
         >
-            <div className="flex gap-4 w-full p-4">
 
-                <div className="flex flex-col gap-2 flex-1">
-                    <span className={`text-[1rem] line-clamp-3 md:line-clamp-none leading-relaxed font-literata font-semibold
-                        ${isDark ? "text-white" : "text-gray-900"}`}>
-                        {Announcement.title}
-                    </span>
-
-                    <div className="flex gap-4 items-start">
-                        <div className="flex flex-col gap-2 flex-1">
-                            <span className={`text-[0.9rem] line-clamp-4 font-satoshi leading-relaxed
-                                ${isDark ? "text-zinc-300" : "text-gray-600"}`}>
-                                {Announcement.description}
-                            </span>
-                            <span className={`font-literata text-[0.9rem]
-                                ${isDark ? "text-zinc-400" : "text-gray-500"}`}>
-                                {formatDateInLanguage(Announcement.date, language)} , {Announcement.state}
-                            </span>
-                        </div>
-                    </div>
-                </div>
+            <div className="mt-2">
+                <div
+                    className="w-2 h-2 rounded-full"
+                    style={{ backgroundColor: categoryStyles[Announcement.category]?.dot }}
+                />
             </div>
 
-            <div className={`border w-full ${isDark ? "border-zinc-700" : "border-gray-200"}`}></div>
+            <div className="flex flex-col gap-1 flex-1">
+
+
+                <div className="flex items-center gap-2 text-[0.7rem] font-satoshi text-gray-500">
+                    <span className="uppercase tracking-wide font-medium">
+                        {Announcement.category}
+                    </span>
+
+                    <span>•</span>
+
+                    <span>
+                        {formatDateInLanguage(Announcement.date, language)}
+                    </span>
+                </div>
+
+                <span
+                    className={`font-literata text-[0.95rem] leading-snug line-clamp-2
+                    ${isDark ? "text-gray-100" : "text-gray-900"}`}
+                >
+                    {Announcement.title}
+                </span>
+
+                <span className="text-[0.8rem] text-gray-500 line-clamp-4 font-satoshi">
+                    {Announcement.description}
+                </span>
+
+                <div className="flex items-center justify-end mt-1">
+
+
+                    <span className="text-[0.7rem] font-satoshi text-blue-500 hover:underline font-medium">
+                        {TranslateText[language].SEE_DETAILS}
+                    </span>
+                </div>
+            </div>
         </div>
     )
 }

@@ -7,8 +7,6 @@ import { StateSelector } from '@/components/ui/StateSelector'
 import { ThemeContext } from '@/context/Theme'
 
 type Props = {
-    categoryOptions: string[]
-    setCategoryOptions: React.Dispatch<React.SetStateAction<string[]>>
     CategorySelected: string
     SetCategorySelected: React.Dispatch<React.SetStateAction<string>>
     selectedStates: string[]
@@ -16,8 +14,6 @@ type Props = {
 }
 
 const Header: React.FC<Props> = ({
-    categoryOptions,
-    setCategoryOptions,
     CategorySelected,
     SetCategorySelected,
     selectedStates,
@@ -107,8 +103,6 @@ const Header: React.FC<Props> = ({
             <div className='border-t border-slate-200' />
 
             <CategoryOptions
-                categoryOptions={categoryOptions}
-                setCategoryOptions={setCategoryOptions}
                 CategorySelected={CategorySelected}
                 SetCategorySelected={SetCategorySelected}
             />

@@ -14,8 +14,7 @@ import MobileHeader from './MobileHeader';
 import DataTypes from './DataTypes';
 import { useHeroScroll } from '@/hooks/useHeroScroll';
 import dynamic from 'next/dynamic'
-import User from "./User"
-import CategoryOptions from './CategoryOptions';
+import Theme from "./Theme"
 import MobileBottomSheet from './MobileBottomSheet';
 
 const IndiaMap = dynamic(() => import('../IndiaMap'), { ssr: false });
@@ -28,12 +27,11 @@ const Main: React.FC = () => {
     const [IsMapLoading, SetIsMapLoading] = useState<boolean>(false);
     const [StatesSelected, SetStatesSelected] = useState<string[]>([]);
     const [SearchQuery, SetSearchQuery] = useState<string>("");
-    const [sheetOpen, setSheetOpen] = useState(false)
     const [CategorySelected, SetCategorySelected] = useState<string>(`${TranslateText[language].ALL_DEPARMENTS}`);
     const [totalPages, settotalPages] = useState<number>(0)
-    const [categoryOptions, setCategoryOptions] = useState<string[]>([])
     const [IsLoading, SetIsLoading] = useState<boolean>(false)
     const [IsLoadingMore, SetIsLoadingMore] = useState<boolean>(false)
+    const [IsBriefingLoading, SetIsBriefingLoading] = useState<boolean>(false)
     const firstLoad = useRef(true);
     const [Announcements, SetAnnouncements] = useState<AnnouncementTypes[]>([])
     const [page, Setpage] = useState<number>(1)
@@ -88,7 +86,11 @@ const Main: React.FC = () => {
 
     const fetchBriefAnnouncements = async () => {
         try {
-            const response = await GetBriefAnnouncements(language, startdate, endDate, StatesSelected) as Briefing_Announcement_Response;
+            const key = buildCacheKey("announcements", { language, startdate, endDate, StatesSelected: StatesSelected.join("") });
+
+            const response = await withCache(key, "announcements", async () => (
+                await GetBriefAnnouncements(language, startdate, endDate, StatesSelected) as Briefing_Announcement_Response
+            ));
             if (response.success) {
                 SetBriefAnnouncements(response.data);
             }
@@ -167,7 +169,6 @@ const Main: React.FC = () => {
         SetStatesSelected([state]);
     }
 
-
     return (
         <section className="flex h-screen w-screen relative overflow-clip">
             <div className="absolute inset-0">
@@ -192,8 +193,6 @@ const Main: React.FC = () => {
             </div>
 
             <MobileBottomSheet
-                categoryOptions={categoryOptions}
-                setCategoryOptions={setCategoryOptions}
                 CategorySelected={CategorySelected}
                 SetCategorySelected={SetCategorySelected}
                 Announcements={Announcements}
@@ -202,37 +201,33 @@ const Main: React.FC = () => {
                 LoadMoreData={OnLoadMoredata}
                 totalpage={totalPages}
                 page={page}
+                userStateCode={userStateCode}
+                BriefAnnouncements={BriefAnnouncements}
             />
-
-
             <div className="relative z-500 w-[40%] hidden md:flex flex-col gap-3 h-[95vh] shrink-0 m-4 pointer-events-auto overflow-hidden">
                 <Header
-                    categoryOptions={categoryOptions}
-                    setCategoryOptions={setCategoryOptions}
                     CategorySelected={CategorySelected}
                     SetCategorySelected={SetCategorySelected}
                     selectedStates={StatesSelected}
                     onStateClick={onStateClick}
                 />
-                <div className="flex-1 ">
-                    <ShowAnnouncements
-                        Announcements={Announcements}
-                        IsLoading={IsLoading}
-                        IsLoadingMore={IsLoadingMore}
-                        LoadMoreData={OnLoadMoredata}
-                        totalpage={totalPages}
-                        page={page}
-                        userStateCode={userStateCode}
-                        BriefAnnouncements={BriefAnnouncements}
-                    />
-                </div>
+                <ShowAnnouncements
+                    Announcements={Announcements}
+                    IsLoading={IsLoading}
+                    IsLoadingMore={IsLoadingMore}
+                    LoadMoreData={OnLoadMoredata}
+                    totalpage={totalPages}
+                    page={page}
+                    userStateCode={userStateCode}
+                    BriefAnnouncements={BriefAnnouncements}
+                />
             </div>
 
             <div className="hidden md:block absolute right-8 top-2/3 -translate-y-1/2 z-500">
                 <DataTypes />
             </div>
             <div className="hidden md:block absolute right-8 top-8 -translate-y-1/2 z-500">
-                <User />
+                <Theme />
             </div>
 
             <div className="flex-1 pointer-events-none" />

@@ -11,72 +11,18 @@ import "swiper/css";
 import { ThemeContext } from "@/context/Theme";
 
 type Props = {
-    categoryOptions: string[];
-    setCategoryOptions: React.Dispatch<React.SetStateAction<string[]>>;
     CategorySelected: string;
     SetCategorySelected: React.Dispatch<React.SetStateAction<string>>;
 };
 
 const CategoryOptions: React.FC<Props> = ({
-    categoryOptions,
-    setCategoryOptions,
     CategorySelected,
     SetCategorySelected,
 }) => {
-    const { SetIsLoading } = useContext(IsLoadingContext);
     const { language } = useContext(LanguageContext);
-    const { startdate, endDate } = useContext(Currentdate);
+    const categoryOptions = [TranslateText[language].ALL_DEPARMENTS, ...TranslateText[language].CATEGORIES_OPTIONS];
     const { theme } = useContext(ThemeContext);
-
     const isDark = theme === "dark";
-
-    useEffect(() => {
-        const controller = new AbortController();
-
-        const fetchCategoriesAnnouncements = async () => {
-            SetIsLoading(true);
-            setCategoryOptions([]);
-
-            try {
-                const key = buildCacheKey("categories", {
-                    language,
-                    startdate,
-                    endDate,
-                });
-
-                const response = (await withCache(key, "categories", () =>
-                    GetAllCategoriesAnnouncements(
-                        language,
-                        startdate,
-                        endDate,
-                        controller.signal
-                    )
-                )) as { data: string[] };
-
-                if (!controller.signal.aborted) {
-                    setCategoryOptions([
-                        TranslateText[language].ALL_DEPARMENTS,
-                        ...response.data,
-                    ]);
-                }
-            } catch (error: unknown) {
-                if (
-                    error instanceof Error &&
-                    (error.name === "AbortError" ||
-                        (error as { code?: string }).code === "ERR_CANCELED")
-                ) {
-                    return;
-                }
-            } finally {
-                if (!controller.signal.aborted) {
-                    SetIsLoading(false);
-                }
-            }
-        };
-
-        fetchCategoriesAnnouncements();
-        return () => controller.abort();
-    }, [language, startdate, endDate]);
 
     return (
         <div className="w-full">

@@ -2,18 +2,20 @@ import { Drawer } from "vaul";
 import CategoryOptions from "./CategoryOptions";
 import ShowAnnouncements from "./ShowAnnouncements";
 import React from "react";
+import { Brief_Announcement, Announcement } from "@/types"
 
 interface Props {
-    categoryOptions: any;
-    setCategoryOptions: any;
-    CategorySelected: any;
-    SetCategorySelected: any;
-    Announcements: any;
+    CategorySelected: string;
+    SetCategorySelected: React.Dispatch<React.SetStateAction<string>>;
+    Announcements: Announcement[];
     IsLoading: boolean;
     IsLoadingMore: boolean;
     LoadMoreData: () => void;
     totalpage: number;
     page: number;
+    BriefAnnouncements: Brief_Announcement[];
+    userStateCode: string;
+
 }
 
 const MobileBottomSheet: React.FC<Props> = (props) => {
@@ -33,8 +35,6 @@ const MobileBottomSheet: React.FC<Props> = (props) => {
 
                     <div className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden overscroll-contain">
                         <CategoryOptions
-                            categoryOptions={props.categoryOptions}
-                            setCategoryOptions={props.setCategoryOptions}
                             CategorySelected={props.CategorySelected}
                             SetCategorySelected={props.SetCategorySelected}
                         />
@@ -45,6 +45,8 @@ const MobileBottomSheet: React.FC<Props> = (props) => {
                             LoadMoreData={props.LoadMoreData}
                             totalpage={props.totalpage}
                             page={props.page}
+                            userStateCode={props.userStateCode}
+                            BriefAnnouncements={props.BriefAnnouncements}
                         />
                     </div>
 

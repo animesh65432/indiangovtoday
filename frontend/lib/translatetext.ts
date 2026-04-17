@@ -83,7 +83,8 @@ export type TranslationKeys = {
     TRACKING_ANNOUNCEMENTS_FROM: string,
     ACROSS_INDIA: string,
     ANNOUNCEMENTS_TRACKED: string,
-    DEPARTMENTS: string
+    DEPARTMENTS: string,
+    CATEGORIES_OPTIONS: string[]
 };
 export const STATES_CODES: Record<string, Record<string, string>> = {
     "Andhra Pradesh": {
@@ -1102,7 +1103,23 @@ export const TranslateText: Record<string, TranslationKeys> = {
         TRACKING_ANNOUNCEMENTS_FROM: "Tracking announcements from",
         ACROSS_INDIA: "across India.",
         ANNOUNCEMENTS_TRACKED: "announcements tracked",
-        DEPARTMENTS: "departments"
+        DEPARTMENTS: "departments",
+        CATEGORIES_OPTIONS: [
+            "Scheme",
+            "Infrastructure",
+            "Health",
+            "Policy",
+            "Award",
+            "Employment",
+            "Agriculture",
+            "Welfare",
+            "Election",
+            "Education",
+            "Finance",
+            "Event",
+            "Notification",
+            "Other"
+        ]
     },
     हिन्दी: {
         TITLE: "एक एकीकृत पोर्टल में सभी आधिकारिक सरकारी घोषणाओं तक पहुंचें।",
@@ -1228,6 +1245,22 @@ export const TranslateText: Record<string, TranslationKeys> = {
         ACROSS_INDIA: "पूरे भारत में।",
         ANNOUNCEMENTS_TRACKED: "घोषणाएं ट्रैक की गईं",
         DEPARTMENTS: "विभाग",
+        CATEGORIES_OPTIONS: [
+            "योजना",
+            "बुनियादी ढांचा",
+            "स्वास्थ्य",
+            "नीति",
+            "पुरस्कार",
+            "रोजगार",
+            "कृषि",
+            "कल्याण",
+            "चुनाव",
+            "शिक्षा",
+            "वित्त",
+            "आयोजन",
+            "अधिसूचना",
+            "अन्य"
+        ]
     },
     বাংলা: {
         TITLE: "একটি একীভূত পোর্টালে সমস্ত সরকারি ঘোষণা অ্যাক্সেস করুন।",
@@ -1353,6 +1386,22 @@ export const TranslateText: Record<string, TranslationKeys> = {
         ACROSS_INDIA: "সারা ভারতে।",
         ANNOUNCEMENTS_TRACKED: "ঘোষণা ট্র্যাক করা হয়েছে",
         DEPARTMENTS: "দপ্তর",
+        CATEGORIES_OPTIONS: [
+            "পরিকল্পনা",
+            "পরিকাঠামো",
+            "স্বাস্থ্য",
+            "নীতিমালা",
+            "পুরস্কার",
+            "কর্মসংস্থান",
+            "কৃষি",
+            "কল্যাণ",
+            "নির্বাচন",
+            "শিক্ষা.",
+            "অর্থায়ন",
+            "অনুষ্ঠান",
+            "বিজ্ঞপ্তি",
+            "অন্যান্য"
+        ]
     },
     தமிழ்: {
         TITLE: "ஒரே ஒருங்கிணைந்த போர்ட்டலில் அனைத்து அதிகாரபூர்வ அரசு அறிவிப்புகளையும் அணுகவும்.",
@@ -1477,7 +1526,23 @@ export const TranslateText: Record<string, TranslationKeys> = {
         TRACKING_ANNOUNCEMENTS_FROM: "இருந்து அறிவிப்புகளை கண்காணிக்கிறோம்",
         ACROSS_INDIA: "இந்தியா முழுவதும்.",
         ANNOUNCEMENTS_TRACKED: "அறிவிப்புகள் கண்காணிக்கப்பட்டன",
-        DEPARTMENTS: "துறைகள்"
+        DEPARTMENTS: "துறைகள்",
+        CATEGORIES_OPTIONS: [
+            "திட்டம்",
+            "உள்கட்டமைப்பு வசதிகள்",
+            "ஆரோக்கியம்.",
+            "கொள்கை",
+            "விருது",
+            "வேலைவாய்ப்பு",
+            "விவசாயம்",
+            "நல்வாழ்வு",
+            "தேர்தல்.",
+            "கல்வி.",
+            "நிதி",
+            "நிகழ்வு",
+            "அறிவிப்பு",
+            "மற்றவை"
+        ]
     },
     తెలుగు: {
         TITLE: "ఒకే ఏకీకృత పోర్టల్‌లో అన్ని అధికారిక ప్రభుత్వ ప్రకటనలను యాక్సెస్ చేయండి.",
@@ -1604,6 +1669,22 @@ export const TranslateText: Record<string, TranslationKeys> = {
         ACROSS_INDIA: "భారతదేశం అంతటా.",
         ANNOUNCEMENTS_TRACKED: "ప్రకటనలు ట్రాక్ చేయబడ్డాయి",
         DEPARTMENTS: "విభాగాలు",
+        CATEGORIES_OPTIONS: [
+            "పథకం",
+            "మౌలిక సదుపాయాలు",
+            "ఆరోగ్యం.",
+            "పాలసీ",
+            "అవార్డు",
+            "ఉపాధి.",
+            "వ్యవసాయం",
+            "సంక్షేమం",
+            "ఎన్నికలు.",
+            "విద్య.",
+            "ఫైనాన్స్",
+            "ఈవెంట్",
+            "నోటిఫికేషన్",
+            "ఇతర."
+        ]
     },
     മലയാളം: {
         TITLE: "ഒരൊറ്റ ഏകീകൃത പോർട്ടലിൽ എല്ലാ ഔദ്യോഗിക സർക്കാർ അറിയിപ്പുകളും ആക്സസ് ചെയ്യുക.",
@@ -1730,7 +1811,22 @@ export const TranslateText: Record<string, TranslationKeys> = {
         ACROSS_INDIA: "ഭാരതം മുഴുവൻ.",
         ANNOUNCEMENTS_TRACKED: "അറിയിപ്പുകൾ ട്രാക്ക് ചെയ്തു",
         DEPARTMENTS: "വകുപ്പുകൾ",
-
+        CATEGORIES_OPTIONS: [
+            "പദ്ധതി",
+            "അടിസ്ഥാന സൌകര്യങ്ങൾ",
+            "ആരോഗ്യം",
+            "നയം",
+            "അവാർഡ്",
+            "തൊഴിൽ",
+            "കൃഷി",
+            "ക്ഷേമം",
+            "തിരഞ്ഞെടുപ്പ്.",
+            "വിദ്യാഭ്യാസം",
+            "ധനകാര്യം",
+            "പരിപാടി",
+            "അറിയിപ്പ്",
+            "മറ്റ്."
+        ]
     },
     मराठी: {
         TITLE: "एका एकीकृत पोर्टलमध्ये सर्व अधिकृत सरकारी घोषणांमध्ये प्रवेश मिळवा.",
@@ -1858,6 +1954,22 @@ export const TranslateText: Record<string, TranslationKeys> = {
         ACROSS_INDIA: "संपूर्ण भारतात.",
         ANNOUNCEMENTS_TRACKED: "घोषणांचा मागोवा घेतला",
         DEPARTMENTS: "विभाग",
+        CATEGORIES_OPTIONS: [
+            "योजना",
+            "पायाभूत सुविधा",
+            "आरोग्य.",
+            "धोरण",
+            "पुरस्कार.",
+            "रोजगार",
+            "शेती",
+            "कल्याण",
+            "निवडणूक",
+            "शिक्षण.",
+            "वित्त.",
+            "कार्यक्रम.",
+            "अधिसूचना",
+            "इतर."
+        ]
     },
     ગુજરાતી: {
         TITLE: "એક એકીકૃત પોર્ટલમાં તમામ અધિકૃત સરકારી જાહેરાતોને ઍક્સેસ કરો.",
@@ -1985,6 +2097,22 @@ export const TranslateText: Record<string, TranslationKeys> = {
         ACROSS_INDIA: "સમગ્ર ભારતમાં.",
         ANNOUNCEMENTS_TRACKED: "જાહેરાતો ટ્રૅક કરી",
         DEPARTMENTS: "વિભાગો",
+        CATEGORIES_OPTIONS: [
+            "યોજના",
+            "માળખાગત સુવિધાઓ",
+            "આરોગ્ય",
+            "નીતિ",
+            "એવોર્ડ",
+            "રોજગાર",
+            "ખેતીવાડી",
+            "કલ્યાણ",
+            "ચૂંટણી",
+            "શિક્ષણ",
+            "નાણાકીય બાબતો",
+            "ઇવેન્ટ",
+            "સૂચના",
+            "અન્ય"
+        ]
     },
     ಕನ್ನಡ: {
         TITLE: "ಒಂದೇ ಏಕೀಕೃತ ಪೋರ್ಟಲ್‌ನಲ್ಲಿ ಎಲ್ಲಾ ಅಧಿಕೃತ ಸರ್ಕಾರಿ ಪ್ರಕಟಣೆಗಳನ್ನು ಪ್ರವೇಶಿಸಿ.",
@@ -2112,7 +2240,22 @@ export const TranslateText: Record<string, TranslationKeys> = {
         ACROSS_INDIA: "ಭಾರತಾದ್ಯಂತ.",
         ANNOUNCEMENTS_TRACKED: "ಪ್ರಕಟಣೆಗಳು ಟ್ರ್ಯಾಕ್ ಆಗಿವೆ",
         DEPARTMENTS: "ಇಲಾಖೆಗಳು",
-
+        CATEGORIES_OPTIONS: [
+            "ಯೋಜನೆ",
+            "ಮೂಲಸೌಕರ್ಯ",
+            "ಆರೋಗ್ಯ.",
+            "ನೀತಿ.",
+            "ಪ್ರಶಸ್ತಿ.",
+            "ಉದ್ಯೋಗಾವಕಾಶ",
+            "ಕೃಷಿ",
+            "ಕಲ್ಯಾಣ.",
+            "ಚುನಾವಣೆ.",
+            "ಶಿಕ್ಷಣ.",
+            "ಹಣಕಾಸು",
+            "ಈವೆಂಟ್",
+            "ಅಧಿಸೂಚನೆ",
+            "ಇತರ."
+        ]
     },
     اردو: {
         TITLE: "ایک متحدہ پورٹل میں تمام سرکاری اعلانات تک رسائی حاصل کریں۔",
@@ -2239,7 +2382,23 @@ export const TranslateText: Record<string, TranslationKeys> = {
         TRACKING_ANNOUNCEMENTS_FROM: "سے اعلانات ٹریک کر رہے ہیں",
         ACROSS_INDIA: "پورے ہندوستان میں۔",
         ANNOUNCEMENTS_TRACKED: "اعلانات ٹریک کیے گئے",
-        DEPARTMENTS: "محکمے"
+        DEPARTMENTS: "محکمے",
+        CATEGORIES_OPTIONS: [
+            "اسکیم",
+            "انفراسٹرکچر",
+            "صحت",
+            "پالیسی",
+            "ایوارڈ",
+            "روزگار",
+            "زراعت",
+            "بہبود",
+            "انتخابات",
+            "تعلیم",
+            "مالیات",
+            "تقریب",
+            "نوٹیفکیشن",
+            "دیگر"
+        ]
     },
     অসমীয়া: {
         TITLE: "এটা একীভূত পৰ্টেলত সকলো চৰকাৰী ঘোষণা প্ৰৱেশ কৰক।",
@@ -2364,7 +2523,23 @@ export const TranslateText: Record<string, TranslationKeys> = {
         TRACKING_ANNOUNCEMENTS_FROM: "পৰা ঘোষণা ট্ৰেক কৰা হৈছে",
         ACROSS_INDIA: "সমগ্ৰ ভাৰততে।",
         ANNOUNCEMENTS_TRACKED: "ঘোষণা ট্ৰেক কৰা হৈছে",
-        DEPARTMENTS: "বিভাগসমূহ"
+        DEPARTMENTS: "বিভাগসমূহ",
+        CATEGORIES_OPTIONS: [
+            "আঁচনি",
+            "আন্তঃগাঁথনি",
+            "স্বাস্থ্য",
+            "ৰাজনীতি",
+            "পুৰস্কাৰ",
+            "চাকৰি",
+            "কৃষি",
+            "কল্যাণকামী",
+            "নিৰ্বাচন",
+            "শিক্ষা",
+            "বিত্ত",
+            "অনুষ্ঠান",
+            "জাননী",
+            "আন কিছুমান"
+        ]
     },
     बर: {
         TITLE: "मोनसे एकीकृत पोर्टलआव गासै सरकारी फोसावनायफोरखौ मोननो हागोन।",
@@ -2489,7 +2664,23 @@ export const TranslateText: Record<string, TranslationKeys> = {
         TRACKING_ANNOUNCEMENTS_FROM: "फोसावनायफोर ट्रेक खालामनाय जादों",
         ACROSS_INDIA: "गासै भारतआव।",
         ANNOUNCEMENTS_TRACKED: "फोसावनायफोर ट्रेक खालामनाय",
-        DEPARTMENTS: "बिफानफोर"
+        DEPARTMENTS: "बिफानफोर",
+        CATEGORIES_OPTIONS: [
+            "स्किम।",
+            "इन्फ्रास्ट्राकचार।",
+            "सावस्रिया",
+            "खान्थिया",
+            "बान्था।",
+            "मावसोमनाय।",
+            "आबाद मावनाय।",
+            "मोजांनि थाखाय।",
+            "सायख 'नाय।",
+            "सोलोंथाइ लानाय।",
+            "रांखानथि",
+            "हाबाफारि।",
+            "फोसावथाइ।",
+            "गुबुन गुबुन।"
+        ]
     },
     डोगरी: {
         TITLE: "इक्क एकीकृत पोर्टल च सारे सरकारी घोषणाएं गी एक्सेस करो।",
@@ -2617,7 +2808,23 @@ export const TranslateText: Record<string, TranslationKeys> = {
         TRACKING_ANNOUNCEMENTS_FROM: "थों घोषणाएं ट्रैक कीतियां जा रियां न",
         ACROSS_INDIA: "पूरे भारत च।",
         ANNOUNCEMENTS_TRACKED: "घोषणाएं ट्रैक कीतियां",
-        DEPARTMENTS: "महकमे"
+        DEPARTMENTS: "महकमे",
+        CATEGORIES_OPTIONS: [
+            "योजना",
+            "बुनियादी ढांचा",
+            "स्वास्थ",
+            "नीति",
+            "इनाम",
+            "रोजगार",
+            "खेतीबाड़ी",
+            "कल्याण",
+            "चनाऽ",
+            "शिक्षा",
+            "वित्त",
+            "घटना",
+            "अधिसूचना",
+            "होर केईं"
+        ]
 
     },
     कॉशुर: {
@@ -2747,6 +2954,22 @@ export const TranslateText: Record<string, TranslationKeys> = {
         ACROSS_INDIA: "پورِ ہِندوستانس منز۔",
         ANNOUNCEMENTS_TRACKED: "اعلانات ٹریک کرنہ آمتۍ",
         DEPARTMENTS: "محکمہ جات",
+        CATEGORIES_OPTIONS: [
+            "منصوبہٕ بندی",
+            "بنیادی ڈھانچہ",
+            "صحت۔",
+            "پالیسی۔",
+            "ایوارڈ۔",
+            "نوکریاں۔",
+            "زراعت۔",
+            "فلاح و بہبود۔",
+            "انتخاب۔",
+            "تدریس خصوصی تدریس خصوصی",
+            "مالیات۔",
+            "واقعہ۔",
+            "اطلاع۔",
+            "باقٕی"
+        ]
     },
     मैथिली: {
         TITLE: "एकटा एकीकृत पोर्टल मे सब सरकारी घोषणा सभ केँ एक्सेस करू।",
@@ -2871,7 +3094,23 @@ export const TranslateText: Record<string, TranslationKeys> = {
         TRACKING_ANNOUNCEMENTS_FROM: "सँ घोषणाक अनुसरण कयल जा रहल अछि",
         ACROSS_INDIA: "पूरा भारत मे।",
         ANNOUNCEMENTS_TRACKED: "घोषणा अनुसरण कयल",
-        DEPARTMENTS: "विभाग सभ"
+        DEPARTMENTS: "विभाग सभ",
+        CATEGORIES_OPTIONS: [
+            "योजना",
+            "आधारभूत संरचना",
+            "स्वास्थ्य",
+            "राजनीति",
+            "पुरस्कार",
+            "रोजगार",
+            "कृषि",
+            "कल्याण",
+            "चुनाव",
+            "शिक्षा",
+            "वित्त",
+            "घटना।",
+            "अधिसूचना",
+            "अन्य"
+        ]
     },
     ꯃꯩꯇꯩꯂꯣꯟ: {
         TITLE: "ꯑꯃꯇ꯭ꯇꯥ ꯏꯟꯇꯦꯒ꯭ꯔꯦꯇꯦꯗ ꯄꯣꯔꯇꯦꯜꯗꯥ ꯁꯔꯀꯥꯔꯅ ꯑꯅꯥꯎꯟꯁꯃꯦꯟꯇꯁꯤꯡ ꯄꯨꯝꯅꯃꯛ ꯑꯦꯛꯁꯦꯁ ꯇꯧꯕꯥ꯫",
@@ -2996,7 +3235,23 @@ export const TranslateText: Record<string, TranslationKeys> = {
         TRACKING_ANNOUNCEMENTS_FROM: "ꯑꯅꯥꯎꯟꯁꯃꯦꯟꯇꯁꯤꯡ ꯇ꯭ꯔꯦꯛ ꯇꯧꯔꯤ",
         ACROSS_INDIA: "ꯏꯟꯗꯤꯌꯥ ꯄꯨꯝꯅꯃꯛꯇꯥ꯫",
         ANNOUNCEMENTS_TRACKED: "ꯑꯅꯥꯎꯟꯁꯃꯦꯟꯇꯁꯤꯡ ꯇ꯭ꯔꯦꯛ ꯇꯧꯔꯦ",
-        DEPARTMENTS: "ꯁꯪꯂꯦꯟꯁꯤꯡ"
+        DEPARTMENTS: "ꯁꯪꯂꯦꯟꯁꯤꯡ",
+        CATEGORIES_OPTIONS: [
+            "ꯊꯧꯔꯥꯡ",
+            "ꯏꯟꯐ ꯭ ꯁ ꯭ ꯇ ꯭ ꯔꯛꯆꯔ",
+            "ꯍꯛꯁꯦꯜꯒꯤ ꯐꯤꯕꯝ",
+            "ꯊꯧꯁꯤꯜ-ꯊꯧꯔꯥꯡ",
+            "ꯃꯅꯥ",
+            "ꯊꯕꯛ ꯐꯪꯍꯟꯕ",
+            "ꯂꯧꯎ-ꯁꯤꯡꯎ",
+            "ꯍꯛꯁꯦꯜꯒꯤ ꯐꯤꯕꯝ",
+            "ꯏꯂꯦꯛꯁꯟ",
+            "ꯃꯍꯩ-ꯃꯁꯤꯡ ꯇꯝꯕ",
+            "ꯐꯥꯏꯅꯥꯟꯁ",
+            "ꯊꯧꯔꯝ",
+            "ꯅꯣꯇꯤꯐꯤꯀꯦꯁꯟ",
+            "ꯑꯇꯣꯞꯄꯁꯤꯡ"
+        ]
 
     },
     नेपाली: {
@@ -3122,7 +3377,23 @@ export const TranslateText: Record<string, TranslationKeys> = {
         TRACKING_ANNOUNCEMENTS_FROM: "बाट घोषणाहरू ट्र्याक गरिँदै",
         ACROSS_INDIA: "भारतभर।",
         ANNOUNCEMENTS_TRACKED: "घोषणाहरू ट्र्याक गरियो",
-        DEPARTMENTS: "विभागहरू"
+        DEPARTMENTS: "विभागहरू",
+        CATEGORIES_OPTIONS: [
+            "योजना",
+            "आधारभूत संरचना",
+            "स्वास्थ्य",
+            "नीति",
+            "पुरस्कार",
+            "रोजगार",
+            "कृषि",
+            "कल्याण",
+            "निर्वाचन",
+            "शिक्षा",
+            "वित्त",
+            "घटना",
+            "अधिसूचना",
+            "अन्य"
+        ]
     },
     ଓଡ଼ିଆ: {
         TITLE: "ଗୋଟିଏ ଏକୀକୃତ ପୋର୍ଟାଲରେ ସମସ୍ତ ସରକାରୀ ଘୋଷଣାକୁ ଆକ୍ସେସ କରନ୍ତୁ।",
@@ -3247,7 +3518,23 @@ export const TranslateText: Record<string, TranslationKeys> = {
         TRACKING_ANNOUNCEMENTS_FROM: "ଠାରୁ ଘୋଷଣା ଟ୍ରାକ୍ ହେଉଛି",
         ACROSS_INDIA: "ସମଗ୍ର ଭାରତରେ।",
         ANNOUNCEMENTS_TRACKED: "ଘୋଷଣା ଟ୍ରାକ୍ ହୋଇଛି",
-        DEPARTMENTS: "ବିଭାଗଗୁଡ଼ିକ"
+        DEPARTMENTS: "ବିଭାଗଗୁଡ଼ିକ",
+        CATEGORIES_OPTIONS: [
+            "ଯୋଜନା",
+            "ଭିତ୍ତିଭୂମି",
+            "ସ୍ୱାସ୍ଥ୍ଯ଼",
+            "ନୀତି.",
+            "ପୁରସ୍କାର",
+            "ନିଯୁକ୍ତି",
+            "କୃଷି",
+            "କଲ୍ଯ଼ାଣ",
+            "ନିର୍ବାଚନ.",
+            "ଶିକ୍ଷା.",
+            "ଅର୍ଥବ୍ଯ଼ବସ୍ଥା",
+            "ଘଟଣା",
+            "ବିଜ୍ଞପ୍ତି",
+            "ଅନ୍ଯ଼ମାନେ"
+        ]
     },
     ਪੰਜਾਬੀ: {
         TITLE: "ਇੱਕ ਇਕੱਠੇ ਪੋਰਟਲ ਵਿੱਚ ਸਾਰੇ ਸਰਕਾਰੀ ਐਲਾਨਾਂ ਤੱਕ ਪਹੁੰਚ ਪ੍ਰਾਪਤ ਕਰੋ।",
@@ -3372,7 +3659,23 @@ export const TranslateText: Record<string, TranslationKeys> = {
         TRACKING_ANNOUNCEMENTS_FROM: "ਤੋਂ ਐਲਾਨਾਂ ਦਾ ਟ੍ਰੈਕ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ",
         ACROSS_INDIA: "ਪੂਰੇ ਭਾਰਤ ਵਿੱਚ।",
         ANNOUNCEMENTS_TRACKED: "ਐਲਾਨ ਟ੍ਰੈਕ ਕੀਤੇ",
-        DEPARTMENTS: "ਵਿਭਾਗ"
+        DEPARTMENTS: "ਵਿਭਾਗ",
+        CATEGORIES_OPTIONS: [
+            "ਸਕੀਮ",
+            "ਬੁਨਿਆਦੀ ਢਾਂਚਾ",
+            "ਸਿਹਤ",
+            "ਨੀਤੀ",
+            "ਪੁਰਸਕਾਰ",
+            "ਰੁਜ਼ਗਾਰ",
+            "ਖੇਤੀਬਾਡ਼ੀ",
+            "ਭਲਾਈ",
+            "ਚੋਣਾਂ",
+            "ਸਿੱਖਿਆ",
+            "ਵਿੱਤ",
+            "ਘਟਨਾ",
+            "ਨੋਟੀਫਿਕੇਸ਼ਨ",
+            "ਹੋਰ"
+        ]
     },
     संस्कृतम्: {
         TITLE: "एकस्मिन् एकीकृते द्वारे सर्वाणि शासकीयघोषणानि प्राप्नुवन्तु।",
@@ -3498,6 +3801,22 @@ export const TranslateText: Record<string, TranslationKeys> = {
         ACROSS_INDIA: "भारतं व्यापिन्।",
         ANNOUNCEMENTS_TRACKED: "घोषणाः अनुवृत्ताः",
         DEPARTMENTS: "विभागाः",
+        CATEGORIES_OPTIONS: [
+            "योजना",
+            "अवसंरचनाः",
+            "स्वास्थ्यं",
+            "नीतिः",
+            "पुरस्कारः",
+            "रोजगारः",
+            "कृषिः",
+            "कल्याणम्।",
+            "निर्वाचनम्।",
+            "शिक्षणम्।",
+            "वित्तं",
+            "घटनाः",
+            "सूचना",
+            "अन्ये।"
+        ]
 
     },
     ᱥᱟᱱᱛᱟᱲᱤ: {
@@ -3623,7 +3942,23 @@ export const TranslateText: Record<string, TranslationKeys> = {
         TRACKING_ANNOUNCEMENTS_FROM: "ᱠᱷᱚᱱ ᱠᱷᱚᱵᱚᱨ ᱠᱚ ᱴᱨᱮᱠ ᱦᱩᱭ ᱟᱠᱟᱱ",
         ACROSS_INDIA: "ᱵᱷᱟᱨᱚᱛ ᱯᱩᱨᱩ ᱨᱮ᱾",
         ANNOUNCEMENTS_TRACKED: "ᱠᱷᱚᱵᱚᱨ ᱠᱚ ᱴᱨᱮᱠ ᱦᱩᱭ ᱠᱟᱱᱟ",
-        DEPARTMENTS: "ᱵᱤᱵᱷᱟᱜᱽ ᱠᱚ"
+        DEPARTMENTS: "ᱵᱤᱵᱷᱟᱜᱽ ᱠᱚ",
+        CATEGORIES_OPTIONS: [
+            "ᱥᱤᱠᱤᱢ ᱾",
+            "ᱵᱚᱱᱫᱮᱡ ᱾",
+            "ᱥᱟᱡᱚᱥ ᱾",
+            "ᱟᱹᱨᱤ ᱾",
+            "ᱥᱤᱨᱯᱟᱹ ᱾",
+            "ᱠᱟᱹᱢᱤ ᱴᱷᱟᱶ ᱾",
+            "ᱪᱟᱥ ᱠᱟᱹᱢᱤ ᱾",
+            "ᱥᱟᱨᱵᱷᱟᱨ ᱾",
+            "ᱵᱟᱪᱷᱱᱟᱣ ᱾",
+            "ᱥᱮᱪᱮᱫ ᱾",
+            "ᱠᱟᱹᱣᱰᱤ ᱟᱹᱨᱤ ᱾",
+            "ᱟᱠᱷᱲᱟ ᱾",
+            "ᱞᱟᱹᱭ ᱥᱚᱫᱚᱨ ᱾",
+            "ᱮᱴᱟᱜ ᱾"
+        ]
     },
     سنڌي: {
         TITLE: "هڪ متحد پورٽل ۾ سڀني سرڪاري اعلانن تائين رسائي حاصل ڪريو.",
@@ -3748,6 +4083,22 @@ export const TranslateText: Record<string, TranslationKeys> = {
         TRACKING_ANNOUNCEMENTS_FROM: "کان اعلانن جو سراغ لڳائي رهيا آهيون",
         ACROSS_INDIA: "سڄي هندستان ۾.",
         ANNOUNCEMENTS_TRACKED: "اعلان ٽريڪ ڪيا ويا",
-        DEPARTMENTS: "محڪما"
+        DEPARTMENTS: "محڪما",
+        CATEGORIES_OPTIONS: [
+            "یوجنا",
+            "انفراسٽرڪچر",
+            "صحت",
+            "پالسیء",
+            "انعام",
+            "روزگار",
+            "زراعت",
+            "ڀلائی",
+            "چونڊ",
+            "تعلیم-تعلیم",
+            "مالیات",
+            "واقعا",
+            "اطلاع",
+            "ٻیا"
+        ]
     }
 };
