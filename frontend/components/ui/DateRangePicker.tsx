@@ -365,7 +365,7 @@ export const DateRangePicker: FC<DateRangePickerProps> & {
                     </Button>
                 </PopoverTrigger>
 
-                <PopoverContent align={align} className="w-auto font-satoshi">
+                <PopoverContent align={align} className="w-auto z-900 font-satoshi">
                     {/* CHANGE 2: py-2 → py-1 */}
                     <div className="flex py-1">
                         <div className="flex">

@@ -14,7 +14,7 @@ import MobileHeader from './MobileHeader';
 import DataTypes from './DataTypes';
 import { useHeroScroll } from '@/hooks/useHeroScroll';
 import dynamic from 'next/dynamic'
-import Theme from "./Theme"
+import User from './User';
 import MobileBottomSheet from './MobileBottomSheet';
 
 const IndiaMap = dynamic(() => import('../IndiaMap'), { ssr: false });
@@ -33,19 +33,16 @@ const Main: React.FC = () => {
     const [IsLoadingMore, SetIsLoadingMore] = useState<boolean>(false)
     const [IsBriefingLoading, SetIsBriefingLoading] = useState<boolean>(false)
     const firstLoad = useRef(true);
+    const [sheetOpen, setSheetOpen] = useState<boolean>(false)
     const [Announcements, SetAnnouncements] = useState<AnnouncementTypes[]>([])
     const [page, Setpage] = useState<number>(1)
     const [limit] = useState<number>(10)
-    const { scrolled } = useHeroScroll();
-
     const { startdate, endDate } = useContext(Currentdate)
     const { state_ut } = useContext(LocationContext)
-
     const [DefaultsStatesApplied, SetDefaultsStatesApplied] = useState<string[]>([])
-
     const [trigger, setTrigger] = useState(0);
     const userStateCode = GetStateCode(state_ut, language);
-
+    const [ShowBriefingComponent, SetShowBriefingComponent] = useState<boolean>(true);
     const fetchGetIndiaAnnouncements = async (
         pageNumber: number,
         append: boolean,
@@ -85,6 +82,7 @@ const Main: React.FC = () => {
     }
 
     const fetchBriefAnnouncements = async () => {
+        SetIsBriefingLoading(true);
         try {
             const key = buildCacheKey("announcements", { language, startdate, endDate, StatesSelected: StatesSelected.join("") });
 
@@ -96,6 +94,9 @@ const Main: React.FC = () => {
             }
         } catch (error) {
             console.error("Error fetching brief announcements:", error);
+        }
+        finally {
+            SetIsBriefingLoading(false);
         }
     };
 
@@ -161,12 +162,17 @@ const Main: React.FC = () => {
     }
 
     useEffect(() => {
+        SetShowBriefingComponent(TranslateText[language].ALL_DEPARMENTS === CategorySelected);
+    }, [CategorySelected]);
+
+    useEffect(() => {
         SetCategorySelected(TranslateText[language].ALL_DEPARMENTS);
     }, [language]);
 
     const onStateClick = (state: string | null) => {
         if (!state) return;
-        SetStatesSelected([state]);
+        const Options = TranslateText[language].MULTISELECT_OPTIONS
+        SetStatesSelected([state, Options[Options.length - 1].value]);
     }
 
     return (
@@ -201,8 +207,16 @@ const Main: React.FC = () => {
                 LoadMoreData={OnLoadMoredata}
                 totalpage={totalPages}
                 page={page}
-                userStateCode={userStateCode}
+                StatesSelected={StatesSelected}
                 BriefAnnouncements={BriefAnnouncements}
+                ShowBriefingComponent={ShowBriefingComponent}
+                setSheetOpen={setSheetOpen}
+                sheetOpen={sheetOpen}
+                SearchQuery={SearchQuery}
+                SetSearchQuery={SetSearchQuery}
+                handleClick={handleSearch}
+                SetStatesSelected={SetStatesSelected}
+
             />
             <div className="relative z-500 w-[40%] hidden md:flex flex-col gap-3 h-[95vh] shrink-0 m-4 pointer-events-auto overflow-hidden">
                 <Header
@@ -210,6 +224,14 @@ const Main: React.FC = () => {
                     SetCategorySelected={SetCategorySelected}
                     selectedStates={StatesSelected}
                     onStateClick={onStateClick}
+                    BriefAnnouncements={BriefAnnouncements}
+                    StatesSelected={StatesSelected}
+                    setSheetOpen={setSheetOpen}
+                    SetStatesSelected={SetStatesSelected}
+                    sheetOpen={sheetOpen}
+                    SearchQuery={SearchQuery}
+                    SetSearchQuery={SetSearchQuery}
+                    handleClick={handleSearch}
                 />
                 <ShowAnnouncements
                     Announcements={Announcements}
@@ -218,8 +240,9 @@ const Main: React.FC = () => {
                     LoadMoreData={OnLoadMoredata}
                     totalpage={totalPages}
                     page={page}
-                    userStateCode={userStateCode}
+                    StatesSelected={StatesSelected}
                     BriefAnnouncements={BriefAnnouncements}
+                    ShowBriefingComponent={ShowBriefingComponent}
                 />
             </div>
 
@@ -227,7 +250,7 @@ const Main: React.FC = () => {
                 <DataTypes />
             </div>
             <div className="hidden md:block absolute right-8 top-8 -translate-y-1/2 z-500">
-                <Theme />
+                <User />
             </div>
 
             <div className="flex-1 pointer-events-none" />

@@ -2,6 +2,7 @@ import { Drawer } from "vaul";
 import CategoryOptions from "./CategoryOptions";
 import ShowAnnouncements from "./ShowAnnouncements";
 import React from "react";
+import InputBox from "./InputBox";
 import { Brief_Announcement, Announcement } from "@/types"
 
 interface Props {
@@ -14,8 +15,14 @@ interface Props {
     totalpage: number;
     page: number;
     BriefAnnouncements: Brief_Announcement[];
-    userStateCode: string;
-
+    ShowBriefingComponent: boolean;
+    StatesSelected: string[];
+    setSheetOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    SetStatesSelected: React.Dispatch<React.SetStateAction<string[]>>;
+    sheetOpen: boolean;
+    SearchQuery: string;
+    SetSearchQuery: React.Dispatch<React.SetStateAction<string>>;
+    handleClick: () => void;
 }
 
 const MobileBottomSheet: React.FC<Props> = (props) => {
@@ -38,6 +45,15 @@ const MobileBottomSheet: React.FC<Props> = (props) => {
                             CategorySelected={props.CategorySelected}
                             SetCategorySelected={props.SetCategorySelected}
                         />
+                        <InputBox
+                            SearchQuery={props.SearchQuery}
+                            SetSearchQuery={props.SetSearchQuery}
+                            handleClick={props.handleClick}
+                            StatesSelected={props.StatesSelected}
+                            setSheetOpen={props.setSheetOpen}
+                            SetStatesSelected={props.SetStatesSelected}
+                            sheetOpen={props.sheetOpen}
+                        />
                         <ShowAnnouncements
                             Announcements={props.Announcements}
                             IsLoading={props.IsLoading}
@@ -45,8 +61,9 @@ const MobileBottomSheet: React.FC<Props> = (props) => {
                             LoadMoreData={props.LoadMoreData}
                             totalpage={props.totalpage}
                             page={props.page}
-                            userStateCode={props.userStateCode}
+                            ShowBriefingComponent={props.ShowBriefingComponent}
                             BriefAnnouncements={props.BriefAnnouncements}
+                            StatesSelected={props.StatesSelected}
                         />
                     </div>
 

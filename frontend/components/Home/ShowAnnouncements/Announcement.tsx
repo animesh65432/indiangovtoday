@@ -25,8 +25,7 @@ const AnnouncementCard: React.FC<Props> = ({ Announcement, className }) => {
 
     return (
         <div
-            onClick={handleClick}
-            className={`relative flex gap-3 px-3 py-3 border-b transition-all duration-200 hover:bg-gray-50 dark:hover:bg-[#111]
+            className={`relative flex gap-3 px-3 py-3 border-b transition-all duration-200 ${isDark ? "hover:bg-white/5" : "bg-white"}
             ${isDark ? "border-gray-800 text-gray-200" : "border-gray-200 text-gray-900"}
             ${className}`}
         >
@@ -54,7 +53,7 @@ const AnnouncementCard: React.FC<Props> = ({ Announcement, className }) => {
                 </div>
 
                 <span
-                    className={`font-literata text-[0.95rem] leading-snug line-clamp-2
+                    className={`font-literata text-[0.9rem] md:text-[0.95rem] leading-snug line-clamp-2
                     ${isDark ? "text-gray-100" : "text-gray-900"}`}
                 >
                     {Announcement.title}

@@ -61,7 +61,7 @@ const InputBox: React.FC<Props> = ({
     }
 
     return (
-        <div className="w-full px-4 sm:px-6 md:px-0 mt-3">
+        <div className="w-full px-4 sm:px-6 md:px-0 mt-1">
             <div className='flex '>
                 <Sheet open={sheetOpen} onOpenChange={(open) => setSheetOpen(open)}>
                     <SheetTrigger className="w-full block lg:hidden">
@@ -79,7 +79,7 @@ const InputBox: React.FC<Props> = ({
                             />
                         </div>
                     </SheetTrigger>
-                    <SheetContent side='bottom' className='h-dvh'>
+                    <SheetContent side='bottom' className='h-dvh z-600'>
                         <MobileSearchInput
                             StatesSelected={StatesSelected}
                             setSheetOpen={setSheetOpen}
@@ -114,16 +114,6 @@ const InputBox: React.FC<Props> = ({
                                 onChangeEndDate(range.to)
                             }
                         }}
-                    />
-                    <span className='w-px h-6 bg-[#8c8686] mx-4' />
-                    <MultiSelect
-                        options={TranslateText[language].MULTISELECT_OPTIONS}
-                        defaultValue={StatesSelected}
-                        onValueChange={(value) => SetStatesSelected(value)}
-                        className='rounded-none w-fit font-satoshi  text-[#321F1F]'
-                        maxCount={1}
-                        autoSize
-                        resetOnDefaultValueChange={true}
                     />
                     <Button
                         className='bg-[#ff3333] p-2 rounded-2xl hover:cursor-pointer'

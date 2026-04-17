@@ -4,6 +4,7 @@ import { Brief_Announcement } from "@/types"
 import AnnouncementSkeleton from "./AnnouncementSkeleton";
 import { ThemeContext } from "@/context/Theme";
 import Briefing from "../Briefing";
+import InputBox from "../InputBox";
 import AnnouncementCard from "./Announcement";
 
 type Props = {
@@ -14,7 +15,9 @@ type Props = {
     IsLoading: boolean;
     IsLoadingMore: boolean;
     BriefAnnouncements: Brief_Announcement[];
-    userStateCode: string;
+    StatesSelected: string[];
+    ShowBriefingComponent: boolean;
+
 };
 
 export default function ShowAnnouncements({
@@ -25,7 +28,8 @@ export default function ShowAnnouncements({
     IsLoading,
     IsLoadingMore,
     BriefAnnouncements,
-    userStateCode,
+    ShowBriefingComponent,
+    StatesSelected
 }: Props) {
     const { theme } = useContext(ThemeContext);
     const isDark = theme === "dark";
@@ -50,7 +54,7 @@ export default function ShowAnnouncements({
     }, [page, totalpage, IsLoadingMore, LoadMoreData]);
 
     const containerStyle = `
-    mt-8 md:mt-0 rounded-md p-4 w-full mx-auto flex flex-col gap-x-8 gap-y-12
+    mt-0   rounded-md p-0 md:p-4 w-full mx-auto flex flex-col gap-x-8 gap-y-12
     ${isDark ? "bg-[#050505]" : "bg-white"}
 `;
 
@@ -66,12 +70,14 @@ export default function ShowAnnouncements({
 
     return (
         <div className="flex flex-col flex-1 min-h-0 overflow-y-auto scrollbar-hide">
-            <div className=" mb-0 md:mb-3">
-                <Briefing
-                    BriefAnnouncements={BriefAnnouncements}
-                    userStateCode={userStateCode}
-                />
-            </div>
+            {ShowBriefingComponent &&
+                <div className=" mb-0 md:mb-3">
+                    <Briefing
+                        BriefAnnouncements={BriefAnnouncements}
+                        StatesSelected={StatesSelected}
+                    />
+                </div>
+            }
 
             <div className={`${containerStyle}`}>
                 <div className="flex flex-col gap-6">

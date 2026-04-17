@@ -2,22 +2,41 @@ import React, { useContext } from 'react'
 import Logo from '../ui/Logo'
 import { LanguageContext } from '@/context/Lan'
 import { TranslateText } from '@/lib/translatetext'
+import { CheckIfUserStateInBriefing } from "@/lib/CheckIfUserStateInBriefing"
 import CategoryOptions from './CategoryOptions'
 import { StateSelector } from '@/components/ui/StateSelector'
 import { ThemeContext } from '@/context/Theme'
+import { Brief_Announcement } from '@/types'
+import InputBox from './InputBox'
 
 type Props = {
     CategorySelected: string
     SetCategorySelected: React.Dispatch<React.SetStateAction<string>>
     selectedStates: string[]
-    onStateClick: (state: string) => void
+    onStateClick: (state: string) => void,
+    BriefAnnouncements: Brief_Announcement[],
+    StatesSelected: string[],
+    setSheetOpen: React.Dispatch<React.SetStateAction<boolean>>,
+    SetStatesSelected: React.Dispatch<React.SetStateAction<string[]>>,
+    sheetOpen: boolean,
+    SearchQuery: string,
+    SetSearchQuery: React.Dispatch<React.SetStateAction<string>>,
+    handleClick: () => void
 }
 
 const Header: React.FC<Props> = ({
     CategorySelected,
     SetCategorySelected,
     selectedStates,
-    onStateClick
+    onStateClick,
+    BriefAnnouncements = [],
+    SetStatesSelected,
+    StatesSelected,
+    setSheetOpen,
+    sheetOpen,
+    SearchQuery,
+    SetSearchQuery,
+    handleClick
 }) => {
     const { language } = useContext(LanguageContext)
     const { theme } = useContext(ThemeContext)
@@ -25,6 +44,9 @@ const Header: React.FC<Props> = ({
     const allStatesLabel = TranslateText[language].MULTISELECT_OPTIONS[
         TranslateText[language].MULTISELECT_OPTIONS.length - 1
     ].label
+
+    const UserState = CheckIfUserStateInBriefing(selectedStates, language)
+
 
     return (
         <div className={`${theme === "dark" ? "bg-[#050505]" : "bg-white"} rounded-lg flex flex-col `}>
@@ -52,16 +74,15 @@ const Header: React.FC<Props> = ({
                     {selectedStates.length > 0 && (
                         <div className={`min-w-0 ${theme === "dark" ? "text-white" : "text-black"} flex items-center rounded-md hover:bg-[#321F1F]/10`}>
                             <div
-                                title={selectedStates[0]}
+                                title={UserState}
                                 className={`font-satoshi text-[0.9rem] p-1 px-2 truncate max-w-30 ${theme === "dark" ? "text-white" : "text-black"
                                     }`}
                             >
-                                {selectedStates[0]}
+                                {UserState}
                             </div>
                             <StateSelector
                                 selectedState={selectedStates[0] ?? ''}
                                 onStateClick={onStateClick}
-
                             />
                         </div>
                     )}
@@ -105,6 +126,15 @@ const Header: React.FC<Props> = ({
             <CategoryOptions
                 CategorySelected={CategorySelected}
                 SetCategorySelected={SetCategorySelected}
+            />
+            <InputBox
+                StatesSelected={StatesSelected}
+                setSheetOpen={setSheetOpen}
+                SetStatesSelected={SetStatesSelected}
+                sheetOpen={sheetOpen}
+                SearchQuery={SearchQuery}
+                SetSearchQuery={SetSearchQuery}
+                handleClick={handleClick}
             />
         </div>
     )
