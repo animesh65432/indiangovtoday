@@ -61,11 +61,11 @@ const InputBox: React.FC<Props> = ({
     }
 
     return (
-        <div className="w-full px-4 sm:px-6 md:px-0 mt-1">
+        <div className="w-full px-2  border-t border-slate-200">
             <div className='flex '>
                 <Sheet open={sheetOpen} onOpenChange={(open) => setSheetOpen(open)}>
                     <SheetTrigger className="w-full block lg:hidden">
-                        <div onClick={() => setSheetOpen(true)} className="relative w-full max-w-xl md:max-w-2xl mx-auto block lg:hidden">
+                        <div onClick={() => setSheetOpen(true)} className="relative w-fit mx-auto block lg:hidden">
                             <Search className="absolute text-[#ff3333] z-10 left-3 sm:left-4 top-1/2 -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5" />
                             <Input
                                 onKeyDown={(e) => {
@@ -91,7 +91,7 @@ const InputBox: React.FC<Props> = ({
                     </SheetContent>
                 </Sheet>
 
-                <div className="w-fit hover:shadow-md px-5 py-1.5 border border-[#e5dfdf] rounded-xl bg-white   mx-auto hidden lg:flex items-center">
+                <div className="w-fit hover:shadow-md px-5 py-1.5 rounded-xl bg-white   mx-auto hidden lg:flex items-center">
                     <Input
                         type="text"
                         value={SearchQuery}
@@ -104,7 +104,7 @@ const InputBox: React.FC<Props> = ({
                         placeholder={TranslateText[language].SEARCH_ANNOUNCEMENTS}
                         className="border-0 border-none  shadow-none outline-none ring-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-0 placeholder:text-nowrap text-[1rem] rounded-none text-[#321F1F] placeholder:text-[#321F1F] placeholder:font-satoshi placeholder:font-semibold pl-10 sm:pl-12 pr-4 py-5 sm:py-6 font-satoshi bg-transparent"
                     />
-                    <span className='w-px h-6 bg-[#8c8686] mx-4' />
+                    <span className='w-px h-6 bg-slate-200 mx-4' />
                     <DateRangePicker
                         initialDateFrom={startdate}
                         initialDateTo={endDate}

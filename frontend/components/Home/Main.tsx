@@ -194,6 +194,13 @@ const Main: React.FC = () => {
                     <MobileHeader
                         selectedStates={StatesSelected}
                         onStateClick={onStateClick}
+                        sheetOpen={sheetOpen}
+                        setSheetOpen={setSheetOpen}
+                        StatesSelected={StatesSelected}
+                        SetStatesSelected={SetStatesSelected}
+                        SearchQuery={SearchQuery}
+                        SetSearchQuery={SetSearchQuery}
+                        handleSearch={handleSearch}
                     />
                 </div>
             </div>
@@ -250,7 +257,15 @@ const Main: React.FC = () => {
                 <DataTypes />
             </div>
             <div className="hidden md:block absolute right-8 top-8 -translate-y-1/2 z-500">
-                <User />
+                <User
+                    sheetOpen={sheetOpen}
+                    setSheetOpen={setSheetOpen}
+                    StatesSelected={StatesSelected}
+                    SetStatesSelected={SetStatesSelected}
+                    SearchQuery={SearchQuery}
+                    SetSearchQuery={SetSearchQuery}
+                    handleSearch={handleSearch}
+                />
             </div>
 
             <div className="flex-1 pointer-events-none" />

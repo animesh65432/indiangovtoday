@@ -2,7 +2,6 @@ import { Drawer } from "vaul";
 import CategoryOptions from "./CategoryOptions";
 import ShowAnnouncements from "./ShowAnnouncements";
 import React from "react";
-import InputBox from "./InputBox";
 import { Brief_Announcement, Announcement } from "@/types"
 
 interface Props {
@@ -44,15 +43,6 @@ const MobileBottomSheet: React.FC<Props> = (props) => {
                         <CategoryOptions
                             CategorySelected={props.CategorySelected}
                             SetCategorySelected={props.SetCategorySelected}
-                        />
-                        <InputBox
-                            SearchQuery={props.SearchQuery}
-                            SetSearchQuery={props.SetSearchQuery}
-                            handleClick={props.handleClick}
-                            StatesSelected={props.StatesSelected}
-                            setSheetOpen={props.setSheetOpen}
-                            SetStatesSelected={props.SetStatesSelected}
-                            sheetOpen={props.sheetOpen}
                         />
                         <ShowAnnouncements
                             Announcements={props.Announcements}

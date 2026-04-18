@@ -7,9 +7,16 @@ import { useContext } from 'react'
 type Props = {
     selectedStates: string[]
     onStateClick: (state: string) => void
+    sheetOpen: boolean
+    setSheetOpen: React.Dispatch<React.SetStateAction<boolean>>
+    StatesSelected: string[]
+    SetStatesSelected: React.Dispatch<React.SetStateAction<string[]>>
+    SearchQuery: string
+    SetSearchQuery: React.Dispatch<React.SetStateAction<string>>
+    handleSearch: () => void
 }
 
-const MobileHeader: React.FC<Props> = ({ selectedStates, onStateClick }) => {
+const MobileHeader: React.FC<Props> = ({ selectedStates, onStateClick, sheetOpen, setSheetOpen, StatesSelected, SetStatesSelected, SearchQuery, SetSearchQuery, handleSearch }) => {
     const { language } = useContext(LanguageContext)
     const options = TranslateText[language].MULTISELECT_OPTIONS
     const lastOption = options[options.length - 1]
@@ -43,7 +50,15 @@ const MobileHeader: React.FC<Props> = ({ selectedStates, onStateClick }) => {
                 </div>
 
             </div>
-            <User />
+            <User
+                sheetOpen={sheetOpen}
+                setSheetOpen={setSheetOpen}
+                StatesSelected={StatesSelected}
+                SetStatesSelected={SetStatesSelected}
+                SearchQuery={SearchQuery}
+                SetSearchQuery={SetSearchQuery}
+                handleSearch={handleSearch}
+            />
         </div>
     )
 }
