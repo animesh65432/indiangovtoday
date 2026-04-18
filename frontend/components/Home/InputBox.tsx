@@ -5,7 +5,6 @@ import { TranslateText } from '@/lib/translatetext'
 import { LanguageContext } from '@/context/Lan'
 import { DateRangePicker } from '../ui/DateRangePicker'
 import { Currentdate } from "@/context/Currentdate"
-import { MultiSelect } from '../ui/multi-select'
 import {
     Sheet,
     SheetContent,
@@ -61,11 +60,11 @@ const InputBox: React.FC<Props> = ({
     }
 
     return (
-        <div className="w-full px-2  border-t border-slate-200">
+        <div className="w-full border-t border-slate-200">
             <div className='flex '>
                 <Sheet open={sheetOpen} onOpenChange={(open) => setSheetOpen(open)}>
                     <SheetTrigger className="w-full block lg:hidden">
-                        <div onClick={() => setSheetOpen(true)} className="relative w-fit mx-auto block lg:hidden">
+                        <div onClick={() => setSheetOpen(true)} className="relative w-full block lg:hidden">
                             <Search className="absolute text-[#ff3333] z-10 left-3 sm:left-4 top-1/2 -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5" />
                             <Input
                                 onKeyDown={(e) => {
@@ -75,7 +74,7 @@ const InputBox: React.FC<Props> = ({
                                 }}
                                 type="text"
                                 placeholder={TranslateText[language].SEARCH_ANNOUNCEMENTS}
-                                className="w-full  text-[1rem] hover:shadow-md  text-[#321F1F] placeholder:text-[#321F1F]  placeholder:font-satoshi placeholder:font-semibold pl-10 sm:pl-12 pr-4 py-5 sm:py-6  bg-white/90 border border-gray-200 rounded-xl sm:rounded-2xl shadow-md  font-satoshi"
+                                className="w-full  text-[1rem] hover:shadow-md  text-[#321F1F] placeholder:text-[#321F1F]  placeholder:font-satoshi placeholder:font-semibold pl-10 sm:pl-12 pr-4 py-5 sm:py-6  bg-white/90 border border-gray-200  shadow-md  font-satoshi"
                             />
                         </div>
                     </SheetTrigger>
@@ -91,7 +90,7 @@ const InputBox: React.FC<Props> = ({
                     </SheetContent>
                 </Sheet>
 
-                <div className="w-fit hover:shadow-md px-5 py-1.5 rounded-xl bg-white   mx-auto hidden lg:flex items-center">
+                <div className="w-full hover:shadow-md   bg-white   mx-auto hidden lg:flex items-center">
                     <Input
                         type="text"
                         value={SearchQuery}
@@ -116,7 +115,7 @@ const InputBox: React.FC<Props> = ({
                         }}
                     />
                     <Button
-                        className='bg-[#ff3333] p-2 rounded-2xl hover:cursor-pointer'
+                        className='bg-[#ff3333] p-2 pr-4 rounded-2xl hover:cursor-pointer'
                         onClick={() => handleSearch()}
                     >
                         <Search className="  text-white " />

@@ -4,12 +4,13 @@ import { TranslateText } from "@/lib/translatetext"
 import { Currentdate } from '@/context/Currentdate'
 import { Button } from '../ui/button'
 import { X } from "lucide-react"
-import { MultiSelect } from "../ui/multi-select"
 import { DateRangePicker } from '../ui/DateRangePicker'
 import { Input } from '../ui/input'
 import { Search } from "lucide-react"
 import { usePathname } from "next/navigation"
 import { toast } from "react-toastify"
+import LanguageSelect from '../LanguageSelect'
+import { ThemeContext } from '@/context/Theme'
 
 type Props = {
     StatesSelected: string[]
@@ -28,10 +29,12 @@ const MobileSearchInput: React.FC<Props> = ({
     setSearchQuery,
     SetStatesSelected
 }) => {
-    const { language } = useContext(LanguageContext)
+    const { language, onSelectLanguage } = useContext(LanguageContext)
     const { startdate, endDate, onChangeEndDate, onChangeStartDate } = useContext(Currentdate)
+    const { theme } = useContext(ThemeContext)
     const pathname = usePathname()
-    const stateOptions = TranslateText[language].MULTISELECT_OPTIONS
+
+    const IsDark = theme === "dark"
 
     const handleApply = () => {
         handleSearch()
@@ -45,15 +48,8 @@ const MobileSearchInput: React.FC<Props> = ({
     return (
         <div className="bg-[#f7f2f2] h-dvh p-6 mobile-filter-panel">
 
-            {/* Header */}
             <div className='mt-20'>
-                <div className="flex items-center justify-between mb-7 pt-4"> {/* pt-4 instead of mt-20 */}
-                    <div className="flex items-center gap-3">
-                        <div className="w-0.75 h-5 bg-[#321F1F] rounded-full" />
-                        <span className="text-color font-literata text-xs font-semibold tracking-widest uppercase">
-                            {TranslateText[language].FILTERS}
-                        </span>
-                    </div>
+                <div className="flex items-center justify-end mb-7 pt-4">
                     <button
                         onClick={() => setSheetOpen(false)}
                         className="text-[#ff3333] transition-colors p-1"
@@ -77,25 +73,6 @@ const MobileSearchInput: React.FC<Props> = ({
 
                     </div>
 
-                    {/* State / Region */}
-                    <div className="flex flex-col gap-2">
-                        <span className="font-literata text-[11px] text-[#321F1F]  font-semibold tracking-widest uppercase">
-                            {TranslateText[language].REGION}
-                        </span>
-                        <MultiSelect
-                            options={stateOptions}
-                            defaultValue={StatesSelected}
-                            onValueChange={SetStatesSelected}
-                            placeholder="Select states"
-                            maxCount={1}
-                            mobile={true}
-                            modalPopover={true}
-                            searchable={true}
-                            popoverClassName="z-[9999]"
-                            className='rounded-none '
-                        />
-                    </div>
-
                     {/* Date Range */}
                     <div className="flex flex-col gap-2">
                         <span className="font-literata text-[#321F1F]  text-[11px] font-semibold tracking-widest uppercase">
@@ -112,6 +89,15 @@ const MobileSearchInput: React.FC<Props> = ({
                                     }
                                 }}
                             />
+                        </div>
+                    </div>
+
+                    <div className="flex flex-col gap-2">
+                        <span className="font-literata text-[#321F1F]  text-[11px] font-semibold tracking-widest uppercase">
+                            LANGUAGES
+                        </span>
+                        <div className="w-fit border boder-[#321F1F] bg-white">
+                            <LanguageSelect value={language} onChange={onSelectLanguage} isDark={IsDark} />
                         </div>
                     </div>
 
