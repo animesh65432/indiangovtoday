@@ -12,10 +12,10 @@ import Header from './Header';
 import { Briefing_Announcement_Response } from "@/types";
 import MobileHeader from './MobileHeader';
 import DataTypes from './DataTypes';
-import { useHeroScroll } from '@/hooks/useHeroScroll';
 import dynamic from 'next/dynamic'
 import User from './User';
 import MobileBottomSheet from './MobileBottomSheet';
+import { ThemeContext } from '@/context/Theme';
 
 const IndiaMap = dynamic(() => import('../IndiaMap'), { ssr: false });
 
@@ -31,18 +31,21 @@ const Main: React.FC = () => {
     const [totalPages, settotalPages] = useState<number>(0)
     const [IsLoading, SetIsLoading] = useState<boolean>(false)
     const [IsLoadingMore, SetIsLoadingMore] = useState<boolean>(false)
-    const [IsBriefingLoading, SetIsBriefingLoading] = useState<boolean>(false)
     const firstLoad = useRef(true);
     const [sheetOpen, setSheetOpen] = useState<boolean>(false)
     const [Announcements, SetAnnouncements] = useState<AnnouncementTypes[]>([])
     const [page, Setpage] = useState<number>(1)
     const [limit] = useState<number>(10)
     const { startdate, endDate } = useContext(Currentdate)
+    const { theme } = useContext(ThemeContext)
     const { state_ut } = useContext(LocationContext)
     const [DefaultsStatesApplied, SetDefaultsStatesApplied] = useState<string[]>([])
     const [trigger, setTrigger] = useState(0);
     const userStateCode = GetStateCode(state_ut, language);
     const [ShowBriefingComponent, SetShowBriefingComponent] = useState<boolean>(true);
+    const [CategoriesOptions, SetCategoriesOptions] = useState<string[]>(TranslateText[language].CATEGORIES_OPTIONS || []);
+    const IsDark = theme === "dark"
+
     const fetchGetIndiaAnnouncements = async (
         pageNumber: number,
         append: boolean,
@@ -56,11 +59,11 @@ const Main: React.FC = () => {
 
             const category = CategorySelected === TranslateText[language].ALL_DEPARMENTS ? "" : CategorySelected;
 
-            const key = buildCacheKey("announcements", { language, startdate, endDate, page, limit, category });
+            const key = buildCacheKey("announcements", { language, startdate, endDate, page, limit, category, SearchQuery });
 
             const response = await withCache(key, "announcements", async () => (
                 await getAllAnnouncements(
-                    language, startdate, endDate, pageNumber, limit, category, StatesSelected, signal
+                    language, SearchQuery, startdate, endDate, pageNumber, limit, category, StatesSelected, CategoriesOptions, signal
                 ) as AnnouncementsResponse
             ));
 
@@ -82,7 +85,6 @@ const Main: React.FC = () => {
     }
 
     const fetchBriefAnnouncements = async () => {
-        SetIsBriefingLoading(true);
         try {
             const key = buildCacheKey("announcements", { language, startdate, endDate, StatesSelected: StatesSelected.join("") });
 
@@ -94,9 +96,6 @@ const Main: React.FC = () => {
             }
         } catch (error) {
             console.error("Error fetching brief announcements:", error);
-        }
-        finally {
-            SetIsBriefingLoading(false);
         }
     };
 
@@ -115,7 +114,8 @@ const Main: React.FC = () => {
         language,
         state_ut,
         trigger,
-        DefaultsStatesApplied
+        DefaultsStatesApplied,
+        CategoriesOptions
     ]);
 
     useEffect(() => {
@@ -143,7 +143,7 @@ const Main: React.FC = () => {
         if (StatesSelected.length > 0) {
             fetchBriefAnnouncements();
         }
-    }, [language, startdate, endDate, StatesSelected]);
+    }, [language, startdate, endDate, StatesSelected, CategoriesOptions]);
 
     const handleSearch = () => {
         if (StatesSelected.length === 0 && DefaultsStatesApplied.length === 0) {
@@ -167,6 +167,7 @@ const Main: React.FC = () => {
 
     useEffect(() => {
         SetCategorySelected(TranslateText[language].ALL_DEPARMENTS);
+        SetCategoriesOptions(TranslateText[language].CATEGORIES_OPTIONS || []); // add this line
     }, [language]);
 
     const onStateClick = (state: string | null) => {
@@ -186,7 +187,18 @@ const Main: React.FC = () => {
                     onStateClick={onStateClick}
                     IsMapLoading={IsMapLoading}
                     SetIsMapLoading={SetIsMapLoading}
+                    CategoriesOptions={CategoriesOptions}
                 />
+                {IsMapLoading && (
+                    <div className={`absolute inset-0 z-999  font-satoshi flex items-center justify-center backdrop-blur-[2px] ${IsDark ? "bg-black/40" : "bg-white/40"}`}>
+                        <div className="flex flex-col items-center gap-3">
+                            <div className="w-8 h-8 rounded-full border-2 border-[#c51057]/20 border-t-[#c51057] animate-spin" />
+                            <span className={`text-[0.75rem] font-semibold ${IsDark ? "text-white/70" : "text-[#c51057]"}`}>
+                                Loading map...
+                            </span>
+                        </div>
+                    </div>
+                )}
             </div>
 
             <div className="absolute top-0 left-0 right-0 z-500 md:hidden pointer-events-none">
@@ -223,10 +235,11 @@ const Main: React.FC = () => {
                 SetSearchQuery={SetSearchQuery}
                 handleClick={handleSearch}
                 SetStatesSelected={SetStatesSelected}
-
+                Options={CategoriesOptions}
             />
             <div className="relative z-500 w-[40%] hidden md:flex flex-col gap-3 h-[95vh] shrink-0 m-4 pointer-events-auto overflow-hidden">
                 <Header
+                    CategoriesOptions={CategoriesOptions}
                     CategorySelected={CategorySelected}
                     SetCategorySelected={SetCategorySelected}
                     selectedStates={StatesSelected}
@@ -254,7 +267,10 @@ const Main: React.FC = () => {
             </div>
 
             <div className="hidden md:block absolute right-8 top-2/3 -translate-y-1/2 z-500">
-                <DataTypes />
+                <DataTypes
+                    CategoriesOptions={CategoriesOptions}
+                    SetCategoriesOptions={SetCategoriesOptions}
+                />
             </div>
             <div className="hidden md:block absolute right-8 top-8 -translate-y-1/2 z-500">
                 <User

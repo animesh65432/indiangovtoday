@@ -34,7 +34,7 @@ const LanguageSelect = ({
                     key={label}
                     value={label}
                     className={cn(
-                        'cursor-pointer rounded-lg text-[11px] font-satoshi',
+                        'cursor-pointer rounded-lg text-[13px] font-satoshi',
                         isDark
                             ? 'text-white/70 focus:bg-white/10 focus:text-white/90'
                             : 'text-black/70 focus:bg-black/5 focus:text-black/90'

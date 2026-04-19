@@ -1,16 +1,13 @@
-import React, { useContext, useEffect } from "react";
-import { LanguageContext } from "@/context/Lan";
-import { TranslateText } from "@/lib/translatetext";
-import { Currentdate } from "@/context/Currentdate";
-import { GetAllCategoriesAnnouncements } from "@/api/announcements";
-import { IsLoadingContext } from "@/context/IsLoading";
-import { withCache, buildCacheKey } from "@/lib/lsCache";
+import React, { useContext } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { categoryStyles } from "@/lib/categoryStyles";
+import { getCategoryStyle } from "@/lib/categoryStyles";
 import "swiper/css";
 import { ThemeContext } from "@/context/Theme";
+import { LanguageContext } from "@/context/Lan";
+import { TranslateText } from "@/lib/translatetext";
 
 type Props = {
+    CategoriesOptions: string[];
     CategorySelected: string;
     SetCategorySelected: React.Dispatch<React.SetStateAction<string>>;
 };
@@ -18,14 +15,15 @@ type Props = {
 const CategoryOptions: React.FC<Props> = ({
     CategorySelected,
     SetCategorySelected,
+    CategoriesOptions = []
 }) => {
-    const { language } = useContext(LanguageContext);
-    const categoryOptions = [TranslateText[language].ALL_DEPARMENTS, ...TranslateText[language].CATEGORIES_OPTIONS];
     const { theme } = useContext(ThemeContext);
+    const { language } = useContext(LanguageContext);
     const isDark = theme === "dark";
+    const AddCategoriesOptions = [TranslateText[language].ALL_DEPARMENTS, ...CategoriesOptions]
 
     return (
-        <div className="w-full">
+        <div className={`w-full ${isDark ? "bg-[#050505]" : "bg-white"} py-2 border-b ${isDark ? "border-white/10" : "border-gray-200"}`}>
             <Swiper
                 className="w-full"
                 spaceBetween={8}
@@ -33,13 +31,13 @@ const CategoryOptions: React.FC<Props> = ({
                 freeMode={true}
                 grabCursor={true}
             >
-                {categoryOptions.map((category, index) => {
+                {AddCategoriesOptions.map((category, index) => {
                     const isActive = CategorySelected === category;
 
                     return (
                         <SwiperSlide
                             key={`${category}-${index}`}
-                            className="!w-auto flex items-center py-2"
+                            className="w-auto! flex items-center py-2"
                             onClick={() => SetCategorySelected(category)}
                         >
                             <div
@@ -48,6 +46,7 @@ const CategoryOptions: React.FC<Props> = ({
                   font-satoshi font-semibold text-[0.7rem] tracking-wide
                   flex items-center gap-1.5 cursor-pointer
                   transition-all duration-200
+
                   
                   ${isActive
                                         ? isDark
@@ -59,12 +58,11 @@ const CategoryOptions: React.FC<Props> = ({
                                     }
                 `}
                             >
-                                {/* Dot */}
-                                {categoryStyles[category]?.dot && (
+                                {getCategoryStyle(language, category)?.dot && (
                                     <span
                                         className="inline-block w-2 h-2 rounded-full shrink-0"
                                         style={{
-                                            backgroundColor: categoryStyles[category].dot,
+                                            backgroundColor: getCategoryStyle(language, category)?.dot,
                                         }}
                                     />
                                 )}

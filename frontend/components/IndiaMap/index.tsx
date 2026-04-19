@@ -11,13 +11,14 @@ import {
     getStateColor, getStateFillOpacity, getStateBorder,
     getStateWeight, normalizeGeoName, checkIfStateSelected,
     injectMapStyles, makeNameLabel,
-    MapStyle, GetHoverContent, GetSingleAnnouncementContent
+    MapStyle, GetSingleAnnouncementContent, getMapPadding
 } from "./utils";
 import { ThemeContext } from "@/context/Theme";
 import { LanguageContext } from "@/context/Lan";
 import { Currentdate } from "@/context/Currentdate";
 import { buildCacheKey, withCache } from "@/lib/lsCache";
-import { categoryStyles } from "@/lib/categoryStyles";
+import { getCategoryStyle } from "@/lib/categoryStyles";
+import { GetUserStateCode } from "@/lib/GetUserStateCode"
 
 const GEOJSON_URL = "/india_states.geojson";
 
@@ -29,6 +30,7 @@ type Props = {
     onStateClick: (state: string | null) => void;
     IsMapLoading: boolean;
     SetIsMapLoading: React.Dispatch<React.SetStateAction<boolean>>;
+    CategoriesOptions: string[];
 }
 
 
@@ -83,7 +85,7 @@ function randomPointInFeature(
 }
 
 export default function IndiaMap({
-    SetIsMapLoading, SetShowIndiaMap, ShowIndiaMap, selectedStates, onStateClick
+    SetIsMapLoading, ShowIndiaMap, selectedStates, onStateClick, CategoriesOptions
 }: Props) {
     const { language } = useContext(LanguageContext);
     const { startdate, endDate } = useContext(Currentdate);
@@ -100,9 +102,7 @@ export default function IndiaMap({
     const updateLayerStylesRef = useRef<() => void>(() => { });
     const geoReadyRef = useRef(false);
     const countsReadyRef = useRef(false);
-    const panelOffset = typeof window !== "undefined" && window.innerWidth >= 768
-        ? window.innerWidth * 0.4 + 16
-        : 0;
+    const isMobile = window.innerWidth < 768;
     const satelliteMarkersRef = useRef<Map<string, { markers: L.Layer[]; lines: L.Layer[] }>>(new Map());
 
     const selectedStatesRef = useRef<string[]>(selectedStates);
@@ -187,7 +187,12 @@ export default function IndiaMap({
             ];
 
             activeCats.forEach(cat => {
-                const color = categoryStyles[cat.category]?.dot ?? "#6B6963";
+
+                if (!CategoriesOptions.includes(cat.category)) {
+                    return;
+                }
+
+                const color = getCategoryStyle(language, cat.category).dot ?? "#6B6963";
                 const radius = Math.min(Math.max(3 * 2, 5), 18);
                 const posKey = `${stateCode}-${cat.category}`;
                 let point = dotPositionsRef.current.get(posKey) ?? null;
@@ -277,58 +282,58 @@ export default function IndiaMap({
                     );
                 }
 
-                if (cat.count > 1 && cat.count <= 10) {
-
-                    dot.on("click", () => {
-                        const map = mapInstanceRef.current;
-                        if (!map || !point) return;
-
-                        const announcements =
-                            stateData.categories.find(c => c.category === cat.category)?.announcements ?? [];
-                        const satKey = `${stateCode}-${cat.category}`;
-
-                        if (cat.count <= 1) {
-                            clearAllSatellites();
-                            map.closePopup();
-                            dot.openPopup();
-                            return;
-                        }
 
 
-                        if (satelliteMarkersRef.current.has(satKey)) {
-                            clearSatellites(satKey);
-                            return;
-                        }
+                dot.on("click", () => {
+                    const map = mapInstanceRef.current;
+                    if (!map || !point) return;
 
+                    const announcements =
+                        stateData.categories.find(c => c.category === cat.category)?.announcements ?? [];
+                    const satKey = `${stateCode}-${cat.category}`;
+
+                    if (cat.count <= 1) {
                         clearAllSatellites();
                         map.closePopup();
-
-                        const mainPx = map.latLngToContainerPoint(point as L.LatLngExpression);
-                        const orbitRadius = Math.min(20 + announcements.length * 6, 50);
-                        const satR = 9;
-                        const newMarkers: L.Layer[] = [];
-                        const newLines: L.Layer[] = [];
-
-                        announcements.forEach((announcement, i) => {
-                            const angle = (2 * Math.PI * i) / announcements.length - Math.PI / 2;
-                            const px = mainPx.x + orbitRadius * Math.cos(angle);
-                            const py = mainPx.y + orbitRadius * Math.sin(angle);
-                            const latlng = map.containerPointToLatLng(L.point(px, py));
-
-                            const line = L.polyline([point as L.LatLngExpression, latlng], {
-                                color,
-                                weight: 1.2,
-                                opacity: 0.35,
-                                dashArray: "3 5",
-                            });
-                            dotsLayerRef.current?.addLayer(line);
-                            newLines.push(line);
+                        dot.openPopup();
+                        return;
+                    }
 
 
-                            const satDot = L.marker(latlng, {
-                                icon: L.divIcon({
-                                    className: "",
-                                    html: `
+                    if (satelliteMarkersRef.current.has(satKey)) {
+                        clearSatellites(satKey);
+                        return;
+                    }
+
+                    clearAllSatellites();
+                    map.closePopup();
+
+                    const mainPx = map.latLngToContainerPoint(point as L.LatLngExpression);
+                    const orbitRadius = Math.min(20 + announcements.length * 6, 50);
+                    const satR = 9;
+                    const newMarkers: L.Layer[] = [];
+                    const newLines: L.Layer[] = [];
+
+                    announcements.forEach((announcement, i) => {
+                        const angle = (2 * Math.PI * i) / announcements.length - Math.PI / 2;
+                        const px = mainPx.x + orbitRadius * Math.cos(angle);
+                        const py = mainPx.y + orbitRadius * Math.sin(angle);
+                        const latlng = map.containerPointToLatLng(L.point(px, py));
+
+                        const line = L.polyline([point as L.LatLngExpression, latlng], {
+                            color,
+                            weight: 1.2,
+                            opacity: 0.35,
+                            dashArray: "3 5",
+                        });
+                        dotsLayerRef.current?.addLayer(line);
+                        newLines.push(line);
+
+
+                        const satDot = L.marker(latlng, {
+                            icon: L.divIcon({
+                                className: "",
+                                html: `
                                     <div style="
                                         width: ${satR * 2}px; height: ${satR * 2}px;
                                         border-radius: 50%;
@@ -339,53 +344,41 @@ export default function IndiaMap({
                                         transition: opacity 0.15s;
                                         cursor: pointer;
                                     "></div>`,
-                                    iconSize: [satR * 2, satR * 2],
-                                    iconAnchor: [satR, satR],
-                                }),
-                                interactive: true,
-                            });
-
-                            satDot.bindPopup(
-                                GetSingleAnnouncementContent(announcement, theme, language),
-                                {
-                                    closeButton: false,
-                                    className: "custom-map-popup",
-                                    maxWidth: 260,
-                                    autoPan: false,
-                                }
-                            );
-
-                            satDot.on("click", (e) => {
-                                L.DomEvent.stopPropagation(e);
-                                map.closePopup();
-                                satDot.openPopup();
-                            });
-
-                            dotsLayerRef.current?.addLayer(satDot);
-                            newMarkers.push(satDot);
+                                iconSize: [satR * 2, satR * 2],
+                                iconAnchor: [satR, satR],
+                            }),
+                            interactive: true,
                         });
 
-                        satelliteMarkersRef.current.set(satKey, { markers: newMarkers, lines: newLines });
-                    });
-                }
+                        satDot.bindPopup(
+                            GetSingleAnnouncementContent(announcement, theme, language),
+                            {
+                                closeButton: false,
+                                className: "custom-map-popup",
+                                maxWidth: 260,
+                                autoPan: false,
+                            }
+                        );
 
-                if (cat.count > 10) {
-                    dot.bindPopup(
-                        GetHoverContent(cat.announcements, color, cat.count, theme, language),
-                        {
-                            closeButton: false,
-                            className: "custom-map-popup",
-                            maxWidth: 240,
-                            autoPan: false,
-                        }
-                    );
-                }
+                        satDot.on("click", (e) => {
+                            L.DomEvent.stopPropagation(e);
+                            map.closePopup();
+                            satDot.openPopup();
+                        });
+
+                        dotsLayerRef.current?.addLayer(satDot);
+                        newMarkers.push(satDot);
+                    });
+
+                    satelliteMarkersRef.current.set(satKey, { markers: newMarkers, lines: newLines });
+                });
+
                 if (zoom >= 5) {
                     dotsLayerRef.current?.addLayer(dot);
                 }
             });
         });
-    }, [language]);
+    }, [language, CategoriesOptions, theme]);
 
     useEffect(() => {
         const map = mapInstanceRef.current;
@@ -399,6 +392,8 @@ export default function IndiaMap({
             theme === "dark" ? MapStyle.dark : MapStyle.light,
             { subdomains: "abcd", maxZoom: 29 }
         ).addTo(map);
+
+        map.getContainer().style.background = theme === "dark" ? "black" : "white";
 
     }, [theme]);
 
@@ -416,7 +411,7 @@ export default function IndiaMap({
             });
         });
         redrawLabels();
-    }, [selectedStates, language, theme, redrawLabels]);
+    }, [selectedStates, language, theme, redrawLabels, CategoriesOptions]);
 
     useEffect(() => {
         updateLayerStylesRef.current = updateLayerStyles;
@@ -432,7 +427,10 @@ export default function IndiaMap({
 
 
     useEffect(() => {
+        geoReadyRef.current = false
+
         injectMapStyles();
+
         if (!mapRef.current || mapInstanceRef.current) return;
 
         const map = L.map(mapRef.current, {
@@ -515,18 +513,16 @@ export default function IndiaMap({
                     if (selectedStatesRef.current.includes(stateCode)) selLayers.push(layer);
                 });
 
+                const padding = getMapPadding();
+
                 if (selLayers.length > 0) {
                     const bounds = selLayers.reduce(
                         (acc, l) => acc.extend(l.getBounds()),
                         selLayers[0].getBounds()
                     );
-                    map.fitBounds(bounds, {
-                        paddingTopLeft: panelOffset ? [panelOffset, 60] : [90, 90],
-                    });
+                    map.fitBounds(bounds, padding as L.FitBoundsOptions);
                 } else {
-                    map.fitBounds(geojsonLayer.getBounds(), {
-                        paddingTopLeft: panelOffset ? [panelOffset, 60] : [90, 90],
-                    });
+                    map.fitBounds(geojsonLayer.getBounds(), padding);
                 }
             })
             .catch(err => console.error("GeoJSON fetch failed:", err));
@@ -559,13 +555,14 @@ export default function IndiaMap({
 
             tryFinalize();
         } catch (error) {
-            SetIsMapLoading(false);
-            console.error("Error initializing map:", error);
+            countsReadyRef.current = true
+            SetIsMapLoading(false)
+            console.error("Error initializing map:", error)
         }
     }
 
     useEffect(() => {
-        geoReadyRef.current = false;
+        SetIsMapLoading(true)
         countsReadyRef.current = false;
         initGetAllCountAnnouncements(language, startdate, endDate);
     }, [language, startdate, endDate]);
@@ -573,12 +570,12 @@ export default function IndiaMap({
     useEffect(() => {
         if (!geojsonLayerRef.current || !mapInstanceRef.current) return;
 
-        const lastSelected = selectedStates[selectedStates.length - 1];
+        const lastSelected = GetUserStateCode(selectedStates, language);
 
         if (!lastSelected) {
             mapInstanceRef.current.fitBounds(
                 geojsonLayerRef.current.getBounds(),
-                { paddingTopLeft: panelOffset ? [panelOffset, 60] : [90, 90] }
+                getMapPadding()
             );
             return;
         }
@@ -588,27 +585,28 @@ export default function IndiaMap({
                 layer.feature?.properties?.NAME_1 ||
                 layer.feature?.properties?.ST_NM ||
                 layer.feature?.properties?.name || "";
+
             const stateCode = GetStateCode(normalizeGeoName(rawName), language);
 
-            if (stateCode === lastSelected) {
+            if (stateCode === lastSelected) {  // ✅ === not !==
                 mapInstanceRef.current.flyToBounds(
                     layer.getBounds(),
                     {
                         duration: 1,
-                        paddingTopLeft: panelOffset ? [panelOffset, 60] : [90, 90]
+                        ...getMapPadding()
                     }
                 );
             }
         });
 
-    }, [selectedStates])
+    }, [selectedStates]);
 
     return (
         <div className={`flex flex-col h-full font-satoshi `} id="map-container">
             <div
                 ref={mapWrapperRef}
                 data-zoom="4"
-                className={`flex-1 min-h-0 rounded-md md:rounded-none overflow-hidden ${ShowIndiaMap ? "flex-1" : "h-0"}`}
+                className={`flex-1 min-h-0 rounded-none overflow-hidden ${ShowIndiaMap ? "flex-1" : "h-0"}`}
                 style={{ backgroundColor: theme === "dark" ? "black" : "#f5f3ef", touchAction: "none" }}
             >
                 <div ref={mapRef} className="w-full h-full" />

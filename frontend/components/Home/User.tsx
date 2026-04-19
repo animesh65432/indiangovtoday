@@ -5,7 +5,7 @@ import { LanguageContext } from '@/context/Lan'
 import { ThemeContext } from '@/context/Theme'
 import MobileSearchInput from './MobileSearchInput'
 import { cn } from '@/lib/utils'
-import { Sheet, SheetContent, SheetTrigger } from '../ui/sheet'
+import { Sheet, SheetContent, SheetTitle, SheetTrigger } from '../ui/sheet'
 import LanguageSelect from '../LanguageSelect'
 
 type Props = {
@@ -46,7 +46,7 @@ const User: React.FC<Props> = ({
                             'transition-all duration-150',
                             IsDark
                                 ? 'hover:bg-white/10 hover:border-white/40'
-                                : 'hover:bg-black/5 hover:border-black/40',
+                                : 'hover:bg-transparent hover:border-black/40',
                             'focus-visible:outline-none focus-visible:ring-2',
                             IsDark
                                 ? 'focus-visible:ring-white/30'
@@ -69,7 +69,7 @@ const User: React.FC<Props> = ({
                         align="end"
                         sideOffset={6}
                         className={cn(
-                            'w-64 z-[900] overflow-hidden rounded-xl p-0',
+                            'w-64 z-900 overflow-hidden rounded-xl p-0',
                             IsDark
                                 ? 'border border-white/15 bg-[#111111]'
                                 : 'border border-black/10 bg-white',
@@ -79,7 +79,7 @@ const User: React.FC<Props> = ({
                         {/* Theme toggle */}
                         <div className="px-4 pt-3 pb-2.5">
                             <label className={cn(
-                                'mb-1.5 block text-[9px] font-medium uppercase tracking-[0.2em]',
+                                'mb-1.5 block text-[9px] font-medium font-satoshi uppercase tracking-[0.2em]',
                                 IsDark ? 'text-white/35' : 'text-black/35'
                             )}>
                                 Theme
@@ -130,7 +130,7 @@ const User: React.FC<Props> = ({
                         {/* Language */}
                         <div className="px-4 pt-2.5 pb-2.5">
                             <label className={cn(
-                                'mb-1.5 block text-[9px] font-medium uppercase tracking-[0.2em]',
+                                'mb-1.5 block text-[9px] font-satoshi font-medium uppercase tracking-[0.2em]',
                                 IsDark ? 'text-white/35' : 'text-black/35'
                             )}>
                                 Language
@@ -144,21 +144,17 @@ const User: React.FC<Props> = ({
             </div>
 
             <div className='md:hidden block'>
-                <Sheet open={sheetOpen} onOpenChange={(open) => setSheetOpen(open)}>
-
+                <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
                     <SheetTrigger asChild>
                         <button
                             onClick={() => setSheetOpen(true)}
                             className={cn(
                                 'group relative flex h-8 w-8 items-center justify-center',
-                                'rounded-lg',
-                                IsDark
-                                    ? 'bg-white/10 border-white/20 hover:bg-white/15 hover:border-white/40'
-                                    : 'bg-black/5 border-black/15 hover:bg-black/10 hover:border-black/30',
-                                'border',
-                                'transition-all duration-150',
+                                'rounded-lg border transition-all duration-150',
                                 'focus-visible:outline-none focus-visible:ring-2',
-                                IsDark ? 'focus-visible:ring-white/20' : 'focus-visible:ring-black/15',
+                                IsDark
+                                    ? 'bg-white/10 border-white/20 hover:bg-white/15 hover:border-white/40 focus-visible:ring-white/20'
+                                    : 'bg-black/5 border-black/15 hover:bg-black/10 hover:border-black/30 focus-visible:ring-black/15',
                                 'shadow-sm'
                             )}
                         >
@@ -173,7 +169,20 @@ const User: React.FC<Props> = ({
                             />
                         </button>
                     </SheetTrigger>
-                    <SheetContent side='bottom' className='h-dvh z-600'>
+
+                    <SheetContent
+                        side='bottom'
+                        className={cn(
+                            'z-[600]',
+                            'inset-0 h-[100dvh] w-full max-w-none',   // ← full screen
+                            '!rounded-none',                            // ← no top border-radius
+                            'p-0',                                      // ← let MobileSearchInput own padding
+                            IsDark ? 'bg-[#111]' : 'bg-white'
+                        )}
+                    >
+                        {/* shadcn injects a close button and title — hide them */}
+                        <SheetTitle className='sr-only'>Search</SheetTitle>
+
                         <MobileSearchInput
                             StatesSelected={StatesSelected}
                             setSheetOpen={setSheetOpen}

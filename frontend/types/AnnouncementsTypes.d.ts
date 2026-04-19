@@ -32,7 +32,7 @@ export type ResponseTrendingAnnouncementTypes = {
 type announcement = {
     title: string,
     date: string,
-    id: string
+    announcementId: string
 }
 
 type Category = {

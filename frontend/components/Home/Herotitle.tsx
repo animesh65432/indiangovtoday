@@ -59,10 +59,10 @@ const Herotitle: React.FC = () => {
 
             <h1 className="font-satoshi text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold leading-[1.12] tracking-tight text-[#321F1F]">
                 {TranslateText[language].EVERY_INDIAN_GOVERNMENT}{" "}
-                <span className="text-[#ff3333] transition-all duration-300 hover:tracking-wide">
+                <span className="text-[#c51057] transition-all duration-300 hover:tracking-wide">
                     {TranslateText[language].ANNOUNCEMENT},
                 </span>{" "}
-                <span className="italic text-[#ff3333]">{TranslateText[language].ONE_PLACE}</span>
+                <span className="italic text-[#c51057]">{TranslateText[language].ONE_PLACE}</span>
             </h1>
 
             <p className="hidden sm:block text-[#888] font-satoshi max-w-xs leading-relaxed">

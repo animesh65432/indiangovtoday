@@ -21,7 +21,8 @@ type Props = {
     sheetOpen: boolean,
     SearchQuery: string,
     SetSearchQuery: React.Dispatch<React.SetStateAction<string>>,
-    handleClick: () => void
+    handleClick: () => void,
+    CategoriesOptions: string[]
 }
 
 const Header: React.FC<Props> = ({
@@ -36,7 +37,8 @@ const Header: React.FC<Props> = ({
     sheetOpen,
     SearchQuery,
     SetSearchQuery,
-    handleClick
+    handleClick,
+    CategoriesOptions
 }) => {
     const { language } = useContext(LanguageContext)
     const { theme } = useContext(ThemeContext)
@@ -96,29 +98,6 @@ const Header: React.FC<Props> = ({
                     )}
 
                 </div>
-
-                <div className='border-l border-slate-200 h-6 shrink-0' />
-
-
-                <div className={`font-satoshi rounded-lg p-1 flex gap-1 items-center text-[0.8rem] ${theme === "dark" ? "bg-white/10" : "bg-[#321F1F]/10"
-                    }`}>
-
-
-                    <div className={`px-3 py-1 rounded-md shadow-sm font-medium cursor-pointer transition-all duration-200 ${theme === "dark"
-                        ? "bg-white text-black"
-                        : "bg-white text-black"
-                        }`}>
-                        Map
-                    </div>
-
-                    <div className={`px-3 py-1 rounded-md cursor-pointer transition-all duration-200 ${theme === "dark"
-                        ? "text-gray-300 hover:text-white hover:bg-white/10"
-                        : "text-gray-600 hover:text-black hover:bg-white/60"
-                        }`}>
-                        Govt
-                    </div>
-                </div>
-
             </div>
 
             <div className='border-t border-slate-200' />
@@ -126,6 +105,7 @@ const Header: React.FC<Props> = ({
             <CategoryOptions
                 CategorySelected={CategorySelected}
                 SetCategorySelected={SetCategorySelected}
+                CategoriesOptions={CategoriesOptions}
             />
             <InputBox
                 StatesSelected={StatesSelected}

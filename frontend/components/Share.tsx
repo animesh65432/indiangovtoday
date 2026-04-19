@@ -44,7 +44,7 @@ export default function ShareSection({ Announcement, setisShareOPen }: Props) {
             name: "Email",
             icon: <Mail className="w-4 h-4" />,
             url: `mailto:?subject=${encodeURIComponent("Check this announcement!")}&body=${encodedMessageWithUrl}`,
-            color: "#ff3333",
+            color: "#c51057",
         },
     ]
 
@@ -58,7 +58,7 @@ export default function ShareSection({ Announcement, setisShareOPen }: Props) {
                 className="relative w-full max-w-md mx-4 overflow-hidden rounded-2xl bg-white shadow-2xl animate-in slide-in-from-bottom-4 duration-300"
             >
                 {/* Top red accent bar */}
-                <div className="h-1 w-full" style={{ backgroundColor: "#ff3333" }} />
+                <div className="h-1 w-full" style={{ backgroundColor: "#c51057" }} />
 
                 {/* Close */}
                 <button
@@ -74,14 +74,14 @@ export default function ShareSection({ Announcement, setisShareOPen }: Props) {
                     {/* Header */}
                     <div className="flex flex-col gap-2">
                         <div className="flex items-center gap-2 mb-1">
-                            <Share2 size={13} style={{ color: "#ff3333" }} />
+                            <Share2 size={13} style={{ color: "#c51057" }} />
                             <span className="text-[10px] font-bold uppercase tracking-[0.18em]"
-                                style={{ color: "#ff3333" }}>
+                                style={{ color: "#c51057" }}>
                                 {TranslateText[language].SHARE_ANNOUNCEMENT}
                             </span>
                         </div>
                         <h3 className="text-2xl font-bold leading-snug"
-                            style={{ color: "#ff3333", fontFamily: "var(--font-literata)" }}>
+                            style={{ color: "#c51057", fontFamily: "var(--font-literata)" }}>
                             {TranslateText[language].SHARE_ANNOUNCEMENT}
                         </h3>
                         <p className="text-[13px] leading-relaxed mt-1"
@@ -101,7 +101,7 @@ export default function ShareSection({ Announcement, setisShareOPen }: Props) {
                             {shareMessage}
                         </p>
                         <p className="text-[11px] font-mono truncate"
-                            style={{ color: "#ff3333", opacity: 0.7 }}>
+                            style={{ color: "#c51057", opacity: 0.7 }}>
                             {shareUrl}
                         </p>
                     </div>

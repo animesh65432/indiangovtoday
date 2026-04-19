@@ -8,12 +8,13 @@ import { PrasePayloadArray } from "../utils/translatePayloadAnnoucements"
 
 export const GetIndiaAnnouncements = asyncErrorHandler(async (req: Request, res: Response) => {
 
-    const { category, target_lan, startDate, endDate, page, limit, states } = req.query;
+    const { CategoriesOptions, category, SearchQuery, target_lan, startDate, endDate, page, limit, states } = req.query;
 
     const pageNumber = parseInt(page as string) || 1;
     const pageSize = parseInt(limit as string) || 10;
     const skip = (pageNumber - 1) * pageSize;
     const selectedStates = PrasePayloadArray(states as string);
+    const CategoriesOptionsArray = PrasePayloadArray(CategoriesOptions as string);
     const sortedStates = [...selectedStates].sort();
     const stateCachePart = sortedStates.join(",");
 
@@ -27,7 +28,7 @@ export const GetIndiaAnnouncements = asyncErrorHandler(async (req: Request, res:
 
     const targetLanguage = LANGUAGE_CODES[target_lan as string] || "en";
 
-    const redis_key = `Announcements_${targetLanguage}_${announcementsStartDate.toISOString().split('T')[0]}_${announcementsEndDate.toISOString().split('T')[0]}_page${page}_limit${limit}_${Category}_${stateCachePart}`;
+    const redis_key = `Announcements_${targetLanguage}_${announcementsStartDate.toISOString().split('T')[0]}_${announcementsEndDate.toISOString().split('T')[0]}_page${page}_limit${limit}_${Category}_${stateCachePart}_${CategoriesOptionsArray.join(",")}`;
     const cached_data = await redis.get(redis_key);
 
     if (cached_data && typeof cached_data === "string") {
@@ -51,7 +52,17 @@ export const GetIndiaAnnouncements = asyncErrorHandler(async (req: Request, res:
         date: { $gte: start, $lte: end },
         language: targetLanguage,
         state: sortedStates.length ? { $in: sortedStates } : { $exists: true },
+        category: CategoriesOptionsArray.length > 0 ? { $in: CategoriesOptionsArray } : { $exists: true }
     };
+
+    if (SearchQuery && typeof SearchQuery === "string" && SearchQuery.trim().length > 0) {
+        const trimmedQuery = SearchQuery.trim();
+        filter.$or = [
+            { title: { $regex: trimmedQuery, $options: "i" } },
+            { description: { $regex: trimmedQuery, $options: "i" } },
+            { content: { $regex: trimmedQuery, $options: "i" } },
+        ];
+    }
 
     const collationOptions = { collation: { locale: 'simple', strength: 1 } };
 
@@ -300,7 +311,7 @@ export const GetIndiaAnnouncement = asyncErrorHandler(async (req: Request, res: 
         }).toArray()
 
 
-    if (!announcement) {
+    if (!announcement || announcement.length === 0) {
         res.status(404).json({ error: "Announcement not found" });
         return;
     }
@@ -516,7 +527,7 @@ export const GetAllCountAnnouncements = asyncErrorHandler(async (req: Request, r
                         $push: {
                             title: "$title",
                             date: "$date",
-                            id: "$_id"
+                            announcementId: "$announcementId"
                         }
                     }
                 }

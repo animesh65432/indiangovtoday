@@ -24,7 +24,7 @@ export function StateSelector({ selectedState, onStateClick }: Props) {
     const [open, setOpen] = useState(false)
     const isDark = theme === "dark"
 
-    const options = TranslateText[language].MULTISELECT_OPTIONS
+    const options = TranslateText[language].MULTISELECT_OPTIONS.slice(0, 36)
 
     useEffect(() => {
         try {
@@ -47,20 +47,16 @@ export function StateSelector({ selectedState, onStateClick }: Props) {
         .map(v => options.find(o => o.value === v))
         .filter(Boolean) as typeof options
 
-
     const itemClass = (isDark: boolean) => `
         py-3 px-3 rounded-lg cursor-pointer transition-colors
-        aria-selected:bg-orange-500/20 
-        ${isDark
-            ? "text-gray-200 hover:text-white"
-            : "text-black"
-        }
+        aria-selected:bg-[#c51057]/20 
+        ${isDark ? "text-gray-200 hover:text-white" : "text-black"}
     `
 
     return (
         <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger className="flex items-center py-1 rounded-md hover:bg-[#321F1F]/10 transition-colors">
-                <ChevronDown size={15} className="text-red-300" />
+                <ChevronDown size={15} className="text-[#c51057]" />
             </SheetTrigger>
 
             <SheetContent
@@ -71,8 +67,9 @@ export function StateSelector({ selectedState, onStateClick }: Props) {
                 <Command className="bg-transparent h-full flex flex-col">
                     <CommandInput
                         isDark={isDark}
+                        onClose={() => open && setOpen(false)}
                         placeholder="Search states..."
-                        className={` ${isDark ? "text-white" : "text-black"} placeholder:text-gray-500 h-12 font-satoshi border-b border-white/10`}
+                        className={`${isDark ? "text-white" : "text-black"} placeholder:text-gray-500 h-12 font-satoshi border-b border-white/10`}
                     />
 
                     <CommandList className="flex-1 max-h-none overflow-y-auto px-1 py-2">
@@ -80,13 +77,12 @@ export function StateSelector({ selectedState, onStateClick }: Props) {
                             No state found.
                         </CommandEmpty>
 
-                        {/* Recents */}
                         {recentOptions.length > 0 && (
                             <>
                                 <CommandGroup
                                     heading="Recent"
                                     className="
-                                        [&_[cmdk-group-heading]]:text-orange-500
+                                        [&_[cmdk-group-heading]]:text-[#c51057]
                                         [&_[cmdk-group-heading]]:flex
                                         [&_[cmdk-group-heading]]:items-center
                                         [&_[cmdk-group-heading]]:gap-1.5
@@ -97,7 +93,7 @@ export function StateSelector({ selectedState, onStateClick }: Props) {
                                 >
                                     {recentOptions.map(state => (
                                         <CommandItem
-                                            key={`recent-${state.value}`}  // ✅ "recent-" prefix is fine here
+                                            key={`recent-${state.value}`}
                                             value={`recent-${state.value}`}
                                             keywords={[state.label]}
                                             onSelect={() => handleSelect(state.value)}
@@ -106,7 +102,7 @@ export function StateSelector({ selectedState, onStateClick }: Props) {
                                             <MapPin size={14} className={`shrink-0 ${isDark ? "text-white" : "text-gray-400"}`} />
                                             {state.label}
                                             {selectedState === state.value && (
-                                                <Check size={14} className="ml-auto text-orange-500" />
+                                                <Check size={14} className="ml-auto text-[#c51057]" />
                                             )}
                                         </CommandItem>
                                     ))}
@@ -116,15 +112,14 @@ export function StateSelector({ selectedState, onStateClick }: Props) {
                             </>
                         )}
 
-                        {/* All States & UTs */}
                         <CommandGroup
                             heading="All States & UTs"
                             className="[&_[cmdk-group-heading]]:text-gray-500 [&_[cmdk-group-heading]]:uppercase [&_[cmdk-group-heading]]:tracking-wider [&_[cmdk-group-heading]]:text-[11px]"
                         >
                             {options.map(state => (
                                 <CommandItem
-                                    key={state.value}               // ✅ fixed: was "recent-${state.value}" (wrong prefix for full list)
-                                    value={state.value}             // ✅ fixed: was "recent-${state.value}" (caused search mismatches)
+                                    key={state.value}
+                                    value={state.value}
                                     keywords={[state.label]}
                                     onSelect={() => handleSelect(state.value)}
                                     className={itemClass(isDark)}
@@ -132,7 +127,7 @@ export function StateSelector({ selectedState, onStateClick }: Props) {
                                     <MapPin size={14} className={`shrink-0 ${isDark ? "text-white" : "text-gray-400"}`} />
                                     {state.label}
                                     {selectedState === state.value && (
-                                        <Check size={14} className="ml-auto text-orange-500" />
+                                        <Check size={14} className="ml-auto text-[#c51057]" />
                                     )}
                                 </CommandItem>
                             ))}

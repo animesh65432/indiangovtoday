@@ -1,10 +1,10 @@
-import React, { useState, useContext } from 'react'
-import { useEffect } from "react"
+import React, { useState, useContext, useEffect } from 'react'
 import { getAnnouncement } from "@/api/announcements"
 import ShowAnnouncement from './ShowAnnouncement'
 import { ShowAnnouncementsTypes } from "@/types"
 import AnnouncementSkeleton from './AnnouncementSkeleton'
 import { LanguageContext } from "@/context/Lan"
+import { ThemeContext } from "@/context/Theme"
 import Subscribe from '@/components/Subscribe'
 import EmptyAnnouncements from '../Home/EmptyAnnoucments'
 
@@ -14,51 +14,58 @@ type Props = {
 }
 
 const Announcement = ({ id, lan }: Props) => {
-    const [announcement, setannouncement] = useState<ShowAnnouncementsTypes | null>(null)
-    const [IsLoading, SetIsLoading] = useState<boolean>(false)
+    const [announcement, setAnnouncement] = useState<ShowAnnouncementsTypes | null>(null)
+    const [isLoading, setIsLoading] = useState<boolean>(false)
     const [toggle, setToggle] = useState<boolean>(false)
     const { language } = useContext(LanguageContext)
-
-    async function fetch() {
-        SetIsLoading(true)
-        try {
-            const response = await getAnnouncement(language, id) as { data: ShowAnnouncementsTypes }
-            setannouncement(response.data)
-        }
-        finally {
-            SetIsLoading(false)
-        }
-    }
+    const { theme } = useContext(ThemeContext)
+    const isDark = theme === "dark"
 
     useEffect(() => {
-        if (id) {
-            fetch()
+        if (!id) return
+
+        const fetchAnnouncement = async () => {
+            setIsLoading(true)
+            try {
+                const response = await getAnnouncement(lan, id) as { data: ShowAnnouncementsTypes }
+                setAnnouncement(response.data)
+            } catch (err) {
+                console.error("Failed to fetch announcement:", err)
+            } finally {
+                setIsLoading(false)
+            }
         }
+
+        fetchAnnouncement()
     }, [id, language])
 
+    if (isLoading) {
+        return (
+            <div className={`h-screen ${isDark ? "bg-[#050505]" : "bg-white"}`}>
+                <AnnouncementSkeleton />
+            </div>
+        )
+    }
+
     return (
-        <main className=" flex flex-col  min-h-dvh ">
+        <main className={`flex flex-col min-h-dvh ${isDark ? "bg-[#050505]" : "bg-white"}`}>
             <Subscribe />
-            {!IsLoading ?
-                (announcement ?
-                    <ShowAnnouncement
-                        title={announcement.title}
-                        source={announcement.source_link}
-                        lan={language}
-                        announcementId={announcement.announcementId}
-                        state={announcement.state}
-                        date={announcement.date}
-                        category={announcement.category}
-                        department={announcement.department}
-                        sections={announcement.sections}
-                        toggle={toggle}
-                        setToggle={setToggle}
-                        image={announcement.image}
-                    /> :
-                    <EmptyAnnouncements />) :
-                <div className='h-screen'>
-                    <AnnouncementSkeleton />
-                </div>
+            {announcement
+                ? <ShowAnnouncement
+                    title={announcement.title}
+                    source={announcement.source_link}
+                    lan={language}
+                    announcementId={announcement.announcementId}
+                    state={announcement.state}
+                    date={announcement.date}
+                    category={announcement.category}
+                    department={announcement.department}
+                    sections={announcement.sections}
+                    toggle={toggle}
+                    setToggle={setToggle}
+                    image={announcement.image}
+                />
+                : <EmptyAnnouncements />
             }
         </main>
     )

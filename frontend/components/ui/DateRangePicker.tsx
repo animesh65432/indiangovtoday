@@ -11,6 +11,7 @@ import { LanguageContext } from "@/context/Lan"
 import { Calendar as CalendarIcon } from "lucide-react"
 import { Locale } from 'date-fns'
 import { enUS, hi, bn, ta, te, gu, kn } from 'date-fns/locale'
+import { ThemeContext } from '@/context/Theme'
 
 const getDateFnsLocale = (languageCode: string): Locale => {
     const localeMap: Record<string, Locale> = {
@@ -129,7 +130,7 @@ const PRESET_TRANSLATIONS: Record<string, Record<string, string>> = {
     },
     'cancel': {
         English: 'Cancel', हिन्दी: 'रद्द करें', বাংলা: 'বাতিল', தமிழ்: 'ரத்து செய்',
-        తెలుగు: 'రద్దు చేయండి', मराठी: 'रद्द करा', ಕನ್ನಡ: 'ರದ್ದுಮಾಡಿ', اُردُو: 'منسوخ کریں'
+        తెలుగు: 'రద్దు చేయండి', मराठी: 'रद्द करा', ಕನ್ನಡ: 'ರದ್ದುಮಾಡಿ', اُردُو: 'منسوخ کریں'
     },
     'update': {
         English: 'Update', हिन्दी: 'अपडेट करें', বাংলা: 'আপডেট', தமிழ்: 'புதுப்பிக்கவும்',
@@ -171,6 +172,8 @@ export const DateRangePicker: FC<DateRangePickerProps> & {
 }): JSX.Element => {
         const [isOpen, setIsOpen] = useState(false)
         const { language } = useContext(LanguageContext)
+        const { theme } = useContext(ThemeContext)
+        const isDark = theme === "dark"
 
         const currentLocale = getLocaleFromLanguage(language)
         const dateFnsLocale = getDateFnsLocale(language)
@@ -306,7 +309,6 @@ export const DateRangePicker: FC<DateRangePickerProps> & {
             }
         }, [isOpen])
 
-        // CHANGE 1: h-8 added — only height reduced, all other original styles kept
         const PresetButton = ({
             preset,
             label,
@@ -317,7 +319,13 @@ export const DateRangePicker: FC<DateRangePickerProps> & {
             isSelected: boolean
         }): JSX.Element => (
             <Button
-                className={cn('h-8 hover:bg-[#f0eaea] text-[#321F1F]', isSelected && 'pointer-events-none')}
+                className={cn(
+                    'h-8',
+                    isDark
+                        ? 'text-white hover:bg-zinc-800'
+                        : 'text-[#321F1F] hover:bg-[#f0eaea]',
+                    isSelected && 'pointer-events-none'
+                )}
                 onClick={() => { setPreset(preset) }}
             >
                 <>
@@ -347,14 +355,22 @@ export const DateRangePicker: FC<DateRangePickerProps> & {
                 }}
             >
                 <PopoverTrigger asChild>
-                    <Button size={'lg'} className=' text-[#321F1F] rounded-none' >
+                    <Button
+                        size={'lg'}
+                        className={cn(
+                            'rounded-none',
+                            isDark ? 'bg-black text-white' : 'bg-white text-[#321F1F]'
+                        )}
+                    >
                         <div className="text-left">
                             <div className="py-1 flex items-center gap-2 whitespace-nowrap">
-                                <CalendarIcon width={18} height={18} className='text-[#FF3333]' />
-                                <div className=' text-[#321F1F] font-satoshi'>{`${formatDate(range.from, currentLocale)}${range.to != null ? ' - ' + formatDate(range.to, currentLocale) : ''}`}</div>
+                                <CalendarIcon width={18} height={18} className='text-[#c51057]' />
+                                <div className={cn('font-satoshi', isDark ? 'text-white' : 'text-[#321F1F]')}>
+                                    {`${formatDate(range.from, currentLocale)}${range.to != null ? ' - ' + formatDate(range.to, currentLocale) : ''}`}
+                                </div>
                             </div>
                             {rangeCompare != null && (
-                                <div className="opacity-60 text-xs -mt-1 whitespace-nowrap">
+                                <div className={cn('opacity-60 text-xs -mt-1 whitespace-nowrap', isDark ? 'text-white' : 'text-[#321F1F]')}>
                                     <>
                                         {getTranslation('vs', language)} {formatDate(rangeCompare.from, currentLocale)}
                                         {rangeCompare.to != null ? ` - ${formatDate(rangeCompare.to, currentLocale)}` : ''}
@@ -365,12 +381,16 @@ export const DateRangePicker: FC<DateRangePickerProps> & {
                     </Button>
                 </PopoverTrigger>
 
-                <PopoverContent align={align} className="w-auto z-900 font-satoshi">
-                    {/* CHANGE 2: py-2 → py-1 */}
+                <PopoverContent
+                    align={align}
+                    className={cn(
+                        'w-auto z-900 font-satoshi',
+                        isDark ? 'bg-black' : 'bg-white'
+                    )}
+                >
                     <div className="flex py-1">
                         <div className="flex">
                             <div className="flex flex-col">
-                                {/* CHANGE 3: pb-4 → pb-1 */}
                                 <div className="flex flex-col lg:flex-row gap-2 px-3 justify-end items-center lg:items-start pb-1 lg:pb-0">
                                     <div className="flex flex-col gap-2">
                                         <div className="flex gap-2">
@@ -381,7 +401,7 @@ export const DateRangePicker: FC<DateRangePickerProps> & {
                                                     setRange((prevRange) => ({ ...prevRange, from: date, to: toDate }))
                                                 }}
                                             />
-                                            <div className="py-1">-</div>
+                                            <div className={cn('py-1', isDark ? 'text-white' : 'text-[#321F1F]')}>-</div>
                                             <DateInput
                                                 value={range.to}
                                                 onChange={(date) => {
@@ -403,7 +423,7 @@ export const DateRangePicker: FC<DateRangePickerProps> & {
                                                         }
                                                     }}
                                                 />
-                                                <div className="py-1">-</div>
+                                                <div className={cn('py-1', isDark ? 'text-white' : 'text-[#321F1F]')}>-</div>
                                                 <DateInput
                                                     value={rangeCompare?.to}
                                                     onChange={(date) => {
@@ -418,10 +438,8 @@ export const DateRangePicker: FC<DateRangePickerProps> & {
                                     </div>
                                 </div>
 
-
-                                {/* CHANGE 4: --rdp-cell-size overridden to 34px via inline style */}
                                 <div
-                                    className='text-[#321F1F]'
+                                    className={cn(isDark ? 'bg-black text-white' : 'bg-white text-[#321F1F]')}
                                     style={{ '--rdp-cell-size': '34px' } as React.CSSProperties}
                                 >
                                     <Calendar
@@ -442,7 +460,6 @@ export const DateRangePicker: FC<DateRangePickerProps> & {
                             </div>
                         </div>
 
-                        {/* CHANGE 5: pb-6 → pb-1 on both wrappers */}
                         {!isSmallScreen && (
                             <div className="flex flex-col items-end gap-1 pr-2 pl-6 pb-1">
                                 <div className="flex w-full flex-col items-end gap-1 pr-2 pl-6 pb-1">
@@ -459,17 +476,16 @@ export const DateRangePicker: FC<DateRangePickerProps> & {
                         )}
                     </div>
 
-                    {/* CHANGE 6: py-2 → py-1 on footer */}
-                    <div className="flex justify-end gap-2 py-1 pr-4">
+                    <div className={cn('flex justify-end gap-2 py-1 pr-4', isDark ? 'bg-black' : 'bg-white')}>
                         <Button
-                            className='text-white rounded-none bg-[#FF3333]'
+                            className='text-white rounded-none bg-[#c51057]'
                             onClick={() => { setIsOpen(false); resetValues() }}
                             variant="ghost"
                         >
                             {getTranslation('cancel', language)}
                         </Button>
                         <Button
-                            className='text-white rounded-none bg-[#FF3333]'
+                            className='text-white rounded-none bg-[#c51057]'
                             onClick={() => {
                                 setIsOpen(false)
                                 if (

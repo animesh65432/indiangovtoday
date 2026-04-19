@@ -1,10 +1,11 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { SectionTypes } from '@/types'
 import Header from './Header'
 import Title from './Title'
 import Details from './Details'
 import TextDiv from "./TextDiv"
 import KeyInforMation from './KeyInforMation'
+
 
 type Props = {
     title: string
@@ -22,7 +23,6 @@ type Props = {
 }
 
 const ShowAnnouncement: React.FC<Props> = ({ image, toggle, setToggle, title, source, lan, date, state, sections, department, category }) => {
-    console.log(image)
     return (
         <section className='w-[90%] sm:w-[82%] mx-auto  flex flex-col gap-10 pt-7  pb-8'>
             <Header

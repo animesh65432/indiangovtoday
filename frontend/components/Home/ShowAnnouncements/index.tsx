@@ -4,7 +4,6 @@ import { Brief_Announcement } from "@/types"
 import AnnouncementSkeleton from "./AnnouncementSkeleton";
 import { ThemeContext } from "@/context/Theme";
 import Briefing from "../Briefing";
-import InputBox from "../InputBox";
 import AnnouncementCard from "./Announcement";
 
 type Props = {
@@ -70,15 +69,14 @@ export default function ShowAnnouncements({
 
     return (
         <div className="flex flex-col flex-1 min-h-0 overflow-y-auto scrollbar-hide">
-            {ShowBriefingComponent &&
-                <div className=" mb-0 md:mb-3">
+            {ShowBriefingComponent && BriefAnnouncements.length > 0 &&
+                <div className="mb-0 md:mb-3">
                     <Briefing
                         BriefAnnouncements={BriefAnnouncements}
                         StatesSelected={StatesSelected}
                     />
                 </div>
             }
-
             <div className={`${containerStyle}`}>
                 <div className="flex flex-col gap-6">
                     {Announcements.map((a) => (

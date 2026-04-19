@@ -5,7 +5,7 @@ import { formatDateInLanguage } from "@/lib/formatDate"
 import { useRouter } from "next/navigation"
 import { ThemeContext } from "@/context/Theme"
 import { TranslateText } from "@/lib/translatetext"
-import { categoryStyles } from "@/lib/categoryStyles"
+import { getCategoryStyle } from "@/lib/categoryStyles"
 
 type Props = {
     Announcement: Announcement,
@@ -33,7 +33,7 @@ const AnnouncementCard: React.FC<Props> = ({ Announcement, className }) => {
             <div className="mt-2">
                 <div
                     className="w-2 h-2 rounded-full"
-                    style={{ backgroundColor: categoryStyles[Announcement.category]?.dot }}
+                    style={{ backgroundColor: getCategoryStyle(language, Announcement.category).dot }}
                 />
             </div>
 
@@ -43,12 +43,6 @@ const AnnouncementCard: React.FC<Props> = ({ Announcement, className }) => {
                 <div className="flex items-center gap-2 text-[0.7rem] font-satoshi text-gray-500">
                     <span className="uppercase tracking-wide font-medium">
                         {Announcement.category}
-                    </span>
-
-                    <span>•</span>
-
-                    <span>
-                        {formatDateInLanguage(Announcement.date, language)}
                     </span>
                 </div>
 
@@ -63,10 +57,11 @@ const AnnouncementCard: React.FC<Props> = ({ Announcement, className }) => {
                     {Announcement.description}
                 </span>
 
-                <div className="flex items-center justify-end mt-1">
-
-
-                    <span className="text-[0.7rem] font-satoshi text-blue-500 hover:underline font-medium">
+                <div className="flex items-center justify-between mt-1">
+                    <span className="text-[0.8rem] font-satoshi">
+                        {formatDateInLanguage(Announcement.date, language)} ,  {Announcement.state}
+                    </span>
+                    <span onClick={handleClick} className="text-[0.7rem] font-satoshi text-blue-500 hover:underline font-medium">
                         {TranslateText[language].SEE_DETAILS}
                     </span>
                 </div>

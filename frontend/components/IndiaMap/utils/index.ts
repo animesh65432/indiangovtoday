@@ -139,6 +139,17 @@ export function makeNameLabel(name: string, isDark: boolean, zoom: number): L.Di
     const opacity = zoom >= 7 ? 1 : zoom >= 6 ? 0.85 : 0.7;
     const visible = zoom >= 5 && zoom <= 8;
 
+    const lightShadow = `
+        -1px -1px 0 #fff,
+         1px -1px 0 #fff,
+        -1px  1px 0 #fff,
+         1px  1px 0 #fff`;
+
+    // Soft glow instead of hard black outline — punches through dark tiles
+    const darkShadow = `
+        0 0 3px rgba(0,0,0,0.9),
+        0 0 6px rgba(0,0,0,0.6)`;
+
     return L.divIcon({
         className: "",
         html: `<span style="
@@ -149,25 +160,22 @@ export function makeNameLabel(name: string, isDark: boolean, zoom: number): L.Di
             opacity: ${opacity};
             letter-spacing: 0.05em;
             text-transform: uppercase;
-            color: ${isDark ? "#ededed" : "#757575"};
-            text-shadow:
-                -1px -1px 0 ${isDark ? "#000" : "#fff"},
-                 1px -1px 0 ${isDark ? "#000" : "#fff"},
-                -1px  1px 0 ${isDark ? "#000" : "#fff"},
-                 1px  1px 0 ${isDark ? "#000" : "#fff"};
+            color: ${isDark ? "#ffffff" : "#757575"};
+            text-shadow: ${isDark ? darkShadow : lightShadow};
             pointer-events: none;
         ">${name}</span>`,
         iconSize: [0, 0],
         iconAnchor: [0, 0],
     });
 }
+
 export const MapStyle = {
     light: "https://{s}.basemaps.cartocdn.com/rastertiles/voyager_nolabels/{z}/{x}/{y}{r}.png",
     dark: "https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png"
 };
 
 export const GetHoverContent = (
-    announcements: { id: string; title: string; date: string }[],
+    announcements: { announcementId: string; title: string; date: string }[],
     color: string,
     count: number,
     theme: string,
@@ -184,7 +192,7 @@ export const GetHoverContent = (
 
     const items = top3.map(a => `
         <div class="${itemClass}"
-             onclick="window.open('announcement?id=${a.id}&lan=${language}', '_self')"
+             onclick="window.open('announcement?id=${a.announcementId}&lan=${language}', '_self')"
              style="cursor:pointer;">
             <div class="top-tooltip-item-title">${a.title}</div>
             <div class="top-tooltip-item-date">${formatDateInLanguage(a.date, language ?? "English")}</div>
@@ -206,7 +214,9 @@ export const GetHoverContent = (
 };
 
 export const GetSingleAnnouncementContent = (
-    announcement: { id: string; title: string; date: string; location?: string },
+    announcement: {
+        announcementId: string; title: string; date: string; location?: string
+    },
     theme?: string,
     language?: string,
 ): string => {
@@ -218,7 +228,7 @@ export const GetSingleAnnouncementContent = (
     return `
         <div class="${containerClass}">
             <div class="${itemClass}"
-                 onclick="window.open('announcement?id=${announcement.id}&lan=${language}', '_self')"
+                 onclick="window.location.href='/announcement?id=${announcement.announcementId}&lan=${language}'"
                  style="cursor:pointer;">
                 <span class="${closeClass}"
                       onclick="event.stopPropagation(); this.closest('.tool-bar-container, .tool-bar-container-white').remove()">
@@ -233,9 +243,26 @@ export const GetSingleAnnouncementContent = (
                 <span class="top-tooltip-item-date">
                     ${formatDateInLanguage(announcement.date, language ?? "English")}
                 </span>
-               <span class="tooltip-read-more" onclick="event.stopPropagation(); window.open('announcement?id=${announcement.id}&lan=${language}', '_self')">
+               <span class="tooltip-read-more" onclick="event.stopPropagation(); window.open('announcement?id=${announcement.announcementId}&lan=${language}', '_self')">
                  Read more
                </span>
             </div>
         </div>`;
+};
+
+export const getMapPadding = () => {
+    const isMobile = window.innerWidth < 768;
+
+    if (isMobile) {
+        const bottomPanelHeight = window.innerHeight * 0.5; // adjust this — 50% of screen height
+        return {
+            paddingTopLeft: [20, 60] as [number, number],
+            paddingBottomRight: [20, bottomPanelHeight] as [number, number]
+        };
+    }
+
+    return {
+        paddingTopLeft: [190, 60] as [number, number],
+        paddingBottomRight: [0, 0] as [number, number]
+    };
 };
