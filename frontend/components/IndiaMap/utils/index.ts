@@ -1,6 +1,7 @@
-
 import { STATES_CODES } from "@/lib/translatetext";
+import { categoryStyles } from "@/lib/categoryStyles"
 import L from "leaflet";
+import { formatDateInLanguage } from "@/lib/formatDate"
 
 const GEO_NAME_MAP: Record<string, string> = {
     "Andaman and Nicobar": "Andaman and Nicobar Islands",
@@ -23,22 +24,21 @@ export function normalizeGeoName(name: string): string {
     return GEO_NAME_MAP[name] || name;
 }
 
-export function getStateColor(count: number, isSelected: boolean): string {
-    if (isSelected) return "#FEF08A";
-    if (count === 0) return "#E8E4DA";
-    if (count === 1) return "#FDE68A";
-    if (count === 2) return "#FBBF24";
-    return "#F59E0B";
+export function getStateColor(count: number, isSelected: boolean, theme: string): string {
+    return "transparent";
 }
 
-export function getStateBorder(count: number, isSelected: boolean): string {
-    if (isSelected) return "#D97706";
-    if (count === 0) return "#C9C3B5";
-    return "#D97706";
+export function getStateBorder(count: number, isSelected: boolean, theme: string): string {
+    if (theme === "dark") {
+        return isSelected ? "#acb0ad" : "#4a4a4a";
+    }
+    else {
+        return isSelected ? "#4a4a4a" : "#C9C3B5";
+    }
 }
 
 export function getStateWeight(isSelected: boolean): number {
-    return isSelected ? 3 : 1;
+    return isSelected ? 2 : 1;
 }
 
 export function getStateFillOpacity(count: number, isSelected: boolean): number {
@@ -55,6 +55,24 @@ export const UNION_TERRITORIES = [
 ];
 
 
+export function makeStateDot(count: number, theme: string): L.DivIcon {
+    const size = Math.min(8 + count * 1.5, 32); // scale dot by count, cap at 32px
+    const color = count > 20 ? "#e63946" : count > 10 ? "#f4a261" : "#2a9d8f";
+    return L.divIcon({
+        className: "",
+        html: `<div style="
+            width:${size}px; height:${size}px;
+            background:${color};
+            border-radius:50%;
+            border:2px solid ${theme === "dark" ? "#222" : "#fff"};
+            box-shadow:0 1px 4px rgba(0,0,0,0.3);
+            opacity:0.85;
+        "></div>`,
+        iconSize: [size, size],
+        iconAnchor: [size / 2, size / 2],
+    });
+}
+
 export const getTranslatedStateName = (
     englishName: string,
     language: string
@@ -64,59 +82,187 @@ export const getTranslatedStateName = (
     return stateEntry[language] ?? stateEntry["English"] ?? englishName;
 };
 
-export const getTooltipHTML = (
-    name: string,
-    count: number,
-    language: string
-): string => {
-    const displayName = getTranslatedStateName(name, language);
-    const hasCounts = count > 0;
-    const countLabel = hasCounts
-        ? `${count} announcement${count !== 1 ? "s" : ""}`
-        : "No announcements";
-
-    return `<div style="font-family:'Inter',-apple-system,sans-serif;min-width:155px;color:#141414;">
-<span style="font-size:13px;font-weight:700;line-height:1.45;letter-spacing:-0.01em;color:#141414;margin-bottom:4px;">${displayName}</span>
-<div style="font-size:13px;font-weight:700;color:#AAA;letter-spacing:0.08em; ${hasCounts ? "text-gray-500" : "text-red-500"}">${countLabel}</div>
-<div style="font-size:12px;font-weight:700;color:#AAA;letter-spacing:0.08em;">${hasCounts ? "Click to filter" : "Click to select"}</div>
-</div>`;
-};
 
 export const checkIfStateSelected = (state: string, selectedStates: string[]): boolean => {
     const normalizedState = normalizeGeoName(state);
     return selectedStates.some(selected => normalizeGeoName(selected) === normalizedState);
 }
 
-export const DARK_MAP_STYLE = `
-.leaflet-top.leaflet-left { left: 10px !important; top: 10px !important; }
-.leaflet-control-zoom .leaflet-bar { border: 1px solid #FF9933 !important; border-radius: 6px !important; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.6) !important; }
-.leaflet-control-zoom a { background: #1A1A1A !important; color: #FF9933 !important; border-bottom: 1px solid #FF9933 !important; width: 26px !important; height: 26px !important; line-height: 26px !important; font-size: 15px !important; display: flex !important; align-items: center !important; justify-content: center !important; transition: background 0.15s; }
-.leaflet-control-zoom a:hover { background: #FF9933 !important; color: #000 !important; }
-.leaflet-control-zoom a:last-child { border-bottom: none !important; }
-.leaflet-control-attribution { display: none !important; }
-.state-label { background: transparent !important; border: none !important; box-shadow: none !important; pointer-events: none !important; }
-.state-label-inner { display: flex; flex-direction: column; align-items: center; gap: 1px; transform: translate(-50%, -50%); white-space: nowrap; }
-.state-label-name { font-size: 8px; font-weight: 700; color: #fff; letter-spacing: 0.03em; text-shadow: 0 1px 3px rgba(0,0,0,0.9), 0 0 6px rgba(0,0,0,0.8); line-height: 1.1; text-transform: uppercase; }
-.state-label-count { font-size: 9px; font-weight: 800; color: #FF9933; background: rgba(0,0,0,0.55); border: 1px solid #FF9933; border-radius: 10px; padding: 0px 5px; line-height: 1.5; }
-.govtrack-tooltip { background: #1A1A1A !important; border: 1px solid #FF9933 !important; border-radius: 8px !important; box-shadow: 0 2px 12px rgba(0,0,0,0.6) !important; padding: 6px 10px !important; color: white !important; font-size: 12px !important; pointer-events: none !important; }
-.govtrack-tooltip::before { display: none !important; }
-`;
-
 export function injectMapStyles() {
     if (typeof document === "undefined") return;
     if (document.getElementById("dark-map-styles")) return;
     const el = document.createElement("style");
     el.id = "dark-map-styles";
-    el.textContent = DARK_MAP_STYLE;
     document.head.appendChild(el);
 }
 
-export function makeStateLabel(name: string, count: number): L.DivIcon {
-    const countHtml = count > 0 ? `<div class="state-label-count">${count}</div>` : "";
+function makePieSlices(cats: { category: string; count: number }[], r: number, cx: number, cy: number, isDark: boolean): string {
+    const total = cats.reduce((s, c) => s + c.count, 0);
+    if (total === 0) return "";
+
+    let startAngle = -Math.PI / 2; // 12 o'clock
+    const slices: string[] = [];
+
+    cats.forEach((c) => {
+        const slice = (c.count / total) * 2 * Math.PI;
+        const endAngle = startAngle + slice;
+
+        const x1 = cx + r * Math.cos(startAngle);
+        const y1 = cy + r * Math.sin(startAngle);
+        const x2 = cx + r * Math.cos(endAngle);
+        const y2 = cy + r * Math.sin(endAngle);
+        const largeArc = slice > Math.PI ? 1 : 0;
+
+        const color = categoryStyles[c.category]?.dot ?? "#78716C";
+
+        slices.push(`
+            <path
+                d="M${cx},${cy} L${x1},${y1} A${r},${r} 0 ${largeArc},1 ${x2},${y2} Z"
+                fill="${color}"
+                opacity="0.9"
+                stroke="${isDark ? "#1a1a1a" : "#ffffff"}"
+                stroke-width="1"
+            >
+                <title>${c.category}: ${c.count}</title>
+            </path>
+        `);
+
+        startAngle = endAngle;
+    });
+
+    return slices.join("");
+}
+
+export function makeNameLabel(name: string, isDark: boolean, zoom: number): L.DivIcon {
+
+    const fontSize = 9;
+    const opacity = zoom >= 7 ? 1 : zoom >= 6 ? 0.85 : 0.7;
+    const visible = zoom >= 5 && zoom <= 8;
+
+    const lightShadow = `
+        -1px -1px 0 #fff,
+         1px -1px 0 #fff,
+        -1px  1px 0 #fff,
+         1px  1px 0 #fff`;
+
+    // Soft glow instead of hard black outline — punches through dark tiles
+    const darkShadow = `
+        0 0 3px rgba(0,0,0,0.9),
+        0 0 6px rgba(0,0,0,0.6)`;
+
     return L.divIcon({
-        className: "state-label",
-        html: `<div class="state-label-inner"><div class="state-label-name">${name}</div>${countHtml}</div>`,
+        className: "",
+        html: `<span style="
+            display: ${visible ? "inline" : "none"};
+            white-space: nowrap;
+            font-size: ${fontSize}px;
+            font-weight: 700;
+            opacity: ${opacity};
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: ${isDark ? "#ffffff" : "#757575"};
+            text-shadow: ${isDark ? darkShadow : lightShadow};
+            pointer-events: none;
+        ">${name}</span>`,
         iconSize: [0, 0],
         iconAnchor: [0, 0],
     });
 }
+
+export const MapStyle = {
+    light: "https://{s}.basemaps.cartocdn.com/rastertiles/voyager_nolabels/{z}/{x}/{y}{r}.png",
+    dark: "https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png"
+};
+
+export const GetHoverContent = (
+    announcements: { announcementId: string; title: string; date: string }[],
+    color: string,
+    count: number,
+    theme: string,
+    language: string,
+) => {
+    if (announcements.length === 0) return "";
+
+    const top3 = announcements.slice(0, 3);
+    const remaining = count - 3;
+
+    const containerClass = theme === "dark" ? "tool-bar-container" : "tool-bar-container-white";
+    const itemClass = theme === "dark" ? "top-tooltip-item-dark" : "top-tooltip-item-light";
+    const footerClass = theme === "dark" ? "tool-tip-footer" : "tool-tip-footer-white-multi";
+
+    const items = top3.map(a => `
+        <div class="${itemClass}"
+             onclick="window.open('announcement?id=${a.announcementId}&lan=${language}', '_self')"
+             style="cursor:pointer;">
+            <div class="top-tooltip-item-title">${a.title}</div>
+            <div class="top-tooltip-item-date">${formatDateInLanguage(a.date, language ?? "English")}</div>
+        </div>
+    `).join("");
+
+    const footer = remaining > 0
+        ? `<div class="${footerClass}">
+               <span>+${remaining} more</span>
+               <span class="footer-browse"
+                     style="color:${color};"
+                     onclick="window.open('announcements?lan=${language}', '_self')">
+                   browse all →
+               </span>
+           </div>`
+        : "";
+
+    return `<div class="${containerClass}">${items}${footer}</div>`;
+};
+
+export const GetSingleAnnouncementContent = (
+    announcement: {
+        announcementId: string; title: string; date: string; location?: string
+    },
+    theme?: string,
+    language?: string,
+): string => {
+    const containerClass = theme === "dark" ? "tool-bar-container" : "tool-bar-container-white";
+    const itemClass = theme === "dark" ? "top-tooltip-item-dark" : "top-tooltip-item-light";
+    const closeClass = theme === "dark" ? "top-tooltip-close" : "top-tooltip-close-white";
+    const footerClass = theme === "dark" ? "tool-tip-footer-dark" : "tool-tip-footer-white";
+
+    return `
+        <div class="${containerClass}">
+            <div class="${itemClass}"
+                 onclick="window.location.href='/announcement?id=${announcement.announcementId}&lan=${language}'"
+                 style="cursor:pointer;">
+                <span class="${closeClass}"
+                      onclick="event.stopPropagation(); this.closest('.tool-bar-container, .tool-bar-container-white').remove()">
+                    ×
+                </span>
+                <div class="top-tooltip-item-title">${announcement.title}</div>
+                ${announcement.location
+            ? `<div class="top-tooltip-item-location">${announcement.location}</div>`
+            : ""}
+            </div>
+            <div class="${footerClass}">
+                <span class="top-tooltip-item-date">
+                    ${formatDateInLanguage(announcement.date, language ?? "English")}
+                </span>
+               <span class="tooltip-read-more" onclick="event.stopPropagation(); window.open('announcement?id=${announcement.announcementId}&lan=${language}', '_self')">
+                 Read more
+               </span>
+            </div>
+        </div>`;
+};
+
+export const getMapPadding = () => {
+    const isMobile = window.innerWidth < 768;
+
+    if (isMobile) {
+        const bottomPanelHeight = window.innerHeight * 0.5; // adjust this — 50% of screen height
+        return {
+            paddingTopLeft: [20, 60] as [number, number],
+            paddingBottomRight: [20, bottomPanelHeight] as [number, number]
+        };
+    }
+
+    return {
+        paddingTopLeft: [190, 60] as [number, number],
+        paddingBottomRight: [0, 0] as [number, number]
+    };
+};

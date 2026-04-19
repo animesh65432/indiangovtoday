@@ -8,12 +8,13 @@ import { PrasePayloadArray } from "../utils/translatePayloadAnnoucements"
 
 export const GetIndiaAnnouncements = asyncErrorHandler(async (req: Request, res: Response) => {
 
-    const { category, target_lan, startDate, endDate, page, limit, states } = req.query;
+    const { CategoriesOptions, category, SearchQuery, target_lan, startDate, endDate, page, limit, states } = req.query;
 
     const pageNumber = parseInt(page as string) || 1;
     const pageSize = parseInt(limit as string) || 10;
     const skip = (pageNumber - 1) * pageSize;
     const selectedStates = PrasePayloadArray(states as string);
+    const CategoriesOptionsArray = PrasePayloadArray(CategoriesOptions as string);
     const sortedStates = [...selectedStates].sort();
     const stateCachePart = sortedStates.join(",");
 
@@ -27,7 +28,7 @@ export const GetIndiaAnnouncements = asyncErrorHandler(async (req: Request, res:
 
     const targetLanguage = LANGUAGE_CODES[target_lan as string] || "en";
 
-    const redis_key = `Announcements_${targetLanguage}_${announcementsStartDate.toISOString().split('T')[0]}_${announcementsEndDate.toISOString().split('T')[0]}_page${page}_limit${limit}_${Category}_${stateCachePart}`;
+    const redis_key = `Announcements_${targetLanguage}_${announcementsStartDate.toISOString().split('T')[0]}_${announcementsEndDate.toISOString().split('T')[0]}_page${page}_limit${limit}_${Category}_${stateCachePart}_${CategoriesOptionsArray.join(",")}`;
     const cached_data = await redis.get(redis_key);
 
     if (cached_data && typeof cached_data === "string") {
@@ -51,7 +52,17 @@ export const GetIndiaAnnouncements = asyncErrorHandler(async (req: Request, res:
         date: { $gte: start, $lte: end },
         language: targetLanguage,
         state: sortedStates.length ? { $in: sortedStates } : { $exists: true },
+        category: CategoriesOptionsArray.length > 0 ? { $in: CategoriesOptionsArray } : { $exists: true }
     };
+
+    if (SearchQuery && typeof SearchQuery === "string" && SearchQuery.trim().length > 0) {
+        const trimmedQuery = SearchQuery.trim();
+        filter.$or = [
+            { title: { $regex: trimmedQuery, $options: "i" } },
+            { description: { $regex: trimmedQuery, $options: "i" } },
+            { content: { $regex: trimmedQuery, $options: "i" } },
+        ];
+    }
 
     const collationOptions = { collation: { locale: 'simple', strength: 1 } };
 
@@ -300,7 +311,7 @@ export const GetIndiaAnnouncement = asyncErrorHandler(async (req: Request, res: 
         }).toArray()
 
 
-    if (!announcement) {
+    if (!announcement || announcement.length === 0) {
         res.status(404).json({ error: "Announcement not found" });
         return;
     }
@@ -382,7 +393,6 @@ export const GetallAnnoucementsDepartments = asyncErrorHandler(async (req: Reque
     return;
 }
 );
-
 
 export const GetAllTrendingTitles = asyncErrorHandler(async (req: Request, res: Response) => {
     const { target_lan } = req.query;
@@ -504,23 +514,52 @@ export const GetAllCountAnnouncements = asyncErrorHandler(async (req: Request, r
                 }
             },
             {
+                $sort: { date: -1 }
+            },
+            {
                 $group: {
-                    _id: "$state",
-                    count: { $sum: 1 }
+                    _id: {
+                        state: "$state",
+                        category: "$category",
+                    },
+                    count: { $sum: 1 },
+                    announcements: {
+                        $push: {
+                            title: "$title",
+                            date: "$date",
+                            announcementId: "$announcementId"
+                        }
+                    }
+                }
+            },
+            {
+                $group: {
+                    _id: "$_id.state",
+                    total: { $sum: "$count" },
+                    categories: {
+                        $push: {
+                            category: "$_id.category",
+                            count: "$count",
+                            announcements: {
+                                $slice: ["$announcements", 10]
+                            }
+                        }
+                    }
                 }
             },
             {
                 $project: {
                     _id: 0,
                     state: "$_id",
-                    count: 1
+                    categories: 1
                 }
             },
             {
-                $sort: { count: -1 }
+                $sort: { total: -1 }
             }
         ])
         .toArray();
+
 
     await redis.set(redis_key, JSON.stringify({
         success: true,
@@ -631,4 +670,101 @@ export const GetStats = asyncErrorHandler(async (req: Request, res: Response) =>
             totalDepartments: totalDepartments.length,
         }
     });
+});
+
+export const GetBriefAnnouncements = asyncErrorHandler(async (req: Request, res: Response) => {
+    const { target_lan, states, startDate, endDate } = req.query;
+
+    if (!target_lan || typeof target_lan !== "string") {
+        res.status(400).json({ message: "Missing or invalid target_lan" });
+        return;
+    }
+
+    const selectedStates = PrasePayloadArray(states as string);
+
+    const announcementsStartDate = startDate
+        ? new Date(startDate as string)
+        : new Date(new Date().setDate(new Date().getDate() - 7));
+
+    const announcementsEndDate = endDate ? new Date(endDate as string) : new Date();
+
+    const stateCachePart = selectedStates.join(",");
+
+    const targetLanguage = LANGUAGE_CODES[target_lan as string] || "en";
+
+    const redis_key = `Brief_Announcements_${targetLanguage}_${stateCachePart}_${announcementsStartDate.toISOString().split("T")[0]}_${announcementsEndDate.toISOString().split("T")[0]}`;
+
+    const cached_data = await redis.get(redis_key);
+
+    if (cached_data) {
+        const parsedData = typeof cached_data === "string" ? JSON.parse(cached_data) : cached_data;
+        res.status(200).json(parsedData);
+        return;
+    }
+
+    const db = await connectDB();
+
+    const start = new Date(announcementsStartDate);
+    start.setUTCHours(0, 0, 0, 0);
+
+    const end = new Date(announcementsEndDate);
+    end.setUTCHours(23, 59, 59, 999);
+
+    const result = await db.aggregate([
+        {
+            $documents: selectedStates.map((s) => ({ state: s }))
+        },
+        {
+            $lookup: {
+                from: "Translated_Announcements",
+                let: { stateVar: "$state" },
+                pipeline: [
+                    {
+                        $match: {
+                            $expr: {
+                                $and: [
+                                    { $eq: ["$state", "$$stateVar"] },
+                                    { $eq: ["$language", targetLanguage] },
+                                    { $gte: ["$date", start] },
+                                    { $lte: ["$date", end] },
+                                ]
+                            }
+                        }
+                    },
+                    { $sort: { date: -1 } }
+                ],
+                as: "announcements"
+            }
+        },
+        {
+            $project: {
+                _id: 0,
+                state: 1,
+                total: { $size: "$announcements" },
+                latest: {
+                    $cond: {
+                        if: { $gt: [{ $size: "$announcements" }, 0] }, // ✅ fixed brackets here
+                        then: {
+                            title: { $first: "$announcements.title" },
+                            date: { $first: "$announcements.date" },
+                            category: { $first: "$announcements.category" },
+                            announcementId: { $first: "$announcements.announcementId" }
+                        },
+                        else: null
+                    }
+                }
+            }
+        },
+        { $sort: { total: -1 } }
+    ]).toArray();
+
+    const responseData = {
+        success: true,
+        data: result
+    };
+
+    await redis.set(redis_key, JSON.stringify(responseData), { ex: 300 });
+
+    res.status(200).json(responseData);
+    return;
 });

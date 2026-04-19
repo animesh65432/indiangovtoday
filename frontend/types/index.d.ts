@@ -86,4 +86,20 @@ export type ShowAnnouncementsTypes = {
 
 }
 
+export type Brief_Announcement = {
+    latest: {
+        announcementId: string,
+        title: string,
+        date: string,
+        category: string,
+    } | null,
+    state: string,
+    total: number
+}
+
+export type Briefing_Announcement_Response = {
+    data: Brief_Announcement[],
+    success: boolean,
+}
+
 export { ResponseCountAnnouncementTypes, CountAnnouncementTypes, Announcement, AnnouncementsResponse, TrendingAnnouncementTypes, ResponseTrendingAnnouncementTypes }

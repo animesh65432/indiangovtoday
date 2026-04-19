@@ -1,16 +1,18 @@
 import { Call } from "@/service/call"
 
-export const getAllAnnouncements = (target_lan: string, startdate: Date, endDate: Date, page: number, limit: number, category: string, states: string[], signal?: AbortSignal) => {
+export const getAllAnnouncements = (target_lan: string, SearchQuery: string, startdate: Date, endDate: Date, page: number, limit: number, category: string, states: string[], CategoriesOptions: string[], signal?: AbortSignal) => {
     const params = new URLSearchParams({
         target_lan,
         startDate: startdate.toISOString().split("T")[0],
         endDate: endDate.toISOString().split("T")[0],
         page: page.toString(),
         limit: limit.toString(),
-        category: category.toString()
+        category: category.toString(),
+        SearchQuery: SearchQuery.toString().trim()
     });
 
     states.forEach(state => params.append('states', state));
+    CategoriesOptions.forEach(option => params.append('CategoriesOptions', option));
 
     return Call({
         method: "GET",
@@ -84,8 +86,7 @@ export const GetTrendingIndiaAnnnouncements = (target_lan: string, signal?: Abor
     });
 }
 
-export const GetAllCountAnnouncements = (target_lan: string, startdate: Date, endDate: Date) => {
-
+export const GetAllCountAnnouncements = (target_lan: string, startdate: Date, endDate: Date,) => {
     const params = new URLSearchParams({
         target_lan,
         startDate: startdate.toISOString().split('T')[0],
@@ -116,3 +117,20 @@ export const GetStats = () => Call({
     method: "GET",
     path: `/GetStats`,
 })
+
+export const GetBriefAnnouncements = (target_lan: string, startdate: Date, endDate: Date, states: string[], signal?: AbortSignal) => {
+
+    const params = new URLSearchParams({
+        target_lan,
+        startDate: startdate.toISOString().split('T')[0],
+        endDate: endDate.toISOString().split('T')[0],
+    });
+
+    states.forEach(state => params.append('states', state));
+
+    return Call({
+        method: "GET",
+        path: `/GetBriefAnnouncements?${params.toString()}`,
+        signal
+    });
+}

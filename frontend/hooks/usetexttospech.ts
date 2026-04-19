@@ -1,11 +1,10 @@
-import { UseLanguageContext } from "@/context/Lan"
+import { LanguageContext } from "@/context/Lan"
 import { Call } from "@/service/call"
-import { useState, useRef } from "react"
-import { useTranslation } from "react-i18next"
+import { useState, useRef, useContext } from "react"
+
 
 export const usetexttospech = () => {
-    const { i18n } = useTranslation()
-    const context = UseLanguageContext()
+    const context = useContext(LanguageContext)
     const [IsLoading, setloading] = useState(false)
     const [isPlaying, setIsPlaying] = useState(false)
     const [isPaused, setIsPaused] = useState(false)

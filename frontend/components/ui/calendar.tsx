@@ -209,15 +209,15 @@ function CalendarDayButton({
         "group-data-[focused=true]/day:border-ring group-data-[focused=true]/day:ring-[3px] group-data-[focused=true]/day:ring-ring/50",
         // range-start → red bg, white text
         "data-[range-start=true]:rounded-md data-[range-start=true]:rounded-l-md",
-        "data-[range-start=true]:bg-[#FF3333] data-[range-start=true]:text-white",
+        "data-[range-start=true]:bg-[#c51057] data-[range-start=true]:text-white",
         // range-end → red bg, white text
         "data-[range-end=true]:rounded-md data-[range-end=true]:rounded-r-md",
-        "data-[range-end=true]:bg-[#FF3333] data-[range-end=true]:text-white",
+        "data-[range-end=true]:bg-[#c51057] data-[range-end=true]:text-white",
         // range-middle → warm pink tint, dark text
         "data-[range-middle=true]:rounded-none",
         "data-[range-middle=true]:bg-[#f0eaea] data-[range-middle=true]:text-[#321F1F]",
         // single selected → red bg, white text
-        "data-[selected-single=true]:bg-[#FF3333] data-[selected-single=true]:text-white",
+        "data-[selected-single=true]:bg-[#c51057] data-[selected-single=true]:text-white",
         "dark:hover:text-accent-foreground [&>span]:text-xs [&>span]:opacity-70",
         defaultClassNames.day,
         className

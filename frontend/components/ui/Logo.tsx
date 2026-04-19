@@ -1,3 +1,4 @@
+import { ThemeContext } from '@/context/Theme'
 import React from 'react'
 
 type LogoProps = {
@@ -6,14 +7,12 @@ type LogoProps = {
 }
 
 const Logo = ({ fst, snd }: LogoProps) => {
+    const { theme } = React.useContext(ThemeContext)
     return (
-        <div className="flex  gap-2 select-none font-tanker text-color">
-            <span className="text-xl sm:text-2xl font-medium">
-                {fst.toUpperCase()}
-            </span>
-
-            <span className="text-xl sm:text-2xl  ">
-                {snd.toUpperCase()}
+        <div className="flex-1 flex  gap-1 select-none font-satoshi text-color">
+            <span>🇮🇳</span>
+            <span className={`text-[0.9rem] font-semibold ${theme === "dark" ? "text-white" : "text-black"}`}>
+                {fst}{snd}
             </span>
         </div>
     )

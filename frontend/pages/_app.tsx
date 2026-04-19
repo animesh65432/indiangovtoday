@@ -2,6 +2,7 @@ import "@/styles/globals.css";
 import type { AppProps } from "next/app";
 import { LanguageProvider } from "@/context/Lan";
 import { CurrentdateProvider } from "@/context/Currentdate";
+import ThemeProvider from "@/context/Theme";
 import { AnnouncementsProvider } from "@/context/AnnouncementsProvider"
 import LocationProvider from "@/context/LocationProvider";
 import { FilterAnnouncementsProvider } from "@/context/FilterAnnoucements"
@@ -18,33 +19,35 @@ export default function App({ Component, pageProps }: AppProps) {
     <ImageKitProvider
       urlEndpoint={NEXT_PUBLIC_IMAGEKIT_URL}
     >
-      <LanguageProvider>
-        <IsLoadingProvider>
-          <LocationProvider>
-            <PageNationProvider>
-              <FilterAnnouncementsProvider>
-                <AnnouncementsProvider>
-                  <CurrentdateProvider>
-                    <Component {...pageProps} />
-                    <ToastContainer
-                      position="top-right"
-                      autoClose={3000}
-                      hideProgressBar={false}
-                      newestOnTop={false}
-                      closeOnClick
-                      rtl={false}
-                      pauseOnFocusLoss
-                      draggable
-                      pauseOnHover
-                    />
-                    <ScrollBackgroundEffect />
-                  </CurrentdateProvider>
-                </AnnouncementsProvider>
-              </FilterAnnouncementsProvider>
-            </PageNationProvider>
-          </LocationProvider>
-        </IsLoadingProvider>
-      </LanguageProvider>
+      <ThemeProvider>
+        <LanguageProvider>
+          <IsLoadingProvider>
+            <LocationProvider>
+              <PageNationProvider>
+                <FilterAnnouncementsProvider>
+                  <AnnouncementsProvider>
+                    <CurrentdateProvider>
+                      <Component {...pageProps} />
+                      <ToastContainer
+                        position="top-right"
+                        autoClose={3000}
+                        hideProgressBar={false}
+                        newestOnTop={false}
+                        closeOnClick
+                        rtl={false}
+                        pauseOnFocusLoss
+                        draggable
+                        pauseOnHover
+                      />
+                      <ScrollBackgroundEffect />
+                    </CurrentdateProvider>
+                  </AnnouncementsProvider>
+                </FilterAnnouncementsProvider>
+              </PageNationProvider>
+            </LocationProvider>
+          </IsLoadingProvider>
+        </LanguageProvider>
+      </ThemeProvider>
     </ImageKitProvider>
   );
 }

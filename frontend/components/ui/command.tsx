@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import { Command as CommandPrimitive } from "cmdk"
-import { SearchIcon } from "lucide-react"
+import { SearchIcon, X } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 import {
@@ -62,14 +62,19 @@ function CommandDialog({
 
 function CommandInput({
   className,
+  isDark = false,
+  onClose,           // ✅ add this
   ...props
-}: React.ComponentProps<typeof CommandPrimitive.Input>) {
+}: React.ComponentProps<typeof CommandPrimitive.Input> & {
+  isDark?: boolean,
+  onClose?: () => void  // ✅ add this
+}) {
   return (
     <div
       data-slot="command-input-wrapper"
-      className="flex h-9 items-center gap-2 border-b px-3"
+      className="flex h-11 items-center gap-2 border-b px-3"
     >
-      <SearchIcon className="size-4 shrink-0 opacity-50" />
+      <SearchIcon className={`size-5 shrink-0 opacity-50 ${isDark ? "text-white" : "text-slate-400"}`} />
       <CommandPrimitive.Input
         data-slot="command-input"
         className={cn(
@@ -78,10 +83,13 @@ function CommandInput({
         )}
         {...props}
       />
+      <X
+        onClick={onClose}
+        className={`size-5 shrink-0 opacity-50 cursor-pointer hover:opacity-100 transition-opacity ${isDark ? "text-white" : "text-slate-400"}`}
+      />
     </div>
   )
 }
-
 function CommandList({
   className,
   ...props

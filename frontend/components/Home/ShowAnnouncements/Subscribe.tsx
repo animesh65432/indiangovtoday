@@ -63,7 +63,7 @@ const Subscribe: React.FC = () => {
                 />
                 <Button
                     onClick={handlesubscribe}
-                    className='rounded-none bg-black text-white font-bold uppercase text-[10px] tracking-[0.14em] hover:bg-[#333] transition-colors h-10 px-5 flex-shrink-0'
+                    className='rounded-none bg-[#050505] text-white font-bold uppercase text-[10px] tracking-[0.14em] hover:bg-[#333] transition-colors h-10 px-5 flex-shrink-0'
                 >
                     {IsLoading
                         ? <LoaderCircle className='animate-spin h-4 w-4' />

@@ -1,7 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Announcement as AnnouncementTypes } from "@/types/index";
-import AnnouncementCard from "./Announcement";
+import { Brief_Announcement } from "@/types"
 import AnnouncementSkeleton from "./AnnouncementSkeleton";
+import { ThemeContext } from "@/context/Theme";
+import Briefing from "../Briefing";
+import AnnouncementCard from "./Announcement";
 
 type Props = {
     Announcements: AnnouncementTypes[];
@@ -10,9 +13,11 @@ type Props = {
     totalpage: number;
     IsLoading: boolean;
     IsLoadingMore: boolean;
-    IsItHomePage?: boolean;
-};
+    BriefAnnouncements: Brief_Announcement[];
+    StatesSelected: string[];
+    ShowBriefingComponent: boolean;
 
+};
 
 export default function ShowAnnouncements({
     Announcements,
@@ -21,8 +26,13 @@ export default function ShowAnnouncements({
     totalpage,
     IsLoading,
     IsLoadingMore,
-    IsItHomePage = true
+    BriefAnnouncements,
+    ShowBriefingComponent,
+    StatesSelected
 }: Props) {
+    const { theme } = useContext(ThemeContext);
+    const isDark = theme === "dark";
+
     const sentinelRef = React.useRef<HTMLDivElement>(null);
 
     React.useEffect(() => {
@@ -42,9 +52,14 @@ export default function ShowAnnouncements({
         return () => observer.disconnect();
     }, [page, totalpage, IsLoadingMore, LoadMoreData]);
 
+    const containerStyle = `
+    mt-0   rounded-md p-0 md:p-4 w-full mx-auto flex flex-col gap-x-8 gap-y-12
+    ${isDark ? "bg-[#050505]" : "bg-white"}
+`;
+
     if (IsLoading) {
         return (
-            <div className="mt-8 md:mt-0 w-[95%] md:w-[80%] mx-auto grid grid-cols-1 gap-x-8 gap-y-12">
+            <div className={containerStyle}>
                 {[...Array(10)].map((_, index) => (
                     <AnnouncementSkeleton key={index} />
                 ))}
@@ -53,46 +68,27 @@ export default function ShowAnnouncements({
     }
 
     return (
-        <div className="mt-8 md:mt-0 w-[95%] md:w-[80%] mx-auto grid grid-cols-1 gap-x-8 gap-y-12">
-            {IsItHomePage &&
-                <>
-                    <div className="md:hidden">
-                        {Announcements.map((a) => (
-                            <AnnouncementCard key={a.announcementId} Announcement={a} />
-                        ))}
-                    </div>
-
-                    {/* md → xl: skip first 1 */}
-                    <div className="hidden md:grid xl:hidden grid-cols-1 gap-x-8 gap-y-12">
-                        {Announcements.slice(1).map((a) => (
-                            <AnnouncementCard key={a.announcementId} Announcement={a} />
-                        ))}
-                    </div>
-
-                    {/* xl+: skip first 3 */}
-                    <div className="hidden xl:grid grid-cols-1 gap-x-8 gap-y-12">
-                        {Announcements.slice(3).map((a) => (
-                            <AnnouncementCard key={a.announcementId} Announcement={a} />
-                        ))}
-                    </div>
-                </>
+        <div className="flex flex-col flex-1 min-h-0 overflow-y-auto scrollbar-hide">
+            {ShowBriefingComponent && BriefAnnouncements.length > 0 &&
+                <div className="mb-0 md:mb-3">
+                    <Briefing
+                        BriefAnnouncements={BriefAnnouncements}
+                        StatesSelected={StatesSelected}
+                    />
+                </div>
             }
-            {
-                !IsItHomePage && <div>
+            <div className={`${containerStyle}`}>
+                <div className="flex flex-col gap-6">
                     {Announcements.map((a) => (
                         <AnnouncementCard key={a.announcementId} Announcement={a} />
                     ))}
                 </div>
-            }
-            {IsLoadingMore && (
-                [...Array(5)].map((_, index) => (
+                {IsLoadingMore && [...Array(5)].map((_, index) => (
                     <AnnouncementSkeleton key={`more-${index}`} />
-                ))
-            )}
-            {page < totalpage && (
-                <div ref={sentinelRef} className="h-1 col-span-1" />
-            )}
-        </div>
+                ))}
+                {page < totalpage && <div ref={sentinelRef} className="h-1" />}
+            </div>
 
+        </div>
     );
 }

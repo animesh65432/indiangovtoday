@@ -3,7 +3,9 @@ import { Announcement } from "@/types"
 import { LanguageContext } from "@/context/Lan"
 import { formatDateInLanguage } from "@/lib/formatDate"
 import { useRouter } from "next/navigation"
-import SmartImage from "../SmartImage"
+import { ThemeContext } from "@/context/Theme"
+import { TranslateText } from "@/lib/translatetext"
+import { getCategoryStyle } from "@/lib/categoryStyles"
 
 type Props = {
     Announcement: Announcement,
@@ -12,7 +14,10 @@ type Props = {
 
 const AnnouncementCard: React.FC<Props> = ({ Announcement, className }) => {
     const { language } = React.useContext(LanguageContext)
+    const { theme } = React.useContext(ThemeContext)
     const router = useRouter()
+
+    const isDark = theme === "dark"
 
     const handleClick = () => {
         router.push(`/announcement?id=${Announcement.announcementId}&lan=${language}`)
@@ -20,66 +25,47 @@ const AnnouncementCard: React.FC<Props> = ({ Announcement, className }) => {
 
     return (
         <div
-            className={`flex flex-col hover:scale-[1.01] gap-4 hover:cursor-pointer transition-transform duration-200 ${className}`}
-            onClick={handleClick}
+            className={`relative flex gap-3 px-3 py-3 border-b transition-all duration-200 ${isDark ? "hover:bg-white/5" : "bg-white"}
+            ${isDark ? "border-gray-800 text-gray-200" : "border-gray-200 text-gray-900"}
+            ${className}`}
         >
-            <div className="flex gap-4 w-full lg:w-[80%]">
 
-                {/* ── Text content ── */}
-                <div className="flex flex-col gap-2 flex-1">
-                    <span className="font-literata uppercase red-color">
-                        {Announcement.category}
-                    </span>
-                    <span className="text-xl line-clamp-3 md:line-clamp-none text-color leading-relaxed font-literata font-semibold">
-                        {Announcement.title}
-                    </span>
-
-                    {/* Desktop */}
-                    <span className="text-color hidden lg:block font-satoshi leading-relaxed lg:line-clamp-4">
-                        {Announcement.description}
-                    </span>
-                    <span className="font-literata hidden lg:block text-color">
-                        {formatDateInLanguage(Announcement.date, language)} , {Announcement.state}
-                    </span>
-
-                    {/* Mobile */}
-                    <div className="lg:hidden flex gap-4 items-start">
-                        <div className="flex flex-col gap-2 flex-1">
-                            <span className="text-color line-clamp-4 font-satoshi leading-relaxed">
-                                {Announcement.description}
-                            </span>
-                            <span className="font-literata text-color">
-                                {formatDateInLanguage(Announcement.date, language)} , {Announcement.state}
-                            </span>
-                        </div>
-
-
-                        <div className='relative h-32 w-32 shrink-0'>
-                            <SmartImage
-                                src={Announcement.image}
-                                alt={Announcement.title.substring(0, 20)}
-                                category={Announcement.category}
-                                fill
-                                className='object-fill'
-                                transformation={[{ width: 112, height: 112, focus: 'auto', quality: 80 }]}
-                            />
-                        </div>
-                    </div>
-                </div>
-
-                <div className="hidden lg:block relative w-[25vw] h-[28vh] xl:w-[24vw] xl:h-[24vh] shrink-0">
-                    <SmartImage
-                        src={Announcement.image}
-                        alt={Announcement.title.substring(0, 20)}
-                        category={Announcement.category}
-                        fill
-                        className='object-fill'
-                        transformation={[{ width: 700, height: 300, focus: 'auto', quality: 85 }]}
-                    />
-                </div>
+            <div className="mt-2">
+                <div
+                    className="w-2 h-2 rounded-full"
+                    style={{ backgroundColor: getCategoryStyle(language, Announcement.category).dot }}
+                />
             </div>
 
-            <div className="border border-gray-200 w-full lg:w-[80%]"></div>
+            <div className="flex flex-col gap-1 flex-1">
+
+
+                <div className="flex items-center gap-2 text-[0.7rem] font-satoshi text-gray-500">
+                    <span className="uppercase tracking-wide font-medium">
+                        {Announcement.category}
+                    </span>
+                </div>
+
+                <span
+                    className={`font-literata text-[0.9rem] md:text-[0.95rem] leading-snug line-clamp-2
+                    ${isDark ? "text-gray-100" : "text-gray-900"}`}
+                >
+                    {Announcement.title}
+                </span>
+
+                <span className="text-[0.8rem] text-gray-500 line-clamp-4 font-satoshi">
+                    {Announcement.description}
+                </span>
+
+                <div className="flex items-center justify-between mt-1">
+                    <span className="text-[0.8rem] font-satoshi">
+                        {formatDateInLanguage(Announcement.date, language)} ,  {Announcement.state}
+                    </span>
+                    <span onClick={handleClick} className="text-[0.7rem] font-satoshi text-blue-500 hover:underline font-medium">
+                        {TranslateText[language].SEE_DETAILS}
+                    </span>
+                </div>
+            </div>
         </div>
     )
 }
