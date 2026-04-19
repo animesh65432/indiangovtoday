@@ -58,7 +58,7 @@ const CategoryOptions: React.FC<Props> = ({
                                     }
                 `}
                             >
-                                {getCategoryStyle(language, category)?.dot && (
+                                {index !== 0 && getCategoryStyle(language, category)?.dot && (
                                     <span
                                         className="inline-block w-2 h-2 rounded-full shrink-0"
                                         style={{
