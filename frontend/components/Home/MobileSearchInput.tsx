@@ -81,7 +81,7 @@ const MobileSearchInput: React.FC<Props> = ({
 
                     {/* Date Range */}
                     <div className="flex flex-col gap-2">
-                        <span className="font-literata text-[#321F1F]  text-[11px] font-semibold tracking-widest uppercase">
+                        <span className={`font-literata ${isDark ? 'text-white/80' : ' text-[#321F1F]'} text-[11px] font-semibold tracking-widest uppercase`}>
                             {TranslateText[language].DATE_RANGE}
                         </span>
                         <div className="w-fit border boder-[#321F1F] bg-white">
@@ -99,7 +99,7 @@ const MobileSearchInput: React.FC<Props> = ({
                     </div>
 
                     <div className="flex flex-col gap-2">
-                        <span className="font-literata text-[#321F1F]  text-[11px] font-semibold tracking-widest uppercase">
+                        <span className={`font-literata ${isDark ? 'text-white/80' : ' text-[#321F1F]'} text-[11px] font-semibold tracking-widest uppercase`}>
                             LANGUAGES
                         </span>
                         <div className="w-fit border boder-[#321F1F] ">
@@ -140,7 +140,7 @@ const MobileSearchInput: React.FC<Props> = ({
                         </div>
                     </div>
                     <div className="flex flex-col gap-2">
-                        <span className="font-literata text-[#321F1F] text-[11px] font-semibold tracking-widest uppercase">
+                        <span className={`font-literata ${isDark ? 'text-white/80' : ' text-[#321F1F]'} text-[11px] font-semibold tracking-widest uppercase`}>
                             THEME
                         </span>
                         <div className="flex gap-2">
