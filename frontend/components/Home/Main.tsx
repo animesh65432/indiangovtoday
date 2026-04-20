@@ -60,7 +60,7 @@ const Main: React.FC = () => {
 
             const category = CategorySelected === TranslateText[language].ALL_DEPARMENTS ? "" : CategorySelected;
 
-            const key = buildCacheKey("announcements", { language, startdate, endDate, page, limit, category, SearchQuery });
+            const key = buildCacheKey("announcements", { language, startdate, endDate, page, limit, category, SearchQuery, CategoriesOptions: CategoriesOptions.join(",") });
 
             const response = await withCache(key, "announcements", async () => (
                 await getAllAnnouncements(
