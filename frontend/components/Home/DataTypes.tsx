@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { getCategoryStyle } from "@/lib/categoryStyles"
 import { ThemeContext } from '@/context/Theme'
 import { LanguageContext } from '@/context/Lan'
@@ -12,26 +12,56 @@ type Props = {
 const DataTypes: React.FC<Props> = ({ CategoriesOptions, SetCategoriesOptions }) => {
     const { theme } = useContext(ThemeContext)
     const { language } = useContext(LanguageContext)
+    const [DataTypesCategories, setDataTypesCategories] = useState<string[]>(TranslateText[language].CATEGORIES_OPTIONS)
+    const isDark = theme === 'dark'
 
     const removeCategory = (category: string) => {
-        SetCategoriesOptions(prev => prev.filter(c => c !== category))
+        if (!CategoriesOptions.includes(category)) {
+            SetCategoriesOptions(prev => [category, ...prev])
+        } else {
+            SetCategoriesOptions(prev => prev.filter(c => c !== category))
+        }
     }
 
+    useEffect(() => {
+        setDataTypesCategories(TranslateText[language].CATEGORIES_OPTIONS)
+    }, [language])
+
     return (
-        <div className={`z-500 p-3 ${theme === "light" ? "bg-white" : "bg-[#050505]"} rounded-lg px-5 flex flex-col gap-2 font-satoshi shadow-sm`}>
-            <div className={`uppercase text-[0.7rem] tracking-wider ${theme === "dark" ? "text-slate-400" : "text-slate-600"} font-medium`}>
+        <div className={`p-3 px-4 rounded-lg flex flex-col gap-2 font-satoshi shadow-sm
+            ${isDark ? 'bg-[#050505]' : 'bg-white'}
+        `}>
+            <span className={`uppercase text-[0.7rem] tracking-wider font-medium
+                ${isDark ? 'text-slate-400' : 'text-slate-500'}
+            `}>
                 {TranslateText[language].TYPES}
-            </div>
-            <div className='flex flex-col gap-1.5'>
-                {CategoriesOptions.map((category) => {
+            </span>
+
+            <div className='flex flex-col gap-0.5'>
+                {DataTypesCategories.map((category) => {
                     const styles = getCategoryStyle(language, category)
+                    const isSelected = CategoriesOptions.includes(category)
+
                     return (
-                        <div onClick={() => removeCategory(category)} key={category} className='flex items-center gap-2'>
+                        <div
+                            key={category}
+                            onClick={() => removeCategory(category)}
+                            className={`flex items-center gap-2 px-2 py-1.5 rounded-md cursor-pointer transition-all duration-150 active:scale-[0.98]
+                                ${isDark ? 'hover:bg-white/5' : 'hover:bg-black/5'}
+                            `}
+                        >
                             <span
-                                className='w-2 h-2 rounded-full shrink-0'
-                                style={{ background: styles.dot }}
+                                className='w-2 h-2 rounded-full shrink-0 transition-all duration-150'
+                                style={{
+                                    background: isSelected ? styles.dot : isDark ? '#334155' : '#cbd5e1',
+                                }}
                             />
-                            <span className={`text-[0.75rem] ${theme === "dark" ? "text-white" : "text-slate-600"}`}>
+                            <span className={`text-[0.75rem] transition-colors duration-150
+                                ${isSelected
+                                    ? isDark ? 'text-white' : 'text-slate-700'
+                                    : 'text-slate-400'
+                                }
+                            `}>
                                 {category}
                             </span>
                         </div>
