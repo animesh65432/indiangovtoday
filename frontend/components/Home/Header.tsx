@@ -22,7 +22,8 @@ type Props = {
     SearchQuery: string,
     SetSearchQuery: React.Dispatch<React.SetStateAction<string>>,
     handleClick: () => void,
-    CategoriesOptions: string[]
+    CategoriesOptions: string[],
+    onResetView: () => void
 }
 
 const Header: React.FC<Props> = ({
@@ -38,7 +39,8 @@ const Header: React.FC<Props> = ({
     SearchQuery,
     SetSearchQuery,
     handleClick,
-    CategoriesOptions
+    CategoriesOptions,
+    onResetView
 }) => {
     const { language } = useContext(LanguageContext)
     const { theme } = useContext(ThemeContext)
@@ -64,8 +66,7 @@ const Header: React.FC<Props> = ({
                 <div className='border-l border-slate-200 h-6 shrink-0' />
                 <div className='min-w-0 flex items-center'>
 
-
-                    <div className={`shrink-0 font-medium ${theme === "dark" ? "text-slate-400" : "text-slate-500"} font-satoshi text-[0.9rem] p-1 px-2 rounded-md hover:bg-[#321F1F]/10`}>
+                    <div onClick={() => onResetView()} className={`shrink-0 font-medium ${theme === "dark" ? "text-slate-400" : "text-slate-500"} font-satoshi text-[0.9rem] p-1 px-2 rounded-md hover:bg-[#321F1F]/10`}>
                         {allStatesLabel}
                     </div>
 

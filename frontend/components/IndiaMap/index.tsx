@@ -31,6 +31,7 @@ type Props = {
     IsMapLoading: boolean;
     SetIsMapLoading: React.Dispatch<React.SetStateAction<boolean>>;
     CategoriesOptions: string[];
+    resetViewTrigger: number
 }
 
 
@@ -85,7 +86,7 @@ function randomPointInFeature(
 }
 
 export default function IndiaMap({
-    SetIsMapLoading, ShowIndiaMap, selectedStates, onStateClick, CategoriesOptions
+    resetViewTrigger, SetIsMapLoading, ShowIndiaMap, selectedStates, onStateClick, CategoriesOptions
 }: Props) {
     const { language } = useContext(LanguageContext);
     const { startdate, endDate } = useContext(Currentdate);
@@ -588,7 +589,7 @@ export default function IndiaMap({
 
             const stateCode = GetStateCode(normalizeGeoName(rawName), language);
 
-            if (stateCode === lastSelected) {  // ✅ === not !==
+            if (stateCode === lastSelected) {
                 mapInstanceRef.current.flyToBounds(
                     layer.getBounds(),
                     {
@@ -600,6 +601,17 @@ export default function IndiaMap({
         });
 
     }, [selectedStates]);
+
+    useEffect(() => {
+        if (!geojsonLayerRef.current || !mapInstanceRef.current) return;
+        mapInstanceRef.current.fitBounds(
+            geojsonLayerRef.current.getBounds(),
+            {
+                paddingTopLeft: [500, 10],
+                paddingBottomRight: [0, 10],
+            }
+        );
+    }, [resetViewTrigger]);
 
     return (
         <div className={`flex flex-col h-full font-satoshi `} id="map-container">
