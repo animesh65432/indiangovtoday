@@ -41,6 +41,7 @@ const Main: React.FC = () => {
     const { state_ut } = useContext(LocationContext)
     const [DefaultsStatesApplied, SetDefaultsStatesApplied] = useState<string[]>([])
     const [trigger, setTrigger] = useState(0);
+    const [resetViewTrigger, setResetViewTrigger] = useState(0);
     const userStateCode = GetStateCode(state_ut, language);
     const [ShowBriefingComponent, SetShowBriefingComponent] = useState<boolean>(true);
     const [CategoriesOptions, SetCategoriesOptions] = useState<string[]>(TranslateText[language].CATEGORIES_OPTIONS || []);
@@ -188,6 +189,7 @@ const Main: React.FC = () => {
                     IsMapLoading={IsMapLoading}
                     SetIsMapLoading={SetIsMapLoading}
                     CategoriesOptions={CategoriesOptions}
+                    resetViewTrigger={resetViewTrigger}
                 />
                 {IsMapLoading && (
                     <div className={`absolute inset-0 z-999  font-satoshi flex items-center justify-center backdrop-blur-[2px] ${IsDark ? "bg-black/40" : "bg-white/40"}`}>
@@ -252,6 +254,7 @@ const Main: React.FC = () => {
                     SearchQuery={SearchQuery}
                     SetSearchQuery={SetSearchQuery}
                     handleClick={handleSearch}
+                    onResetView={() => setResetViewTrigger(prev => prev + 1)}
                 />
                 <ShowAnnouncements
                     Announcements={Announcements}
