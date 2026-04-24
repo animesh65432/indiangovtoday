@@ -14,7 +14,6 @@ import MobileSearchInput from './MobileSearchInput'
 import { Button } from '../ui/button'
 import { ThemeContext } from '@/context/Theme'
 
-
 type Props = {
     StatesSelected: string[]
     setSheetOpen: React.Dispatch<React.SetStateAction<boolean>>
@@ -34,31 +33,32 @@ const InputBox: React.FC<Props> = ({
     SetSearchQuery,
     handleClick
 }) => {
-    const { language } = React.useContext(LanguageContext)
+    const { language } = useContext(LanguageContext)
     const { theme } = useContext(ThemeContext)
-    const { startdate, endDate, onChangeStartDate, onChangeEndDate } = React.useContext(Currentdate)
+    const { startdate, endDate, onChangeStartDate, onChangeEndDate } = useContext(Currentdate)
     const isDark = theme === "dark"
 
-    const handleSearch = () => {
-        handleClick()
-    }
-
     return (
-        <div className="w-full border-t border-slate-200">
-            <div className='flex '>
-                <Sheet open={sheetOpen} onOpenChange={(open) => setSheetOpen(open)}>
-                    <SheetTrigger className="w-full block lg:hidden">
-                        <div onClick={() => setSheetOpen(true)} className="relative w-full block lg:hidden">
+        <div className={`w-full border-t ${isDark ? "border-white" : "border-slate-200"}`}>
+            <div className='flex'>
+
+                {/* ── Mobile ── */}
+                <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
+                    <SheetTrigger asChild className="w-full block lg:hidden">
+                        <div
+                            onClick={() => setSheetOpen(true)}
+                            className="relative w-full cursor-pointer"
+                        >
                             <Search className="absolute text-[#c51057] z-10 left-3 sm:left-4 top-1/2 -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5" />
                             <Input
-                                onKeyDown={(e) => {
-                                    if (e.key === "Enter") {
-                                        handleSearch()
-                                    }
-                                }}
+                                readOnly
                                 type="text"
                                 placeholder={TranslateText[language].SEARCH_ANNOUNCEMENTS}
-                                className="w-full  text-[1rem] hover:shadow-md  text-[#321F1F] placeholder:text-[#321F1F]  placeholder:font-satoshi placeholder:font-semibold pl-10 sm:pl-12 pr-4 py-5 sm:py-6  bg-white/90 border border-gray-200  shadow-md  font-satoshi"
+                                className={`w-full rounded-none border-0 border-transparent text-[1rem] hover:shadow-md pointer-events-none
+                                    ${isDark ? "text-white border-white placeholder:text-white bg-[#050505]" : "text-[#321F1F] placeholder:text-[#321F1F] bg-white/90"}
+                                    placeholder:font-satoshi placeholder:font-semibold
+                                    pl-10 sm:pl-12 pr-4 py-5 sm:py-6
+                                    shadow-md font-satoshi`}
                             />
                         </div>
                     </SheetTrigger>
@@ -68,43 +68,51 @@ const InputBox: React.FC<Props> = ({
                             setSheetOpen={setSheetOpen}
                             searchQuery={SearchQuery}
                             setSearchQuery={SetSearchQuery}
-                            handleSearch={handleSearch}
+                            handleSearch={handleClick}
                             SetStatesSelected={SetStatesSelected}
                         />
                     </SheetContent>
                 </Sheet>
 
-                <div className={`w-full hover:shadow-md ${isDark ? "bg-[#050505]" : "bg-white"} px-2  mx-auto hidden lg:flex items-center`}>
+                {/* ── Desktop ── */}
+                <div className={`w-full hover:shadow-md ${isDark ? "bg-[#050505]" : "bg-white"} px-2 mx-auto hidden lg:flex items-center`}>
+
+                    {/* ✅ Search icon was missing on desktop */}
+                    <Search className="text-[#c51057] ml-2 w-4 h-4 shrink-0" />
+
                     <Input
                         type="text"
                         value={SearchQuery}
                         onChange={(e) => SetSearchQuery(e.target.value)}
-                        onKeyDown={(e) => {
-                            if (e.key === "Enter") {
-                                handleSearch()
-                            }
-                        }}
+                        onKeyDown={(e) => { if (e.key === "Enter") handleClick() }}
                         placeholder={TranslateText[language].SEARCH_ANNOUNCEMENTS}
-                        className={`border-0 border-none  shadow-none outline-none ring-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-0 placeholder:text-nowrap text-[1rem] rounded-none ${isDark ? "text-white" : " text-[#321F1F]"} ${isDark ? "placeholder:text-white" : " placeholder:text-[#321F1F]"} placeholder:font-satoshi placeholder:font-semibold pl-10 sm:pl-12 pr-4 py-5 sm:py-6 font-satoshi bg-transparent`}
+                        className={`border-0 shadow-none outline-none ring-0
+                            focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-0
+                            text-[1rem] rounded-none placeholder:text-nowrap
+                            ${isDark ? "text-white placeholder:text-white" : "text-[#321F1F] placeholder:text-[#321F1F]"}
+                            placeholder:font-satoshi placeholder:font-semibold
+                            pl-4 pr-4 py-5 sm:py-6 font-satoshi bg-transparent`}
                     />
-                    <span className='w-px h-6 bg-slate-200 mx-4' />
+
+                    <span className='w-px h-6 bg-slate-200 mx-4 shrink-0' />
+
                     <DateRangePicker
                         initialDateFrom={startdate}
                         initialDateTo={endDate}
                         onUpdate={({ range }) => {
                             onChangeStartDate(range.from)
-                            if (range.to) {
-                                onChangeEndDate(range.to)
-                            }
+                            if (range.to) onChangeEndDate(range.to)
                         }}
                     />
+
                     <Button
-                        className='bg-[#c51057] p-2 pr-4 rounded-2xl hover:cursor-pointer'
-                        onClick={() => handleSearch()}
+                        className='bg-[#c51057] p-2 pr-4 rounded-2xl hover:cursor-pointer ml-2 shrink-0'
+                        onClick={handleClick}
                     >
-                        <Search className="  text-white " />
+                        <Search className="text-white" />
                     </Button>
                 </div>
+
             </div>
         </div>
     )
