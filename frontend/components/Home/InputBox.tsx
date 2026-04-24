@@ -58,7 +58,7 @@ const InputBox: React.FC<Props> = ({
                                     ${isDark ? "text-white border-white placeholder:text-white bg-[#050505]" : "text-[#321F1F] placeholder:text-[#321F1F] bg-white/90"}
                                     placeholder:font-satoshi placeholder:font-semibold
                                     pl-10 sm:pl-12 pr-4 py-5 sm:py-6
-                                    shadow-md font-satoshi`}
+                                    font-satoshi`}
                             />
                         </div>
                     </SheetTrigger>

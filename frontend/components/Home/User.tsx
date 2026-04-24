@@ -44,9 +44,6 @@ const User: React.FC<Props> = ({
                             'rounded-lg',
                             'border',
                             'transition-all duration-150',
-                            IsDark
-                                ? 'hover:bg-white/10 hover:border-white/40'
-                                : 'hover:bg-transparent hover:border-black/40',
                             'focus-visible:outline-none focus-visible:ring-2',
                             IsDark
                                 ? 'focus-visible:ring-white/30'

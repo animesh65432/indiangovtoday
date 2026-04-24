@@ -90,24 +90,14 @@ const Header: React.FC<Props> = ({
                         </div>
                     )}
 
-                    {/* Show trigger even when nothing selected */}
                     {selectedStates.length === 0 && (
                         <StateSelector
                             selectedState=''
                             onStateClick={onStateClick}
                         />
                     )}
-
                 </div>
             </div>
-
-            <div className='border-t border-slate-200' />
-
-            <CategoryOptions
-                CategorySelected={CategorySelected}
-                SetCategorySelected={SetCategorySelected}
-                CategoriesOptions={CategoriesOptions}
-            />
             <InputBox
                 StatesSelected={StatesSelected}
                 setSheetOpen={setSheetOpen}
@@ -116,6 +106,12 @@ const Header: React.FC<Props> = ({
                 SearchQuery={SearchQuery}
                 SetSearchQuery={SetSearchQuery}
                 handleClick={handleClick}
+            />
+            <div className='border-t border-slate-200' />
+            <CategoryOptions
+                CategorySelected={CategorySelected}
+                SetCategorySelected={SetCategorySelected}
+                CategoriesOptions={CategoriesOptions}
             />
         </div>
     )
