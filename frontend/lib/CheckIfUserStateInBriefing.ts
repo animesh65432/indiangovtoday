@@ -1,4 +1,3 @@
-import { Brief_Announcement } from "@/types";
 import { TranslateText } from "./translatetext";
 
 export function CheckIfUserStateInBriefing(

@@ -82,6 +82,7 @@ const Briefing: React.FC<Props> = ({ StatesSelected = [], BriefAnnouncements = [
                     {!userStateData?.latest &&
                         <div className='text-[0.9rem] font-semibold text-[#a8a4a3]'>
                             {TranslateText[language].NO_ANNOUNCEMENTS_IN_YOUR_STATE}
+                            {userStateCode}
                         </div>
                     }
                     {userStateData?.total && userStateData.total > 0 ?
@@ -90,7 +91,7 @@ const Briefing: React.FC<Props> = ({ StatesSelected = [], BriefAnnouncements = [
                         </div>
                         : null}
                     {userStateData?.latest &&
-                        <div onClick={() => userStateData?.latest?.announcementId && handleClick(userStateData.latest.announcementId)} className={`text-[0.9rem] underline ${isDark ? "text-white" : "text-black"} font-medium leading-snug`}>
+                        <div onClick={() => userStateData?.latest?.announcementId && handleClick(userStateData.latest.announcementId)} className={`text-[0.9rem] hover:cursor-pointer underline ${isDark ? "text-white" : "text-black"} font-medium leading-snug`}>
                             {userStateData.latest?.title}
                         </div>
                     }

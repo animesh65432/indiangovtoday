@@ -1147,7 +1147,7 @@ export const TranslateText: Record<string, TranslationKeys> = {
         NO_SPAM_UNSUBSCRIBE_ANYTIME: "No spam. Unsubscribe anytime.",
         BRIEFING: "Briefing",
         NO_ANNOUNCEMENTS_IN_INDIA: "No Announcements in India",
-        NO_ANNOUNCEMENTS_IN_YOUR_STATE: "No Announcements in your State",
+        NO_ANNOUNCEMENTS_IN_YOUR_STATE: "No Announcements in ",
         M_AGO: "m ago",
         D_AGO: "d ago",
     },
@@ -1296,7 +1296,7 @@ export const TranslateText: Record<string, TranslationKeys> = {
         GET_NOTIFIED_WHEN_NEW_GOVERNMENT_ANNOUNCEMENTS_ARE_PUBLISHED_FILTERED_TO_WHAT_MATTERS_TO_YOU: "जब नई सरकारी घोषणाएं प्रकाशित हों तो सूचना पाएं — आपके लिए महत्वपूर्ण।",
         NO_SPAM_UNSUBSCRIBE_ANYTIME: "कोई स्पैम नहीं। कभी भी अनसबस्क्राइब करें।",
         BRIEFING: "ब्रीफिंग", NO_ANNOUNCEMENTS_IN_INDIA: "भारत में कोई घोषणा नहीं",
-        NO_ANNOUNCEMENTS_IN_YOUR_STATE: "आपके राज्य में कोई घोषणा नहीं",
+        NO_ANNOUNCEMENTS_IN_YOUR_STATE: "मेमें कोई घोषणा नहीं -",
         M_AGO: "मि॰ पहले", D_AGO: "दिन पहले",
     },
     বাংলা: {
@@ -1444,7 +1444,7 @@ export const TranslateText: Record<string, TranslationKeys> = {
         GET_NOTIFIED_WHEN_NEW_GOVERNMENT_ANNOUNCEMENTS_ARE_PUBLISHED_FILTERED_TO_WHAT_MATTERS_TO_YOU: "নতুন সরকারি ঘোষণা প্রকাশিত হলে বিজ্ঞপ্তি পান — আপনার জন্য গুরুত্বপূর্ণ।",
         NO_SPAM_UNSUBSCRIBE_ANYTIME: "কোনো স্প্যাম নেই। যেকোনো সময় সদস্যতা বাতিল করুন।",
         BRIEFING: "ব্রিফিং", NO_ANNOUNCEMENTS_IN_INDIA: "ভারতে কোনো ঘোষণা নেই",
-        NO_ANNOUNCEMENTS_IN_YOUR_STATE: "আপনার রাজ্যে কোনো ঘোষণা নেই",
+        NO_ANNOUNCEMENTS_IN_YOUR_STATE: "এ কোনো ঘোষণা নেই -",
         M_AGO: "মি॰ আগে", D_AGO: "দিন আগে",
 
     },
@@ -1593,7 +1593,7 @@ export const TranslateText: Record<string, TranslationKeys> = {
         GET_NOTIFIED_WHEN_NEW_GOVERNMENT_ANNOUNCEMENTS_ARE_PUBLISHED_FILTERED_TO_WHAT_MATTERS_TO_YOU: "புதிய அரசு அறிவிப்புகள் வெளியிடப்படும்போது அறிவிப்பு பெறுங்கள்.",
         NO_SPAM_UNSUBSCRIBE_ANYTIME: "ஸ்பேம் இல்லை. எந்த நேரத்திலும் குழுவிலகலாம்.",
         BRIEFING: "சுருக்கம்", NO_ANNOUNCEMENTS_IN_INDIA: "இந்தியாவில் அறிவிப்புகள் இல்லை",
-        NO_ANNOUNCEMENTS_IN_YOUR_STATE: "உங்கள் மாநிலத்தில் அறிவிப்புகள் இல்லை",
+        NO_ANNOUNCEMENTS_IN_YOUR_STATE: "இல் அறிவிப்புகள் எதுவும் இல்லை -",
         M_AGO: "நிமி முன்", D_AGO: "நாட்கள் முன்",
 
     },
@@ -1743,7 +1743,7 @@ export const TranslateText: Record<string, TranslationKeys> = {
         GET_NOTIFIED_WHEN_NEW_GOVERNMENT_ANNOUNCEMENTS_ARE_PUBLISHED_FILTERED_TO_WHAT_MATTERS_TO_YOU: "కొత్త ప్రభుత్వ ప్రకటనలు ప్రచురించబడినప్పుడు నోటిఫికేషన్ పొందండి.",
         NO_SPAM_UNSUBSCRIBE_ANYTIME: "స్పామ్ లేదు. ఎప్పుడైనా అన్‌సబ్‌స్క్రైబ్ చేయండి.",
         BRIEFING: "బ్రీఫింగ్", NO_ANNOUNCEMENTS_IN_INDIA: "భారతదేశంలో ప్రకటనలు లేవు",
-        NO_ANNOUNCEMENTS_IN_YOUR_STATE: "మీ రాష్ట్రంలో ప్రకటనలు లేవు",
+        NO_ANNOUNCEMENTS_IN_YOUR_STATE: "లో ప్రకటనలు లేవు - ",
         M_AGO: "నిమి క్రితం", D_AGO: "రోజుల క్రితం",
     },
     മലയാളം: {
@@ -1892,7 +1892,7 @@ export const TranslateText: Record<string, TranslationKeys> = {
         GET_NOTIFIED_WHEN_NEW_GOVERNMENT_ANNOUNCEMENTS_ARE_PUBLISHED_FILTERED_TO_WHAT_MATTERS_TO_YOU: "പുതിയ സർക്കാർ അറിയിപ്പുകൾ പ്രസിദ്ധീകരിക്കുമ്പോൾ അറിയിപ്പ് ലഭിക്കൂ.",
         NO_SPAM_UNSUBSCRIBE_ANYTIME: "സ്പാം ഇല്ല. എപ്പോൾ വേണമെങ്കിലും അൺസബ്‌സ്‌ക്രൈബ് ചെയ്യൂ.",
         BRIEFING: "ബ്രീഫിംഗ്", NO_ANNOUNCEMENTS_IN_INDIA: "ഇന്ത്യയിൽ അറിയിപ്പുകൾ ഇല്ല",
-        NO_ANNOUNCEMENTS_IN_YOUR_STATE: "നിങ്ങളുടെ സംസ്ഥാനത്ത് അറിയിപ്പുകൾ ഇല്ല",
+        NO_ANNOUNCEMENTS_IN_YOUR_STATE: "ൽ അറിയിപ്പുകൾ ഇല്ല -",
         M_AGO: "മി. മുൻപ്", D_AGO: "ദിവസം മുൻപ്",
     },
     मराठी: {
@@ -2042,7 +2042,7 @@ export const TranslateText: Record<string, TranslationKeys> = {
         GET_NOTIFIED_WHEN_NEW_GOVERNMENT_ANNOUNCEMENTS_ARE_PUBLISHED_FILTERED_TO_WHAT_MATTERS_TO_YOU: "नवीन सरकारी घोषणा प्रकाशित झाल्यावर सूचना मिळवा.",
         NO_SPAM_UNSUBSCRIBE_ANYTIME: "स्पॅम नाही. कधीही सदस्यता रद्द करा.",
         BRIEFING: "ब्रीफिंग", NO_ANNOUNCEMENTS_IN_INDIA: "भारतात कोणतीही घोषणा नाही",
-        NO_ANNOUNCEMENTS_IN_YOUR_STATE: "आपल्या राज्यात कोणतीही घोषणा नाही",
+        NO_ANNOUNCEMENTS_IN_YOUR_STATE: "मध्ये कोणतीही घोषणा नाही -",
         M_AGO: "मि॰ पूर्वी", D_AGO: "दिवस पूर्वी",
 
     },
@@ -2193,7 +2193,7 @@ export const TranslateText: Record<string, TranslationKeys> = {
         GET_NOTIFIED_WHEN_NEW_GOVERNMENT_ANNOUNCEMENTS_ARE_PUBLISHED_FILTERED_TO_WHAT_MATTERS_TO_YOU: "નવી સરકારી જાહેરાતો પ્રકાશિત થાય ત્યારે સૂચના મેળવો.",
         NO_SPAM_UNSUBSCRIBE_ANYTIME: "કોઈ સ્પામ નહીં. ગમે ત્યારે અનસબ્સ્ક્રાઇબ કરો.",
         BRIEFING: "બ્રીફિંગ", NO_ANNOUNCEMENTS_IN_INDIA: "ભારતમાં કોઈ જાહેરાત નથી",
-        NO_ANNOUNCEMENTS_IN_YOUR_STATE: "તમારા રાજ્યમાં કોઈ જાહેરાત નથી",
+        NO_ANNOUNCEMENTS_IN_YOUR_STATE: "માં કોઈ જાહેરાત નથી -",
         M_AGO: "મિ॰ પહેલા", D_AGO: "દિવસ પહેલા",
 
     },
@@ -2344,7 +2344,7 @@ export const TranslateText: Record<string, TranslationKeys> = {
         GET_NOTIFIED_WHEN_NEW_GOVERNMENT_ANNOUNCEMENTS_ARE_PUBLISHED_FILTERED_TO_WHAT_MATTERS_TO_YOU: "ಹೊಸ ಸರ್ಕಾರಿ ಪ್ರಕಟಣೆಗಳು ಪ್ರಕಟವಾದಾಗ ಅಧಿಸೂಚನೆ ಪಡೆಯಿರಿ.",
         NO_SPAM_UNSUBSCRIBE_ANYTIME: "ಸ್ಪ್ಯಾಮ್ ಇಲ್ಲ. ಯಾವಾಗ ಬೇಕಾದರೂ ಅನ್‌ಸಬ್‌ಸ್ಕ್ರೈಬ್ ಮಾಡಿ.",
         BRIEFING: "ಬ್ರೀಫಿಂಗ್", NO_ANNOUNCEMENTS_IN_INDIA: "ಭಾರತದಲ್ಲಿ ಪ್ರಕಟಣೆಗಳಿಲ್ಲ",
-        NO_ANNOUNCEMENTS_IN_YOUR_STATE: "ನಿಮ್ಮ ರಾಜ್ಯದಲ್ಲಿ ಪ್ರಕಟಣೆಗಳಿಲ್ಲ",
+        NO_ANNOUNCEMENTS_IN_YOUR_STATE: "ನಲ್ಲಿ ಪ್ರಕಟಣೆಗಳಿಲ್ಲ -",
         M_AGO: "ನಿ. ಹಿಂದೆ", D_AGO: "ದಿನ ಹಿಂದೆ",
     },
     اردو: {
@@ -2494,7 +2494,7 @@ export const TranslateText: Record<string, TranslationKeys> = {
         GET_NOTIFIED_WHEN_NEW_GOVERNMENT_ANNOUNCEMENTS_ARE_PUBLISHED_FILTERED_TO_WHAT_MATTERS_TO_YOU: "نئی سرکاری اعلانات شائع ہونے پر اطلاع پائیں۔",
         NO_SPAM_UNSUBSCRIBE_ANYTIME: "کوئی سپیم نہیں۔ کبھی بھی سبسکرپشن منسوخ کریں۔",
         BRIEFING: "بریفنگ", NO_ANNOUNCEMENTS_IN_INDIA: "ہندوستان میں کوئی اعلان نہیں",
-        NO_ANNOUNCEMENTS_IN_YOUR_STATE: "آپ کی ریاست میں کوئی اعلان نہیں",
+        NO_ANNOUNCEMENTS_IN_YOUR_STATE: "میں کوئی اعلان نہیں -",
         M_AGO: "م پہلے", D_AGO: "دن پہلے",
     },
     অসমীয়া: {
@@ -2642,7 +2642,7 @@ export const TranslateText: Record<string, TranslationKeys> = {
         GET_NOTIFIED_WHEN_NEW_GOVERNMENT_ANNOUNCEMENTS_ARE_PUBLISHED_FILTERED_TO_WHAT_MATTERS_TO_YOU: "নতুন চৰকাৰী ঘোষণা প্ৰকাশ হ'লে জাননী পাওক।",
         NO_SPAM_UNSUBSCRIBE_ANYTIME: "কোনো স্পেম নাই। যিকোনো সময়ত আনচাবস্ক্ৰাইব কৰক।",
         BRIEFING: "ব্ৰিফিং", NO_ANNOUNCEMENTS_IN_INDIA: "ভাৰতত কোনো ঘোষণা নাই",
-        NO_ANNOUNCEMENTS_IN_YOUR_STATE: "আপোনাৰ ৰাজ্যত কোনো ঘোষণা নাই",
+        NO_ANNOUNCEMENTS_IN_YOUR_STATE: "ত কোনো ঘোষণা নাই -",
         M_AGO: "মি॰ আগতে", D_AGO: "দিন আগতে",
     },
     बर: {
@@ -2790,7 +2790,7 @@ export const TranslateText: Record<string, TranslationKeys> = {
         GET_NOTIFIED_WHEN_NEW_GOVERNMENT_ANNOUNCEMENTS_ARE_PUBLISHED_FILTERED_TO_WHAT_MATTERS_TO_YOU: "गोदान सरकारी फोसावनाय जाहाबो जाय ऐसो सूचना मोन।",
         NO_SPAM_UNSUBSCRIBE_ANYTIME: "जेबो स्पाम नङा। जेबो मोनसे टाइमआव अनसबस्क्राइब खालाम।",
         BRIEFING: "ब्रिफिंग", NO_ANNOUNCEMENTS_IN_INDIA: "भारतआव जेबो फोसावनाय नङा",
-        NO_ANNOUNCEMENTS_IN_YOUR_STATE: "नोंथांनि ओनसोलआव जेबो फोसावनाय नङा",
+        NO_ANNOUNCEMENTS_IN_YOUR_STATE: "আव জেবো ফোসাৱনায় নঙা -",
         M_AGO: "मि॰ सिगाङाव", D_AGO: "सान सिगाङाव",
     },
     डोगरी: {
@@ -2941,7 +2941,7 @@ export const TranslateText: Record<string, TranslationKeys> = {
         GET_NOTIFIED_WHEN_NEW_GOVERNMENT_ANNOUNCEMENTS_ARE_PUBLISHED_FILTERED_TO_WHAT_MATTERS_TO_YOU: "नमीं सरकारी घोषणाएं प्रकाशित होने पर सूचना हासल करो।",
         NO_SPAM_UNSUBSCRIBE_ANYTIME: "कोई स्पैम नेईं। कदेईं वी अनसबस्क्राइब करो।",
         BRIEFING: "ब्रीफिंग", NO_ANNOUNCEMENTS_IN_INDIA: "भारत च कोई घोषणा नेईं",
-        NO_ANNOUNCEMENTS_IN_YOUR_STATE: "तुहाडे राज्य च कोई घोषणा नेईं",
+        NO_ANNOUNCEMENTS_IN_YOUR_STATE: "च कोई घोषणा नेईं -",
         M_AGO: "मिनट पैहले", D_AGO: "दिन पैहले",
     },
     कॉशुर: {
@@ -3092,7 +3092,7 @@ export const TranslateText: Record<string, TranslationKeys> = {
         GET_NOTIFIED_WHEN_NEW_GOVERNMENT_ANNOUNCEMENTS_ARE_PUBLISHED_FILTERED_TO_WHAT_MATTERS_TO_YOU: "نۄو سرکأری اعلانات شایع سیتۍ اطلاع حأصل کرِو۔",
         NO_SPAM_UNSUBSCRIBE_ANYTIME: "کانٛہہ سپیم نہٕ۔ کانٛہہ وٲریاہ انسبسکرائب کرِو۔",
         BRIEFING: "بریفنگ", NO_ANNOUNCEMENTS_IN_INDIA: "ہِندوستانس منز کانٛہہ اعلان نہٕ",
-        NO_ANNOUNCEMENTS_IN_YOUR_STATE: "نوتھانٛہہ صوبس منز کانٛہہ اعلان نہٕ",
+        NO_ANNOUNCEMENTS_IN_YOUR_STATE: "منز کانٛہہ اعلان نہٕ - ",
         M_AGO: "منٹ برونٛہہ", D_AGO: "دۄہ برونٛہہ",
     },
     मैथिली: {
@@ -3240,7 +3240,7 @@ export const TranslateText: Record<string, TranslationKeys> = {
         GET_NOTIFIED_WHEN_NEW_GOVERNMENT_ANNOUNCEMENTS_ARE_PUBLISHED_FILTERED_TO_WHAT_MATTERS_TO_YOU: "नव सरकारी घोषणा प्रकाशित भेलापर सूचना पाबू।",
         NO_SPAM_UNSUBSCRIBE_ANYTIME: "कोनो स्पैम नहि। कखनो अनसब्सक्राइब करू।",
         BRIEFING: "ब्रीफिंग", NO_ANNOUNCEMENTS_IN_INDIA: "भारत मे कोनो घोषणा नहि",
-        NO_ANNOUNCEMENTS_IN_YOUR_STATE: "अहाँक राज्य मे कोनो घोषणा नहि",
+        NO_ANNOUNCEMENTS_IN_YOUR_STATE: "मे कोनो घोषणा नहि -",
         M_AGO: "मिनट पहिने", D_AGO: "दिन पहिने",
     },
     ꯃꯩꯇꯩꯂꯣꯟ: {
@@ -3388,7 +3388,7 @@ export const TranslateText: Record<string, TranslationKeys> = {
         GET_NOTIFIED_WHEN_NEW_GOVERNMENT_ANNOUNCEMENTS_ARE_PUBLISHED_FILTERED_TO_WHAT_MATTERS_TO_YOU: "ꯅꯥꯡꯅꯕꯥ ꯁꯔꯀꯥꯔꯀꯤ ꯑꯅꯥꯎꯟꯁꯃꯦꯟꯇ ꯄ꯭ꯔꯀꯥꯁꯤꯇ ꯇꯧꯕꯗꯥ ꯅꯣꯇꯤꯐꯤꯀꯦꯁꯟ ꯐꯪꯕꯤꯌꯨ꯫",
         NO_SPAM_UNSUBSCRIBE_ANYTIME: "ꯁ꯭ꯄꯦꯝ ꯂꯩꯇꯦ꯫ ꯀꯗꯥꯏꯗꯨ ꯑꯅꯁꯕꯁꯀ꯭ꯔꯥꯏꯕ ꯇꯧꯕꯤꯌꯨ꯫",
         BRIEFING: "ꯕ꯭ꯔꯤꯐꯤꯡ", NO_ANNOUNCEMENTS_IN_INDIA: "ꯏꯟꯗꯤꯌꯥꯗꯥ ꯑꯅꯥꯎꯟꯁꯃꯦꯟꯇ ꯂꯩꯇꯦ",
-        NO_ANNOUNCEMENTS_IN_YOUR_STATE: "ꯅꯈꯣꯌꯒꯤ ꯂꯃꯗꯝꯗꯥ ꯑꯅꯥꯎꯟꯁꯃꯦꯟꯇ ꯂꯩꯇꯦ",
+        NO_ANNOUNCEMENTS_IN_YOUR_STATE: "ꯗꯥ ꯑꯅꯥꯎꯟꯁꯃꯦꯟꯇ ꯂꯩꯇꯦ -",
         M_AGO: "ꯃꯤꯅꯤꯠ ꯃꯃꯥꯡꯗꯥ", D_AGO: "ꯅꯨꯃꯤꯠ ꯃꯃꯥꯡꯗꯥ",
 
     },
@@ -3537,7 +3537,7 @@ export const TranslateText: Record<string, TranslationKeys> = {
         GET_NOTIFIED_WHEN_NEW_GOVERNMENT_ANNOUNCEMENTS_ARE_PUBLISHED_FILTERED_TO_WHAT_MATTERS_TO_YOU: "नयाँ सरकारी घोषणाहरू प्रकाशित हुँदा सूचना पाउनुहोस्।",
         NO_SPAM_UNSUBSCRIBE_ANYTIME: "कुनै स्पाम छैन। जुनसुकै बेला अनसब्सक्राइब गर्नुहोस्।",
         BRIEFING: "ब्रीफिंग", NO_ANNOUNCEMENTS_IN_INDIA: "भारतमा कुनै घोषणा छैन",
-        NO_ANNOUNCEMENTS_IN_YOUR_STATE: "तपाईंको राज्यमा कुनै घोषणा छैन",
+        NO_ANNOUNCEMENTS_IN_YOUR_STATE: "मा कुनै घोषणा छैन -",
         M_AGO: "मिनेट अगाडि", D_AGO: "दिन अगाडि",
     },
     ଓଡ଼ିଆ: {
@@ -3685,7 +3685,7 @@ export const TranslateText: Record<string, TranslationKeys> = {
         GET_NOTIFIED_WHEN_NEW_GOVERNMENT_ANNOUNCEMENTS_ARE_PUBLISHED_FILTERED_TO_WHAT_MATTERS_TO_YOU: "ନୂଆ ସରକାରୀ ଘୋଷଣା ପ୍ରକାଶିତ ହେଲେ ସୂଚନା ପାଆନ୍ତୁ।",
         NO_SPAM_UNSUBSCRIBE_ANYTIME: "କୌଣସି ସ୍ପ୍ୟାମ ନାହିଁ। ଯେ କୌଣସି ସମୟରେ ଅନସବ୍ସ୍କ୍ରାଇବ କରନ୍ତୁ।",
         BRIEFING: "ବ୍ରିଫିଂ", NO_ANNOUNCEMENTS_IN_INDIA: "ଭାରତରେ କୌଣସି ଘୋଷଣା ନାହିଁ",
-        NO_ANNOUNCEMENTS_IN_YOUR_STATE: "ଆପଣଙ୍କ ରାଜ୍ୟରେ କୌଣସି ଘୋଷଣା ନାହିଁ",
+        NO_ANNOUNCEMENTS_IN_YOUR_STATE: "ରେ କୌଣସି ଘୋଷଣା ନାହିଁ -",
         M_AGO: "ମି॰ ପୂର୍ବରୁ", D_AGO: "ଦିନ ପୂର୍ବରୁ",
     },
     ਪੰਜਾਬੀ: {
@@ -3833,7 +3833,7 @@ export const TranslateText: Record<string, TranslationKeys> = {
         GET_NOTIFIED_WHEN_NEW_GOVERNMENT_ANNOUNCEMENTS_ARE_PUBLISHED_FILTERED_TO_WHAT_MATTERS_TO_YOU: "ਨਵੇਂ ਸਰਕਾਰੀ ਐਲਾਨ ਪ੍ਰਕਾਸ਼ਿਤ ਹੋਣ 'ਤੇ ਸੂਚਨਾ ਪ੍ਰਾਪਤ ਕਰੋ।",
         NO_SPAM_UNSUBSCRIBE_ANYTIME: "ਕੋਈ ਸਪੈਮ ਨਹੀਂ। ਕਦੇ ਵੀ ਅਣਸਬਸਕ੍ਰਾਈਬ ਕਰੋ।",
         BRIEFING: "ਬ੍ਰੀਫਿੰਗ", NO_ANNOUNCEMENTS_IN_INDIA: "ਭਾਰਤ ਵਿੱਚ ਕੋਈ ਐਲਾਨ ਨਹੀਂ",
-        NO_ANNOUNCEMENTS_IN_YOUR_STATE: "ਤੁਹਾਡੇ ਰਾਜ ਵਿੱਚ ਕੋਈ ਐਲਾਨ ਨਹੀਂ",
+        NO_ANNOUNCEMENTS_IN_YOUR_STATE: "ਵਿੱਚ ਕੋਈ ਐਲਾਨ ਨਹੀਂ -",
         M_AGO: "ਮਿ॰ ਪਹਿਲਾਂ", D_AGO: "ਦਿਨ ਪਹਿਲਾਂ",
     },
     संस्कृतम्: {
@@ -3981,7 +3981,7 @@ export const TranslateText: Record<string, TranslationKeys> = {
         GET_NOTIFIED_WHEN_NEW_GOVERNMENT_ANNOUNCEMENTS_ARE_PUBLISHED_FILTERED_TO_WHAT_MATTERS_TO_YOU: "नवीनाः शासकीयघोषणाः प्रकाशिताः चेत् अधिसूचना प्राप्नुवन्तु।",
         NO_SPAM_UNSUBSCRIBE_ANYTIME: "कापि स्पाम नास्ति। कदापि अनभिदानं कुर्वन्तु।",
         BRIEFING: "संक्षिप्तविवरणम्", NO_ANNOUNCEMENTS_IN_INDIA: "भारते काचित् घोषणा नास्ति",
-        NO_ANNOUNCEMENTS_IN_YOUR_STATE: "भवतः राज्ये काचित् घोषणा नास्ति",
+        NO_ANNOUNCEMENTS_IN_YOUR_STATE: "राज्ये काचित् घोषणा नास्ति -",
         M_AGO: "निमेषपूर्वम्", D_AGO: "दिनपूर्वम्",
     },
     ᱥᱟᱱᱛᱟᱲᱤ: {
@@ -4129,7 +4129,7 @@ export const TranslateText: Record<string, TranslationKeys> = {
         GET_NOTIFIED_WHEN_NEW_GOVERNMENT_ANNOUNCEMENTS_ARE_PUBLISHED_FILTERED_TO_WHAT_MATTERS_TO_YOU: "ᱱᱟᱶᱟ ᱥᱚᱨᱠᱟᱨᱤ ᱠᱷᱚᱵᱚᱨ ᱯᱨᱚᱠᱟᱥᱤᱛ ᱦᱩᱭᱟᱱᱛᱮ ᱥᱩᱪᱱᱟ ᱧᱟᱢ ᱢᱮ᱾",
         NO_SPAM_UNSUBSCRIBE_ANYTIME: "ᱡᱟᱦᱟᱸ ᱥᱯᱟᱢ ᱵᱟᱹᱱᱩᱜ᱾ ᱡᱮ ᱠᱤ ᱮᱱᱮᱢ ᱑ᱱᱥᱵᱽᱥᱠᱨᱟᱭᱤᱵᱽ ᱢᱮ᱾",
         BRIEFING: "ᱵᱨᱤᱯᱷᱤᱝ", NO_ANNOUNCEMENTS_IN_INDIA: "ᱵᱷᱟᱨᱚᱛᱨᱮ ᱠᱷᱚᱵᱚᱨ ᱵᱟᱹᱱᱩᱜ-ᱟ",
-        NO_ANNOUNCEMENTS_IN_YOUR_STATE: "ᱟᱢᱟᱜ ᱥᱟᱱᱛᱟᱨᱮ ᱠᱷᱚᱵᱚᱨ ᱵᱟᱹᱱᱩᱜ-ᱟ",
+        NO_ANNOUNCEMENTS_IN_YOUR_STATE: "ᱨᱮ ᱠᱷᱚᱵᱚᱨ ᱵᱟᱹᱱᱩᱜ-ᱟ -",
         M_AGO: "ᱢᱤᱱᱤᱴ ᱢᱟᱲᱟᱝ", D_AGO: "ᱢᱟᱦᱟᱸ ᱢᱟᱲᱟᱝ",
     },
     سنڌي: {
@@ -4276,7 +4276,7 @@ export const TranslateText: Record<string, TranslationKeys> = {
         GET_NOTIFIED_WHEN_NEW_GOVERNMENT_ANNOUNCEMENTS_ARE_PUBLISHED_FILTERED_TO_WHAT_MATTERS_TO_YOU: "نئون سرڪاري اعلان شايع ٿيڻ تي اطلاع پاؤ.",
         NO_SPAM_UNSUBSCRIBE_ANYTIME: "ڪو به اسپيم نه. ڪڏهن به انسبسڪرائب ڪريو.",
         BRIEFING: "بريفنگ", NO_ANNOUNCEMENTS_IN_INDIA: "هندستان ۾ ڪو به اعلان نه",
-        NO_ANNOUNCEMENTS_IN_YOUR_STATE: "توهان جي رياست ۾ ڪو به اعلان نه",
+        NO_ANNOUNCEMENTS_IN_YOUR_STATE: "۾ ڪو به اعلان نه - ",
         M_AGO: "منٽ اڳ", D_AGO: "ڏينهن اڳ",
     }
 };
