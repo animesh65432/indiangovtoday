@@ -192,7 +192,7 @@ const Main: React.FC = () => {
                     resetViewTrigger={resetViewTrigger}
                 />
                 {IsMapLoading && (
-                    <div className={`absolute inset-0 z-999  font-satoshi flex items-center justify-center backdrop-blur-[2px] ${IsDark ? "bg-black/40" : "bg-white/40"}`}>
+                    <div className={`absolute inset-0 z-999  font-satoshi flex items-center justify-center backdrop-blur-[2px] ${IsDark ? "bg-[#050505]/40" : "bg-white/40"}`}>
                         <div className="flex flex-col items-center gap-3">
                             <div className="w-8 h-8 rounded-full border-2 border-[#c51057]/20 border-t-[#c51057] animate-spin" />
                             <span className={`text-[0.75rem] font-semibold ${IsDark ? "text-white/70" : "text-[#c51057]"}`}>

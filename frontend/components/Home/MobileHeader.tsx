@@ -31,7 +31,7 @@ const MobileHeader: React.FC<Props> = ({ selectedStates, onStateClick, sheetOpen
     return (
         <div className="flex items-center justify-between px-4 py-3 w-screen font-satoshi">
 
-            <div className={`w-9 h-9 rounded-xl flex items-center justify-center ${isDark ? "bg-transparent" : "bg-white"} ${isDark ? "" : "border border-gray-200"} text-xl shrink-0`}>
+            <div className={`w-9 h-9 rounded-xl flex items-center justify-center  text-xl shrink-0`}>
                 🇮🇳
             </div>
 

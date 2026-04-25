@@ -86,7 +86,7 @@ const Briefing: React.FC<Props> = ({ StatesSelected = [], BriefAnnouncements = [
                         </div>
                     }
                     {userStateData?.total && userStateData.total > 0 ?
-                        <div className={`text-[0.7rem] font-semibold ${isDark ? "text-white" : "text-black"} uppercase tracking-wide`}>
+                        <div className={`text-[0.8rem] font-semibold ${isDark ? "text-white" : "text-black"} uppercase tracking-wide`}>
                             {userStateData.total} {TranslateText[language].ANNOUNCEMENTS}
                         </div>
                         : null}
@@ -99,22 +99,22 @@ const Briefing: React.FC<Props> = ({ StatesSelected = [], BriefAnnouncements = [
 
                 <div className='flex flex-col gap-1'>
                     {indiaData?.latest &&
-                        <div className={`text-[0.7rem] font-semibold ${isDark ? "text-white" : "text-black"} uppercase tracking-wide`}>
+                        <div className={`text-[0.9rem] font-semibold ${isDark ? "text-white" : "text-black"}  tracking-wide`}>
                             {indiaData.state}
                         </div>
                     }
                     {!indiaData?.latest &&
-                        <div className='text-[0.75rem] ml-4 font-semibold text-[#a8a4a3]'>
+                        <div className='text-[0.8rem] ml-4 font-semibold text-[#a8a4a3]'>
                             {TranslateText[language].NO_ANNOUNCEMENTS_IN_INDIA}
                         </div>
                     }
                     {indiaData?.total && indiaData.total > 0 ?
-                        <div className={`text-[0.7rem] font-semibold ${isDark ? "text-white" : "text-black"} uppercase tracking-wide`}>
+                        <div className={`text-[0.8rem] font-semibold ${isDark ? "text-white" : "text-black"}  tracking-wide`}>
                             {indiaData.total} {TranslateText[language].ANNOUNCEMENTS}
                         </div>
                         : null}
                     {indiaData?.latest &&
-                        <div onClick={() => indiaData?.latest?.announcementId && handleClick(indiaData.latest.announcementId)} className={`text-[0.8rem] underline hover:cursor-pointer ${isDark ? "text-white underline" : "text-black"} font-medium leading-snug`}>
+                        <div onClick={() => indiaData?.latest?.announcementId && handleClick(indiaData.latest.announcementId)} className={`text-[0.9rem] underline hover:cursor-pointer ${isDark ? "text-white underline" : "text-black"} font-medium leading-snug`}>
                             {indiaData.latest?.title}
                         </div>
                     }

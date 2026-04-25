@@ -5,7 +5,7 @@ import { LanguageContext } from '@/context/Lan'
 import { ThemeContext } from '@/context/Theme'
 import MobileSearchInput from './MobileSearchInput'
 import { cn } from '@/lib/utils'
-import { Sheet, SheetContent, SheetTitle, SheetTrigger } from '../ui/sheet'
+import { Sheet, SheetContent, SheetTrigger } from '../ui/sheet'
 import LanguageSelect from '../LanguageSelect'
 
 type Props = {
@@ -39,7 +39,7 @@ const User: React.FC<Props> = ({
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                         <button className={cn(
-                            IsDark ? 'bg-black border-white/20' : 'bg-white border-black/20',
+                            IsDark ? 'bg-[#050505] border-white/20' : 'bg-white border-black/20',
                             'group relative flex h-8 w-8 items-center justify-center',
                             'rounded-lg',
                             'border',
@@ -85,7 +85,7 @@ const User: React.FC<Props> = ({
                                 'flex rounded-md p-0.5',
                                 IsDark
                                     ? 'border border-white/15 bg-white/5'
-                                    : 'border border-black/10 bg-black/5'
+                                    : 'border border-black/10 bg-[#050505]/5'
                             )}>
                                 <button
                                     onClick={() => onChangeTheme('light')}
@@ -94,7 +94,7 @@ const User: React.FC<Props> = ({
                                         'text-[10px] font-medium font-satoshi tracking-wide',
                                         'transition-all duration-150',
                                         theme === 'light'
-                                            ? 'bg-black text-white shadow-sm'
+                                            ? 'bg-[#050505] text-white shadow-sm'
                                             : IsDark
                                                 ? 'text-white/35 hover:text-white/60'
                                                 : 'text-black/35 hover:text-black/60'
@@ -122,7 +122,7 @@ const User: React.FC<Props> = ({
                             </div>
                         </div>
 
-                        <div className={cn('mx-4 h-px', IsDark ? 'bg-white/10' : 'bg-black/10')} />
+                        <div className={cn('mx-4 h-px', IsDark ? 'bg-white/10' : 'bg-[#050505]/10')} />
 
                         {/* Language */}
                         <div className="px-4 pt-2.5 pb-2.5">
@@ -135,7 +135,7 @@ const User: React.FC<Props> = ({
                             <LanguageSelect value={language} onChange={onSelectLanguage} isDark={IsDark} />
                         </div>
 
-                        <div className={cn('mx-4 h-px', IsDark ? 'bg-white/10' : 'bg-black/10')} />
+                        <div className={cn('mx-4 h-px', IsDark ? 'bg-white/10' : 'bg-[#050505]/10')} />
                     </DropdownMenuContent>
                 </DropdownMenu>
             </div>
@@ -151,7 +151,7 @@ const User: React.FC<Props> = ({
                                 'focus-visible:outline-none focus-visible:ring-2',
                                 IsDark
                                     ? 'bg-white/10 border-white/20 hover:bg-white/15 hover:border-white/40 focus-visible:ring-white/20'
-                                    : 'bg-black/5 border-black/15 hover:bg-black/10 hover:border-black/30 focus-visible:ring-black/15',
+                                    : 'bg-[#050505]/5 border-black/15 hover:bg-[#050505]/10 hover:border-black/30 focus-visible:ring-black/15',
                                 'shadow-sm'
                             )}
                         >
@@ -170,15 +170,13 @@ const User: React.FC<Props> = ({
                     <SheetContent
                         side='bottom'
                         className={cn(
-                            'z-[600]',
-                            'inset-0 h-[100dvh] w-full max-w-none',   // ← full screen
+                            'z-[800] border-none',
+                            'inset-0 h-[80dvh] mt-auto w-full max-w-none',   // ← full screen
                             '!rounded-none',                            // ← no top border-radius
                             'p-0',                                      // ← let MobileSearchInput own padding
-                            IsDark ? 'bg-[#111]' : 'bg-white'
+                            IsDark ? 'bg-[#050505]' : 'bg-white'
                         )}
                     >
-                        {/* shadcn injects a close button and title — hide them */}
-                        <SheetTitle className='sr-only'>Search</SheetTitle>
 
                         <MobileSearchInput
                             StatesSelected={StatesSelected}

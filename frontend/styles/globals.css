@@ -853,7 +853,7 @@ input {
 
 /* ── DARK ── */
 .tool-bar-container {
-  background: #111214;
+  background: black;
   box-shadow: 0 8px 28px rgba(0, 0, 0, 0.6);
 }
 
@@ -862,7 +862,7 @@ input {
 }
 
 .top-tooltip-item-dark {
-  background: #111214;
+  background: black;
   padding: 10px 12px;
   display: flex;
   flex-direction: column;
@@ -898,7 +898,7 @@ input {
 }
 
 .tool-tip-footer-dark {
-  background: #111214;
+  background: black;
   border-top: 1px solid #252525;
   border-radius: 0 0 14px 14px;
   padding: 9px 12px;
