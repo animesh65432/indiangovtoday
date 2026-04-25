@@ -47,7 +47,7 @@ const DataTypes: React.FC<Props> = ({ CategoriesOptions, SetCategoriesOptions })
                             key={category}
                             onClick={() => removeCategory(category)}
                             className={`flex items-center gap-2 px-2 py-1 rounded-md cursor-pointer transition-all duration-150 active:scale-[0.98]
-                                ${isDark ? 'hover:bg-white/5' : 'hover:bg-black/5'}
+                                ${isDark ? 'hover:bg-white/5' : 'hover:bg-[#050505]/5'}
                             `}
                         >
                             <span

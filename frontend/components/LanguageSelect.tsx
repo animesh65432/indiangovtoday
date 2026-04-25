@@ -18,7 +18,7 @@ const LanguageSelect = ({
             'transition-colors',
             isDark
                 ? 'border border-white/15 bg-white/5 text-white/80 hover:border-white/30 hover:bg-white/10 focus:ring-1 focus:ring-white/20 [&>svg]:text-white/30'
-                : 'border border-black/10 bg-black/5 text-black/80 hover:border-black/25 hover:bg-black/10 focus:ring-1 focus:ring-black/15 [&>svg]:text-black/30'
+                : 'border border-black/10 bg-[#050505]/5 text-black/80 hover:border-black/25 hover:bg-[#050505]/10 focus:ring-1 focus:ring-black/15 [&>svg]:text-black/30'
         )}>
             <SelectValue placeholder="Select language" />
         </SelectTrigger>
@@ -37,7 +37,7 @@ const LanguageSelect = ({
                         'cursor-pointer rounded-lg text-[13px] font-satoshi',
                         isDark
                             ? 'text-white/70 focus:bg-white/10 focus:text-white/90'
-                            : 'text-black/70 focus:bg-black/5 focus:text-black/90'
+                            : 'text-black/70 focus:bg-[#050505]/5 focus:text-black/90'
                     )}
                 >
                     {label}

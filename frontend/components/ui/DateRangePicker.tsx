@@ -359,7 +359,7 @@ export const DateRangePicker: FC<DateRangePickerProps> & {
                         size={'lg'}
                         className={cn(
                             'rounded-none',
-                            isDark ? 'bg-black text-white' : 'bg-white text-[#321F1F]'
+                            isDark ? 'bg-[#050505] text-white' : 'bg-white text-[#321F1F]'
                         )}
                     >
                         <div className="text-left">
@@ -385,7 +385,7 @@ export const DateRangePicker: FC<DateRangePickerProps> & {
                     align={align}
                     className={cn(
                         'w-auto z-900 font-satoshi',
-                        isDark ? 'bg-black' : 'bg-white'
+                        isDark ? 'bg-[#050505]' : 'bg-white'
                     )}
                 >
                     <div className="flex py-1">
@@ -439,7 +439,7 @@ export const DateRangePicker: FC<DateRangePickerProps> & {
                                 </div>
 
                                 <div
-                                    className={cn(isDark ? 'bg-black text-white' : 'bg-white text-[#321F1F]')}
+                                    className={cn(isDark ? 'bg-[#050505] text-white' : 'bg-white text-[#321F1F]')}
                                     style={{ '--rdp-cell-size': '34px' } as React.CSSProperties}
                                 >
                                     <Calendar
@@ -476,7 +476,7 @@ export const DateRangePicker: FC<DateRangePickerProps> & {
                         )}
                     </div>
 
-                    <div className={cn('flex justify-end gap-2 py-1 pr-4', isDark ? 'bg-black' : 'bg-white')}>
+                    <div className={cn('flex justify-end gap-2 py-1 pr-4', isDark ? 'bg-[#050505]' : 'bg-white')}>
                         <Button
                             className='text-white rounded-none bg-[#c51057]'
                             onClick={() => { setIsOpen(false); resetValues() }}

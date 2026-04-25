@@ -107,7 +107,7 @@ const Header: React.FC<Props> = ({
                 SetSearchQuery={SetSearchQuery}
                 handleClick={handleClick}
             />
-            <div className='border-t border-slate-200' />
+            <div className='border-t border-slate-200 hidden lg:block' />
             <CategoryOptions
                 CategorySelected={CategorySelected}
                 SetCategorySelected={SetCategorySelected}

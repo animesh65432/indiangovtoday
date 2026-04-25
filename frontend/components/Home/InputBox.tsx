@@ -5,12 +5,6 @@ import { TranslateText } from '@/lib/translatetext'
 import { LanguageContext } from '@/context/Lan'
 import { DateRangePicker } from '../ui/DateRangePicker'
 import { Currentdate } from "@/context/Currentdate"
-import {
-    Sheet,
-    SheetContent,
-    SheetTrigger,
-} from "@/components/ui/sheet"
-import MobileSearchInput from './MobileSearchInput'
 import { Button } from '../ui/button'
 import { ThemeContext } from '@/context/Theme'
 
@@ -42,37 +36,6 @@ const InputBox: React.FC<Props> = ({
         <div className={`w-full border-t ${isDark ? "border-white" : "border-slate-200"}`}>
             <div className='flex'>
 
-                {/* ── Mobile ── */}
-                <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
-                    <SheetTrigger asChild className="w-full block lg:hidden">
-                        <div
-                            onClick={() => setSheetOpen(true)}
-                            className="relative w-full cursor-pointer"
-                        >
-                            <Search className="absolute text-[#c51057] z-10 left-3 sm:left-4 top-1/2 -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5" />
-                            <Input
-                                readOnly
-                                type="text"
-                                placeholder={TranslateText[language].SEARCH_ANNOUNCEMENTS}
-                                className={`w-full rounded-none border-0 border-transparent text-[1rem] hover:shadow-md pointer-events-none
-                                    ${isDark ? "text-white border-white placeholder:text-white bg-[#050505]" : "text-[#321F1F] placeholder:text-[#321F1F] bg-white/90"}
-                                    placeholder:font-satoshi placeholder:font-semibold
-                                    pl-10 sm:pl-12 pr-4 py-5 sm:py-6
-                                    font-satoshi`}
-                            />
-                        </div>
-                    </SheetTrigger>
-                    <SheetContent side='bottom' className='h-dvh z-600'>
-                        <MobileSearchInput
-                            StatesSelected={StatesSelected}
-                            setSheetOpen={setSheetOpen}
-                            searchQuery={SearchQuery}
-                            setSearchQuery={SetSearchQuery}
-                            handleSearch={handleClick}
-                            SetStatesSelected={SetStatesSelected}
-                        />
-                    </SheetContent>
-                </Sheet>
 
                 {/* ── Desktop ── */}
                 <div className={`w-full hover:shadow-md ${isDark ? "bg-[#050505]" : "bg-white"} px-2 mx-auto hidden lg:flex items-center`}>

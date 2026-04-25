@@ -52,17 +52,9 @@ const MobileSearchInput: React.FC<Props> = ({
     }
 
     return (
-        <div className={`h-dvh p-6 mobile-filter-panel ${isDark ? "bg-[#111111]" : "bg-[#f7f2f2]"}`}>
+        <div className={`h-full p-6 mobile-filter-panel border-0 ${isDark ? "bg-black" : "bg-[#f7f2f2]"}`}>
 
             <div className='mt-20'>
-                <div className="flex items-center justify-end mb-7 pt-4">
-                    <button
-                        onClick={() => setSheetOpen(false)}
-                        className="text-[#c51057] transition-colors p-1"
-                    >
-                        <X size={24} />
-                    </button>
-                </div>
 
                 <div className="flex flex-col gap-5">
                     <div className="relative w-full">
@@ -129,7 +121,7 @@ const MobileSearchInput: React.FC<Props> = ({
                                                 'cursor-pointer rounded-lg text-[13px] font-satoshi',
                                                 isDark
                                                     ? 'text-white/70 focus:bg-white/10 focus:text-white/90'
-                                                    : 'text-black/70 focus:bg-black/5 focus:text-black/90'
+                                                    : 'text-black/70 focus:bg-[#050505]/5 focus:text-black/90'
                                             )}
                                         >
                                             {label}

@@ -5,6 +5,8 @@ import AnnouncementSkeleton from "./AnnouncementSkeleton";
 import { ThemeContext } from "@/context/Theme";
 import Briefing from "../Briefing";
 import AnnouncementCard from "./Announcement";
+import { TranslateText } from "@/lib/translatetext";
+import { LanguageContext } from "@/context/Lan";
 
 type Props = {
     Announcements: AnnouncementTypes[];
@@ -16,7 +18,7 @@ type Props = {
     BriefAnnouncements: Brief_Announcement[];
     StatesSelected: string[];
     ShowBriefingComponent: boolean;
-
+    scrollable?: boolean;
 };
 
 export default function ShowAnnouncements({
@@ -28,9 +30,11 @@ export default function ShowAnnouncements({
     IsLoadingMore,
     BriefAnnouncements,
     ShowBriefingComponent,
-    StatesSelected
+    StatesSelected,
+    scrollable = true
 }: Props) {
     const { theme } = useContext(ThemeContext);
+    const { language } = useContext(LanguageContext);
     const isDark = theme === "dark";
 
     const sentinelRef = React.useRef<HTMLDivElement>(null);
@@ -67,8 +71,9 @@ export default function ShowAnnouncements({
         );
     }
 
+
     return (
-        <div className="flex flex-col flex-1 min-h-0 overflow-y-auto scrollbar-hide">
+        <div className={`flex flex-col w-full ${scrollable ? "flex-1 min-h-0 overflow-y-auto scrollbar-hide" : ""}`}>
             {ShowBriefingComponent && BriefAnnouncements.length > 0 &&
                 <div className="mb-0 md:mb-3">
                     <Briefing
@@ -77,18 +82,23 @@ export default function ShowAnnouncements({
                     />
                 </div>
             }
-            <div className={`${containerStyle}`}>
-                <div className="flex flex-col gap-6">
-                    {Announcements.map((a) => (
-                        <AnnouncementCard key={a.announcementId} Announcement={a} />
-                    ))}
+            {Announcements.length === 0 ? (
+                <div className={`w-full rounded-md h-[40vh] md:flex-1 ${isDark ? "bg-[#050505]" : "bg-white"} h-24 flex items-center justify-center ${isDark ? "text-white/70" : "text-gray-500"} font-satoshi`}>
+                    {TranslateText[language].NO_ANNOUNCEMENTS_FOUND}
                 </div>
-                {IsLoadingMore && [...Array(5)].map((_, index) => (
-                    <AnnouncementSkeleton key={`more-${index}`} />
-                ))}
-                {page < totalpage && <div ref={sentinelRef} className="h-1" />}
-            </div>
-
+            ) :
+                <div className={`${containerStyle}`}>
+                    <div className="flex flex-col gap-6">
+                        {Announcements.map((a) => (
+                            <AnnouncementCard key={a.announcementId} Announcement={a} />
+                        ))}
+                    </div>
+                    {IsLoadingMore && [...Array(5)].map((_, index) => (
+                        <AnnouncementSkeleton key={`more-${index}`} />
+                    ))}
+                    {page < totalpage && <div ref={sentinelRef} className="h-1" />}
+                </div>
+            }
         </div>
     );
 }
