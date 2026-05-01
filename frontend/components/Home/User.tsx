@@ -55,7 +55,7 @@ const User: React.FC<Props> = ({
                                     'h-3.5 w-3.5 transition-colors',
                                     IsDark
                                         ? 'text-white/70 group-hover:text-white/90'
-                                        : 'text-black/60 group-hover:text-black/90'
+                                        : 'text-black/60 group-hover:text-black/90 bg-white'
                                 )}
                                 strokeWidth={1.8}
                             />
@@ -150,8 +150,8 @@ const User: React.FC<Props> = ({
                                 'rounded-lg border transition-all duration-150',
                                 'focus-visible:outline-none focus-visible:ring-2',
                                 IsDark
-                                    ? 'bg-white/10 border-white/20 hover:bg-white/15 hover:border-white/40 focus-visible:ring-white/20'
-                                    : 'bg-[#050505]/5 border-black/15 hover:bg-[#050505]/10 hover:border-black/30 focus-visible:ring-black/15',
+                                    ? 'bg-black border-white/20 hover:bg-white/15 hover:border-white/40 focus-visible:ring-white/20'
+                                    : 'bg-white border-black/15 hover:bg-[#050505]/10 hover:border-black/30 focus-visible:ring-black/15',
                                 'shadow-sm'
                             )}
                         >

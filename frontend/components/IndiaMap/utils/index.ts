@@ -254,10 +254,8 @@ export const getMapPadding = () => {
     const isMobile = window.innerWidth < 768;
 
     if (isMobile) {
-        const bottomPanelHeight = window.innerHeight * 0.5; // adjust this — 50% of screen height
         return {
-            paddingTopLeft: [20, 60] as [number, number],
-            paddingBottomRight: [20, bottomPanelHeight] as [number, number]
+            paddingTopLeft: [30, 10], paddingBottomRight: [0, 250]
         };
     }
 

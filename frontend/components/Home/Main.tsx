@@ -215,6 +215,9 @@ const Main: React.FC = () => {
                         SearchQuery={SearchQuery}
                         SetSearchQuery={SetSearchQuery}
                         handleSearch={handleSearch}
+                        ShowIndiaMap={ShowIndiaMap}
+                        SetShowIndiaMap={SetShowIndiaMap}
+                        onResetView={() => setResetViewTrigger(prev => prev + 1)}
                     />
                 </div>
             </div>

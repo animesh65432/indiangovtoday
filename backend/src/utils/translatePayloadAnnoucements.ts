@@ -1,22 +1,13 @@
-export function PrasePayloadArray(states: string) {
-    let selectedStates: string[] = [];
+export function PrasePayloadArray(states: string): string[] {
+    if (!states) return [];
     try {
-        if (typeof states === "string") {
-            const parsed = JSON.parse(states);
+        if (Array.isArray(states)) return states;
 
-            if (Array.isArray(parsed)) {
-                selectedStates = parsed;
-            } else {
-                selectedStates = [parsed];
-            }
-        } else if (Array.isArray(states)) {
-            selectedStates = states;
-        }
-    } catch (err) {
-        console.error("Invalid JSON in states:", states);
-        selectedStates = [];
+        const parsed = JSON.parse(states);
+        return Array.isArray(parsed) ? parsed : [parsed];
+    } catch {
+        return states.includes(",")
+            ? states.split(",").map(s => s.trim()).filter(Boolean)
+            : [states.trim()];
     }
-
-    return selectedStates;
 }
-

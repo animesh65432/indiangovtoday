@@ -136,7 +136,7 @@ export default function IndiaMap({
         if (dotsLayerRef.current) dotsLayerRef.current.clearLayers();
         else dotsLayerRef.current = L.layerGroup().addTo(map);
 
-        const isDark = theme === "dark";
+        const isDark = themeRef.current === "dark";
 
         const zoom = map.getZoom();
 
@@ -144,9 +144,7 @@ export default function IndiaMap({
 
         L.geoJSON(geoDataRef.current).eachLayer((layer: any) => {
             const rawName =
-                layer.feature?.properties?.NAME_1 ||
-                layer.feature?.properties?.ST_NM ||
-                layer.feature?.properties?.name || "";
+                layer.feature?.properties?.st_nm || "";
 
 
             const normalized = normalizeGeoName(rawName);
@@ -375,7 +373,7 @@ export default function IndiaMap({
                     satelliteMarkersRef.current.set(satKey, { markers: newMarkers, lines: newLines });
                 });
 
-                if (zoom >= 5) {
+                if (zoom >= 4) {
                     dotsLayerRef.current?.addLayer(dot);
                 }
             });
@@ -402,7 +400,7 @@ export default function IndiaMap({
     const updateLayerStyles = useCallback(() => {
         if (!geojsonLayerRef.current) return;
         geojsonLayerRef.current.eachLayer((layer: any) => {
-            const rawName = layer.feature?.properties?.NAME_1 || layer.feature?.properties?.ST_NM || layer.feature?.properties?.name || "";
+            const rawName = layer.feature?.properties?.st_nm || "";
             const stateCode = GetStateCode(normalizeGeoName(rawName), language);
             const isSel = checkIfStateSelected(stateCode, selectedStates);
             layer.setStyle({
@@ -468,7 +466,7 @@ export default function IndiaMap({
 
                 const geojsonLayer = L.geoJSON(data, {
                     style: (feature: any) => {
-                        const rawName = feature?.properties?.NAME_1 || feature?.properties?.ST_NM || feature?.properties?.name || "";
+                        const rawName = feature?.properties?.st_nm || "";
                         const stateCode = GetStateCode(normalizeGeoName(rawName), language);
                         const count = getStateCountRef.current(stateCode);
                         const isSel = checkIfStateSelected(stateCode, selectedStatesRef.current);
@@ -480,7 +478,7 @@ export default function IndiaMap({
                         };
                     },
                     onEachFeature: (feature: any, layer: any) => {
-                        const rawName = feature?.properties?.NAME_1 || feature?.properties?.ST_NM || feature?.properties?.name || "";
+                        const rawName = feature?.properties?.st_nm || "";
                         const stateCode = GetStateCode(normalizeGeoName(rawName), language);
 
                         layer.on("mouseover", () => {
@@ -518,7 +516,7 @@ export default function IndiaMap({
 
                 const selLayers: any[] = [];
                 geojsonLayer.eachLayer((layer: any) => {
-                    const rawName = layer.feature?.properties?.NAME_1 || layer.feature?.properties?.ST_NM || layer.feature?.properties?.name || "";
+                    const rawName = layer.feature?.properties?.st_nm || "";
                     const stateCode = GetStateCode(normalizeGeoName(rawName), language);
                     if (selectedStatesRef.current.includes(stateCode)) selLayers.push(layer);
                 });
@@ -532,7 +530,10 @@ export default function IndiaMap({
                     );
                     map.fitBounds(bounds, padding as L.FitBoundsOptions);
                 } else {
-                    map.fitBounds(geojsonLayer.getBounds(), padding);
+                    map.fitBounds(geojsonLayer.getBounds(), {
+                        paddingTopLeft: [padding.paddingTopLeft[0], padding.paddingTopLeft[1]],
+                        paddingBottomRight: [padding.paddingBottomRight[0], padding.paddingBottomRight[1]],
+                    });
                 }
             })
             .catch(err => console.error("GeoJSON fetch failed:", err));
@@ -593,10 +594,7 @@ export default function IndiaMap({
         }
 
         geojsonLayerRef.current.eachLayer((layer: any) => {
-            const rawName =
-                layer.feature?.properties?.NAME_1 ||
-                layer.feature?.properties?.ST_NM ||
-                layer.feature?.properties?.name || "";
+            const rawName = layer.feature?.properties?.st_nm || "";
 
             const stateCode = GetStateCode(normalizeGeoName(rawName), language);
 
@@ -615,12 +613,12 @@ export default function IndiaMap({
 
     useEffect(() => {
         if (!geojsonLayerRef.current || !mapInstanceRef.current) return;
+
         mapInstanceRef.current.fitBounds(
             geojsonLayerRef.current.getBounds(),
-            {
-                paddingTopLeft: [500, 10],
-                paddingBottomRight: [0, 10],
-            }
+            isMobile
+                ? { paddingTopLeft: [30, 10], paddingBottomRight: [0, 250] }
+                : { paddingTopLeft: [500, 10], paddingBottomRight: [0, 10] }
         );
     }, [resetViewTrigger]);
 

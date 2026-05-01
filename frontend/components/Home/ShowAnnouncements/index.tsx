@@ -71,7 +71,6 @@ export default function ShowAnnouncements({
         );
     }
 
-
     return (
         <div className={`flex flex-col w-full ${scrollable ? "flex-1 min-h-0 overflow-y-auto scrollbar-hide" : ""}`}>
             {ShowBriefingComponent && BriefAnnouncements.length > 0 &&

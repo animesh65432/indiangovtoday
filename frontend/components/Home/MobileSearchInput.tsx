@@ -52,7 +52,7 @@ const MobileSearchInput: React.FC<Props> = ({
     }
 
     return (
-        <div className={`h-full p-6 mobile-filter-panel border-0 ${isDark ? "bg-black" : "bg-[#f7f2f2]"}`}>
+        <div className={`h-full p-6 mobile-filter-panel border-0 ${isDark ? "bg-black" : "bg-white"}`}>
 
             <div className='mt-20'>
 

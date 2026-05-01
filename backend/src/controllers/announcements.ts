@@ -682,6 +682,7 @@ export const GetBriefAnnouncements = asyncErrorHandler(async (req: Request, res:
 
     const selectedStates = PrasePayloadArray(states as string);
 
+
     const announcementsStartDate = startDate
         ? new Date(startDate as string)
         : new Date(new Date().setDate(new Date().getDate() - 7));
@@ -762,6 +763,7 @@ export const GetBriefAnnouncements = asyncErrorHandler(async (req: Request, res:
         success: true,
         data: result
     };
+
 
     await redis.set(redis_key, JSON.stringify(responseData), { ex: 300 });
 
