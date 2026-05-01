@@ -16,10 +16,13 @@ type Props = {
     SetStatesSelected: React.Dispatch<React.SetStateAction<string[]>>
     SearchQuery: string
     SetSearchQuery: React.Dispatch<React.SetStateAction<string>>
-    handleSearch: () => void
+    handleSearch: () => void;
+    ShowIndiaMap: boolean;
+    SetShowIndiaMap: React.Dispatch<React.SetStateAction<boolean>>;
+    onResetView: () => void;
 }
 
-const MobileHeader: React.FC<Props> = ({ selectedStates, onStateClick, sheetOpen, setSheetOpen, StatesSelected, SetStatesSelected, SearchQuery, SetSearchQuery, handleSearch }) => {
+const MobileHeader: React.FC<Props> = ({ selectedStates, onStateClick, sheetOpen, setSheetOpen, StatesSelected, SetStatesSelected, SearchQuery, SetSearchQuery, handleSearch, ShowIndiaMap, SetShowIndiaMap, onResetView }) => {
     const { language } = useContext(LanguageContext)
     const { theme } = useContext(ThemeContext)
     const options = TranslateText[language].MULTISELECT_OPTIONS
@@ -37,7 +40,7 @@ const MobileHeader: React.FC<Props> = ({ selectedStates, onStateClick, sheetOpen
 
             <div className={`flex items-center gap-2 ${isDark ? "bg-[#050505]" : "bg-white"} ${isDark ? "border border-gray-10" : " border border-gray-200"} rounded-full px-4 py-2 shadow-sm max-w-[70vw] min-w-0`}>
 
-                <span className="text-[0.9rem] text-gray-400 font-satoshi font-medium shrink-0  tracking-wide">
+                <span onClick={onResetView} className="text-[0.9rem] text-gray-400 font-satoshi font-medium shrink-0  tracking-wide">
                     {lastOption.label}
                 </span>
 

@@ -72,31 +72,34 @@ const Briefing: React.FC<Props> = ({ StatesSelected = [], BriefAnnouncements = [
                         </>
                     )}
                 </div>
-                <span className={`text-[0.7rem] ${isDark ? "text-white bg-white/10" : "text-black"} font-semibold bg-[#e4e4e4] px-2 py-0.5 rounded-full`}>
-                    {StatesCount} {TranslateText[language].STATES}
-                </span>
+                {StatesCount !== 0 &&
+                    <span className={`text-[0.7rem] ${isDark ? "text-white bg-white/10" : "text-black"} font-semibold bg-[#e4e4e4] px-2 py-0.5 rounded-full`}>
+                        {StatesCount} {TranslateText[language].STATES}
+                    </span>
+                }
             </div>
 
             <div className='flex flex-col gap-3 ml-4'>
-                <div className='flex flex-col gap-1'>
-                    {!userStateData?.latest &&
-                        <div className='text-[0.9rem] font-semibold text-[#a8a4a3]'>
-                            {TranslateText[language].NO_ANNOUNCEMENTS_IN_YOUR_STATE}
-                            {userStateCode}
-                        </div>
-                    }
-                    {userStateData?.total && userStateData.total > 0 ?
-                        <div className={`text-[0.8rem] font-semibold ${isDark ? "text-white" : "text-black"} uppercase tracking-wide`}>
-                            {userStateData.total} {TranslateText[language].ANNOUNCEMENTS}
-                        </div>
-                        : null}
-                    {userStateData?.latest &&
-                        <div onClick={() => userStateData?.latest?.announcementId && handleClick(userStateData.latest.announcementId)} className={`text-[0.9rem] hover:cursor-pointer underline ${isDark ? "text-white" : "text-black"} font-medium leading-snug`}>
-                            {userStateData.latest?.title}
-                        </div>
-                    }
-                </div>
-
+                {StatesCount > 0 &&
+                    <div className='flex flex-col gap-1'>
+                        {!userStateData?.latest &&
+                            <div className='text-[0.9rem] font-semibold text-[#a8a4a3]'>
+                                {TranslateText[language].NO_ANNOUNCEMENTS_IN_YOUR_STATE}
+                                {userStateCode}
+                            </div>
+                        }
+                        {userStateData?.total && userStateData.total > 0 ?
+                            <div className={`text-[0.8rem] font-semibold ${isDark ? "text-white" : "text-black"} uppercase tracking-wide`}>
+                                {userStateData.total} {TranslateText[language].ANNOUNCEMENTS}
+                            </div>
+                            : null}
+                        {userStateData?.latest &&
+                            <div onClick={() => userStateData?.latest?.announcementId && handleClick(userStateData.latest.announcementId)} className={`text-[0.9rem] hover:cursor-pointer underline ${isDark ? "text-white" : "text-black"} font-medium leading-snug`}>
+                                {userStateData.latest?.title}
+                            </div>
+                        }
+                    </div>
+                }
                 <div className='flex flex-col gap-1'>
                     {indiaData?.latest &&
                         <div className={`text-[0.9rem] font-semibold ${isDark ? "text-white" : "text-black"}  tracking-wide`}>
