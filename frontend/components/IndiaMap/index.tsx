@@ -91,6 +91,7 @@ export default function IndiaMap({
     const { language } = useContext(LanguageContext);
     const { startdate, endDate } = useContext(Currentdate);
     const { theme } = useContext(ThemeContext);
+    const themeRef = useRef(theme);
     const dotPositionsRef = useRef<Map<string, [number, number]>>(new Map());
     const mapWrapperRef = useRef<HTMLDivElement>(null);
     const mapRef = useRef<HTMLDivElement>(null);
@@ -483,19 +484,27 @@ export default function IndiaMap({
                         const stateCode = GetStateCode(normalizeGeoName(rawName), language);
 
                         layer.on("mouseover", () => {
+                            const currentTheme = themeRef.current; // ← always fresh
                             const isSel = checkIfStateSelected(stateCode, selectedStatesRef.current);
-                            if (!isSel) layer.setStyle({ weight: 1.5, color: theme === "dark" ? "#acb0ad" : "#4a4a4a" });
+                            const liveCount = getStateCountRef.current(stateCode);
+                            layer.setStyle({
+                                fillColor: getStateColor(liveCount, isSel, currentTheme),
+                                fillOpacity: getStateFillOpacity(liveCount, isSel),
+                                weight: 1.5,
+                                color: currentTheme === "dark" ? "#acb0ad" : "#4a4a4a",
+                            });
                             layer.bringToFront();
                         });
 
                         layer.on("mouseout", () => {
+                            const currentTheme = themeRef.current; // ← always fresh
                             const liveCount = getStateCountRef.current(stateCode);
                             const isSel = checkIfStateSelected(stateCode, selectedStatesRef.current);
                             layer.setStyle({
-                                fillColor: getStateColor(liveCount, isSel, theme),
+                                fillColor: getStateColor(liveCount, isSel, currentTheme),
                                 fillOpacity: getStateFillOpacity(liveCount, isSel),
                                 weight: getStateWeight(isSel),
-                                color: getStateBorder(liveCount, isSel, theme),
+                                color: getStateBorder(liveCount, isSel, currentTheme),
                             });
                         });
 
@@ -567,6 +576,8 @@ export default function IndiaMap({
         countsReadyRef.current = false;
         initGetAllCountAnnouncements(language, startdate, endDate);
     }, [language, startdate, endDate]);
+
+    useEffect(() => { themeRef.current = theme; }, [theme]);
 
     useEffect(() => {
         if (!geojsonLayerRef.current || !mapInstanceRef.current) return;
