@@ -373,7 +373,8 @@ export default function IndiaMap({
                     satelliteMarkersRef.current.set(satKey, { markers: newMarkers, lines: newLines });
                 });
 
-                if (zoom >= 4) {
+                const minZoom = window.innerWidth < 768 ? 2 : 4;
+                if (zoom >= minZoom) {
                     dotsLayerRef.current?.addLayer(dot);
                 }
             });
