@@ -87,9 +87,9 @@ const Main: React.FC = () => {
 
     const fetchBriefAnnouncements = async () => {
         try {
-            const key = buildCacheKey("announcements", { language, startdate, endDate, StatesSelected: StatesSelected.join("") });
+            const key = buildCacheKey("BriefAnnouncements", { language, startdate, endDate, StatesSelected: StatesSelected.join("") });
 
-            const response = await withCache(key, "announcements", async () => (
+            const response = await withCache(key, "BriefAnnouncements", async () => (
                 await GetBriefAnnouncements(language, startdate, endDate, StatesSelected) as Briefing_Announcement_Response
             ));
             if (response.success) {
