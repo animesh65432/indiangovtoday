@@ -23,7 +23,6 @@ const IndiaMap = dynamic(() => import('../IndiaMap'), { ssr: false });
 const Main: React.FC = () => {
     const { language } = useContext(LanguageContext);
     const [BriefAnnouncements, SetBriefAnnouncements] = useState<Brief_Announcement[]>([])
-    const [ShowIndiaMap, SetShowIndiaMap] = useState<boolean>(false);
     const [IsMapLoading, SetIsMapLoading] = useState<boolean>(false);
     const [StatesSelected, SetStatesSelected] = useState<string[]>([]);
     const [SearchQuery, SetSearchQuery] = useState<string>("");
@@ -116,7 +115,9 @@ const Main: React.FC = () => {
         state_ut,
         trigger,
         DefaultsStatesApplied,
-        CategoriesOptions
+        CategoriesOptions,
+        startdate,
+        endDate
     ]);
 
     useEffect(() => {
@@ -181,8 +182,6 @@ const Main: React.FC = () => {
         <section className="flex h-screen w-screen relative overflow-clip">
             <div className="absolute inset-0">
                 <IndiaMap
-                    ShowIndiaMap={ShowIndiaMap}
-                    SetShowIndiaMap={SetShowIndiaMap}
                     announcements={Announcements}
                     selectedStates={StatesSelected}
                     onStateClick={onStateClick}
@@ -215,8 +214,6 @@ const Main: React.FC = () => {
                         SearchQuery={SearchQuery}
                         SetSearchQuery={SetSearchQuery}
                         handleSearch={handleSearch}
-                        ShowIndiaMap={ShowIndiaMap}
-                        SetShowIndiaMap={SetShowIndiaMap}
                         onResetView={() => setResetViewTrigger(prev => prev + 1)}
                     />
                 </div>

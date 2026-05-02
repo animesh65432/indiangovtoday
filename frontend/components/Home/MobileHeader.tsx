@@ -17,12 +17,10 @@ type Props = {
     SearchQuery: string
     SetSearchQuery: React.Dispatch<React.SetStateAction<string>>
     handleSearch: () => void;
-    ShowIndiaMap: boolean;
-    SetShowIndiaMap: React.Dispatch<React.SetStateAction<boolean>>;
     onResetView: () => void;
 }
 
-const MobileHeader: React.FC<Props> = ({ selectedStates, onStateClick, sheetOpen, setSheetOpen, StatesSelected, SetStatesSelected, SearchQuery, SetSearchQuery, handleSearch, ShowIndiaMap, SetShowIndiaMap, onResetView }) => {
+const MobileHeader: React.FC<Props> = ({ selectedStates, onStateClick, sheetOpen, setSheetOpen, StatesSelected, SetStatesSelected, SearchQuery, SetSearchQuery, handleSearch, onResetView }) => {
     const { language } = useContext(LanguageContext)
     const { theme } = useContext(ThemeContext)
     const options = TranslateText[language].MULTISELECT_OPTIONS
