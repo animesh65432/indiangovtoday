@@ -144,7 +144,7 @@ const Main: React.FC = () => {
         if (StatesSelected.length > 0) {
             fetchBriefAnnouncements();
         }
-    }, [language, startdate, endDate, StatesSelected, CategoriesOptions]);
+    }, [startdate, endDate, StatesSelected, CategoriesOptions]);
 
     const handleSearch = () => {
         if (StatesSelected.length === 0 && DefaultsStatesApplied.length === 0) {
