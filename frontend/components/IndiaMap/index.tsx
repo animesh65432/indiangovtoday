@@ -23,8 +23,6 @@ import { GetUserStateCode } from "@/lib/GetUserStateCode"
 const GEOJSON_URL = "/india_states.geojson";
 
 type Props = {
-    ShowIndiaMap: boolean;
-    SetShowIndiaMap: React.Dispatch<React.SetStateAction<boolean>>;
     announcements: Announcement[];
     selectedStates: string[];
     onStateClick: (state: string | null) => void;
@@ -86,7 +84,7 @@ function randomPointInFeature(
 }
 
 export default function IndiaMap({
-    resetViewTrigger, SetIsMapLoading, ShowIndiaMap, selectedStates, onStateClick, CategoriesOptions
+    resetViewTrigger, SetIsMapLoading, selectedStates, onStateClick, CategoriesOptions
 }: Props) {
     const { language } = useContext(LanguageContext);
     const { startdate, endDate } = useContext(Currentdate);
@@ -549,13 +547,6 @@ export default function IndiaMap({
     }, [language]);
 
 
-    useEffect(() => {
-        if (!mapInstanceRef.current) return;
-        setTimeout(() => mapInstanceRef.current?.invalidateSize(), 310);
-    }, [ShowIndiaMap]);
-
-
-
     async function initGetAllCountAnnouncements(lan: string, start: Date, end: Date) {
         try {
             const key = buildCacheKey("GetAllCountAnnouncements", { language: lan, startdate: start, endDate: end });
@@ -628,7 +619,7 @@ export default function IndiaMap({
             <div
                 ref={mapWrapperRef}
                 data-zoom="4"
-                className={`flex-1 min-h-0 rounded-none overflow-hidden ${ShowIndiaMap ? "flex-1" : "h-0"}`}
+                className={`flex-1 min-h-0 rounded-none overflow-hidden `}
                 style={{ backgroundColor: theme === "dark" ? "black" : "#f5f3ef", touchAction: "none" }}
             >
                 <div ref={mapRef} className="w-full h-full" />
